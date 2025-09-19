@@ -3,7 +3,7 @@ services:
     name: takeopinion
     env: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn -c gunicorn.conf.py takeopinion.wsgi:application"
+    startCommand: "gunicorn --bind 0.0.0.0:$PORT takeopinion.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11

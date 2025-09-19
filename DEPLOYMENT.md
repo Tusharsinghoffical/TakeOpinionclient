@@ -23,7 +23,7 @@ First, fork this repository to your GitHub account.
    - Name: takeopinion
    - Environment: Python
    - Build Command: `./build.sh`
-   - Start Command: `gunicorn -c gunicorn.conf.py takeopinion.wsgi:application`
+   - Start Command: `gunicorn --bind 0.0.0.0:$PORT takeopinion.wsgi:application`
    - Branch: main (or your default branch)
 
 ### 3. Add Environment Variables
@@ -116,3 +116,4 @@ The following issues have been addressed in the latest deployment setup:
 2. **Python Version**: Specified Python 3.11 for compatibility with Render
 3. **Build Script**: Updated build script with pip upgrade command for better reliability
 4. **Static Files**: Verified static files collection and serving
+5. **Gunicorn Configuration**: Fixed missing os import and simplified start command
