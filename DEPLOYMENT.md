@@ -118,3 +118,19 @@ The following issues have been addressed in the latest deployment setup:
 4. **Static Files**: Verified static files collection and serving
 5. **Gunicorn Configuration**: Fixed missing os import and simplified start command
 6. **Deployment Command**: Ensured correct start command is used for Render deployment
+
+## Render Deployment Cache Issue
+
+If you're experiencing the error "Error: 'gunicorn.conf.py' doesn't exist" even after our fixes, this is due to Render's build cache retaining the old configuration.
+
+### Solution
+
+1. Go to your Render dashboard
+2. Navigate to your web service
+3. Click on "Manual Deploy" 
+4. Select "Clear build cache & deploy"
+
+This will force Render to use the updated configuration from your render.yaml file which specifies the correct start command:
+`gunicorn --bind 0.0.0.0:$PORT takeopinion.wsgi:application`
+
+After clearing the cache, your deployment should work correctly.
