@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-lg-8">
+      <a href="/treatments/" class="btn btn-sm btn-outline-secondary mb-3">
+        <i class="bi bi-arrow-left me-1"></i>Back to Treatments
+      </a>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h1 class="h2 mb-2">{{ treatment.name }}</h1>
+              <div class="d-flex align-items-center text-muted mb-3">
+                <i class="bi bi-tag me-1"></i>
+                <span>{{ treatment.category|default:'Medical Treatment' }}</span>
+              </div>
+            </div>
+            <span class="badge bg-primary">Popular</span>
+          </div>
+          
+          <p class="mb-4">{{ treatment.description|default:'This comprehensive treatment offers advanced medical care with proven results and patient satisfaction.' }}</p>
+          
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-clock-history text-primary fs-4 me-3"></i>
+                <div>
+                  <div class="small text-muted">Duration</div>
+                  <div class="fw-semibold">{{ treatment.duration|default:'5-7 days' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-person-check text-primary fs-4 me-3"></i>
+                <div>
+                  <div class="small text-muted">Anesthesia</div>
+                  <div class="fw-semibold">{{ treatment.anesthesia_type|default:'General' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-shield-check text-primary fs-4 me-3"></i>
+                <div>
+                  <div class="small text-muted">Recovery</div>
+                  <div class="fw-semibold">{{ treatment.recovery_time|default:'2-3 weeks' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="d-flex flex-wrap gap-2">
+            <a href="/book/" class="btn btn-primary">
+              <i class="bi bi-calendar-check me-2"></i>Request Appointment
+            </a>
+            <a href="#" class="btn btn-outline-primary">
+              <i class="bi bi-download me-2"></i>Download Info
+            </a>
+            <a href="#" class="btn btn-outline-secondary">
+              <i class="bi bi-share me-2"></i>Share
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Treatment Overview</h5>
+        </div>
+        <div class="card-body">
+          <h6 class="mb-3">Procedure Details</h6>
+          <p>{{ treatment.procedure_details|default:'This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.' }}</p>
+          
+          <h6 class="mt-4 mb-3">Preparation Guidelines</h6>
+          <ul>
+            {% for guideline in treatment.preparation_guidelines|default:"Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure" %}
+            <li>{{ guideline }}</li>
+            {% endfor %}
+          </ul>
+          
+          <h6 class="mt-4 mb-3">Aftercare Instructions</h6>
+          <ul>
+            {% for instruction in treatment.aftercare_instructions|default:"Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions" %}
+            <li>{{ instruction }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Top Hospitals Offering This Treatment</h5>
+        </div>
+        <div class="card-body">
+          {% for h in hospitals|slice:":3" %}
+          <div class="d-flex mb-3 border-bottom pb-3">
+            <div class="flex-shrink-0">
+              <img src="https://picsum.photos/seed/h{{ h.id }}/100/100" class="rounded object-fit-cover" alt="{{ h.name }}" width="80" height="80">
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="mb-1"><a href="/hospitals/{{ h.slug }}/" class="text-decoration-none">{{ h.name }}</a></h6>
+              <div class="d-flex align-items-center text-muted mb-1">
+                <i class="bi bi-geo-alt me-1"></i>
+                <span>{{ h.location|default:'City, Country' }}</span>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <div class="text-warning me-2">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-half"></i>
+                </div>
+                <span class="small">({{ h.review_count|default:120 }} reviews)</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="h6 text-primary mb-0">${{ h.starting_price|default:"5000" }}</span>
+                  <span class="text-muted small">starting price</span>
+                </div>
+                {% if h.is_takeopinion_choice %}
+                <span class="badge badge-choice">TO Choice</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <p class="mb-0">No hospitals currently offering this treatment.</p>
+          {% endfor %}
+          <a href="/hospitals/" class="btn btn-outline-primary w-100 mt-2">View All Hospitals</a>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Specialist Doctors</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-4">
+            {% for d in doctors|slice:":4" %}
+            <div class="col-md-6">
+              <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none">
+                <div class="row g-0">
+                  <div class="col-4">
+                    <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid h-100 w-100 object-fit-cover rounded-start" alt="{{ d.name }}">
+                  </div>
+                  <div class="col-8">
+                    <div class="card-body">
+                      <h6 class="card-title mb-1">{{ d.name }}</h6>
+                      <div class="small text-muted mb-2">{{ d.specialization|default:'Specialist' }}</div>
+                      <div class="d-flex align-items-center">
+                        <div class="text-warning me-1">
+                          <i class="bi bi-star-fill"></i>
+                          <i class="bi bi-star-fill"></i>
+                          <i class="bi bi-star-fill"></i>
+                          <i class="bi bi-star-fill"></i>
+                          <i class="bi bi-star-half"></i>
+                        </div>
+                        <span class="small">({{ d.review_count|default:45 }})</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% empty %}
+            <div class="col-12">
+              <p class="mb-0">No doctors currently specializing in this treatment.</p>
+            </div>
+            {% endfor %}
+          </div>
+          <a href="/doctors/" class="btn btn-outline-primary w-100 mt-3">View All Doctors</a>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Frequently Asked Questions</h5>
+        </div>
+        <div class="accordion accordion-flush" id="faq">
+          {% for faq in treatment.faqs|slice:":4" %}
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ forloop.counter }}">
+                {{ faq.question|default:'What should I expect during this treatment?' }}
+              </button>
+            </h2>
+            <div id="faq{{ forloop.counter }}" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                {{ faq.answer|default:'This treatment typically involves several stages including consultation, preparation, the procedure itself, and recovery. Your medical team will guide you through each step.' }}
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                What should I expect during this treatment?
+              </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                This treatment typically involves several stages including consultation, preparation, the procedure itself, and recovery. Your medical team will guide you through each step.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                How long is the recovery period?
+              </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                Recovery time varies by individual, but most patients can expect to return to normal activities within {{ treatment.recovery_time|default:'2-3 weeks' }}.
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Book This Treatment</h5>
+        </div>
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <div class="display-6 text-primary mb-2">${{ treatment.starting_price|default:"5000" }}</div>
+            <div class="text-muted">starting price</div>
+          </div>
+          
+          <div class="d-grid gap-2">
+            <a href="/book/" class="btn btn-primary btn-lg">
+              <i class="bi bi-calendar-check me-2"></i>Request Appointment
+            </a>
+            <a href="#" class="btn btn-outline-primary">
+              <i class="bi bi-chat-dots me-2"></i>Consult an Expert
+            </a>
+          </div>
+          
+          <div class="mt-4">
+            <h6 class="mb-3">What's Included</h6>
+            <ul class="list-unstyled">
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Initial consultation</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Pre-operative tests</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Surgery/procedure</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Post-operative care</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Follow-up appointments</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Related Resources</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-flex mb-3">
+            <div class="flex-shrink-0">
+              <i class="bi bi-journal-text fs-4 text-primary"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="mb-1"><a href="/blogs/" class="text-decoration-none">Treatment Guide</a></h6>
+              <p class="small text-muted mb-0">Comprehensive guide to understanding this procedure</p>
+            </div>
+          </div>
+          
+          <div class="d-flex mb-3">
+            <div class="flex-shrink-0">
+              <i class="bi bi-camera-video fs-4 text-primary"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="mb-1"><a href="/videos/" class="text-decoration-none">Video Consultation</a></h6>
+              <p class="small text-muted mb-0">Watch expert explanations of the procedure</p>
+            </div>
+          </div>
+          
+          <div class="d-flex">
+            <div class="flex-shrink-0">
+              <i class="bi bi-chat-square-quote fs-4 text-primary"></i>
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h6 class="mb-1"><a href="/testimonials/" class="text-decoration-none">Patient Stories</a></h6>
+              <p class="small text-muted mb-0">Read experiences from patients who underwent this treatment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card bg-light border-0">
+        <div class="card-body">
+          <h5 class="card-title">Need More Information?</h5>
+          <p class="card-text text-muted">Our medical travel experts can provide personalized guidance for your treatment journey.</p>
+          <a href="{% url 'contact' %}" class="btn btn-primary w-100">
+            <i class="bi bi-headset me-2"></i>Contact Support
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="section-title mb-4">
+        <i class="bi bi-envelope"></i>
+        <h1 class="h2 mb-0">Connect with TakeOpinion Experts</h1>
+      </div>
+      <p class="text-muted mb-4">Have questions or need assistance? Our medical travel experts are here to help you make informed decisions.</p>
+      
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <form class="row g-4">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Full Name</label>
+              <input class="form-control form-control-lg" placeholder="Enter your full name" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Email Address</label>
+              <input type="email" class="form-control form-control-lg" placeholder="you@example.com" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Phone Number</label>
+              <input type="tel" class="form-control form-control-lg" placeholder="+1 (555) 123-4567" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Subject</label>
+              <select class="form-select form-control-lg">
+                <option selected>Select a subject</option>
+                <option>Medical Treatment Inquiry</option>
+                <option>Hospital Recommendation</option>
+                <option>Doctor Consultation</option>
+                <option>Travel Arrangements</option>
+                <option>Post-Treatment Support</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Your Message</label>
+              <textarea class="form-control form-control-lg" rows="5" placeholder="Please provide details about your inquiry..."></textarea>
+            </div>
+            <div class="col-12">
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="termsCheck">
+                <label class="form-check-label" for="termsCheck">
+                  I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a>
+                </label>
+              </div>
+              <button class="btn btn-primary btn-lg w-100" type="submit">
+                <i class="bi bi-send me-2"></i>Send Message
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <div class="row g-4 mt-4">
+        <div class="col-md-4">
+          <div class="card h-100 text-center border-0 shadow-sm">
+            <div class="card-body">
+              <div class="display-6 text-primary mb-3">
+                <i class="bi bi-telephone"></i>
+              </div>
+              <h5 class="card-title">Call Us</h5>
+              <p class="card-text text-muted">+1 (555) 123-4567</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 text-center border-0 shadow-sm">
+            <div class="card-body">
+              <div class="display-6 text-primary mb-3">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <h5 class="card-title">Email Us</h5>
+              <p class="card-text text-muted">support@takeopinion.com</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 text-center border-0 shadow-sm">
+            <div class="card-body">
+              <div class="display-6 text-primary mb-3">
+                <i class="bi bi-chat-dots"></i>
+              </div>
+              <h5 class="card-title">Live Chat</h5>
+              <p class="card-text text-muted">Available 24/7</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

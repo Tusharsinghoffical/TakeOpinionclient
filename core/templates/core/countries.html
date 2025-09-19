@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex flex-wrap gap-3 align-items-center mb-4">
+    <div class="section-title mb-0">
+      <i class="bi bi-geo-alt"></i>
+      <h1 class="h2 mb-0">Top Medical Destinations</h1>
+    </div>
+    <div class="ms-auto w-100 w-md-auto">
+      <div class="input-group">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search text-muted"></i>
+        </span>
+        <input class="form-control border-start-0" type="search" placeholder="Search country..." data-search-input data-search-target="#countryGrid">
+      </div>
+    </div>
+  </div>
+  
+  <p class="text-muted mb-4">Explore our top-rated medical destinations around the world, each offering exceptional healthcare facilities and competitive pricing.</p>
+
+  <div id="countryGrid" class="row g-4">
+    {% for c in countries %}
+    <div class="col-6 col-md-3" data-country-card data-title="{{ c.name }}">
+      <a href="/countries/{{ c.slug }}/" class="card h-100 card-hover text-decoration-none">
+        <div class="position-relative">
+          <img src="https://picsum.photos/seed/c{{ forloop.counter0 }}{{ c.id }}/800/480" class="card-img-top object-fit-cover" alt="{{ c.name }}" style="height: 180px;">
+          <div class="position-absolute top-0 end-0 m-2">
+            <img src="{{ c.flag_url|default:'https://flagcdn.com/w40/'|add:c.code|lower|add:'.png' }}" width="32" height="24" alt="{{ c.code }}" class="rounded border bg-white">
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title mb-1">{{ c.name }}</h5>
+          <div class="small text-muted mb-2">
+            {% for s in c.states.all|slice:':3' %}{{ s.name }}{% if not forloop.last %} • {% endif %}{% empty %}—{% endfor %}
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="small text-muted">
+              <i class="bi bi-hospital me-1"></i>{{ c.hospitals_count|default:0 }} hospitals
+            </span>
+            <span class="badge bg-primary">★ {{ c.rating|floatformat:1|default:'N/A' }}</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="card text-center py-5">
+        <div class="card-body">
+          <i class="bi bi-geo-alt display-5 text-muted mb-3"></i>
+          <h5 class="card-title">No countries found</h5>
+          <p class="card-text text-muted">We're working on adding more medical destinations.</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  <div class="mt-4 text-center">
+    <button class="btn btn-outline-primary" type="button">
+      <i class="bi bi-arrow-clockwise me-2"></i>Load More Destinations
+    </button>
+  </div>
+</div>
+{% endblock %}

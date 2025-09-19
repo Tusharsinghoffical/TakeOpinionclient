@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <h2 class="h3 mb-2">Create Account</h2>
+            <p class="text-muted">Sign up for a new account</p>
+          </div>
+          
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+          
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="username" class="form-label fw-semibold">Username</label>
+              <input type="text" class="form-control form-control-lg" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label fw-semibold">Email Address</label>
+              <input type="email" class="form-control form-control-lg" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label fw-semibold">Password</label>
+              <input type="password" class="form-control form-control-lg" id="password" name="password" required>
+            </div>
+            <div class="mb-3">
+              <label for="confirm_password" class="form-label fw-semibold">Confirm Password</label>
+              <input type="password" class="form-control form-control-lg" id="confirm_password" name="confirm_password" required>
+            </div>
+            <div class="mb-3">
+              <label for="user_type" class="form-label fw-semibold">Account Type</label>
+              <select class="form-select form-control-lg" id="user_type" name="user_type" required>
+                <option value="">Select account type</option>
+                <option value="patient">Patient</option>
+                <option value="doctor">Doctor</option>
+              </select>
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="terms" required>
+              <label class="form-check-label" for="terms">I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a></label>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+            </div>
+          </form>
+          
+          <div class="text-center mt-4">
+            <p class="mb-0">Already have an account? <a href="{% url 'login' %}" class="text-decoration-none">Sign in</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

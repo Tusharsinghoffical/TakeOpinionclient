@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="section-title mb-4">
+    <i class="bi bi-journal-text"></i>
+    <h1 class="h2 mb-0">Medical Travel Insights</h1>
+  </div>
+  
+  <p class="text-muted mb-4">Stay informed with our latest articles on medical treatments, travel tips, and healthcare insights from around the world.</p>
+  
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Treatment Category</label>
+          <select class="form-select">
+            <option selected>All Treatments</option>
+            <option>Cardiac Surgery</option>
+            <option>Orthopedics</option>
+            <option>Cosmetic Surgery</option>
+            <option>Oncology</option>
+            <option>IVF</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Medical Specialty</label>
+          <select class="form-select">
+            <option selected>All Specialties</option>
+            <option>Cardiology</option>
+            <option>Orthopedics</option>
+            <option>Dermatology</option>
+            <option>Oncology</option>
+            <option>Neurology</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Destination</label>
+          <select class="form-select">
+            <option selected>All Destinations</option>
+            <option>India</option>
+            <option>Thailand</option>
+            <option>Turkey</option>
+            <option>Malaysia</option>
+            <option>Mexico</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Topic</label>
+          <select class="form-select">
+            <option selected>All Topics</option>
+            <option>Medical Visa</option>
+            <option>Travel Tips</option>
+            <option>Recovery</option>
+            <option>Cost Savings</option>
+            <option>Accreditation</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    {% for p in posts %}
+    <div class="col-md-6 col-lg-4">
+      <a href="{% url 'blog_detail' p.slug %}" class="card h-100 text-decoration-none card-hover">
+        <div class="position-relative">
+          <img src="https://picsum.photos/seed/b{{ forloop.counter0 }}{{ p.id }}/800/480" class="card-img-top object-fit-cover" alt="{{ p.title }}" style="height: 200px;">
+          {% if p.is_medical_visa %}
+          <div class="position-absolute top-0 start-0 m-3">
+            <span class="badge bg-info">Medical Visa</span>
+          </div>
+          {% endif %}
+          <div class="position-absolute bottom-0 start-0 m-3">
+            <span class="badge bg-primary">
+              {% if p.treatment %}
+                {{ p.treatment.name }}
+              {% else %}
+                General
+              {% endif %}
+            </span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title mb-2">{{ p.title }}</h5>
+          <p class="card-text text-muted small">
+            {{ p.content|truncatewords:20 }}
+          </p>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">
+              <i class="bi bi-calendar me-1"></i>{{ p.published_at|date:"M d, Y" }}
+            </small>
+            <small class="text-muted">
+              <i class="bi bi-clock me-1"></i>5 min read
+            </small>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="card text-center py-5">
+        <div class="card-body">
+          <i class="bi bi-journal-text display-5 text-muted mb-3"></i>
+          <h5 class="card-title">No blog posts available</h5>
+          <p class="card-text text-muted">Check back later for new insights and updates.</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  <div class="mt-4 text-center">
+    <button class="btn btn-outline-primary" type="button">
+      <i class="bi bi-arrow-clockwise me-2"></i>Load More Articles
+    </button>
+  </div>
+</div>
+{% endblock %}

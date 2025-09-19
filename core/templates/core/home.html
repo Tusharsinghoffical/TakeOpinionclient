@@ -1,0 +1,367 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="hero">
+  <div class="bg-image" style="background-image:url('https://images.unsplash.com/photo-1586773860383-dab5f1c040fc?q=80&w=1600&auto=format&fit=crop');"></div>
+  <div class="overlay"></div>
+  <div class="container content py-5">
+    <div class="row">
+      <div class="col-lg-8">
+        <h1 class="display-4 fw-bold mb-3">Find the Right Treatment, Doctor, and Hospital</h1>
+        <p class="lead mb-4">Compare top destinations, hospitals, and experts with TakeOpinion. Make informed decisions for your medical travel needs.</p>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <a href="/book/" class="btn btn-primary btn-lg"><i class="bi bi-chat-dots me-1"></i> Connect with Experts</a>
+          <a href="/treatments/" class="btn btn-outline-light btn-lg">Explore Treatments</a>
+        </div>
+        <div class="hero-search d-flex gap-2 align-items-center p-2">
+          <i class="bi bi-search text-muted ms-2"></i>
+          <input class="form-control border-0" placeholder="Search treatments, doctors, hospitals...">
+          <a href="/treatments/" class="btn btn-primary">Search</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-4">
+  <div class="container">
+    <div class="stats-section">
+      <div class="row text-center g-4">
+        <div class="col-6 col-md-3">
+          <div class="stat-item">
+            <div class="h4 mb-0">50+</div>
+            <div class="small text-muted">Treatments</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-item">
+            <div class="h4 mb-0">100+</div>
+            <div class="small text-muted">Hospitals</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-item">
+            <div class="h4 mb-0">200+</div>
+            <div class="small text-muted">Doctors</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-item">
+            <div class="h4 mb-0">20+</div>
+            <div class="small text-muted">Countries</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="section-title mb-4">
+      <i class="bi bi-activity"></i>
+      <h2 class="h3 mb-0">Multi Speciality Treatments</h2>
+    </div>
+    <div class="mb-4 d-flex flex-wrap gap-2">
+      <a href="/treatments/" class="btn btn-outline-secondary btn-sm">Orthopedics</a>
+      <a href="/treatments/" class="btn btn-outline-secondary btn-sm">Cardiology</a>
+      <a href="/treatments/" class="btn btn-outline-secondary btn-sm">Cosmetic</a>
+      <a href="/treatments/" class="btn btn-outline-secondary btn-sm">Oncology</a>
+      <a href="/treatments/" class="btn btn-outline-secondary btn-sm">Wellness</a>
+    </div>
+    <div class="row g-4">
+      {% for t in top_treatments %}
+      <div class="col-6 col-md-4 col-lg-2">
+        <a class="card text-center text-decoration-none card-hover h-100" href="/treatments/{{ t.slug }}/">
+          <img src="https://picsum.photos/seed/t{{ forloop.counter }}/400/240" class="card-img-top object-fit-cover" alt="{{ t.name }}" style="height: 120px;">
+          <div class="card-body">
+            <div class="small text-muted">Treatment</div>
+            <div class="fw-semibold">{{ t.name }}</div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="/treatments/" class="btn btn-outline-primary">View All Treatments</a>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="section-title mb-4">
+      <i class="bi bi-check-circle"></i>
+      <h2 class="h3 mb-0">Why Choose TakeOpinion</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <div class="display-5 text-primary mb-3">
+              <i class="bi bi-shield-check"></i>
+            </div>
+            <h5 class="card-title">Verified Experts</h5>
+            <p class="card-text text-muted">Access to verified doctors and hospitals with proven track records.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <div class="display-5 text-primary mb-3">
+              <i class="bi bi-currency-dollar"></i>
+            </div>
+            <h5 class="card-title">Cost Transparency</h5>
+            <p class="card-text text-muted">Clear pricing information to help you make budget-friendly decisions.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <div class="display-5 text-primary mb-3">
+              <i class="bi bi-translate"></i>
+            </div>
+            <h5 class="card-title">Language Support</h5>
+            <p class="card-text text-muted">Multilingual support to ensure clear communication throughout your journey.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <div class="display-5 text-primary mb-3">
+              <i class="bi bi-headset"></i>
+            </div>
+            <h5 class="card-title">24/7 Support</h5>
+            <p class="card-text text-muted">Round-the-clock assistance for all your medical travel needs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4 section-title">
+      <i class="bi bi-geo-alt"></i>
+      <h2 class="h3 mb-0">Top Medical Destinations</h2>
+      <a href="/countries/" class="btn btn-outline-secondary btn-sm">View all</a>
+    </div>
+    <div class="row g-4">
+      {% for i in '1236' %}
+      <div class="col-6 col-md-3">
+        <div class="card h-100 card-hover">
+          <img src="https://picsum.photos/seed/c{{ forloop.counter }}/600/400" class="card-img-top object-fit-cover" alt="Destination {{ forloop.counter }}" style="height: 160px;">
+          <div class="card-body">
+            <div class="fw-semibold">Destination {{ forloop.counter }}</div>
+            <div class="small text-muted">Popular for medical tourism</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4 section-title">
+      <i class="bi bi-hospital"></i>
+      <h2 class="h3 mb-0">Top Hospitals</h2>
+      <a href="/hospitals/" class="btn btn-outline-secondary btn-sm">View all</a>
+    </div>
+    <div class="row g-4">
+      {% for h in top_hospitals %}
+      <div class="col-6 col-md-3">
+        <a href="/hospitals/{{ h.slug }}/" class="card h-100 text-decoration-none card-hover">
+          <img src="https://picsum.photos/seed/h{{ forloop.counter }}/600/360" class="card-img-top object-fit-cover" alt="{{ h.name }}" style="height: 160px;">
+          <div class="card-body">
+            <div class="fw-semibold">{{ h.name }}</div>
+            {% if h.is_takeopinion_choice %}<span class="badge badge-choice">TakeOpinion Choice</span>{% endif %}
+            <div class="small text-muted mt-2">Accredited hospital</div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4 section-title">
+      <i class="bi bi-person-badge"></i>
+      <h2 class="h3 mb-0">Top Doctors</h2>
+      <a href="/doctors/" class="btn btn-outline-secondary btn-sm">View all</a>
+    </div>
+    <div class="row g-4">
+      {% for d in top_doctors %}
+      <div class="col-6 col-md-3">
+        <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none card-hover">
+          <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="card-img-top object-fit-cover" alt="{{ d.name }}" style="height: 160px;">
+          <div class="card-body">
+            <div class="fw-semibold">{{ d.name }}</div>
+            <div class="small text-muted">{{ d.key_points|default:'Specialist' }}</div>
+            <div class="d-flex align-items-center mt-2">
+              <i class="bi bi-star-fill text-warning me-1"></i>
+              <span class="small">4.8 (120 reviews)</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="section-title mb-4">
+      <i class="bi bi-journal-text"></i>
+      <h2 class="h3 mb-0">How TakeOpinion Helps You</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <div class="display-5 text-primary mb-3">
+              <i class="bi bi-search-heart"></i>
+            </div>
+            <h5 class="card-title">Discover</h5>
+            <p class="card-text text-muted">Find the best treatments, doctors, and hospitals tailored to your needs.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <div class="display-5 text-primary mb-3">
+              <i class="bi bi-chat-dots"></i>
+            </div>
+            <h5 class="card-title">Connect</h5>
+            <p class="card-text text-muted">Get in touch with medical experts for personalized guidance.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <div class="display-5 text-primary mb-3">
+              <i class="bi bi-clipboard2-check"></i>
+            </div>
+            <h5 class="card-title">Plan</h5>
+            <p class="card-text text-muted">Organize your medical travel with our comprehensive planning tools.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <div class="display-5 text-primary mb-3">
+              <i class="bi bi-airplane"></i>
+            </div>
+            <h5 class="card-title">Travel</h5>
+            <p class="card-text text-muted">Enjoy seamless medical travel with our end-to-end support.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="section-title mb-4">
+      <i class="bi bi-quote"></i>
+      <h2 class="h3 mb-0">What Our Patients Say</h2>
+    </div>
+    <div id="testimonials" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="card border-0 shadow-sm mx-auto" style="max-width: 800px;">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <img src="https://ui-avatars.com/api/?name=Ravi+K&background=0D6EFD&color=fff" class="rounded-circle" width="64" height="64" alt="Ravi"/>
+                <div>
+                  <div class="fw-bold">Ravi K.</div>
+                  <div class="text-muted small">Knee Replacement</div>
+                  <div class="d-flex">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="mb-0 fs-5">"The process was incredibly smooth from start to finish. TakeOpinion connected me with an excellent hospital and doctor for my knee replacement. The cost savings were significant compared to local options, and the quality of care was exceptional. I couldn't be happier with my experience!"</p>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="card border-0 shadow-sm mx-auto" style="max-width: 800px;">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <img src="https://ui-avatars.com/api/?name=Sara+M&background=0D6EFD&color=fff" class="rounded-circle" width="64" height="64" alt="Sara"/>
+                <div>
+                  <div class="fw-bold">Sara M.</div>
+                  <div class="text-muted small">Cosmetic Surgery</div>
+                  <div class="d-flex">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-half text-warning"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="mb-0 fs-5">"As a busy professional, I appreciated how TakeOpinion handled all the arrangements for my cosmetic procedure. The doctors were highly qualified, the facility was state-of-the-art, and the support team was available 24/7. I felt well taken care of throughout my entire journey."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonials" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonials" data-bs-slide="next">
+          <span class="carousel-control-next-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4 section-title">
+      <i class="bi bi-journal-text"></i>
+      <h2 class="h3 mb-0">Latest Blogs & Resources</h2>
+      <a href="/blogs/" class="btn btn-outline-secondary btn-sm">View all</a>
+    </div>
+    <div class="row g-4">
+      {% for b in latest_blogs %}
+      <div class="col-md-4">
+        <a href="/blogs/{{ b.slug }}/" class="card h-100 text-decoration-none card-hover">
+          <img src="https://picsum.photos/seed/b{{ forloop.counter }}/800/480" class="card-img-top object-fit-cover" alt="{{ b.title }}" style="height: 200px;">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="badge bg-primary">Medical Travel</span>
+              <small class="text-muted">May 15, 2023</small>
+            </div>
+            <div class="fw-semibold h5">{{ b.title }}</div>
+            <p class="card-text text-muted">Learn important considerations and tips for your medical travel journey...</p>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

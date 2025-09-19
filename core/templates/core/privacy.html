@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="section-title mb-4">
+        <i class="bi bi-shield-lock"></i>
+        <h1 class="h2 mb-0">Privacy Policy</h1>
+      </div>
+      
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <p class="text-muted">Last updated: {{ last_updated|default:"September 18, 2025" }}</p>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">Introduction</h5>
+            <p>TakeOpinion ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.</p>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">Information We Collect</h5>
+            <p>We may collect personal information that you voluntarily provide to us when you register on the site, express an interest in obtaining information about us or our products and services, participate in activities on the site, or otherwise contact us.</p>
+            <ul>
+              <li>Personal identification information (Name, email address, phone number, etc.)</li>
+              <li>Medical information (treatment preferences, health conditions, etc.)</li>
+              <li>Travel information (destination preferences, dates, etc.)</li>
+              <li>Payment information (processed securely through our payment partners)</li>
+            </ul>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">How We Use Your Information</h5>
+            <p>We use your information for various purposes, including:</p>
+            <ul>
+              <li>To provide and maintain our services</li>
+              <li>To notify you about changes to our services</li>
+              <li>To allow you to participate in interactive features of our service</li>
+              <li>To provide customer support</li>
+              <li>To gather analysis or valuable information to improve our service</li>
+              <li>To monitor the usage of our service</li>
+              <li>To detect, prevent, and address technical issues</li>
+            </ul>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">Data Security</h5>
+            <p>We implement appropriate technical and organizational security measures to protect the security of your personal data. However, please note that no method of transmission over the Internet or method of electronic storage is 100% secure.</p>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">Your Data Protection Rights</h5>
+            <p>You have certain rights under applicable data protection laws, including the right to access, correct, delete, or restrict processing of your personal data.</p>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">Changes to This Privacy Policy</h5>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.</p>
+          </div>
+          
+          <div>
+            <h5 class="mb-3">Contact Us</h5>
+            <p>If you have any questions about this Privacy Policy, please contact us:</p>
+            <ul>
+              <li>By email: privacy@takeopinion.com</li>
+              <li>By phone: +1 (555) 123-4567</li>
+              <li>By mail: TakeOpinion, 123 Medical Plaza, Health City, HC 12345</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

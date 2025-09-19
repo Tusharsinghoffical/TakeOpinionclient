@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="section-title mb-4">
+    <i class="bi bi-person-badge"></i>
+    <h1 class="h2 mb-0">Our Medical Experts</h1>
+  </div>
+  
+  <p class="text-muted mb-4">Connect with our verified medical professionals who specialize in various treatments and procedures.</p>
+  
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Specialization</label>
+          <select class="form-select">
+            <option selected>All Specializations</option>
+            <option>Cardiology</option>
+            <option>Orthopedics</option>
+            <option>Dermatology</option>
+            <option>Oncology</option>
+            <option>Neurology</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Location</label>
+          <select class="form-select">
+            <option selected>All Locations</option>
+            <option>India</option>
+            <option>Thailand</option>
+            <option>Turkey</option>
+            <option>Malaysia</option>
+            <option>Mexico</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Experience</label>
+          <select class="form-select">
+            <option selected>Any Experience</option>
+            <option>5+ years</option>
+            <option>10+ years</option>
+            <option>15+ years</option>
+            <option>20+ years</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Rating</label>
+          <select class="form-select">
+            <option selected>All Ratings</option>
+            <option>4.5+ stars</option>
+            <option>4.0+ stars</option>
+            <option>3.5+ stars</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    {% for d in doctors %}
+    <div class="col-md-6">
+      <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none card-hover">
+        <div class="row g-0">
+          <div class="col-4 position-relative">
+            <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid h-100 w-100 object-fit-cover rounded-start" alt="{{ d.name }}">
+            {% if d.is_verified %}
+            <div class="position-absolute bottom-0 end-0 m-2">
+              <span class="badge bg-success">
+                <i class="bi bi-patch-check"></i>
+              </span>
+            </div>
+            {% endif %}
+          </div>
+          <div class="col-8">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <h5 class="card-title mb-1">{{ d.name }}</h5>
+                {% if d.is_takeopinion_choice %}
+                <span class="badge badge-choice">TO Choice</span>
+                {% endif %}
+              </div>
+              <div class="small text-muted mb-1">{{ d.specialization|default:'Specialist' }}</div>
+              <div class="d-flex align-items-center mb-2">
+                <div class="text-warning me-1">
+                  {% for i in "12345" %}
+                    <i class="bi bi-star{% if forloop.counter <= d.rating|floatformat:0 %}{% else %}-half{% endif %}"></i>
+                  {% endfor %}
+                </div>
+                <span class="small text-muted">({{ d.review_count|default:0 }} reviews)</span>
+              </div>
+              <div class="small">
+                <i class="bi bi-briefcase me-1"></i>{{ d.experience_years }} years experience
+              </div>
+              <div class="small">
+                <i class="bi bi-hospital me-1"></i>{{ d.hospital|default:'Hospital' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="card text-center py-5">
+        <div class="card-body">
+          <i class="bi bi-person-badge display-5 text-muted mb-3"></i>
+          <h5 class="card-title">No doctors found</h5>
+          <p class="card-text text-muted">Try adjusting your filters or check back later.</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  <div class="mt-4 text-center">
+    <button class="btn btn-outline-primary" type="button">
+      <i class="bi bi-arrow-clockwise me-2"></i>Load More Doctors
+    </button>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="section-title mb-4">
+        <i class="bi bi-file-text"></i>
+        <h1 class="h2 mb-0">Terms of Service</h1>
+      </div>
+      
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <p class="text-muted">Last updated: {{ last_updated|default:"September 18, 2025" }}</p>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">1. Agreement to Terms</h5>
+            <p>By accessing or using the TakeOpinion website and services, you agree to be bound by these Terms of Service and all applicable laws and regulations.</p>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">2. Services Description</h5>
+            <p>TakeOpinion provides a platform for connecting patients with medical facilities and professionals worldwide. We do not provide medical services directly but facilitate connections between patients and healthcare providers.</p>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">3. User Responsibilities</h5>
+            <p>When using our services, you agree to:</p>
+            <ul>
+              <li>Provide accurate and complete information</li>
+              <li>Maintain the security of your account credentials</li>
+              <li>Use our services only for lawful purposes</li>
+              <li>Respect the rights and privacy of others</li>
+            </ul>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">4. Medical Information Disclaimer</h5>
+            <p>The information provided on our website is for general informational purposes only and is not intended as medical advice. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">5. Third-Party Services</h5>
+            <p>Our services may include links to third-party websites or services. We are not responsible for the content or practices of these third parties.</p>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">6. Limitation of Liability</h5>
+            <p>In no event shall TakeOpinion be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses.</p>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">7. Governing Law</h5>
+            <p>These Terms shall be governed and construed in accordance with the laws of [Your Jurisdiction], without regard to its conflict of law provisions.</p>
+          </div>
+          
+          <div class="mb-4">
+            <h5 class="mb-3">8. Changes to Terms</h5>
+            <p>We reserve the right to modify or replace these Terms at any time. We will provide notice of any significant changes by updating the "Last updated" date.</p>
+          </div>
+          
+          <div>
+            <h5 class="mb-3">9. Contact Information</h5>
+            <p>If you have any questions about these Terms, please contact us:</p>
+            <ul>
+              <li>By email: legal@takeopinion.com</li>
+              <li>By phone: +1 (555) 123-4567</li>
+              <li>By mail: TakeOpinion Legal Department, 123 Medical Plaza, Health City, HC 12345</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

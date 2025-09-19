@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <h2 class="h3 mb-2">Welcome Back</h2>
+            <p class="text-muted">Sign in to your account</p>
+          </div>
+          
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+          
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="username" class="form-label fw-semibold">Username</label>
+              <input type="text" class="form-control form-control-lg" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label fw-semibold">Password</label>
+              <input type="password" class="form-control form-control-lg" id="password" name="password" required>
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="remember">
+              <label class="form-check-label" for="remember">Remember me</label>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+            </div>
+          </form>
+          
+          <div class="text-center mt-4">
+            <p class="mb-0">Don't have an account? <a href="{% url 'signup' %}" class="text-decoration-none">Sign up</a></p>
+            <p class="mb-0 mt-2"><a href="#" class="text-decoration-none">Forgot password?</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

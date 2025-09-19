@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-lg-8">
+      <a href="/hospitals/" class="btn btn-sm btn-outline-secondary mb-3">
+        <i class="bi bi-arrow-left me-1"></i>Back to Hospitals
+      </a>
+      
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <h1 class="h2 mb-2">{{ hospital.name }}</h1>
+                  <div class="d-flex flex-wrap align-items-center text-muted mb-3">
+                    <div class="me-3">
+                      <i class="bi bi-geo-alt me-1"></i>{{ hospital.state|default:'—' }}, {{ hospital.country|default:'—' }}
+                    </div>
+                    <div class="me-3">
+                      <i class="bi bi-star-fill text-warning me-1"></i>{{ hospital.rating|floatformat:1|default:'N/A' }}
+                    </div>
+                    <div>
+                      <i class="bi bi-calendar-check me-1"></i>Est. {{ hospital.established_year|default:'—' }}
+                    </div>
+                  </div>
+                </div>
+                {% if hospital.is_takeopinion_choice %}
+                <span class="badge badge-choice">TakeOpinion Choice</span>
+                {% endif %}
+              </div>
+              
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                {% if hospital.jci_accredited %}
+                <span class="badge bg-info">JCI Accredited</span>
+                {% endif %}
+                {% if hospital.nabh_accredited %}
+                <span class="badge bg-success">NABH Certified</span>
+                {% endif %}
+                {% if hospital.iso_certified %}
+                <span class="badge bg-warning text-dark">ISO Certified</span>
+                {% endif %}
+                <span class="badge bg-primary">{{ hospital.beds_count|default:'—' }} Beds</span>
+              </div>
+              
+              <p class="mb-4">{{ hospital.about|default:'This hospital is a leading healthcare institution with state-of-the-art facilities and a commitment to providing exceptional patient care.' }}</p>
+              
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-people text-primary fs-4 me-3"></i>
+                    <div>
+                      <div class="small text-muted">Staff</div>
+                      <div class="fw-semibold">{{ hospital.staff_count|default:'500+' }} professionals</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-hospital text-primary fs-4 me-3"></i>
+                    <div>
+                      <div class="small text-muted">Departments</div>
+                      <div class="fw-semibold">{{ hospital.departments_count|default:'20+' }} departments</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-award text-primary fs-4 me-3"></i>
+                    <div>
+                      <div class="small text-muted">Awards</div>
+                      <div class="fw-semibold">{{ hospital.awards_count|default:'15+' }} recognitions</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="d-flex flex-wrap gap-2">
+                <a href="/book/" class="btn btn-primary">
+                  <i class="bi bi-calendar-check me-2"></i>Request Appointment
+                </a>
+                <a href="#" class="btn btn-outline-primary">
+                  <i class="bi bi-download me-2"></i>Download Brochure
+                </a>
+                <a href="#" class="btn btn-outline-secondary">
+                  <i class="bi bi-geo-alt me-2"></i>View on Map
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="gallery" class="carousel slide card mb-4" data-bs-ride="carousel">
+        <div class="carousel-inner rounded">
+          {% for m in hospital.media_items.all %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ m.image_url|default:'https://picsum.photos/seed/h'|add:hospital.id|add:'/'|add:forloop.counter }}/1200/500" class="d-block w-100 object-fit-cover" alt="{{ hospital.name }}" style="height: 400px;">
+          </div>
+          {% empty %}
+          <div class="carousel-item active">
+            <img src="https://picsum.photos/seed/h{{ hospital.id }}/1200/500" class="d-block w-100 object-fit-cover" alt="{{ hospital.name }}" style="height: 400px;">
+          </div>
+          {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#gallery" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#gallery" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        
+        <div class="carousel-indicators">
+          {% for m in hospital.media_items.all %}
+          <button type="button" data-bs-target="#gallery" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-current="true" aria-label="Slide {{ forloop.counter }}"></button>
+          {% empty %}
+          <button type="button" data-bs-target="#gallery" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          {% endfor %}
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Medical Services & Treatments</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            {% for t in hospital.treatments.all|slice:":8" %}
+            <div class="col-md-6 col-lg-3 mb-3">
+              <a href="/treatments/{{ t.slug }}/" class="text-decoration-none">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-check-circle-fill text-success me-2"></i>
+                  <span>{{ t.name }}</span>
+                </div>
+              </a>
+            </div>
+            {% empty %}
+            <div class="col-12">
+              <p class="mb-0">Comprehensive range of medical treatments and services available.</p>
+            </div>
+            {% endfor %}
+          </div>
+          <a href="/treatments/" class="btn btn-outline-primary mt-2">View All Treatments</a>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Our Medical Experts</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-4">
+            {% for d in hospital.doctors.all|slice:":4" %}
+            <div class="col-md-6 col-lg-3">
+              <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none">
+                <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="card-img-top object-fit-cover" alt="{{ d.name }}" style="height: 150px;">
+                <div class="card-body text-center">
+                  <h6 class="card-title mb-1">{{ d.name }}</h6>
+                  <div class="small text-muted">{{ d.specialization|default:'Specialist' }}</div>
+                  <div class="text-warning">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% empty %}
+            <div class="col-12">
+              <p class="mb-0">Our team includes highly qualified medical professionals with extensive experience.</p>
+            </div>
+            {% endfor %}
+          </div>
+          <a href="/doctors/" class="btn btn-outline-primary w-100 mt-3">Meet All Our Doctors</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Hospital Information</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <h6 class="text-muted mb-2">Address</h6>
+            <p class="mb-0">{{ hospital.address|default:'123 Medical Plaza' }}</p>
+            <p class="mb-0">{{ hospital.city|default:'Health City' }}, {{ hospital.state|default:'State' }} {{ hospital.zip_code|default:'12345' }}</p>
+            <p class="mb-0">{{ hospital.country|default:'Country' }}</p>
+          </div>
+          
+          <div class="mb-3">
+            <h6 class="text-muted mb-2">Contact</h6>
+            <p class="mb-1"><i class="bi bi-telephone me-2"></i> {{ hospital.phone|default:'+1 (555) 123-4567' }}</p>
+            <p class="mb-1"><i class="bi bi-envelope me-2"></i> {{ hospital.email|default:'info@hospital.com' }}</p>
+            <p class="mb-0"><i class="bi bi-globe me-2"></i> {{ hospital.website|default:'www.hospital.com' }}</p>
+          </div>
+          
+          <div class="mb-3">
+            <h6 class="text-muted mb-2">Facilities</h6>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="badge bg-light text-dark">ICU</span>
+              <span class="badge bg-light text-dark">MRI</span>
+              <span class="badge bg-light text-dark">CT Scan</span>
+              <span class="badge bg-light text-dark">Pharmacy</span>
+              <span class="badge bg-light text-dark">Cafeteria</span>
+              <span class="badge bg-light text-dark">WiFi</span>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <h6 class="text-muted mb-2">Languages</h6>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="badge bg-primary">English</span>
+              <span class="badge bg-secondary">Spanish</span>
+              <span class="badge bg-secondary">French</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Patient Reviews</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <div class="display-6 text-primary me-3">4.7</div>
+            <div>
+              <div class="text-warning">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+              </div>
+              <div class="small text-muted">Based on 240 reviews</div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="small">Medical Care</span>
+              <span class="small">4.8</span>
+            </div>
+            <div class="progress" style="height: 6px;">
+              <div class="progress-bar bg-primary" role="progressbar" style="width: 92%"></div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="small">Facilities</span>
+              <span class="small">4.6</span>
+            </div>
+            <div class="progress" style="height: 6px;">
+              <div class="progress-bar bg-primary" role="progressbar" style="width: 88%"></div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="small">Staff</span>
+              <span class="small">4.7</span>
+            </div>
+            <div class="progress" style="height: 6px;">
+              <div class="progress-bar bg-primary" role="progressbar" style="width: 90%"></div>
+            </div>
+          </div>
+          
+          <a href="#" class="btn btn-outline-primary w-100">Read All Reviews</a>
+        </div>
+      </div>
+      
+      <div class="card bg-light border-0">
+        <div class="card-body">
+          <h5 class="card-title">Need Help Booking?</h5>
+          <p class="card-text text-muted">Our medical travel coordinators can assist you with scheduling and any questions about this hospital.</p>
+          <a href="{% url 'contact' %}" class="btn btn-primary w-100">
+            <i class="bi bi-headset me-2"></i>Contact Support
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

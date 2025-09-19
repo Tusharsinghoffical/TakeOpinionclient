@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="section-title mb-4">
+    <i class="bi bi-hospital"></i>
+    <h1 class="h2 mb-0">Accredited Hospitals</h1>
+  </div>
+  
+  <p class="text-muted mb-4">Browse our verified hospitals with international accreditations and exceptional patient care standards.</p>
+  
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Treatment</label>
+          <select class="form-select">
+            <option selected>Any Treatment</option>
+            <option>Cardiac Surgery</option>
+            <option>Orthopedics</option>
+            <option>Cosmetic Surgery</option>
+            <option>Oncology</option>
+            <option>IVF</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Location</label>
+          <select class="form-select">
+            <option selected>All Locations</option>
+            <option>India</option>
+            <option>Thailand</option>
+            <option>Turkey</option>
+            <option>Malaysia</option>
+            <option>Mexico</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Accreditation</label>
+          <select class="form-select">
+            <option selected>Any Accreditation</option>
+            <option>JCI</option>
+            <option>NABH</option>
+            <option>ISO</option>
+            <option>HAAD</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Rating</label>
+          <select class="form-select">
+            <option selected>All Ratings</option>
+            <option>4.5+ stars</option>
+            <option>4.0+ stars</option>
+            <option>3.5+ stars</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    {% for h in hospitals %}
+    <div class="col-md-6 col-lg-4">
+      <a href="/hospitals/{{ h.slug }}/" class="card h-100 text-decoration-none card-hover">
+        <div class="position-relative">
+          <img src="https://picsum.photos/seed/h{{ forloop.counter0 }}{{ h.id }}/800/480" class="card-img-top object-fit-cover" alt="{{ h.name }}" style="height: 200px;">
+          {% if h.is_takeopinion_choice %}
+          <div class="position-absolute top-0 start-0 m-3">
+            <span class="badge badge-choice">TakeOpinion Choice</span>
+          </div>
+          {% endif %}
+          <div class="position-absolute bottom-0 end-0 m-3">
+            <span class="badge bg-white text-dark">
+              <i class="bi bi-star-fill text-warning me-1"></i>{{ h.rating|floatformat:1|default:'N/A' }}
+            </span>
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title mb-1">{{ h.name }}</h5>
+          <div class="small text-muted mb-2">
+            <i class="bi bi-geo-alt me-1"></i>{{ h.state|default:'—' }}, {{ h.country|default:'—' }}
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="small">
+              <i class="bi bi-calendar-check me-1"></i>Est. {{ h.established_year|default:'—' }}
+            </div>
+            <div class="small">
+              <i class="bi bi-people me-1"></i>{{ h.beds_count|default:'—' }} beds
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-1">
+            {% if h.jci_accredited %}
+            <span class="badge bg-info">JCI</span>
+            {% endif %}
+            {% if h.nabh_accredited %}
+            <span class="badge bg-success">NABH</span>
+            {% endif %}
+            {% if h.iso_certified %}
+            <span class="badge bg-warning">ISO</span>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="card text-center py-5">
+        <div class="card-body">
+          <i class="bi bi-hospital display-5 text-muted mb-3"></i>
+          <h5 class="card-title">No hospitals found</h5>
+          <p class="card-text text-muted">Try adjusting your filters or check back later.</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  <div class="mt-4 text-center">
+    <button class="btn btn-outline-primary" type="button">
+      <i class="bi bi-arrow-clockwise me-2"></i>Load More Hospitals
+    </button>
+  </div>
+</div>
+{% endblock %}
