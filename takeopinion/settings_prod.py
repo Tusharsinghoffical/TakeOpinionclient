@@ -16,7 +16,13 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-0ylyg79(e+@2pv!zii$p1
 DEBUG = False
 
 # Allow hosts - in production, specify your actual domain
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '.onrender.com,localhost,127.0.0.1').split(',')
+# Ensure we handle the case where ALLOWED_HOSTS might not be set properly
+allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', '.onrender.com,localhost,127.0.0.1')
+ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
+
+# Add the specific Render domain to ensure it's always included
+if '.onrender.com' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('.onrender.com')
 
 # Database configuration for production
 # Render provides DATABASE_URL environment variable
