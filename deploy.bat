@@ -38,4 +38,7 @@ echo To run the application in production mode, use:
 echo python manage.py runserver --settings=takeopinion.settings_prod
 echo.
 echo For production deployment, consider using a proper web server like Nginx with Gunicorn or uWSGI.
+echo.
+echo Static files have been collected to the 'staticfiles' directory.
+echo You can verify static files are working by visiting http://127.0.0.1:8000/static-check/ after starting the server.
 pause

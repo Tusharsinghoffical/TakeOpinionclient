@@ -7,6 +7,6 @@ urlpatterns = [
     path("contact/", views.contact, name="contact"),
     path("privacy/", views.privacy, name="privacy"),
     path("terms/", views.terms, name="terms"),
+    path("health/", views.health_check, name="health_check"),
+    path("static-check/", views.static_files_check, name="static_files_check"),
 ]
-
-
