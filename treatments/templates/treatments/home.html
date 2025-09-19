@@ -6,9 +6,9 @@
     <h1 class="h2 mb-0">Medical Treatments</h1>
   </div>
   
-  <p class="text-muted mb-4">Explore our comprehensive range of medical treatments across various specialities, all offered by our verified healthcare partners.</p>
+  <p class="mb-4">Explore our comprehensive range of medical treatments across various specialities, all offered by our verified healthcare partners.</p>
   
-  <div class="card shadow-sm mb-4">
+  <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
       <div class="row g-3">
         <div class="col-md-4">
@@ -67,7 +67,7 @@
         {% for c in categories %}
         {% if c.type == 'medical' %}
         <div class="col-md-6 col-lg-4">
-          <div class="card h-100">
+          <div class="card h-100 border-0 shadow-sm">
             <div class="card-header bg-primary text-white">
               <h5 class="card-title mb-0">{{ c.name }}</h5>
             </div>
@@ -79,7 +79,7 @@
                   <i class="bi bi-chevron-right text-muted"></i>
                 </a>
                 {% empty %}
-                <div class="list-group-item text-muted">No treatments available</div>
+                <div class="list-group-item">No treatments available</div>
                 {% endfor %}
               </div>
             </div>
@@ -95,7 +95,7 @@
         {% for c in categories %}
         {% if c.type == 'aesthetic' %}
         <div class="col-md-6 col-lg-4">
-          <div class="card h-100">
+          <div class="card h-100 border-0 shadow-sm">
             <div class="card-header bg-info text-white">
               <h5 class="card-title mb-0">{{ c.name }}</h5>
             </div>
@@ -107,7 +107,7 @@
                   <i class="bi bi-chevron-right text-muted"></i>
                 </a>
                 {% empty %}
-                <div class="list-group-item text-muted">No treatments available</div>
+                <div class="list-group-item">No treatments available</div>
                 {% endfor %}
               </div>
             </div>
@@ -123,7 +123,7 @@
         {% for c in categories %}
         {% if c.type == 'wellness' %}
         <div class="col-md-6 col-lg-4">
-          <div class="card h-100">
+          <div class="card h-100 border-0 shadow-sm">
             <div class="card-header bg-success text-white">
               <h5 class="card-title mb-0">{{ c.name }}</h5>
             </div>
@@ -135,7 +135,7 @@
                   <i class="bi bi-chevron-right text-muted"></i>
                 </a>
                 {% empty %}
-                <div class="list-group-item text-muted">No treatments available</div>
+                <div class="list-group-item">No treatments available</div>
                 {% endfor %}
               </div>
             </div>
@@ -147,12 +147,12 @@
     </div>
   </div>
   
-  <div class="card bg-light border-0 mt-5">
+  <div class="card bg-light border-0 shadow-sm mt-5">
     <div class="card-body">
       <div class="row align-items-center">
         <div class="col-md-8">
           <h5 class="card-title">Need Help Choosing a Treatment?</h5>
-          <p class="card-text text-muted mb-0">Our medical experts can guide you to the best treatment options based on your specific needs.</p>
+          <p class="card-text mb-0">Our medical experts can guide you to the best treatment options based on your specific needs.</p>
         </div>
         <div class="col-md-4 text-md-end mt-3 mt-md-0">
           <a href="{% url 'contact' %}" class="btn btn-primary">

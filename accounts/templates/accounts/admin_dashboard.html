@@ -6,7 +6,7 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h1 class="h3 mb-0">Admin Dashboard</h1>
-          <p class="text-muted mb-0">Welcome back, {{ user_profile.user.first_name|default:user_profile.user.username }}</p>
+          <p class="mb-0">Welcome back, {{ user_profile.user.first_name|default:user_profile.user.username }}</p>
         </div>
         <a href="{% url 'logout' %}" class="btn btn-outline-danger">
           <i class="bi bi-box-arrow-right me-1"></i>Logout
@@ -16,7 +16,7 @@
       <!-- Stats Cards -->
       <div class="row mb-4">
         <div class="col-md-3">
-          <div class="card bg-primary text-white h-100 shadow-sm">
+          <div class="card bg-primary text-white h-100 border-0 shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="col-md-3">
-          <div class="card bg-success text-white h-100 shadow-sm">
+          <div class="card bg-success text-white h-100 border-0 shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="col-md-3">
-          <div class="card bg-info text-white h-100 shadow-sm">
+          <div class="card bg-info text-white h-100 border-0 shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -58,7 +58,7 @@
           </div>
         </div>
         <div class="col-md-3">
-          <div class="card bg-warning text-white h-100 shadow-sm">
+          <div class="card bg-warning text-white h-100 border-0 shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -77,7 +77,7 @@
         <!-- Management Sections -->
         <div class="col-lg-8">
           <!-- User Management -->
-          <div class="card mb-4 shadow-sm">
+          <div class="card mb-4 border-0 shadow-sm">
             <div class="card-header bg-white">
               <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">User Management</h5>
@@ -104,7 +104,7 @@
                           </div>
                           <div>
                             <div class="fw-semibold">Dr. John Smith</div>
-                            <div class="small text-muted">john@takeopinion.com</div>
+                            <div class="small">john@takeopinion.com</div>
                           </div>
                         </div>
                       </td>
@@ -125,7 +125,7 @@
                           </div>
                           <div>
                             <div class="fw-semibold">Jane Doe</div>
-                            <div class="small text-muted">jane@takeopinion.com</div>
+                            <div class="small">jane@takeopinion.com</div>
                           </div>
                         </div>
                       </td>
@@ -145,7 +145,7 @@
           </div>
           
           <!-- Hospital Management -->
-          <div class="card mb-4 shadow-sm">
+          <div class="card mb-4 border-0 shadow-sm">
             <div class="card-header bg-white">
               <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Hospital Management</h5>
@@ -194,7 +194,7 @@
           </div>
           
           <!-- Content Management -->
-          <div class="card mb-4 shadow-sm">
+          <div class="card mb-4 border-0 shadow-sm">
             <div class="card-header bg-white">
               <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Content Management</h5>
@@ -204,7 +204,7 @@
             <div class="card-body">
               <div class="row g-3">
                 <div class="col-md-4">
-                  <div class="card h-100 border">
+                  <div class="card h-100 border-0 shadow-sm">
                     <div class="card-body text-center">
                       <i class="bi bi-hospital fs-1 text-primary mb-3"></i>
                       <h6 class="card-title">Hospitals</h6>
@@ -214,7 +214,7 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="card h-100 border">
+                  <div class="card h-100 border-0 shadow-sm">
                     <div class="card-body text-center">
                       <i class="bi bi-activity fs-1 text-success mb-3"></i>
                       <h6 class="card-title">Treatments</h6>
@@ -224,7 +224,7 @@
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="card h-100 border">
+                  <div class="card h-100 border-0 shadow-sm">
                     <div class="card-body text-center">
                       <i class="bi bi-journal-text fs-1 text-info mb-3"></i>
                       <h6 class="card-title">Blog Posts</h6>
@@ -238,7 +238,7 @@
           </div>
           
           <!-- Recent Activity -->
-          <div class="card mb-4 shadow-sm">
+          <div class="card mb-4 border-0 shadow-sm">
             <div class="card-header bg-white">
               <h5 class="mb-0">Recent Activity</h5>
             </div>
@@ -270,7 +270,7 @@
         <!-- Admin Tools Sidebar -->
         <div class="col-lg-4">
           <!-- Quick Actions -->
-          <div class="card mb-4 shadow-sm">
+          <div class="card mb-4 border-0 shadow-sm">
             <div class="card-header bg-white">
               <h5 class="mb-0">Quick Actions</h5>
             </div>
@@ -299,7 +299,7 @@
           </div>
           
           <!-- System Status -->
-          <div class="card mb-4 shadow-sm">
+          <div class="card mb-4 border-0 shadow-sm">
             <div class="card-header bg-white">
               <h5 class="mb-0">System Status</h5>
             </div>
@@ -324,7 +324,7 @@
           </div>
           
           <!-- Reports -->
-          <div class="card shadow-sm">
+          <div class="card border-0 shadow-sm">
             <div class="card-header bg-white">
               <h5 class="mb-0">Reports</h5>
             </div>

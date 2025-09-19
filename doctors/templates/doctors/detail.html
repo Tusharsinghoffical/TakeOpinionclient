@@ -7,7 +7,7 @@
         <i class="bi bi-arrow-left me-1"></i>Back to Doctors
       </a>
       
-      <div class="card mb-4">
+      <div class="card mb-4 border-0 shadow-sm">
         <div class="card-body">
           <div class="row">
             <div class="col-md-4 mb-4 mb-md-0">
@@ -26,7 +26,7 @@
               <div class="d-flex justify-content-between align-items-start">
                 <div>
                   <h1 class="h2 mb-1">{{ doctor.name }}</h1>
-                  <div class="h5 text-muted mb-3">{{ doctor.specialization|default:'Medical Specialist' }}</div>
+                  <div class="h5 mb-3">{{ doctor.specialization|default:'Medical Specialist' }}</div>
                 </div>
                 {% if doctor.is_takeopinion_choice %}
                 <span class="badge badge-choice">TakeOpinion Choice</span>
@@ -39,7 +39,7 @@
                     <i class="bi bi-star{% if forloop.counter <= doctor.rating|floatformat:0 %}{% else %}-half{% endif %}"></i>
                   {% endfor %}
                 </div>
-                <span class="text-muted">({{ doctor.review_count|default:0 }} reviews)</span>
+                <span>({{ doctor.review_count|default:0 }} reviews)</span>
               </div>
               
               <p class="mb-4">{{ doctor.key_points|default:'Highly experienced medical professional with expertise in advanced treatment procedures.' }}</p>
@@ -49,7 +49,7 @@
                   <div class="d-flex align-items-center">
                     <i class="bi bi-briefcase text-primary fs-4 me-3"></i>
                     <div>
-                      <div class="small text-muted">Experience</div>
+                      <div class="small">Experience</div>
                       <div class="fw-semibold">{{ doctor.experience_years }} years</div>
                     </div>
                   </div>
@@ -58,7 +58,7 @@
                   <div class="d-flex align-items-center">
                     <i class="bi bi-award text-primary fs-4 me-3"></i>
                     <div>
-                      <div class="small text-muted">Specializations</div>
+                      <div class="small">Specializations</div>
                       <div class="fw-semibold">{{ doctor.procedures_count|default:10 }}+ procedures</div>
                     </div>
                   </div>
@@ -67,7 +67,7 @@
                   <div class="d-flex align-items-center">
                     <i class="bi bi-hospital text-primary fs-4 me-3"></i>
                     <div>
-                      <div class="small text-muted">Affiliated Hospitals</div>
+                      <div class="small">Affiliated Hospitals</div>
                       <div class="fw-semibold">{{ doctor.hospitals.count }} hospitals</div>
                     </div>
                   </div>
@@ -76,7 +76,7 @@
                   <div class="d-flex align-items-center">
                     <i class="bi bi-mortarboard text-primary fs-4 me-3"></i>
                     <div>
-                      <div class="small text-muted">Education</div>
+                      <div class="small">Education</div>
                       <div class="fw-semibold">{{ doctor.education|default:'MD, PhD' }}</div>
                     </div>
                   </div>
@@ -99,8 +99,8 @@
         </div>
       </div>
       
-      <div class="card mb-4">
-        <div class="card-header">
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
           <h5 class="mb-0">About Dr. {{ doctor.name|split:" "|first }}</h5>
         </div>
         <div class="card-body">
@@ -109,8 +109,8 @@
         </div>
       </div>
       
-      <div class="card mb-4">
-        <div class="card-header">
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
           <h5 class="mb-0">Areas of Expertise</h5>
         </div>
         <div class="card-body">
@@ -130,8 +130,8 @@
     </div>
     
     <div class="col-lg-4">
-      <div class="card mb-4">
-        <div class="card-header">
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
           <h5 class="mb-0">Affiliated Hospitals</h5>
         </div>
         <div class="card-body">
@@ -142,7 +142,7 @@
             </div>
             <div class="flex-grow-1 ms-3">
               <h6 class="mb-1"><a href="/hospitals/{{ h.slug }}/" class="text-decoration-none">{{ h.name }}</a></h6>
-              <div class="small text-muted">{{ h.location|default:'City, Country' }}</div>
+              <div class="small mb-1">{{ h.location|default:'City, Country' }}</div>
               <div class="small">
                 <i class="bi bi-star-fill text-warning me-1"></i>{{ h.rating|floatformat:1|default:'4.5' }}
               </div>
@@ -155,8 +155,8 @@
         </div>
       </div>
       
-      <div class="card mb-4">
-        <div class="card-header">
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
           <h5 class="mb-0">Patient Reviews</h5>
         </div>
         <div class="card-body">
@@ -170,7 +170,7 @@
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-half"></i>
               </div>
-              <div class="small text-muted">Based on 120 reviews</div>
+              <div class="small">Based on 120 reviews</div>
             </div>
           </div>
           
@@ -208,10 +208,10 @@
         </div>
       </div>
       
-      <div class="card bg-light border-0">
+      <div class="card border-0 shadow-sm">
         <div class="card-body">
           <h5 class="card-title">Need Help Booking?</h5>
-          <p class="card-text text-muted">Our medical travel coordinators can assist you with scheduling and any questions about this doctor.</p>
+          <p class="card-text">Our medical travel coordinators can assist you with scheduling and any questions about this doctor.</p>
           <a href="{% url 'contact' %}" class="btn btn-primary w-100">
             <i class="bi bi-headset me-2"></i>Contact Support
           </a>

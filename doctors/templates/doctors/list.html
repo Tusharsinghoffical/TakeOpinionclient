@@ -6,14 +6,14 @@
     <h1 class="h2 mb-0">Our Medical Experts</h1>
   </div>
   
-  <p class="text-muted mb-4">Connect with our verified medical professionals who specialize in various treatments and procedures.</p>
+  <p class="mb-4">Connect with our verified medical professionals who specialize in various treatments and procedures.</p>
   
-  <div class="card shadow-sm mb-4">
+  <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
       <div class="row g-3">
         <div class="col-md-3">
           <label class="form-label fw-semibold">Specialization</label>
-          <select class="form-select">
+          <select class="form-select border-0 shadow-sm">
             <option selected>All Specializations</option>
             <option>Cardiology</option>
             <option>Orthopedics</option>
@@ -24,7 +24,7 @@
         </div>
         <div class="col-md-3">
           <label class="form-label fw-semibold">Location</label>
-          <select class="form-select">
+          <select class="form-select border-0 shadow-sm">
             <option selected>All Locations</option>
             <option>India</option>
             <option>Thailand</option>
@@ -35,7 +35,7 @@
         </div>
         <div class="col-md-3">
           <label class="form-label fw-semibold">Experience</label>
-          <select class="form-select">
+          <select class="form-select border-0 shadow-sm">
             <option selected>Any Experience</option>
             <option>5+ years</option>
             <option>10+ years</option>
@@ -45,7 +45,7 @@
         </div>
         <div class="col-md-3">
           <label class="form-label fw-semibold">Rating</label>
-          <select class="form-select">
+          <select class="form-select border-0 shadow-sm">
             <option selected>All Ratings</option>
             <option>4.5+ stars</option>
             <option>4.0+ stars</option>
@@ -59,7 +59,7 @@
   <div class="row g-4">
     {% for d in doctors %}
     <div class="col-md-6">
-      <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none card-hover">
+      <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm">
         <div class="row g-0">
           <div class="col-4 position-relative">
             <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid h-100 w-100 object-fit-cover rounded-start" alt="{{ d.name }}">
@@ -79,14 +79,14 @@
                 <span class="badge badge-choice">TO Choice</span>
                 {% endif %}
               </div>
-              <div class="small text-muted mb-1">{{ d.specialization|default:'Specialist' }}</div>
+              <div class="small mb-1">{{ d.specialization|default:'Specialist' }}</div>
               <div class="d-flex align-items-center mb-2">
                 <div class="text-warning me-1">
                   {% for i in "12345" %}
                     <i class="bi bi-star{% if forloop.counter <= d.rating|floatformat:0 %}{% else %}-half{% endif %}"></i>
                   {% endfor %}
                 </div>
-                <span class="small text-muted">({{ d.review_count|default:0 }} reviews)</span>
+                <span class="small">({{ d.review_count|default:0 }} reviews)</span>
               </div>
               <div class="small">
                 <i class="bi bi-briefcase me-1"></i>{{ d.experience_years }} years experience
@@ -101,11 +101,11 @@
     </div>
     {% empty %}
     <div class="col-12">
-      <div class="card text-center py-5">
+      <div class="card text-center py-5 border-0 shadow-sm">
         <div class="card-body">
           <i class="bi bi-person-badge display-5 text-muted mb-3"></i>
           <h5 class="card-title">No doctors found</h5>
-          <p class="card-text text-muted">Try adjusting your filters or check back later.</p>
+          <p class="card-text">Try adjusting your filters or check back later.</p>
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@
   </div>
   
   <div class="mt-4 text-center">
-    <button class="btn btn-outline-primary" type="button">
+    <button class="btn btn-outline-primary border-0 shadow-sm" type="button">
       <i class="bi bi-arrow-clockwise me-2"></i>Load More Doctors
     </button>
   </div>

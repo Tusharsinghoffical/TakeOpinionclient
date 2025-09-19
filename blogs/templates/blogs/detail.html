@@ -9,7 +9,7 @@
             <i class="bi bi-arrow-left me-1"></i>Back to Articles
           </a>
           <h1 class="h2 mb-3">{{ post.title }}</h1>
-          <div class="d-flex flex-wrap align-items-center text-muted mb-3">
+          <div class="d-flex flex-wrap align-items-center mb-3">
             <div class="me-3">
               <i class="bi bi-calendar me-1"></i>
               Published {{ post.published_at|date:'M d, Y' }}
@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="d-flex flex-wrap gap-2">
-            <span class="badge bg-primary">
+            <span class="badge bg-primary border-0">
               {% if post.treatment %}
                 {{ post.treatment.name }}
               {% else %}
@@ -32,7 +32,7 @@
               {% endif %}
             </span>
             {% if post.is_medical_visa %}
-            <span class="badge bg-info">Medical Visa</span>
+            <span class="badge bg-info border-0">Medical Visa</span>
             {% endif %}
           </div>
         </header>
@@ -46,12 +46,12 @@
         </div>
       </article>
       
-      <div class="card bg-light border-0 mt-5">
+      <div class="card bg-light border-0 shadow-sm mt-5">
         <div class="card-body">
           <div class="row align-items-center">
             <div class="col-md-8">
               <h5 class="card-title">Need Help with Medical Travel?</h5>
-              <p class="card-text text-muted mb-0">Our experts can guide you through the entire process of planning your medical journey abroad.</p>
+              <p class="card-text mb-0">Our experts can guide you through the entire process of planning your medical journey abroad.</p>
             </div>
             <div class="col-md-4 text-md-end mt-3 mt-md-0">
               <a href="{% url 'contact' %}" class="btn btn-primary">

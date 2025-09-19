@@ -6,14 +6,14 @@
     <h1 class="h2 mb-0">Accredited Hospitals</h1>
   </div>
   
-  <p class="text-muted mb-4">Browse our verified hospitals with international accreditations and exceptional patient care standards.</p>
+  <p class="mb-4">Browse our verified hospitals with international accreditations and exceptional patient care standards.</p>
   
-  <div class="card shadow-sm mb-4">
+  <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
       <div class="row g-3">
         <div class="col-md-3">
           <label class="form-label fw-semibold">Treatment</label>
-          <select class="form-select">
+          <select class="form-select border-0 shadow-sm">
             <option selected>Any Treatment</option>
             <option>Cardiac Surgery</option>
             <option>Orthopedics</option>
@@ -24,7 +24,7 @@
         </div>
         <div class="col-md-3">
           <label class="form-label fw-semibold">Location</label>
-          <select class="form-select">
+          <select class="form-select border-0 shadow-sm">
             <option selected>All Locations</option>
             <option>India</option>
             <option>Thailand</option>
@@ -35,7 +35,7 @@
         </div>
         <div class="col-md-3">
           <label class="form-label fw-semibold">Accreditation</label>
-          <select class="form-select">
+          <select class="form-select border-0 shadow-sm">
             <option selected>Any Accreditation</option>
             <option>JCI</option>
             <option>NABH</option>
@@ -45,7 +45,7 @@
         </div>
         <div class="col-md-3">
           <label class="form-label fw-semibold">Rating</label>
-          <select class="form-select">
+          <select class="form-select border-0 shadow-sm">
             <option selected>All Ratings</option>
             <option>4.5+ stars</option>
             <option>4.0+ stars</option>
@@ -59,7 +59,7 @@
   <div class="row g-4">
     {% for h in hospitals %}
     <div class="col-md-6 col-lg-4">
-      <a href="/hospitals/{{ h.slug }}/" class="card h-100 text-decoration-none card-hover">
+      <a href="/hospitals/{{ h.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm">
         <div class="position-relative">
           <img src="https://picsum.photos/seed/h{{ forloop.counter0 }}{{ h.id }}/800/480" class="card-img-top object-fit-cover" alt="{{ h.name }}" style="height: 200px;">
           {% if h.is_takeopinion_choice %}
@@ -68,14 +68,14 @@
           </div>
           {% endif %}
           <div class="position-absolute bottom-0 end-0 m-3">
-            <span class="badge bg-white text-dark">
+            <span class="badge bg-white text-dark border-0 shadow-sm">
               <i class="bi bi-star-fill text-warning me-1"></i>{{ h.rating|floatformat:1|default:'N/A' }}
             </span>
           </div>
         </div>
         <div class="card-body">
           <h5 class="card-title mb-1">{{ h.name }}</h5>
-          <div class="small text-muted mb-2">
+          <div class="small mb-2">
             <i class="bi bi-geo-alt me-1"></i>{{ h.state|default:'—' }}, {{ h.country|default:'—' }}
           </div>
           <div class="d-flex justify-content-between align-items-center mb-2">
@@ -102,11 +102,11 @@
     </div>
     {% empty %}
     <div class="col-12">
-      <div class="card text-center py-5">
+      <div class="card text-center py-5 border-0 shadow-sm">
         <div class="card-body">
           <i class="bi bi-hospital display-5 text-muted mb-3"></i>
           <h5 class="card-title">No hospitals found</h5>
-          <p class="card-text text-muted">Try adjusting your filters or check back later.</p>
+          <p class="card-text">Try adjusting your filters or check back later.</p>
         </div>
       </div>
     </div>
@@ -114,7 +114,7 @@
   </div>
   
   <div class="mt-4 text-center">
-    <button class="btn btn-outline-primary" type="button">
+    <button class="btn btn-outline-primary border-0 shadow-sm" type="button">
       <i class="bi bi-arrow-clockwise me-2"></i>Load More Hospitals
     </button>
   </div>

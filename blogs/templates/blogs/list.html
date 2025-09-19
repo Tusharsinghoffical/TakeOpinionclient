@@ -6,9 +6,9 @@
     <h1 class="h2 mb-0">Medical Travel Insights</h1>
   </div>
   
-  <p class="text-muted mb-4">Stay informed with our latest articles on medical treatments, travel tips, and healthcare insights from around the world.</p>
+  <p class="mb-4">Stay informed with our latest articles on medical treatments, travel tips, and healthcare insights from around the world.</p>
   
-  <div class="card shadow-sm mb-4">
+  <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
       <div class="row g-3">
         <div class="col-md-3">
@@ -62,16 +62,16 @@
   <div class="row g-4">
     {% for p in posts %}
     <div class="col-md-6 col-lg-4">
-      <a href="{% url 'blog_detail' p.slug %}" class="card h-100 text-decoration-none card-hover">
+      <a href="{% url 'blog_detail' p.slug %}" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
         <div class="position-relative">
           <img src="https://picsum.photos/seed/b{{ forloop.counter0 }}{{ p.id }}/800/480" class="card-img-top object-fit-cover" alt="{{ p.title }}" style="height: 200px;">
           {% if p.is_medical_visa %}
           <div class="position-absolute top-0 start-0 m-3">
-            <span class="badge bg-info">Medical Visa</span>
+            <span class="badge bg-info border-0">Medical Visa</span>
           </div>
           {% endif %}
           <div class="position-absolute bottom-0 start-0 m-3">
-            <span class="badge bg-primary">
+            <span class="badge bg-primary border-0">
               {% if p.treatment %}
                 {{ p.treatment.name }}
               {% else %}
@@ -82,14 +82,14 @@
         </div>
         <div class="card-body">
           <h5 class="card-title mb-2">{{ p.title }}</h5>
-          <p class="card-text text-muted small">
+          <p class="card-text small">
             {{ p.content|truncatewords:20 }}
           </p>
           <div class="d-flex justify-content-between align-items-center mt-3">
-            <small class="text-muted">
+            <small>
               <i class="bi bi-calendar me-1"></i>{{ p.published_at|date:"M d, Y" }}
             </small>
-            <small class="text-muted">
+            <small>
               <i class="bi bi-clock me-1"></i>5 min read
             </small>
           </div>
@@ -98,11 +98,11 @@
     </div>
     {% empty %}
     <div class="col-12">
-      <div class="card text-center py-5">
+      <div class="card text-center py-5 border-0 shadow-sm">
         <div class="card-body">
           <i class="bi bi-journal-text display-5 text-muted mb-3"></i>
           <h5 class="card-title">No blog posts available</h5>
-          <p class="card-text text-muted">Check back later for new insights and updates.</p>
+          <p class="card-text">Check back later for new insights and updates.</p>
         </div>
       </div>
     </div>

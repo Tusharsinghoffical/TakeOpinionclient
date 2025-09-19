@@ -23,32 +23,32 @@
   </div>
 </section>
 
-<section class="py-4">
+<section class="py-4 bg-white">
   <div class="container">
     <div class="stats-section">
       <div class="row text-center g-4">
         <div class="col-6 col-md-3">
           <div class="stat-item">
             <div class="h4 mb-0">50+</div>
-            <div class="small text-muted">Treatments</div>
+            <div class="small">Treatments</div>
           </div>
         </div>
         <div class="col-6 col-md-3">
           <div class="stat-item">
             <div class="h4 mb-0">100+</div>
-            <div class="small text-muted">Hospitals</div>
+            <div class="small">Hospitals</div>
           </div>
         </div>
         <div class="col-6 col-md-3">
           <div class="stat-item">
             <div class="h4 mb-0">200+</div>
-            <div class="small text-muted">Doctors</div>
+            <div class="small">Doctors</div>
           </div>
         </div>
         <div class="col-6 col-md-3">
           <div class="stat-item">
             <div class="h4 mb-0">20+</div>
-            <div class="small text-muted">Countries</div>
+            <div class="small">Countries</div>
           </div>
         </div>
       </div>
@@ -75,7 +75,7 @@
         <a class="card text-center text-decoration-none card-hover h-100" href="/treatments/{{ t.slug }}/">
           <img src="https://picsum.photos/seed/t{{ forloop.counter }}/400/240" class="card-img-top object-fit-cover" alt="{{ t.name }}" style="height: 120px;">
           <div class="card-body">
-            <div class="small text-muted">Treatment</div>
+            <div class="small">Treatment</div>
             <div class="fw-semibold">{{ t.name }}</div>
           </div>
         </a>
@@ -96,46 +96,46 @@
     </div>
     <div class="row g-4">
       <div class="col-md-6 col-lg-3">
-        <div class="card h-100">
+        <div class="card h-100 border-0 shadow-sm">
           <div class="card-body text-center">
             <div class="display-5 text-primary mb-3">
               <i class="bi bi-shield-check"></i>
             </div>
             <h5 class="card-title">Verified Experts</h5>
-            <p class="card-text text-muted">Access to verified doctors and hospitals with proven track records.</p>
+            <p class="card-text">Access to verified doctors and hospitals with proven track records.</p>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <div class="card h-100">
+        <div class="card h-100 border-0 shadow-sm">
           <div class="card-body text-center">
             <div class="display-5 text-primary mb-3">
               <i class="bi bi-currency-dollar"></i>
             </div>
             <h5 class="card-title">Cost Transparency</h5>
-            <p class="card-text text-muted">Clear pricing information to help you make budget-friendly decisions.</p>
+            <p class="card-text">Clear pricing information to help you make budget-friendly decisions.</p>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <div class="card h-100">
+        <div class="card h-100 border-0 shadow-sm">
           <div class="card-body text-center">
             <div class="display-5 text-primary mb-3">
               <i class="bi bi-translate"></i>
             </div>
             <h5 class="card-title">Language Support</h5>
-            <p class="card-text text-muted">Multilingual support to ensure clear communication throughout your journey.</p>
+            <p class="card-text">Multilingual support to ensure clear communication throughout your journey.</p>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <div class="card h-100">
+        <div class="card h-100 border-0 shadow-sm">
           <div class="card-body text-center">
             <div class="display-5 text-primary mb-3">
               <i class="bi bi-headset"></i>
             </div>
             <h5 class="card-title">24/7 Support</h5>
-            <p class="card-text text-muted">Round-the-clock assistance for all your medical travel needs.</p>
+            <p class="card-text">Round-the-clock assistance for all your medical travel needs.</p>
           </div>
         </div>
       </div>
@@ -153,11 +153,11 @@
     <div class="row g-4">
       {% for i in '1236' %}
       <div class="col-6 col-md-3">
-        <div class="card h-100 card-hover">
+        <div class="card h-100 card-hover border-0 shadow-sm">
           <img src="https://picsum.photos/seed/c{{ forloop.counter }}/600/400" class="card-img-top object-fit-cover" alt="Destination {{ forloop.counter }}" style="height: 160px;">
           <div class="card-body">
             <div class="fw-semibold">Destination {{ forloop.counter }}</div>
-            <div class="small text-muted">Popular for medical tourism</div>
+            <div class="small">Popular for medical tourism</div>
           </div>
         </div>
       </div>
@@ -176,12 +176,12 @@
     <div class="row g-4">
       {% for h in top_hospitals %}
       <div class="col-6 col-md-3">
-        <a href="/hospitals/{{ h.slug }}/" class="card h-100 text-decoration-none card-hover">
+        <a href="/hospitals/{{ h.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
           <img src="https://picsum.photos/seed/h{{ forloop.counter }}/600/360" class="card-img-top object-fit-cover" alt="{{ h.name }}" style="height: 160px;">
           <div class="card-body">
             <div class="fw-semibold">{{ h.name }}</div>
             {% if h.is_takeopinion_choice %}<span class="badge badge-choice">TakeOpinion Choice</span>{% endif %}
-            <div class="small text-muted mt-2">Accredited hospital</div>
+            <div class="small mt-2">Accredited hospital</div>
           </div>
         </a>
       </div>
@@ -200,11 +200,11 @@
     <div class="row g-4">
       {% for d in top_doctors %}
       <div class="col-6 col-md-3">
-        <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none card-hover">
+        <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
           <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="card-img-top object-fit-cover" alt="{{ d.name }}" style="height: 160px;">
           <div class="card-body">
             <div class="fw-semibold">{{ d.name }}</div>
-            <div class="small text-muted">{{ d.key_points|default:'Specialist' }}</div>
+            <div class="small">{{ d.key_points|default:'Specialist' }}</div>
             <div class="d-flex align-items-center mt-2">
               <i class="bi bi-star-fill text-warning me-1"></i>
               <span class="small">4.8 (120 reviews)</span>
@@ -225,46 +225,46 @@
     </div>
     <div class="row g-4">
       <div class="col-md-6 col-lg-3">
-        <div class="card h-100">
+        <div class="card h-100 border-0 shadow-sm">
           <div class="card-body text-center">
             <div class="display-5 text-primary mb-3">
               <i class="bi bi-search-heart"></i>
             </div>
             <h5 class="card-title">Discover</h5>
-            <p class="card-text text-muted">Find the best treatments, doctors, and hospitals tailored to your needs.</p>
+            <p class="card-text">Find the best treatments, doctors, and hospitals tailored to your needs.</p>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <div class="card h-100">
+        <div class="card h-100 border-0 shadow-sm">
           <div class="card-body text-center">
             <div class="display-5 text-primary mb-3">
               <i class="bi bi-chat-dots"></i>
             </div>
             <h5 class="card-title">Connect</h5>
-            <p class="card-text text-muted">Get in touch with medical experts for personalized guidance.</p>
+            <p class="card-text">Get in touch with medical experts for personalized guidance.</p>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <div class="card h-100">
+        <div class="card h-100 border-0 shadow-sm">
           <div class="card-body text-center">
             <div class="display-5 text-primary mb-3">
               <i class="bi bi-clipboard2-check"></i>
             </div>
             <h5 class="card-title">Plan</h5>
-            <p class="card-text text-muted">Organize your medical travel with our comprehensive planning tools.</p>
+            <p class="card-text">Organize your medical travel with our comprehensive planning tools.</p>
           </div>
         </div>
       </div>
       <div class="col-md-6 col-lg-3">
-        <div class="card h-100">
+        <div class="card h-100 border-0 shadow-sm">
           <div class="card-body text-center">
             <div class="display-5 text-primary mb-3">
               <i class="bi bi-airplane"></i>
             </div>
             <h5 class="card-title">Travel</h5>
-            <p class="card-text text-muted">Enjoy seamless medical travel with our end-to-end support.</p>
+            <p class="card-text">Enjoy seamless medical travel with our end-to-end support.</p>
           </div>
         </div>
       </div>
@@ -287,7 +287,7 @@
                 <img src="https://ui-avatars.com/api/?name=Ravi+K&background=0D6EFD&color=fff" class="rounded-circle" width="64" height="64" alt="Ravi"/>
                 <div>
                   <div class="fw-bold">Ravi K.</div>
-                  <div class="text-muted small">Knee Replacement</div>
+                  <div class="small">Knee Replacement</div>
                   <div class="d-flex">
                     <i class="bi bi-star-fill text-warning"></i>
                     <i class="bi bi-star-fill text-warning"></i>
@@ -308,7 +308,7 @@
                 <img src="https://ui-avatars.com/api/?name=Sara+M&background=0D6EFD&color=fff" class="rounded-circle" width="64" height="64" alt="Sara"/>
                 <div>
                   <div class="fw-bold">Sara M.</div>
-                  <div class="text-muted small">Cosmetic Surgery</div>
+                  <div class="small">Cosmetic Surgery</div>
                   <div class="d-flex">
                     <i class="bi bi-star-fill text-warning"></i>
                     <i class="bi bi-star-fill text-warning"></i>
@@ -347,15 +347,15 @@
     <div class="row g-4">
       {% for b in latest_blogs %}
       <div class="col-md-4">
-        <a href="/blogs/{{ b.slug }}/" class="card h-100 text-decoration-none card-hover">
+        <a href="/blogs/{{ b.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
           <img src="https://picsum.photos/seed/b{{ forloop.counter }}/800/480" class="card-img-top object-fit-cover" alt="{{ b.title }}" style="height: 200px;">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <span class="badge bg-primary">Medical Travel</span>
-              <small class="text-muted">May 15, 2023</small>
+              <small>May 15, 2023</small>
             </div>
             <div class="fw-semibold h5">{{ b.title }}</div>
-            <p class="card-text text-muted">Learn important considerations and tips for your medical travel journey...</p>
+            <p class="card-text">Learn important considerations and tips for your medical travel journey...</p>
           </div>
         </a>
       </div>

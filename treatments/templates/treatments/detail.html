@@ -7,17 +7,17 @@
         <i class="bi bi-arrow-left me-1"></i>Back to Treatments
       </a>
       
-      <div class="card mb-4">
+      <div class="card mb-4 border-0 shadow-sm">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-start mb-3">
             <div>
               <h1 class="h2 mb-2">{{ treatment.name }}</h1>
-              <div class="d-flex align-items-center text-muted mb-3">
+              <div class="d-flex align-items-center mb-3">
                 <i class="bi bi-tag me-1"></i>
                 <span>{{ treatment.category|default:'Medical Treatment' }}</span>
               </div>
             </div>
-            <span class="badge bg-primary">Popular</span>
+            <span class="badge bg-primary border-0">Popular</span>
           </div>
           
           <p class="mb-4">{{ treatment.description|default:'This comprehensive treatment offers advanced medical care with proven results and patient satisfaction.' }}</p>
@@ -27,7 +27,7 @@
               <div class="d-flex align-items-center">
                 <i class="bi bi-clock-history text-primary fs-4 me-3"></i>
                 <div>
-                  <div class="small text-muted">Duration</div>
+                  <div class="small">Duration</div>
                   <div class="fw-semibold">{{ treatment.duration|default:'5-7 days' }}</div>
                 </div>
               </div>
@@ -36,7 +36,7 @@
               <div class="d-flex align-items-center">
                 <i class="bi bi-person-check text-primary fs-4 me-3"></i>
                 <div>
-                  <div class="small text-muted">Anesthesia</div>
+                  <div class="small">Anesthesia</div>
                   <div class="fw-semibold">{{ treatment.anesthesia_type|default:'General' }}</div>
                 </div>
               </div>
@@ -45,7 +45,7 @@
               <div class="d-flex align-items-center">
                 <i class="bi bi-shield-check text-primary fs-4 me-3"></i>
                 <div>
-                  <div class="small text-muted">Recovery</div>
+                  <div class="small">Recovery</div>
                   <div class="fw-semibold">{{ treatment.recovery_time|default:'2-3 weeks' }}</div>
                 </div>
               </div>
@@ -66,8 +66,8 @@
         </div>
       </div>
       
-      <div class="card mb-4">
-        <div class="card-header">
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
           <h5 class="mb-0">Treatment Overview</h5>
         </div>
         <div class="card-body">
@@ -90,8 +90,8 @@
         </div>
       </div>
       
-      <div class="card mb-4">
-        <div class="card-header">
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
           <h5 class="mb-0">Top Hospitals Offering This Treatment</h5>
         </div>
         <div class="card-body">
@@ -102,12 +102,12 @@
             </div>
             <div class="flex-grow-1 ms-3">
               <h6 class="mb-1"><a href="/hospitals/{{ h.slug }}/" class="text-decoration-none">{{ h.name }}</a></h6>
-              <div class="d-flex align-items-center text-muted mb-1">
+              <div class="d-flex align-items-center mb-1">
                 <i class="bi bi-geo-alt me-1"></i>
                 <span>{{ h.location|default:'City, Country' }}</span>
               </div>
               <div class="d-flex align-items-center mb-2">
-                <div class="text-warning me-2">
+                <div class="text-warning me-1">
                   <i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-fill"></i>
@@ -119,7 +119,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <span class="h6 text-primary mb-0">${{ h.starting_price|default:"5000" }}</span>
-                  <span class="text-muted small">starting price</span>
+                  <span class="small">starting price</span>
                 </div>
                 {% if h.is_takeopinion_choice %}
                 <span class="badge badge-choice">TO Choice</span>
@@ -130,19 +130,19 @@
           {% empty %}
           <p class="mb-0">No hospitals currently offering this treatment.</p>
           {% endfor %}
-          <a href="/hospitals/" class="btn btn-outline-primary w-100 mt-2">View All Hospitals</a>
+          <a href="/hospitals/" class="btn btn-outline-primary border-0 shadow-sm w-100 mt-2">View All Hospitals</a>
         </div>
       </div>
       
-      <div class="card mb-4">
-        <div class="card-header">
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
           <h5 class="mb-0">Specialist Doctors</h5>
         </div>
         <div class="card-body">
           <div class="row g-4">
             {% for d in doctors|slice:":4" %}
             <div class="col-md-6">
-              <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none">
+              <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm">
                 <div class="row g-0">
                   <div class="col-4">
                     <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid h-100 w-100 object-fit-cover rounded-start" alt="{{ d.name }}">
@@ -150,7 +150,7 @@
                   <div class="col-8">
                     <div class="card-body">
                       <h6 class="card-title mb-1">{{ d.name }}</h6>
-                      <div class="small text-muted mb-2">{{ d.specialization|default:'Specialist' }}</div>
+                      <div class="small mb-2">{{ d.specialization|default:'Specialist' }}</div>
                       <div class="d-flex align-items-center">
                         <div class="text-warning me-1">
                           <i class="bi bi-star-fill"></i>
@@ -172,12 +172,12 @@
             </div>
             {% endfor %}
           </div>
-          <a href="/doctors/" class="btn btn-outline-primary w-100 mt-3">View All Doctors</a>
+          <a href="/doctors/" class="btn btn-outline-primary border-0 shadow-sm w-100 mt-3">View All Doctors</a>
         </div>
       </div>
       
-      <div class="card mb-4">
-        <div class="card-header">
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
           <h5 class="mb-0">Frequently Asked Questions</h5>
         </div>
         <div class="accordion accordion-flush" id="faq">
@@ -225,21 +225,21 @@
     </div>
     
     <div class="col-lg-4">
-      <div class="card mb-4">
-        <div class="card-header">
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
           <h5 class="mb-0">Book This Treatment</h5>
         </div>
         <div class="card-body">
           <div class="text-center mb-4">
             <div class="display-6 text-primary mb-2">${{ treatment.starting_price|default:"5000" }}</div>
-            <div class="text-muted">starting price</div>
+            <div>starting price</div>
           </div>
           
           <div class="d-grid gap-2">
             <a href="/book/" class="btn btn-primary btn-lg">
               <i class="bi bi-calendar-check me-2"></i>Request Appointment
             </a>
-            <a href="#" class="btn btn-outline-primary">
+            <a href="#" class="btn btn-outline-primary border-0 shadow-sm">
               <i class="bi bi-chat-dots me-2"></i>Consult an Expert
             </a>
           </div>
@@ -257,8 +257,8 @@
         </div>
       </div>
       
-      <div class="card mb-4">
-        <div class="card-header">
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
           <h5 class="mb-0">Related Resources</h5>
         </div>
         <div class="card-body">
@@ -268,7 +268,7 @@
             </div>
             <div class="flex-grow-1 ms-3">
               <h6 class="mb-1"><a href="/blogs/" class="text-decoration-none">Treatment Guide</a></h6>
-              <p class="small text-muted mb-0">Comprehensive guide to understanding this procedure</p>
+              <p class="small mb-0">Comprehensive guide to understanding this procedure</p>
             </div>
           </div>
           
@@ -278,7 +278,7 @@
             </div>
             <div class="flex-grow-1 ms-3">
               <h6 class="mb-1"><a href="/videos/" class="text-decoration-none">Video Consultation</a></h6>
-              <p class="small text-muted mb-0">Watch expert explanations of the procedure</p>
+              <p class="small mb-0">Watch expert explanations of the procedure</p>
             </div>
           </div>
           
@@ -288,16 +288,16 @@
             </div>
             <div class="flex-grow-1 ms-3">
               <h6 class="mb-1"><a href="/testimonials/" class="text-decoration-none">Patient Stories</a></h6>
-              <p class="small text-muted mb-0">Read experiences from patients who underwent this treatment</p>
+              <p class="small mb-0">Read experiences from patients who underwent this treatment</p>
             </div>
           </div>
         </div>
       </div>
       
-      <div class="card bg-light border-0">
+      <div class="card border-0 shadow-sm">
         <div class="card-body">
           <h5 class="card-title">Need More Information?</h5>
-          <p class="card-text text-muted">Our medical travel experts can provide personalized guidance for your treatment journey.</p>
+          <p class="card-text">Our medical travel experts can provide personalized guidance for your treatment journey.</p>
           <a href="{% url 'contact' %}" class="btn btn-primary w-100">
             <i class="bi bi-headset me-2"></i>Contact Support
           </a>

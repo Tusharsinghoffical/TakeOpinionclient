@@ -13,8 +13,8 @@
     <link href="{% static 'css/main.css' %}" rel="stylesheet">
   </head>
   <body>
-    <header class="border-bottom sticky-top">
-      <nav class="navbar navbar-expand-lg">
+    <header class="border-bottom sticky-top shadow-sm">
+      <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
           <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
             <img src="{% static 'images/logo.svg' %}" alt="TakeOpinion" height="32" width="128"/>
@@ -24,41 +24,81 @@
           </button>
           <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a>
+              </li>
               
               {% if user.is_authenticated %}
                 {% if user.userprofile.user_type == 'admin' %}
                   <!-- Admin specific navigation -->
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':14' == '/admin/dashboard/' %}active{% endif %}" href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':11' == '/countries/' %}active{% endif %}" href="{% url 'countries' %}">Countries</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}" href="/doctors/">Doctors</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}" href="/hospitals/">Hospitals</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}" href="/treatments/">Treatments</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}" href="/blogs/">Blogs</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':14' == '/admin/dashboard/' %}active{% endif %}" href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':11' == '/countries/' %}active{% endif %}" href="{% url 'countries' %}">Countries</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}" href="/doctors/">Doctors</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}" href="/hospitals/">Hospitals</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}" href="/treatments/">Treatments</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}" href="/blogs/">Blogs</a>
+                  </li>
                 {% elif user.userprofile.user_type == 'doctor' %}
                   <!-- Doctor specific navigation -->
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':15' == '/doctor/dashboard/' %}active{% endif %}" href="{% url 'doctor_dashboard' %}">Doctor Dashboard</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}" href="/doctors/">My Profile</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}" href="/hospitals/">Hospitals</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}" href="/treatments/">Treatments</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':15' == '/doctor/dashboard/' %}active{% endif %}" href="{% url 'doctor_dashboard' %}">Doctor Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}" href="/doctors/">My Profile</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}" href="/hospitals/">Hospitals</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}" href="/treatments/">Treatments</a>
+                  </li>
                 {% elif user.userprofile.user_type == 'patient' %}
                   <!-- Patient specific navigation -->
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':15' == '/patient/dashboard/' %}active{% endif %}" href="{% url 'patient_dashboard' %}">Patient Dashboard</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}" href="/hospitals/">Hospitals</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}" href="/treatments/">Treatments</a></li>
-                  <li class="nav-item"><a class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}" href="/blogs/">Blogs</a></li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':15' == '/patient/dashboard/' %}active{% endif %}" href="{% url 'patient_dashboard' %}">Patient Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}" href="/hospitals/">Hospitals</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}" href="/treatments/">Treatments</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}" href="/blogs/">Blogs</a>
+                  </li>
                 {% endif %}
               {% else %}
                 <!-- Guest navigation -->
-                <li class="nav-item"><a class="nav-link {% if request.path|slice:':11' == '/countries/' %}active{% endif %}" href="{% url 'countries' %}">Countries</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}" href="/doctors/">Doctors</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}" href="/hospitals/">Hospitals</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}" href="/treatments/">Treatments</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}" href="/blogs/">Blogs</a></li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path|slice:':11' == '/countries/' %}active{% endif %}" href="{% url 'countries' %}">Countries</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}" href="/doctors/">Doctors</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}" href="/hospitals/">Hospitals</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}" href="/treatments/">Treatments</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}" href="/blogs/">Blogs</a>
+                </li>
               {% endif %}
             </ul>
             <div class="d-flex gap-2 align-items-center">
-              <select class="form-select form-select-sm w-auto">
+              <select class="form-select form-select-sm w-auto border-0">
                 <option>EN</option>
                 <option>AR</option>
                 <option>FR</option>
@@ -96,55 +136,55 @@
       {% block content %}{% endblock %}
     </main>
 
-    <footer class="py-5 mt-5">
+    <footer class="bg-dark text-white py-5">
       <div class="container">
         <div class="row">
           <div class="col-md-6 mb-4 mb-md-0">
             <h5 class="fw-bold mb-3">TakeOpinion</h5>
             <p class="mb-4">Your trusted partner for medical travel and treatment decisions. We help you find the right treatment, doctor, and hospital for your needs.</p>
             <div class="d-flex gap-3">
-              <a href="#" class="text-decoration-none">
-                <i class="bi bi-facebook fs-4 text-muted"></i>
+              <a href="#" class="text-decoration-none text-white">
+                <i class="bi bi-facebook fs-4"></i>
               </a>
-              <a href="#" class="text-decoration-none">
-                <i class="bi bi-twitter fs-4 text-muted"></i>
+              <a href="#" class="text-decoration-none text-white">
+                <i class="bi bi-twitter fs-4"></i>
               </a>
-              <a href="#" class="text-decoration-none">
-                <i class="bi bi-instagram fs-4 text-muted"></i>
+              <a href="#" class="text-decoration-none text-white">
+                <i class="bi bi-instagram fs-4"></i>
               </a>
-              <a href="#" class="text-decoration-none">
-                <i class="bi bi-linkedin fs-4 text-muted"></i>
+              <a href="#" class="text-decoration-none text-white">
+                <i class="bi bi-linkedin fs-4"></i>
               </a>
             </div>
           </div>
           <div class="col-md-3 mb-4 mb-md-0">
             <h6 class="fw-bold mb-3">Quick Links</h6>
             <ul class="list-unstyled">
-              <li class="mb-2"><a href="/" class="text-decoration-none text-muted">Home</a></li>
-              <li class="mb-2"><a href="/treatments/" class="text-decoration-none text-muted">Treatments</a></li>
-              <li class="mb-2"><a href="/doctors/" class="text-decoration-none text-muted">Doctors</a></li>
-              <li class="mb-2"><a href="/hospitals/" class="text-decoration-none text-muted">Hospitals</a></li>
-              <li class="mb-2"><a href="/blogs/" class="text-decoration-none text-muted">Blogs</a></li>
+              <li class="mb-2"><a href="/" class="text-decoration-none text-white-50">Home</a></li>
+              <li class="mb-2"><a href="/treatments/" class="text-decoration-none text-white-50">Treatments</a></li>
+              <li class="mb-2"><a href="/doctors/" class="text-decoration-none text-white-50">Doctors</a></li>
+              <li class="mb-2"><a href="/hospitals/" class="text-decoration-none text-white-50">Hospitals</a></li>
+              <li class="mb-2"><a href="/blogs/" class="text-decoration-none text-white-50">Blogs</a></li>
             </ul>
           </div>
           <div class="col-md-3">
             <h6 class="fw-bold mb-3">Support</h6>
             <ul class="list-unstyled">
-              <li class="mb-2"><a href="{% url 'contact' %}" class="text-decoration-none text-muted">Contact Us</a></li>
-              <li class="mb-2"><a href="{% url 'privacy' %}" class="text-decoration-none text-muted">Privacy Policy</a></li>
-              <li class="mb-2"><a href="{% url 'terms' %}" class="text-decoration-none text-muted">Terms of Service</a></li>
-              <li class="mb-2"><a href="#" class="text-decoration-none text-muted">FAQ</a></li>
+              <li class="mb-2"><a href="{% url 'contact' %}" class="text-decoration-none text-white-50">Contact Us</a></li>
+              <li class="mb-2"><a href="{% url 'privacy' %}" class="text-decoration-none text-white-50">Privacy Policy</a></li>
+              <li class="mb-2"><a href="{% url 'terms' %}" class="text-decoration-none text-white-50">Terms of Service</a></li>
+              <li class="mb-2"><a href="#" class="text-decoration-none text-white-50">FAQ</a></li>
             </ul>
           </div>
         </div>
-        <hr class="my-4">
+        <hr class="my-4 border-secondary">
         <div class="row align-items-center">
           <div class="col-md-6 text-center text-md-start">
-            <p class="mb-0 text-muted small">&copy; <span data-current-year></span> TakeOpinion. All rights reserved.</p>
+            <p class="mb-0 small text-white-50">&copy; <span data-current-year></span> TakeOpinion. All rights reserved.</p>
           </div>
           <div class="col-md-6 text-center text-md-end">
-            <a class="text-muted small me-3 text-decoration-none" href="{% url 'privacy' %}">Privacy</a>
-            <a class="text-muted small text-decoration-none" href="{% url 'terms' %}">Terms</a>
+            <a class="me-3 text-decoration-none text-white-50" href="{% url 'privacy' %}">Privacy</a>
+            <a class="text-decoration-none text-white-50" href="{% url 'terms' %}">Terms</a>
           </div>
         </div>
       </div>
