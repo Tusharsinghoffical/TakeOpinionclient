@@ -118,6 +118,7 @@ The following issues have been addressed in the latest deployment setup:
 4. **Static Files**: Verified static files collection and serving
 5. **Gunicorn Configuration**: Fixed missing os import and simplified start command
 6. **Deployment Command**: Ensured correct start command is used for Render deployment
+7. **Settings Configuration**: Fixed ALLOWED_HOSTS configuration and ensured production settings are used correctly
 
 ## Render Deployment Cache Issue
 
@@ -130,7 +131,28 @@ If you're experiencing the error "Error: 'gunicorn.conf.py' doesn't exist" even 
 3. Click on "Manual Deploy" 
 4. Select "Clear build cache & deploy"
 
-This will force Render to use the updated configuration from your render.yaml file which specifies the correct start command:
+This will force Render to rebuild your application from scratch using the updated configuration from your render.yaml file which specifies the correct start command:
 `gunicorn --bind 0.0.0.0:$PORT takeopinion.wsgi:application`
 
 After clearing the cache, your deployment should work correctly.
+
+## Common Issues and Solutions
+
+### DisallowedHost Error
+
+If you encounter a "DisallowedHost at /" error, it means the domain is not in the ALLOWED_HOSTS setting. This has been fixed in the latest version by:
+
+1. Ensuring the DJANGO_SETTINGS_MODULE environment variable is properly set to use takeopinion.settings_prod
+2. Correctly configuring ALLOWED_HOSTS in settings_prod.py to include .onrender.com
+3. Updating wsgi.py and manage.py to default to production settings
+
+To fix this issue:
+
+1. Ensure your render.yaml file includes:
+   ```yaml
+   - key: DJANGO_SETTINGS_MODULE
+     value: takeopinion.settings_prod
+   - key: ALLOWED_HOSTS
+     value: .onrender.com
+   ```
+2. Clear Render's build cache and redeploy
