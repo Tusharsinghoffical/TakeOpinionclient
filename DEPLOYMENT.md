@@ -107,3 +107,12 @@ Render automatically handles scaling for most applications. For high-traffic app
 1. Go to your web service settings
 2. Adjust the instance type and count as needed
 3. Consider adding a CDN for static assets
+
+## Recent Fixes
+
+The following issues have been addressed in the latest deployment setup:
+
+1. **Requirements File**: Cleaned up the requirements.txt file to only include essential packages
+2. **Python Version**: Specified Python 3.11 for compatibility with Render
+3. **Build Script**: Updated build script with pip upgrade command for better reliability
+4. **Static Files**: Verified static files collection and serving
