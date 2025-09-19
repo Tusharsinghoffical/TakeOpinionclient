@@ -190,6 +190,30 @@ a:hover {
   background-color: rgba(0, 123, 255, 0.1);
 }
 
+/* Tab Navigation */
+.nav-tabs .nav-link {
+  border: 1px solid transparent;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  color: var(--dark-gray);
+  font-weight: 500;
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: var(--border-color);
+  background-color: var(--light-gray);
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--medical-blue);
+  background-color: var(--white);
+  border-color: var(--border-color) var(--border-color) var(--white);
+}
+
+.nav-tabs {
+  border-bottom: 1px solid var(--border-color);
+}
+
 /* Badges */
 .badge {
   font-weight: 500;

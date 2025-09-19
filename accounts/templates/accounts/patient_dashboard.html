@@ -74,7 +74,7 @@
             <div class="card-header bg-white">
               <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Upcoming Appointments</h5>
-                <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                <a href="{% url 'booking_page' %}" class="btn btn-sm btn-outline-primary">View All</a>
               </div>
             </div>
             <div class="card-body">
@@ -130,7 +130,51 @@
                         {% endif %}
                       </td>
                       <td>
-                        <button class="btn btn-sm btn-outline-primary">Details</button>
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#appointmentModal{{ appointment.id }}">Details</button>
+                        
+                        <!-- Appointment Details Modal -->
+                        <div class="modal fade" id="appointmentModal{{ appointment.id }}" tabindex="-1">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Appointment Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <p><strong>Doctor:</strong> Dr. {{ appointment.preferred_doctor.name }}</p>
+                                    <p><strong>Treatment:</strong> {{ appointment.treatment.name }}</p>
+                                    <p><strong>Date:</strong> {{ appointment.preferred_date|date:"M d, Y" }}</p>
+                                    <p><strong>Time:</strong> {{ appointment.preferred_date|date:"g:i A" }}</p>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <p><strong>Status:</strong> 
+                                      {% if appointment.status == 'pending' %}
+                                        <span class="badge bg-warning">Pending</span>
+                                      {% elif appointment.status == 'confirmed' %}
+                                        <span class="badge bg-success">Confirmed</span>
+                                      {% elif appointment.status == 'in_progress' %}
+                                        <span class="badge bg-info">In Progress</span>
+                                      {% elif appointment.status == 'completed' %}
+                                        <span class="badge bg-secondary">Completed</span>
+                                      {% elif appointment.status == 'cancelled' %}
+                                        <span class="badge bg-danger">Cancelled</span>
+                                      {% else %}
+                                        <span class="badge bg-warning">Scheduled</span>
+                                      {% endif %}
+                                    </p>
+                                    <p><strong>Reference ID:</strong> APPT-{{ appointment.id }}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a href="{% url 'booking_page' %}" class="btn btn-primary">Reschedule</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                     {% empty %}
@@ -163,13 +207,259 @@
                       </div>
                       <div class="small text-muted mb-3">{{ record.doctor }} • {{ record.date }}</div>
                       <p class="card-text">Complete blood count with all parameters within normal range.</p>
-                      <a href="#" class="btn btn-sm btn-outline-primary">
+                      <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#recordModal{{ record.id }}">
                         <i class="bi bi-file-text me-1"></i>View Report
                       </a>
+                      
+                      <!-- Medical Record Details Modal -->
+                      <div class="modal fade" id="recordModal{{ record.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">{{ record.title }} Details</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <p><strong>Doctor:</strong> {{ record.doctor }}</p>
+                                  <p><strong>Date:</strong> {{ record.date }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                  <p><strong>Status:</strong> 
+                                    <span class="badge {% if record.status == 'Normal' %}bg-success{% else %}bg-warning{% endif %}">{{ record.status }}</span>
+                                  </p>
+                                  <p><strong>Reference ID:</strong> REC-{{ record.id }}</p>
+                                </div>
+                              </div>
+                              <div class="mt-3">
+                                <h6>Description:</h6>
+                                <p>Complete blood count with all parameters within normal range.</p>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary">Download Report</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 {% endfor %}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Hospitals Section -->
+          <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Featured Hospitals</h5>
+                <a href="/hospitals/" class="btn btn-sm btn-outline-primary">View All</a>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="card h-100 border-0 shadow-sm">
+                    <div class="position-relative">
+                      <img src="https://picsum.photos/seed/h1/400/200" class="card-img-top object-fit-cover" alt="Apollo Hospitals" style="height: 120px;">
+                      <div class="position-absolute bottom-0 end-0 m-2">
+                        <span class="badge bg-white text-dark">
+                          <i class="bi bi-star-fill text-warning me-1"></i>4.8
+                        </span>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <h6 class="card-title mb-1">Apollo Hospitals</h6>
+                      <div class="small text-muted mb-2">
+                        <i class="bi bi-geo-alt me-1"></i>Chennai, India
+                      </div>
+                      <div class="d-flex gap-1 mb-2">
+                        <span class="badge bg-info">JCI</span>
+                        <span class="badge bg-success">NABH</span>
+                      </div>
+                      <div class="small text-muted">
+                        <i class="bi bi-check-circle-fill text-success me-1"></i>Cardiology, Orthopedics, Oncology
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card h-100 border-0 shadow-sm">
+                    <div class="position-relative">
+                      <img src="https://picsum.photos/seed/h2/400/200" class="card-img-top object-fit-cover" alt="Fortis Healthcare" style="height: 120px;">
+                      <div class="position-absolute bottom-0 end-0 m-2">
+                        <span class="badge bg-white text-dark">
+                          <i class="bi bi-star-fill text-warning me-1"></i>4.6
+                        </span>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <h6 class="card-title mb-1">Fortis Healthcare</h6>
+                      <div class="small text-muted mb-2">
+                        <i class="bi bi-geo-alt me-1"></i>Mumbai, India
+                      </div>
+                      <div class="d-flex gap-1 mb-2">
+                        <span class="badge bg-info">JCI</span>
+                        <span class="badge bg-warning">ISO</span>
+                      </div>
+                      <div class="small text-muted">
+                        <i class="bi bi-check-circle-fill text-success me-1"></i>Neurology, Cardiology, Emergency
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card h-100 border-0 shadow-sm">
+                    <div class="position-relative">
+                      <img src="https://picsum.photos/seed/h3/400/200" class="card-img-top object-fit-cover" alt="Max Healthcare" style="height: 120px;">
+                      <div class="position-absolute bottom-0 end-0 m-2">
+                        <span class="badge bg-white text-dark">
+                          <i class="bi bi-star-fill text-warning me-1"></i>4.7
+                        </span>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <h6 class="card-title mb-1">Max Healthcare</h6>
+                      <div class="small text-muted mb-2">
+                        <i class="bi bi-geo-alt me-1"></i>Delhi, India
+                      </div>
+                      <div class="d-flex gap-1 mb-2">
+                        <span class="badge bg-info">JCI</span>
+                        <span class="badge bg-success">NABH</span>
+                      </div>
+                      <div class="small text-muted">
+                        <i class="bi bi-check-circle-fill text-success me-1"></i>Orthopedics, Neurology, Oncology
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card h-100 border-0 shadow-sm">
+                    <div class="position-relative">
+                      <img src="https://picsum.photos/seed/h4/400/200" class="card-img-top object-fit-cover" alt="Manipal Hospitals" style="height: 120px;">
+                      <div class="position-absolute bottom-0 end-0 m-2">
+                        <span class="badge bg-white text-dark">
+                          <i class="bi bi-star-fill text-warning me-1"></i>4.5
+                        </span>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <h6 class="card-title mb-1">Manipal Hospitals</h6>
+                      <div class="small text-muted mb-2">
+                        <i class="bi bi-geo-alt me-1"></i>Bangalore, India
+                      </div>
+                      <div class="d-flex gap-1 mb-2">
+                        <span class="badge bg-info">JCI</span>
+                        <span class="badge bg-warning">ISO</span>
+                      </div>
+                      <div class="small text-muted">
+                        <i class="bi bi-check-circle-fill text-success me-1"></i>Cardiology, Oncology, Transplant
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Treatments Section -->
+          <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Medical Treatments</h5>
+                <a href="/treatments/" class="btn btn-sm btn-outline-primary">View All</a>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <a href="/treatments/cardiac-surgery/" class="card h-100 text-decoration-none border-0 shadow-sm">
+                    <div class="card-body text-center">
+                      <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-heart fs-4 text-danger"></i>
+                      </div>
+                      <h6 class="card-title">Cardiac Surgery</h6>
+                      <div class="small text-muted mb-2">Starting at $5,000</div>
+                      <div class="small">
+                        <i class="bi bi-clock me-1"></i>7-10 days
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="/treatments/knee-replacement/" class="card h-100 text-decoration-none border-0 shadow-sm">
+                    <div class="card-body text-center">
+                      <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-bone fs-4 text-info"></i>
+                      </div>
+                      <h6 class="card-title">Knee Replacement</h6>
+                      <div class="small text-muted mb-2">Starting at $7,500</div>
+                      <div class="small">
+                        <i class="bi bi-clock me-1"></i>5-7 days
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="/treatments/cosmetic-surgery/" class="card h-100 text-decoration-none border-0 shadow-sm">
+                    <div class="card-body text-center">
+                      <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-stars fs-4 text-warning"></i>
+                      </div>
+                      <h6 class="card-title">Cosmetic Surgery</h6>
+                      <div class="small text-muted mb-2">Starting at $3,000</div>
+                      <div class="small">
+                        <i class="bi bi-clock me-1"></i>3-5 days
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="/treatments/ivf-treatment/" class="card h-100 text-decoration-none border-0 shadow-sm">
+                    <div class="card-body text-center">
+                      <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-balloon-heart fs-4 text-primary"></i>
+                      </div>
+                      <h6 class="card-title">IVF Treatment</h6>
+                      <div class="small text-muted mb-2">Starting at $4,500</div>
+                      <div class="small">
+                        <i class="bi bi-clock me-1"></i>14-21 days
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="/treatments/orthopedic-surgery/" class="card h-100 text-decoration-none border-0 shadow-sm">
+                    <div class="card-body text-center">
+                      <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-bandaid fs-4 text-success"></i>
+                      </div>
+                      <h6 class="card-title">Orthopedic Surgery</h6>
+                      <div class="small text-muted mb-2">Starting at $6,000</div>
+                      <div class="small">
+                        <i class="bi bi-clock me-1"></i>5-10 days
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="/treatments/cancer-treatment/" class="card h-100 text-decoration-none border-0 shadow-sm">
+                    <div class="card-body text-center">
+                      <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-capsule fs-4 text-warning"></i>
+                      </div>
+                      <h6 class="card-title">Cancer Treatment</h6>
+                      <div class="small text-muted mb-2">Starting at $12,000</div>
+                      <div class="small">
+                        <i class="bi bi-clock me-1"></i>30+ days
+                      </div>
+                    </div>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -202,19 +492,19 @@
             </div>
             <div class="card-body">
               <div class="d-grid gap-3">
-                <a href="#" class="btn btn-outline-primary d-flex align-items-center">
+                <a href="{% url 'booking_page' %}" class="btn btn-outline-primary d-flex align-items-center">
                   <i class="bi bi-calendar-plus me-2"></i>
                   <span>Book Appointment</span>
                 </a>
-                <a href="#" class="btn btn-outline-primary d-flex align-items-center">
+                <a href="#" class="btn btn-outline-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#uploadModal">
                   <i class="bi bi-file-medical me-2"></i>
                   <span>Upload Medical Records</span>
                 </a>
-                <a href="#" class="btn btn-outline-primary d-flex align-items-center">
+                <a href="#" class="btn btn-outline-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#prescriptionModal">
                   <i class="bi bi-prescription me-2"></i>
                   <span>View Prescriptions</span>
                 </a>
-                <a href="#" class="btn btn-outline-primary d-flex align-items-center">
+                <a href="{% url 'contact' %}" class="btn btn-outline-primary d-flex align-items-center">
                   <i class="bi bi-chat-dots me-2"></i>
                   <span>Message Doctor</span>
                 </a>
@@ -239,6 +529,209 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Medical Records Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Medical Records</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Document Type</label>
+            <select class="form-select">
+              <option>Lab Report</option>
+              <option>Prescription</option>
+              <option>Medical History</option>
+              <option>Imaging Report</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" rows="3" placeholder="Brief description of the document..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Upload File</label>
+            <input class="form-control" type="file">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Prescriptions Modal -->
+<div class="modal fade" id="prescriptionModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">My Prescriptions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Medication</th>
+                <th>Dosage</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Amoxicillin</td>
+                <td>500mg, 3 times daily</td>
+                <td>Dr. John Smith</td>
+                <td>Oct 10, 2025</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#prescriptionDetailModal1">View</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Paracetamol</td>
+                <td>650mg, 2 times daily</td>
+                <td>Dr. Emily Johnson</td>
+                <td>Oct 5, 2025</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#prescriptionDetailModal2">View</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Vitamin D</td>
+                <td>1000 IU, once daily</td>
+                <td>Dr. Michael Brown</td>
+                <td>Oct 1, 2025</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#prescriptionDetailModal3">View</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Prescription Detail Modals -->
+<div class="modal fade" id="prescriptionDetailModal1" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Amoxicillin Prescription Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Medication:</strong> Amoxicillin</p>
+            <p><strong>Dosage:</strong> 500mg</p>
+            <p><strong>Frequency:</strong> 3 times daily</p>
+            <p><strong>Duration:</strong> 7 days</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Doctor:</strong> Dr. John Smith</p>
+            <p><strong>Date:</strong> Oct 10, 2025</p>
+            <p><strong>Prescription ID:</strong> RX-001</p>
+            <p><strong>Status:</strong> <span class="badge bg-success">Active</span></p>
+          </div>
+        </div>
+        <div class="mt-3">
+          <h6>Instructions:</h6>
+          <p>Take one tablet three times a day with food. Complete the full course even if you feel better.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Download</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="prescriptionDetailModal2" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Paracetamol Prescription Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Medication:</strong> Paracetamol</p>
+            <p><strong>Dosage:</strong> 650mg</p>
+            <p><strong>Frequency:</strong> 2 times daily</p>
+            <p><strong>Duration:</strong> 5 days</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Doctor:</strong> Dr. Emily Johnson</p>
+            <p><strong>Date:</strong> Oct 5, 2025</p>
+            <p><strong>Prescription ID:</strong> RX-002</p>
+            <p><strong>Status:</strong> <span class="badge bg-warning">Refill Needed</span></p>
+          </div>
+        </div>
+        <div class="mt-3">
+          <h6>Instructions:</h6>
+          <p>Take one tablet twice daily as needed for pain or fever. Do not exceed 4 tablets in 24 hours.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Download</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="prescriptionDetailModal3" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Vitamin D Prescription Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Medication:</strong> Vitamin D</p>
+            <p><strong>Dosage:</strong> 1000 IU</p>
+            <p><strong>Frequency:</strong> Once daily</p>
+            <p><strong>Duration:</strong> 30 days</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Doctor:</strong> Dr. Michael Brown</p>
+            <p><strong>Date:</strong> Oct 1, 2025</p>
+            <p><strong>Prescription ID:</strong> RX-003</p>
+            <p><strong>Status:</strong> <span class="badge bg-secondary">Completed</span></p>
+          </div>
+        </div>
+        <div class="mt-3">
+          <h6>Instructions:</h6>
+          <p>Take one tablet daily with a meal containing fat for better absorption.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Download</button>
       </div>
     </div>
   </div>
