@@ -50,12 +50,11 @@
                     <a class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}" href="/blogs/">Blogs</a>
                   </li>
                 {% elif user.userprofile.user_type == 'doctor' %}
-                  <!-- Doctor specific navigation -->
                   <li class="nav-item">
                     <a class="nav-link {% if request.path|slice:':15' == '/doctor/dashboard/' %}active{% endif %}" href="{% url 'doctor_dashboard' %}">Doctor Dashboard</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}" href="/doctors/">My Profile</a>
+                    <a class="nav-link {% if request.path|slice:':14' == '/doctor/profile/' %}active{% endif %}" href="{% url 'doctor_profile' %}">My Profile</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}" href="/hospitals/">Hospitals</a>
@@ -67,6 +66,9 @@
                   <!-- Patient specific navigation -->
                   <li class="nav-item">
                     <a class="nav-link {% if request.path|slice:':15' == '/patient/dashboard/' %}active{% endif %}" href="{% url 'patient_dashboard' %}">Patient Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.path|slice:':14' == '/patient/profile/' %}active{% endif %}" href="{% url 'patient_profile' %}">My Profile</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}" href="/hospitals/">Hospitals</a>
@@ -98,11 +100,6 @@
               {% endif %}
             </ul>
             <div class="d-flex gap-2 align-items-center">
-              <select class="form-select form-select-sm w-auto border-0">
-                <option>EN</option>
-                <option>AR</option>
-                <option>FR</option>
-              </select>
               {% if user.is_authenticated %}
                 <div class="dropdown">
                   <button class="btn btn-outline-primary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
@@ -114,9 +111,10 @@
                       <li><a class="dropdown-item" href="/admin/">Admin Panel</a></li>
                     {% elif user.userprofile.user_type == 'doctor' %}
                       <li><a class="dropdown-item" href="{% url 'doctor_dashboard' %}">Doctor Dashboard</a></li>
-                      <li><a class="dropdown-item" href="#">My Profile</a></li>
+                      <li><a class="dropdown-item" href="{% url 'doctor_profile' %}">My Profile</a></li>
                     {% elif user.userprofile.user_type == 'patient' %}
                       <li><a class="dropdown-item" href="{% url 'patient_dashboard' %}">Patient Dashboard</a></li>
+                      <li><a class="dropdown-item" href="{% url 'patient_profile' %}">My Profile</a></li>
                     {% endif %}
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
@@ -133,6 +131,17 @@
     </header>
 
     <main>
+      {% if messages %}
+        <div class="container mt-3">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
       {% block content %}{% endblock %}
     </main>
 

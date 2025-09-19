@@ -7,41 +7,66 @@
         <i class="bi bi-envelope"></i>
         <h1 class="h2 mb-0">Connect with TakeOpinion Experts</h1>
       </div>
-      <p class="mb-4">Have questions or need assistance? Our medical travel experts are here to help you make informed decisions.</p>
+      <p class="mb-5 lead">Have questions or need assistance? Our medical travel experts are here to help you make informed decisions.</p>
       
       <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
+        <div class="card-body p-5">
           <form class="row g-4">
             <div class="col-md-6">
               <label class="form-label fw-semibold">Full Name</label>
-              <input class="form-control form-control-lg" placeholder="Enter your full name" />
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-person"></i>
+                </span>
+                <input class="form-control form-control-lg" placeholder="Enter your full name" />
+              </div>
             </div>
             <div class="col-md-6">
               <label class="form-label fw-semibold">Email Address</label>
-              <input type="email" class="form-control form-control-lg" placeholder="you@example.com" />
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-envelope"></i>
+                </span>
+                <input type="email" class="form-control form-control-lg" placeholder="you@example.com" />
+              </div>
             </div>
             <div class="col-md-6">
               <label class="form-label fw-semibold">Phone Number</label>
-              <input type="tel" class="form-control form-control-lg" placeholder="+1 (555) 123-4567" />
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-telephone"></i>
+                </span>
+                <input type="tel" class="form-control form-control-lg" placeholder="+1 (555) 123-4567" />
+              </div>
             </div>
             <div class="col-md-6">
               <label class="form-label fw-semibold">Subject</label>
-              <select class="form-select form-control-lg">
-                <option selected>Select a subject</option>
-                <option>Medical Treatment Inquiry</option>
-                <option>Hospital Recommendation</option>
-                <option>Doctor Consultation</option>
-                <option>Travel Arrangements</option>
-                <option>Post-Treatment Support</option>
-                <option>Other</option>
-              </select>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-tag"></i>
+                </span>
+                <select class="form-select form-control-lg">
+                  <option selected>Select a subject</option>
+                  <option>Medical Treatment Inquiry</option>
+                  <option>Hospital Recommendation</option>
+                  <option>Doctor Consultation</option>
+                  <option>Travel Arrangements</option>
+                  <option>Post-Treatment Support</option>
+                  <option>Other</option>
+                </select>
+              </div>
             </div>
             <div class="col-12">
               <label class="form-label fw-semibold">Your Message</label>
-              <textarea class="form-control form-control-lg" rows="5" placeholder="Please provide details about your inquiry..."></textarea>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-chat-text"></i>
+                </span>
+                <textarea class="form-control form-control-lg" rows="5" placeholder="Please provide details about your inquiry..."></textarea>
+              </div>
             </div>
             <div class="col-12">
-              <div class="form-check mb-3">
+              <div class="form-check mb-4">
                 <input class="form-check-input" type="checkbox" id="termsCheck">
                 <label class="form-check-label" for="termsCheck">
                   I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a>
@@ -55,37 +80,40 @@
         </div>
       </div>
       
-      <div class="row g-4 mt-4">
+      <div class="row g-4 mt-5">
         <div class="col-md-4">
           <div class="card h-100 text-center border-0 shadow-sm">
-            <div class="card-body">
+            <div class="card-body p-4">
               <div class="display-6 text-primary mb-3">
                 <i class="bi bi-telephone"></i>
               </div>
               <h5 class="card-title">Call Us</h5>
               <p class="mb-0">+1 (555) 123-4567</p>
+              <p class="small text-muted mb-0">Mon-Fri, 9AM-6PM</p>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card h-100 text-center border-0 shadow-sm">
-            <div class="card-body">
+            <div class="card-body p-4">
               <div class="display-6 text-primary mb-3">
                 <i class="bi bi-envelope"></i>
               </div>
               <h5 class="card-title">Email Us</h5>
               <p class="mb-0">support@takeopinion.com</p>
+              <p class="small text-muted mb-0">We reply within 24 hours</p>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card h-100 text-center border-0 shadow-sm">
-            <div class="card-body">
+            <div class="card-body p-4">
               <div class="display-6 text-primary mb-3">
                 <i class="bi bi-chat-dots"></i>
               </div>
               <h5 class="card-title">Live Chat</h5>
               <p class="mb-0">Available 24/7</p>
+              <p class="small text-muted mb-0">Click chat icon in bottom right</p>
             </div>
           </div>
         </div>

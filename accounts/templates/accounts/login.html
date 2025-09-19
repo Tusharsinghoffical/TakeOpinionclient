@@ -4,10 +4,15 @@
   <div class="row justify-content-center">
     <div class="col-md-6 col-lg-5">
       <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
+        <div class="card-body p-5">
           <div class="text-center mb-4">
+            <div class="mb-3">
+              <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 72px; height: 72px;">
+                <i class="bi bi-person-circle text-primary fs-1"></i>
+              </div>
+            </div>
             <h2 class="h3 mb-2">Welcome Back</h2>
-            <p class="mb-0">Sign in to your account</p>
+            <p class="mb-0 text-muted">Sign in to your account</p>
           </div>
           
           {% if messages %}
@@ -19,17 +24,27 @@
             {% endfor %}
           {% endif %}
           
-          <form method="post">
+          <form method="post" class="mt-4">
             {% csrf_token %}
-            <div class="mb-3">
+            <div class="mb-4">
               <label for="username" class="form-label fw-semibold">Username</label>
-              <input type="text" class="form-control form-control-lg" id="username" name="username" required>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-person"></i>
+                </span>
+                <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Enter your username" required>
+              </div>
             </div>
-            <div class="mb-3">
+            <div class="mb-4">
               <label for="password" class="form-label fw-semibold">Password</label>
-              <input type="password" class="form-control form-control-lg" id="password" name="password" required>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-lock"></i>
+                </span>
+                <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Enter your password" required>
+              </div>
             </div>
-            <div class="mb-3 form-check">
+            <div class="mb-4 form-check">
               <input type="checkbox" class="form-check-input" id="remember">
               <label class="form-check-label" for="remember">Remember me</label>
             </div>

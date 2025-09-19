@@ -2,18 +2,28 @@ from django.db import models
 from treatments.models import Treatment
 from doctors.models import Doctor
 from hospitals.models import Hospital
+from accounts.models import UserProfile
 
 
 class Booking(models.Model):
     treatment = models.ForeignKey(Treatment, on_delete=models.CASCADE)
     preferred_doctor = models.ForeignKey(Doctor, on_delete=models.SET_NULL, null=True, blank=True)
     preferred_hospital = models.ForeignKey(Hospital, on_delete=models.SET_NULL, null=True, blank=True)
+    patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='bookings', null=True)
     preferred_date = models.DateField(null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self) -> str:
-        return f"Booking #{self.id} - {self.treatment.name}"
+        return f"Booking for {self.treatment.name}"
 
 
 class Accommodation(models.Model):

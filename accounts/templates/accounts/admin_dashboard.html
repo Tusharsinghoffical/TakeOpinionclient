@@ -6,10 +6,10 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h1 class="h3 mb-0">Admin Dashboard</h1>
-          <p class="mb-0">Welcome back, {{ user_profile.user.first_name|default:user_profile.user.username }}</p>
+          <p class="mb-0 text-muted">Welcome back, {{ user_profile.user.first_name|default:user_profile.user.username }}</p>
         </div>
         <a href="{% url 'logout' %}" class="btn btn-outline-danger">
-          <i class="bi bi-box-arrow-right me-1"></i>Logout
+          <i class="bi bi-box-arrow-right me-2"></i>Logout
         </a>
       </div>
       
@@ -99,12 +99,12 @@
                     <tr>
                       <td>
                         <div class="d-flex align-items-center">
-                          <div class="bg-light rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                          <div class="bg-light rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                             <i class="bi bi-person text-muted"></i>
                           </div>
                           <div>
                             <div class="fw-semibold">Dr. John Smith</div>
-                            <div class="small">john@takeopinion.com</div>
+                            <div class="small text-muted">john@takeopinion.com</div>
                           </div>
                         </div>
                       </td>
@@ -120,12 +120,12 @@
                     <tr>
                       <td>
                         <div class="d-flex align-items-center">
-                          <div class="bg-light rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                          <div class="bg-light rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                             <i class="bi bi-person text-muted"></i>
                           </div>
                           <div>
                             <div class="fw-semibold">Jane Doe</div>
-                            <div class="small">jane@takeopinion.com</div>
+                            <div class="small text-muted">jane@takeopinion.com</div>
                           </div>
                         </div>
                       </td>
@@ -184,7 +184,10 @@
                     </tr>
                     {% empty %}
                     <tr>
-                      <td colspan="4" class="text-center">No hospitals found</td>
+                      <td colspan="4" class="text-center py-4">
+                        <i class="bi bi-hospital text-muted fs-1 d-block mb-2"></i>
+                        <p class="mb-0 text-muted">No hospitals found</p>
+                      </td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -202,7 +205,7 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="row g-3">
+              <div class="row g-4">
                 <div class="col-md-4">
                   <div class="card h-100 border-0 shadow-sm">
                     <div class="card-body text-center">
@@ -275,24 +278,30 @@
               <h5 class="mb-0">Quick Actions</h5>
             </div>
             <div class="card-body">
-              <div class="d-grid gap-2">
-                <a href="/admin/auth/user/add/" class="btn btn-outline-primary">
-                  <i class="bi bi-person-plus me-2"></i>Add New User
+              <div class="d-grid gap-3">
+                <a href="/admin/auth/user/add/" class="btn btn-outline-primary d-flex align-items-center">
+                  <i class="bi bi-person-plus me-2"></i>
+                  <span>Add New User</span>
                 </a>
-                <a href="/admin/hospitals/hospital/add/" class="btn btn-outline-primary">
-                  <i class="bi bi-hospital me-2"></i>Add New Hospital
+                <a href="/admin/hospitals/hospital/add/" class="btn btn-outline-primary d-flex align-items-center">
+                  <i class="bi bi-hospital me-2"></i>
+                  <span>Add New Hospital</span>
                 </a>
-                <a href="/admin/treatments/treatment/add/" class="btn btn-outline-primary">
-                  <i class="bi bi-activity me-2"></i>Add New Treatment
+                <a href="/admin/treatments/treatment/add/" class="btn btn-outline-primary d-flex align-items-center">
+                  <i class="bi bi-activity me-2"></i>
+                  <span>Add New Treatment</span>
                 </a>
-                <a href="/admin/blogs/blogpost/add/" class="btn btn-outline-primary">
-                  <i class="bi bi-journal-text me-2"></i>Create Blog Post
+                <a href="/admin/blogs/blogpost/add/" class="btn btn-outline-primary d-flex align-items-center">
+                  <i class="bi bi-journal-text me-2"></i>
+                  <span>Create Blog Post</span>
                 </a>
-                <a href="#" class="btn btn-outline-primary">
-                  <i class="bi bi-people me-2"></i>Manage Roles
+                <a href="#" class="btn btn-outline-primary d-flex align-items-center">
+                  <i class="bi bi-people me-2"></i>
+                  <span>Manage Roles</span>
                 </a>
-                <a href="/admin/" class="btn btn-outline-primary">
-                  <i class="bi bi-gear me-2"></i>System Settings
+                <a href="/admin/" class="btn btn-outline-primary d-flex align-items-center">
+                  <i class="bi bi-gear me-2"></i>
+                  <span>System Settings</span>
                 </a>
               </div>
             </div>
@@ -329,15 +338,18 @@
               <h5 class="mb-0">Reports</h5>
             </div>
             <div class="card-body">
-              <div class="d-grid gap-2">
-                <a href="#" class="btn btn-outline-secondary">
-                  <i class="bi bi-file-earmark-bar-graph me-2"></i>User Registration Report
+              <div class="d-grid gap-3">
+                <a href="#" class="btn btn-outline-secondary d-flex align-items-center">
+                  <i class="bi bi-file-earmark-bar-graph me-2"></i>
+                  <span>User Registration Report</span>
                 </a>
-                <a href="#" class="btn btn-outline-secondary">
-                  <i class="bi bi-file-earmark-bar-graph me-2"></i>Appointment Statistics
+                <a href="#" class="btn btn-outline-secondary d-flex align-items-center">
+                  <i class="bi bi-file-earmark-bar-graph me-2"></i>
+                  <span>Appointment Statistics</span>
                 </a>
-                <a href="#" class="btn btn-outline-secondary">
-                  <i class="bi bi-file-earmark-bar-graph me-2"></i>Revenue Report
+                <a href="#" class="btn btn-outline-secondary d-flex align-items-center">
+                  <i class="bi bi-file-earmark-bar-graph me-2"></i>
+                  <span>Revenue Report</span>
                 </a>
               </div>
             </div>
