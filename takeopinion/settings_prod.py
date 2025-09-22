@@ -21,12 +21,16 @@ DEBUG = False
 
 # Allow hosts - in production, specify your actual domain
 # Ensure we handle the case where ALLOWED_HOSTS might not be set properly
-allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', '.onrender.com,localhost,127.0.0.1')
+allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', '.onrender.com,localhost,127.0.0.1,takeopinionclient.onrender.com')
 ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
 
 # Add the specific Render domain to ensure it's always included
 if '.onrender.com' not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append('.onrender.com')
+    
+# Also ensure the specific subdomain is included
+if 'takeopinionclient.onrender.com' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('takeopinionclient.onrender.com')
 
 # Database configuration for production
 # Render provides DATABASE_URL environment variable
