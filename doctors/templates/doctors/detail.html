@@ -142,7 +142,7 @@
             </div>
             <div class="flex-grow-1 ms-3">
               <h6 class="mb-1"><a href="/hospitals/{{ h.slug }}/" class="text-decoration-none">{{ h.name }}</a></h6>
-              <div class="small mb-1">{{ h.location|default:'City, Country' }}</div>
+              <div class="small mb-1">{{ h.city|default:'City' }}{% if h.state %}, {{ h.state|default:'State' }}{% endif %}</div>
               <div class="small">
                 <i class="bi bi-star-fill text-warning me-1"></i>{{ h.rating|floatformat:1|default:'4.5' }}
               </div>
@@ -153,6 +153,17 @@
           {% endfor %}
           <a href="/hospitals/" class="btn btn-outline-primary w-100 mt-2">View All Hospitals</a>
         </div>
+      </div>
+      
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0">Patient Reviews</h5>
+        </div>
+      </div>
+      
+      <!-- Feedback Section -->
+      <div class="card mb-4 border-0 shadow-sm">
+        {% include "feedbacks/feedback_list.html" with content_type="doctor" object=doctor only %}
       </div>
       
       <div class="card mb-4 border-0 shadow-sm">

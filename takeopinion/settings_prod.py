@@ -101,5 +101,8 @@ MIDDLEWARE = [
     'core.middleware.LoginRequiredMiddleware',  # Custom middleware for login requirement
 ]
 
-# WhiteNoise settings for static files
+# WhiteNoise settings for static files - always use compressed manifest storage in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Make sure to collect static files in production
+# Run 'python manage.py collectstatic' during deployment

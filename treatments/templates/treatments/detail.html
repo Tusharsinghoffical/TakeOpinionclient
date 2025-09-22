@@ -104,7 +104,7 @@
               <h6 class="mb-1"><a href="/hospitals/{{ h.slug }}/" class="text-decoration-none">{{ h.name }}</a></h6>
               <div class="d-flex align-items-center mb-1">
                 <i class="bi bi-geo-alt me-1"></i>
-                <span>{{ h.location|default:'City, Country' }}</span>
+                <span>{{ h.city|default:'City' }}{% if h.state %}, {{ h.state|default:'State' }}{% endif %}</span>
               </div>
               <div class="d-flex align-items-center mb-2">
                 <div class="text-warning me-1">
@@ -174,6 +174,17 @@
           </div>
           <a href="/doctors/" class="btn btn-outline-primary border-0 shadow-sm w-100 mt-3">View All Doctors</a>
         </div>
+      </div>
+      
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0">Frequently Asked Questions</h5>
+        </div>
+      </div>
+      
+      <!-- Feedback Section -->
+      <div class="card mb-4 border-0 shadow-sm">
+        {% include "feedbacks/feedback_list.html" with content_type="treatment" object=treatment only %}
       </div>
       
       <div class="card mb-4 border-0 shadow-sm">

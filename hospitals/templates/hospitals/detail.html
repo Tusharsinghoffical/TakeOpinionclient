@@ -16,7 +16,7 @@
                   <h1 class="h2 mb-2">{{ hospital.name }}</h1>
                   <div class="d-flex flex-wrap align-items-center mb-3">
                     <div class="me-3">
-                      <i class="bi bi-geo-alt me-1"></i>{{ hospital.state|default:'—' }}, {{ hospital.country|default:'—' }}
+                      <i class="bi bi-geo-alt me-1"></i>{{ hospital.state|default:'—' }}{% if hospital.country %}, {{ hospital.country|default:'—' }}{% endif %}
                     </div>
                     <div class="me-3">
                       <i class="bi bi-star-fill text-warning me-1"></i>{{ hospital.rating|floatformat:1|default:'N/A' }}
@@ -190,8 +190,7 @@
           <div class="mb-3">
             <h6 class="mb-2">Address</h6>
             <p class="mb-0">{{ hospital.address|default:'123 Medical Plaza' }}</p>
-            <p class="mb-0">{{ hospital.city|default:'Health City' }}, {{ hospital.state|default:'State' }} {{ hospital.zip_code|default:'12345' }}</p>
-            <p class="mb-0">{{ hospital.country|default:'Country' }}</p>
+            <p class="mb-0">{{ hospital.city|default:'Health City' }}, {{ hospital.state|default:'State' }}{% if hospital.country %}, {{ hospital.country|default:'Country' }}{% endif %}
           </div>
           
           <div class="mb-3">
@@ -222,6 +221,17 @@
             </div>
           </div>
         </div>
+      </div>
+      
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0">Patient Reviews</h5>
+        </div>
+      </div>
+      
+      <!-- Feedback Section -->
+      <div class="card mb-4 border-0 shadow-sm">
+        {% include "feedbacks/feedback_list.html" with content_type="hospital" object=hospital only %}
       </div>
       
       <div class="card mb-4 border-0 shadow-sm">

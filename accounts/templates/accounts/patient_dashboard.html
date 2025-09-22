@@ -6,7 +6,7 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h1 class="h3 mb-0">Patient Dashboard</h1>
-          <p class="mb-0 text-muted">Welcome back, {{ user_profile.full_name }}</p>
+          <p class="mb-0 text-muted">Welcome back, {{ user_profile.full_name|default:user_profile.user.username }}</p>
         </div>
         <a href="{% url 'logout' %}" class="btn btn-outline-danger">
           <i class="bi bi-box-arrow-right me-2"></i>Logout
@@ -143,7 +143,13 @@
                               <div class="modal-body">
                                 <div class="row">
                                   <div class="col-md-6">
-                                    <p><strong>Doctor:</strong> Dr. {{ appointment.preferred_doctor.name }}</p>
+                                    <p><strong>Doctor:</strong> 
+                                      {% if appointment.preferred_doctor %}
+                                        Dr. {{ appointment.preferred_doctor.name }}
+                                      {% else %}
+                                        Doctor Not Assigned
+                                      {% endif %}
+                                    </p>
                                     <p><strong>Treatment:</strong> {{ appointment.treatment.name }}</p>
                                     <p><strong>Date:</strong> {{ appointment.preferred_date|date:"M d, Y" }}</p>
                                     <p><strong>Time:</strong> {{ appointment.preferred_date|date:"g:i A" }}</p>
@@ -275,7 +281,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Apollo Hospitals</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Chennai, India
+                        <i class="bi bi-geo-alt me-1"></i>Chennai{% if hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -300,7 +306,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Fortis Healthcare</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Mumbai, India
+                        <i class="bi bi-geo-alt me-1"></i>Mumbai{% if hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -325,7 +331,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Max Healthcare</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Delhi, India
+                        <i class="bi bi-geo-alt me-1"></i>Delhi{% if hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -350,7 +356,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Manipal Hospitals</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Bangalore, India
+                        <i class="bi bi-geo-alt me-1"></i>Bangalore{% if hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -363,6 +369,29 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          
+          <!-- Video Feedback Section -->
+          <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Video Feedback from Doctors</h5>
+            </div>
+            <div class="card-body">
+              {% if hospital.media_items.all %}
+                {% for media in hospital.media_items.all %}
+                  {% if media.video_url %}
+                    <div class="mb-4">
+                      <h6>{{ media.hospital.name }}</h6>
+                      <div class="ratio ratio-16x9">
+                        <iframe src="{{ media.video_url }}" class="w-100" allowfullscreen></iframe>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <p class="text-muted">No video feedback available at the moment.</p>
+              {% endif %}
             </div>
           </div>
           
@@ -468,6 +497,36 @@
         <div class="col-lg-4">
           <div class="card mb-4 border-0 shadow-sm">
             <div class="card-header bg-white">
+              <h5 class="mb-0">Doctor Information</h5>
+            </div>
+            <div class="card-body">
+              {% if doctor %}
+                <div class="text-center mb-4">
+                  <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 96px; height: 96px;">
+                    <i class="bi bi-person fs-1 text-muted"></i>
+                  </div>
+                  <h5 class="mb-1 mt-3">Dr. {{ doctor.name }}</h5>
+                  <p class="mb-2 text-muted">Specialist in {{ doctor.treatments.all|join:", " }}</p>
+                  <p class="mb-4 text-muted">{{ doctor.experience_years }} years of experience</p>
+                </div>
+                
+                <div class="mb-3">
+                  <h6>Education</h6>
+                  <p class="mb-0">{{ doctor.education|linebreaksbr }}</p>
+                </div>
+                
+                <div class="mb-3">
+                  <h6>Key Points</h6>
+                  <p class="mb-0">{{ doctor.key_points|linebreaksbr }}</p>
+                </div>
+              {% else %}
+                <p class="text-muted">No doctor information available.</p>
+              {% endif %}
+            </div>
+          </div>
+          
+          <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-white">
               <h5 class="mb-0">Profile</h5>
             </div>
             <div class="card-body text-center">
@@ -476,7 +535,7 @@
                   <i class="bi bi-person fs-1 text-muted"></i>
                 </div>
               </div>
-              <h5 class="mb-1">{{ user_profile.full_name }}</h5>
+              <h5 class="mb-1">{{ user_profile.full_name|default:user_profile.user.username }}</h5>
               <p class="mb-4 text-muted">Patient ID: PT-{{ user_profile.id|default:"1245" }}</p>
               <div class="d-grid">
                 <a href="{% url 'patient_profile' %}" class="btn btn-outline-primary">
@@ -509,6 +568,49 @@
                   <span>Message Doctor</span>
                 </a>
               </div>
+            </div>
+          </div>
+          
+          <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Photo Gallery</h5>
+            </div>
+            <div class="card-body">
+              {% if hospital.media_items.all %}
+                <div class="row g-3">
+                  {% for media in hospital.media_items.all %}
+                    {% if media.image_url %}
+                      <div class="col-md-6 col-lg-12">
+                        <img src="{{ media.image_url }}" class="img-fluid rounded" alt="Hospital photo">
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% else %}
+                <p class="text-muted">No photos available at the moment.</p>
+              {% endif %}
+            </div>
+          </div>
+          
+          <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Doctor Awards</h5>
+            </div>
+            <div class="card-body">
+              {% if doctor.awards %}
+                <ul class="list-group list-group-flush">
+                  {% for award in doctor.awards.split('\n') %}
+                    {% if award.strip %}
+                      <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span>{{ award|safe }}</span>
+                        <i class="bi bi-trophy-fill text-warning"></i>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="text-muted">No awards to display.</p>
+              {% endif %}
             </div>
           </div>
           

@@ -218,7 +218,6 @@ def doctor_profile(request):
         phone = request.POST.get('phone', '')
         address = request.POST.get('address', '')
         city = request.POST.get('city', '')
-        country = request.POST.get('country', '')
         specialization = request.POST.get('specialization', '')
         license_number = request.POST.get('license_number', '')
         years_of_experience = request.POST.get('years_of_experience', 0)
@@ -234,7 +233,7 @@ def doctor_profile(request):
         user_profile.phone = phone
         user_profile.address = address
         user_profile.city = city
-        user_profile.country = country
+
         user_profile.save()
         
         # Update doctor profile
@@ -323,7 +322,7 @@ def patient_profile(request):
         phone = request.POST.get('phone', '')
         address = request.POST.get('address', '')
         city = request.POST.get('city', '')
-        country = request.POST.get('country', '')
+
         blood_type = request.POST.get('blood_type', '')
         emergency_contact = request.POST.get('emergency_contact', '')
         medical_history = request.POST.get('medical_history', '')
@@ -339,7 +338,7 @@ def patient_profile(request):
         user_profile.phone = phone
         user_profile.address = address
         user_profile.city = city
-        user_profile.country = country
+
         user_profile.save()
         
         # Update patient profile

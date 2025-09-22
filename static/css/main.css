@@ -171,6 +171,12 @@ a:hover {
   color: var(--dark-gray);
 }
 
+.navbar-logo {
+  object-fit: contain;
+  max-height: 40px;
+  width: auto;
+}
+
 .nav-link {
   font-weight: 500;
   color: var(--dark-gray);
@@ -188,6 +194,47 @@ a:hover {
 .nav-link.active {
   color: var(--medical-blue);
   background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Professional Navbar Styles */
+.navbar-nav .nav-link {
+  position: relative;
+  margin: 0 0.25rem;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  color: var(--dark-gray);
+  border-radius: 0;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--medical-blue);
+  background-color: transparent;
+  border-bottom: 3px solid rgba(0, 123, 255, 0.3);
+}
+
+.navbar-nav .nav-link.active {
+  color: var(--medical-blue);
+  background-color: transparent;
+  border-bottom: 3px solid var(--medical-blue);
+}
+
+.navbar-nav .nav-item {
+  margin: 0 0.125rem;
+}
+
+.navbar-toggler {
+  border: none;
+  padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2852, 58, 64, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 /* Tab Navigation */
@@ -503,26 +550,51 @@ footer {
 
 /* Dropdown */
 .dropdown-menu {
-  border-radius: 0.75rem;
-  border: none;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
   box-shadow: 0 0.5rem 1rem var(--shadow-color);
   padding: 0.5rem;
   background-color: var(--white);
+  margin-top: 0.25rem;
 }
 
 .dropdown-item {
   border-radius: 0.375rem;
   padding: 0.5rem 1rem;
   margin: 0.125rem 0;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .dropdown-item:hover {
   background-color: var(--light-gray);
+  color: var(--medical-blue);
 }
 
 .dropdown-divider {
   margin: 0.5rem 0;
   border-top: 1px solid var(--border-color);
+}
+
+/* Professional User Dropdown */
+.user-dropdown .dropdown-toggle {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--dark-gray);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.user-dropdown .dropdown-toggle:hover {
+  border-color: var(--medical-blue);
+  color: var(--medical-blue);
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.user-dropdown .dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
 }
 
 /* Responsive adjustments */

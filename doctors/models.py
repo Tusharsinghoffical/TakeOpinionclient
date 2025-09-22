@@ -12,6 +12,7 @@ class Doctor(models.Model):
     experience_years = models.PositiveIntegerField(default=0)
     treatments = models.ManyToManyField(Treatment, related_name="doctors", blank=True)
     hospitals = models.ManyToManyField(Hospital, related_name="doctors", blank=True)
+    awards = models.TextField(blank=True, help_text="Enter awards separated by new lines")
 
     def __str__(self) -> str:
         return self.name
