@@ -7,11 +7,14 @@ This file extends the base settings with production-specific configurations.
 import os
 from typing import Any, Dict
 from pathlib import Path
-from .settings import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Import base settings
+from .settings import *
+
+# Override base settings with production-specific values
 # SECURITY WARNING: keep the secret key used in production secret!
 # In production, this should be set as an environment variable
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-0ylyg79(e+@2pv!zii$p1f^rc+@ifn&3&+1emsjgx%oti6^=0_')
@@ -20,17 +23,34 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-0ylyg79(e+@2pv!zii$p1
 DEBUG = False
 
 # Allow hosts - in production, specify your actual domain
-# Ensure we handle the case where ALLOWED_HOSTS might not be set properly
-allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', '.onrender.com,localhost,127.0.0.1,takeopinionclient.onrender.com')
-ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
+# Always ensure takeopinionclient.onrender.com is allowed
+ALLOWED_HOSTS = [
+    'takeopinionclient.onrender.com',
+    '.onrender.com',
+    'localhost',
+    '127.0.0.1'
+]
 
-# Add the specific Render domain to ensure it's always included
-if '.onrender.com' not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append('.onrender.com')
-    
-# Also ensure the specific subdomain is included
-if 'takeopinionclient.onrender.com' not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append('takeopinionclient.onrender.com')
+# Process ALLOWED_HOSTS environment variable if provided
+# This ensures our required hosts are always included
+allowed_hosts_env = os.environ.get('ALLOWED_HOSTS')
+if allowed_hosts_env:
+    # Split the environment variable by comma and strip whitespace
+    env_hosts = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
+    # Add any hosts from environment that aren't already in our list
+    for host in env_hosts:
+        if host not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(host)
+
+# Ensure our critical hosts are always present
+# This is a safeguard to make sure our required hosts are never missing
+CRITICAL_HOSTS = ['takeopinionclient.onrender.com', '.onrender.com']
+for host in CRITICAL_HOSTS:
+    if host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.insert(0, host)
+
+# Debug: Print the final ALLOWED_HOSTS to help with debugging
+print(f"ALLOWED_HOSTS configured as: {ALLOWED_HOSTS}")
 
 # Database configuration for production
 # Render provides DATABASE_URL environment variable

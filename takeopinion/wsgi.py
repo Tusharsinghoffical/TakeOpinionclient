@@ -11,7 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-# Use the DJANGO_SETTINGS_MODULE environment variable if set, otherwise default to takeopinion.settings
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "takeopinion.settings")
+# Use the DJANGO_SETTINGS_MODULE environment variable if set, otherwise default to takeopinion.settings_prod for production
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "takeopinion.settings_prod")
+
+# Debug: Print the settings module being used
+print(f"Using DJANGO_SETTINGS_MODULE: {os.environ.get('DJANGO_SETTINGS_MODULE')}")
 
 application = get_wsgi_application()

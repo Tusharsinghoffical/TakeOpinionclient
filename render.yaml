@@ -14,7 +14,7 @@ services:
       - key: DEBUG
         value: False
       - key: ALLOWED_HOSTS
-        value: .onrender.com
+        value: takeopinionclient.onrender.com,.onrender.com
       - key: WEB_CONCURRENCY
         value: 3
       - key: DATABASE_URL
