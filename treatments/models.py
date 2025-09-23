@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from typing import List
 
 
 class TreatmentCategory(models.Model):
@@ -30,13 +31,35 @@ class Treatment(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True)
     category = models.ForeignKey(TreatmentCategory, on_delete=models.CASCADE, related_name="treatments")
+    
+    # Additional fields used in templates
+    duration = models.CharField(max_length=100, blank=True, default="5-7 days")
+    anesthesia_type = models.CharField(max_length=100, blank=True, default="General")
+    recovery_time = models.CharField(max_length=100, blank=True, default="2-3 weeks")
+    procedure_details = models.TextField(blank=True, default="This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.")
+    preparation_guidelines = models.TextField(blank=True, default="Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure")
+    aftercare_instructions = models.TextField(blank=True, default="Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions")
+    starting_price = models.DecimalField(max_digits=10, decimal_places=2, default=5000.00)
+    review_count = models.PositiveIntegerField(default=120)
 
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def get_preparation_guidelines(self) -> List[str]:
+        """Return preparation guidelines as a list"""
+        if self.preparation_guidelines:
+            return str(self.preparation_guidelines).split(',')
+        return []
+
+    def get_aftercare_instructions(self) -> List[str]:
+        """Return aftercare instructions as a list"""
+        if self.aftercare_instructions:
+            return str(self.aftercare_instructions).split(',')
+        return []
 
 # Create your models here.

@@ -57,6 +57,14 @@ The application includes static files (CSS, JavaScript, and images) that are aut
 
 To verify that static files are being served correctly, visit the `/static-check/` endpoint after deployment.
 
+## Media Files
+
+The application now includes a media directory for user uploads. This directory should be included in your deployment package and must be writable by the application.
+
+## Database
+
+The application includes a SQLite database file (db.sqlite3) which contains all the application data. This file should be included in your deployment package.
+
 ## Custom Domain (Optional)
 
 1. In your web service settings, go to "Custom Domains"
@@ -81,6 +89,7 @@ The following environment variables can be configured:
 2. **Application Crashes**: Check the application logs for runtime errors
 3. **Database Connection**: Ensure DATABASE_URL is correctly set if using external database
 4. **Static Files Not Found**: Check that the build process completed successfully and that STATIC_ROOT is correctly configured
+5. **Media Files Not Accessible**: Ensure the media directory is writable
 
 ### Useful Commands
 
@@ -119,6 +128,8 @@ The following issues have been addressed in the latest deployment setup:
 5. **Gunicorn Configuration**: Fixed missing os import and simplified start command
 6. **Deployment Command**: Ensured correct start command is used for Render deployment
 7. **Settings Configuration**: Fixed ALLOWED_HOSTS configuration and ensured production settings are used correctly
+8. **Media Files Support**: Added media file configuration to settings and URL routing
+9. **Cache Cleanup**: Removed all __pycache__ directories and .pyc files for cleaner deployment
 
 ## Render Deployment Cache Issue
 
@@ -156,3 +167,12 @@ To fix this issue:
      value: .onrender.com
    ```
 2. Clear Render's build cache and redeploy
+
+## Deployment Checklist
+
+For a complete deployment checklist, refer to the DEPLOYMENT_CHECKLIST.md file which includes:
+
+- All files and directories that should be included
+- Pre-deployment tasks completed
+- Deployment instructions
+- Post-deployment verification steps

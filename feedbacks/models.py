@@ -37,12 +37,13 @@ class Feedback(models.Model):
     rating = models.IntegerField(choices=RATING_CHOICES)
     title = models.CharField(max_length=200)
     comment = models.TextField()
+    video_url = models.URLField(blank=True, null=True)  # For storing video review URLs
     is_anonymous = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    # Status
-    is_approved = models.BooleanField(default=False, help_text="Feedback needs admin approval before being public")
+    # Status - Changed default to True so reviews are immediately visible
+    is_approved = models.BooleanField(default=True, help_text="Feedback is immediately public")
     
     class Meta:
         ordering = ['-created_at']

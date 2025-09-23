@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 {% block content %}
-<div class="container-fluid py-4">
+<div class="container-fluid admin-dashboard">
   <div class="row">
     <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-4 welcome-section">
         <div>
           <h1 class="h3 mb-0">Admin Dashboard</h1>
           <p class="mb-0 text-muted">Welcome back, {{ user_profile.user.first_name|default:user_profile.user.username }}</p>
@@ -14,9 +15,9 @@
       </div>
       
       <!-- Stats Cards -->
-      <div class="row mb-4">
-        <div class="col-md-3">
-          <div class="card bg-primary text-white h-100 border-0 shadow-sm">
+      <div class="row stats-row">
+        <div class="col-md-3 mb-3">
+          <div class="card bg-primary text-white h-100 stat-card border-0 shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -24,13 +25,13 @@
                   <h2 class="mb-0">{{ total_users }}</h2>
                   <small>+{{ recent_users }} new this week</small>
                 </div>
-                <i class="bi bi-people fs-1"></i>
+                <i class="bi bi-people"></i>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="card bg-success text-white h-100 border-0 shadow-sm">
+        <div class="col-md-3 mb-3">
+          <div class="card bg-success text-white h-100 stat-card border-0 shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -38,13 +39,13 @@
                   <h2 class="mb-0">{{ total_doctors }}</h2>
                   <small>Active professionals</small>
                 </div>
-                <i class="bi bi-person-badge fs-1"></i>
+                <i class="bi bi-person-badge"></i>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="card bg-info text-white h-100 border-0 shadow-sm">
+        <div class="col-md-3 mb-3">
+          <div class="card bg-info text-white h-100 stat-card border-0 shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -52,21 +53,21 @@
                   <h2 class="mb-0">{{ total_patients }}</h2>
                   <small>Registered patients</small>
                 </div>
-                <i class="bi bi-person fs-1"></i>
+                <i class="bi bi-person"></i>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="card bg-warning text-white h-100 border-0 shadow-sm">
+        <div class="col-md-3 mb-3">
+          <div class="card bg-warning text-white h-100 stat-card border-0 shadow-sm">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <h5 class="mb-0">Appointments</h5>
-                  <h2 class="mb-0">243</h2>
-                  <small>42 today</small>
+                  <h2 class="mb-0">{{ total_appointments }}</h2>
+                  <small>{{ today_appointments }} today</small>
                 </div>
-                <i class="bi bi-calendar-check fs-1"></i>
+                <i class="bi bi-calendar-check"></i>
               </div>
             </div>
           </div>
@@ -96,48 +97,40 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% for user in recent_users_for_table %}
                     <tr>
                       <td>
                         <div class="d-flex align-items-center">
-                          <div class="bg-light rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                          <div class="bg-light rounded-circle me-3 d-flex align-items-center justify-content-center user-avatar">
                             <i class="bi bi-person text-muted"></i>
                           </div>
-                          <div>
-                            <div class="fw-semibold">Dr. John Smith</div>
-                            <div class="small text-muted">john@takeopinion.com</div>
+                          <div class="user-info">
+                            <div class="fw-semibold">{{ user.first_name }} {{ user.last_name }}</div>
+                            <div class="small text-muted">{{ user.email }}</div>
                           </div>
                         </div>
                       </td>
-                      <td><span class="badge bg-primary">Doctor</span></td>
+                      <td>
+                        {% if user.userprofile.user_type == 'doctor' %}
+                        <span class="badge bg-primary">Doctor</span>
+                        {% elif user.userprofile.user_type == 'patient' %}
+                        <span class="badge bg-info">Patient</span>
+                        {% else %}
+                        <span class="badge bg-secondary">Admin</span>
+                        {% endif %}
+                      </td>
                       <td><span class="badge bg-success">Active</span></td>
                       <td>
                         <div class="btn-group btn-group-sm">
-                          <a href="/admin/auth/user/1/change/" class="btn btn-outline-primary">Edit</a>
-                          <button class="btn btn-outline-danger">Deactivate</button>
+                          <a href="/admin/auth/user/{{ user.id }}/change/" class="btn btn-outline-primary">Edit</a>
                         </div>
                       </td>
                     </tr>
+                    {% empty %}
                     <tr>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="bg-light rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                            <i class="bi bi-person text-muted"></i>
-                          </div>
-                          <div>
-                            <div class="fw-semibold">Jane Doe</div>
-                            <div class="small text-muted">jane@takeopinion.com</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-info">Patient</span></td>
-                      <td><span class="badge bg-success">Active</span></td>
-                      <td>
-                        <div class="btn-group btn-group-sm">
-                          <a href="/admin/auth/user/2/change/" class="btn btn-outline-primary">Edit</a>
-                          <button class="btn btn-outline-danger">Deactivate</button>
-                        </div>
-                      </td>
+                      <td colspan="4" class="text-center">No users found</td>
                     </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>
@@ -211,7 +204,7 @@
                     <div class="card-body text-center">
                       <i class="bi bi-hospital fs-1 text-primary mb-3"></i>
                       <h6 class="card-title">Hospitals</h6>
-                      <p class="card-text">{{ recent_hospitals|length }} hospitals</p>
+                      <p class="card-text">{{ total_hospitals }} hospitals</p>
                       <a href="/admin/hospitals/hospital/" class="btn btn-sm btn-outline-primary">Manage</a>
                     </div>
                   </div>
@@ -221,7 +214,7 @@
                     <div class="card-body text-center">
                       <i class="bi bi-activity fs-1 text-success mb-3"></i>
                       <h6 class="card-title">Treatments</h6>
-                      <p class="card-text">48 treatments</p>
+                      <p class="card-text">{{ total_treatments }} treatments</p>
                       <a href="/admin/treatments/treatment/" class="btn btn-sm btn-outline-primary">Manage</a>
                     </div>
                   </div>
@@ -231,7 +224,7 @@
                     <div class="card-body text-center">
                       <i class="bi bi-journal-text fs-1 text-info mb-3"></i>
                       <h6 class="card-title">Blog Posts</h6>
-                      <p class="card-text">16 posts</p>
+                      <p class="card-text">{{ total_blog_posts }} posts</p>
                       <a href="/admin/blogs/blogpost/" class="btn btn-sm btn-outline-primary">Manage</a>
                     </div>
                   </div>
@@ -239,38 +232,8 @@
               </div>
             </div>
           </div>
-          
-          <!-- Recent Activity -->
-          <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-white">
-              <h5 class="mb-0">Recent Activity</h5>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>User</th>
-                      <th>Action</th>
-                      <th>Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for activity in recent_activity %}
-                    <tr>
-                      <td>{{ activity.user }}</td>
-                      <td>{{ activity.action }}</td>
-                      <td>{{ activity.time }}</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
         </div>
         
-        <!-- Admin Tools Sidebar -->
         <div class="col-lg-4">
           <!-- Quick Actions -->
           <div class="card mb-4 border-0 shadow-sm">
@@ -278,7 +241,7 @@
               <h5 class="mb-0">Quick Actions</h5>
             </div>
             <div class="card-body">
-              <div class="d-grid gap-3">
+              <div class="d-grid gap-2">
                 <a href="/admin/auth/user/add/" class="btn btn-outline-primary d-flex align-items-center">
                   <i class="bi bi-person-plus me-2"></i>
                   <span>Add New User</span>
@@ -295,61 +258,13 @@
                   <i class="bi bi-journal-text me-2"></i>
                   <span>Create Blog Post</span>
                 </a>
-                <a href="#" class="btn btn-outline-primary d-flex align-items-center">
+                <a href="/admin/auth/group/" class="btn btn-outline-primary d-flex align-items-center">
                   <i class="bi bi-people me-2"></i>
                   <span>Manage Roles</span>
                 </a>
                 <a href="/admin/" class="btn btn-outline-primary d-flex align-items-center">
                   <i class="bi bi-gear me-2"></i>
                   <span>System Settings</span>
-                </a>
-              </div>
-            </div>
-          </div>
-          
-          <!-- System Status -->
-          <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-white">
-              <h5 class="mb-0">System Status</h5>
-            </div>
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <span>Database</span>
-                <span class="badge bg-success">Online</span>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <span>Web Server</span>
-                <span class="badge bg-success">Online</span>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <span>Storage</span>
-                <span class="badge bg-warning">{{ system_status.storage }}</span>
-              </div>
-              <div class="d-flex justify-content-between align-items-center">
-                <span>Last Backup</span>
-                <span>{{ system_status.last_backup }}</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Reports -->
-          <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white">
-              <h5 class="mb-0">Reports</h5>
-            </div>
-            <div class="card-body">
-              <div class="d-grid gap-3">
-                <a href="#" class="btn btn-outline-secondary d-flex align-items-center">
-                  <i class="bi bi-file-earmark-bar-graph me-2"></i>
-                  <span>User Registration Report</span>
-                </a>
-                <a href="#" class="btn btn-outline-secondary d-flex align-items-center">
-                  <i class="bi bi-file-earmark-bar-graph me-2"></i>
-                  <span>Appointment Statistics</span>
-                </a>
-                <a href="#" class="btn btn-outline-secondary d-flex align-items-center">
-                  <i class="bi bi-file-earmark-bar-graph me-2"></i>
-                  <span>Revenue Report</span>
                 </a>
               </div>
             </div>

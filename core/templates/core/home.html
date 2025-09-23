@@ -15,8 +15,10 @@
         </div>
         <div class="hero-search d-flex gap-2 align-items-center">
           <i class="bi bi-search text-muted ms-3"></i>
-          <input class="form-control border-0" placeholder="Search treatments, doctors, hospitals...">
-          <a href="/treatments/" class="btn btn-primary px-4">Search</a>
+          <form action="/search/" method="get" class="d-flex w-100">
+            <input name="q" class="form-control border-0" placeholder="Search treatments, doctors, hospitals..." required>
+            <button type="submit" class="btn btn-primary px-4">Search</button>
+          </form>
         </div>
       </div>
     </div>
@@ -137,27 +139,7 @@
   </div>
 </section>
 
-<section class="py-5">
-  <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4 section-title">
-      <i class="bi bi-geo-alt"></i>
-      <h2 class="h3 mb-0">Top Medical Destinations</h2>
-    </div>
-    <div class="row g-4">
-      {% for i in '1236' %}
-      <div class="col-6 col-md-3">
-        <div class="card h-100 card-hover border-0 shadow-sm">
-          <img src="https://picsum.photos/seed/c{{ forloop.counter }}/600/400" class="card-img-top object-fit-cover" alt="Destination {{ forloop.counter }}" style="height: 160px;">
-          <div class="card-body">
-            <div class="fw-semibold">Destination {{ forloop.counter }}</div>
-            <div class="small text-muted">Popular for medical tourism</div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
+
 
 <section class="py-5 bg-light">
   <div class="container">
@@ -170,7 +152,7 @@
       {% for h in top_hospitals %}
       <div class="col-6 col-md-3">
         <a href="/hospitals/{{ h.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
-          <img src="https://picsum.photos/seed/h{{ forloop.counter }}/600/360" class="card-img-top object-fit-cover" alt="{{ h.name }}" style="height: 160px;">
+          <img src="{{ h.profile_picture|default:'https://picsum.photos/seed/h'|add:h.id|default:'https://picsum.photos/seed/hospital/600/360' }}" class="card-img-top object-fit-cover" alt="{{ h.name }}" style="height: 160px;">
           <div class="card-body">
             <div class="fw-semibold">{{ h.name }}</div>
             {% if h.is_takeopinion_choice %}<span class="badge badge-choice">TakeOpinion Choice</span>{% endif %}
@@ -194,7 +176,11 @@
       {% for d in top_doctors %}
       <div class="col-6 col-md-3">
         <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
-          <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="card-img-top object-fit-cover" alt="{{ d.name }}" style="height: 160px;">
+          {% if d.profile_picture %}
+            <img src="{{ d.profile_picture }}" class="card-img-top object-fit-cover" alt="{{ d.name }}" style="height: 160px;">
+          {% else %}
+            <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="card-img-top object-fit-cover" alt="{{ d.name }}" style="height: 160px;">
+          {% endif %}
           <div class="card-body">
             <div class="fw-semibold">{{ d.name }}</div>
             <div class="small text-muted">{{ d.key_points|default:'Specialist' }}</div>

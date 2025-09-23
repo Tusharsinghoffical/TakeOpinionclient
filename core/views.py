@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.conf import settings
+from django.db.models import Q
 import os
 from treatments.models import Treatment
 from hospitals.models import Hospital
@@ -24,6 +25,39 @@ def home(request: HttpRequest) -> HttpResponse:
 def countries(request: HttpRequest) -> HttpResponse:
     countries_qs = Country.objects.prefetch_related("states").all()
     return render(request, "core/countries.html", {"countries": countries_qs})
+
+
+def search(request: HttpRequest) -> HttpResponse:
+    query = request.GET.get('q', '')
+    treatments = []
+    doctors = []
+    hospitals = []
+    
+    if query:
+        # Search treatments by name and description
+        treatments = Treatment.objects.filter(
+            Q(name__icontains=query) | Q(description__icontains=query)
+        )
+        
+        # Search doctors by name and key_points
+        doctors = Doctor.objects.filter(
+            Q(name__icontains=query) | Q(key_points__icontains=query)
+        )
+        
+        # Search hospitals by name and about
+        hospitals = Hospital.objects.filter(
+            Q(name__icontains=query) | Q(about__icontains=query)
+        )
+    
+    context = {
+        'query': query,
+        'treatments': treatments,
+        'doctors': doctors,
+        'hospitals': hospitals,
+        'total_results': len(treatments) + len(doctors) + len(hospitals)
+    }
+    
+    return render(request, "core/search_results.html", context)
 
 
 def contact(request: HttpRequest) -> HttpResponse:

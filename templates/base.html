@@ -9,10 +9,14 @@
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
     />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
       rel="stylesheet"
+      integrity="sha384-+g2R8Rtc4b3+9E4+ZUHeVvT1K9S6Y1B1B1C9C1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1"
+      crossorigin="anonymous"
     />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,6 +24,16 @@
       rel="stylesheet"
     />
     <link href="{% static 'css/main.css' %}" rel="stylesheet" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}" />
+    <!-- Dashboard CSS (load on all dashboard pages) -->
+    {% if '/admin/dashboard/' in request.path or '/doctor/profile/' in request.path or '/patient/dashboard/' in request.path %}
+    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet" />
+    {% endif %}
+    <!-- Admin Dashboard Specific CSS -->
+    {% if '/admin/dashboard/' in request.path %}
+    <link href="{% static 'css/admin-dashboard.css' %}" rel="stylesheet" />
+    {% endif %}
   </head>
   <body>
     <header class="border-bottom sticky-top shadow-sm">
@@ -60,7 +74,7 @@
                 <!-- Admin specific navigation -->
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.path|slice:':14' == '/admin/dashboard/' %}active{% endif %}"
+                    class="nav-link {% if '/admin/dashboard/' in request.path %}active{% endif %}"
                     href="{% url 'admin_dashboard' %}"
                     >Admin Dashboard</a
                   >
@@ -93,19 +107,19 @@
                     >Blogs</a
                   >
                 </li>
-                {% elif user.userprofile.user_type == 'doctor' %}
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.path|slice:':15' == '/doctor/dashboard/' %}active{% endif %}"
-                    href="{% url 'doctor_dashboard' %}"
-                    >Doctor Dashboard</a
+                    class="nav-link {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
+                    href="{% url 'reviews_page' %}"
+                    >Reviews</a
                   >
                 </li>
+                {% elif user.userprofile.user_type == 'doctor' %}
                 <li class="nav-item">
                   <a
                     class="nav-link {% if request.path|slice:':14' == '/doctor/profile/' %}active{% endif %}"
                     href="{% url 'doctor_profile' %}"
-                    >My Profile</a
+                    >Doctor Profile</a
                   >
                 </li>
                 <li class="nav-item">
@@ -120,22 +134,22 @@
                     class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
                     href="/treatments/"
                     >Treatments</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
+                    href="{% url 'reviews_page' %}"
+                    >Reviews</a
                   >
                 </li>
                 {% elif user.userprofile.user_type == 'patient' %}
                 <!-- Patient specific navigation -->
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.path|slice:':15' == '/patient/dashboard/' %}active{% endif %}"
-                    href="{% url 'patient_dashboard' %}"
-                    >Patient Dashboard</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':14' == '/patient/profile/' %}active{% endif %}"
-                    href="{% url 'patient_profile' %}"
-                    >My Profile</a
+                    class="nav-link {% if request.path|slice:':14' == '/patient/portal/' %}active{% endif %}"
+                    href="{% url 'patient_portal' %}"
+                    >Patient Portal</a
                   >
                 </li>
                 <li class="nav-item">
@@ -150,6 +164,20 @@
                     class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
                     href="/treatments/"
                     >Treatments</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
+                    href="/doctors/"
+                    >Doctors</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
+                    href="{% url 'reviews_page' %}"
+                    >Reviews</a
                   >
                 </li>
                 {% endif %}
@@ -183,6 +211,13 @@
                   >Blogs</a
                 >
               </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
+                  href="{% url 'reviews_page' %}"
+                  >Reviews</a
+                >
+              </li>
               {% endif %}
             </ul>
             <div class="d-flex gap-2 align-items-center">
@@ -208,21 +243,16 @@
                   </li>
                   {% elif user.userprofile.user_type == 'doctor' %}
                   <li>
-                    <a class="dropdown-item" href="{% url 'doctor_dashboard' %}"
-                      >Doctor Dashboard</a
-                    >
-                  </li>
-                  <li>
                     <a class="dropdown-item" href="{% url 'doctor_profile' %}"
-                      >My Profile</a
+                      >Doctor Profile</a
                     >
                   </li>
                   {% elif user.userprofile.user_type == 'patient' %}
                   <li>
                     <a
                       class="dropdown-item"
-                      href="{% url 'patient_dashboard' %}"
-                      >Patient Dashboard</a
+                      href="{% url 'patient_portal' %}"
+                      >Patient Portal</a
                     >
                   </li>
                   <li>
@@ -378,7 +408,11 @@
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script 
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+      crossorigin="anonymous">
+    </script>
     <script src="{% static 'js/main.js' %}"></script>
   </body>
 </html>

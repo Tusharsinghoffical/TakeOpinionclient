@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container-fluid py-4">
+<div class="container-fluid">
   <div class="row">
     <div class="col-12">
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -281,7 +281,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Apollo Hospitals</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Chennai{% if hospital and hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
+                        <i class="bi bi-geo-alt me-1"></i>Chennai
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -306,7 +306,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Fortis Healthcare</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Mumbai{% if hospital and hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
+                        <i class="bi bi-geo-alt me-1"></i>Mumbai
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -331,7 +331,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Max Healthcare</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Delhi{% if hospital and hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
+                        <i class="bi bi-geo-alt me-1"></i>Delhi
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -356,7 +356,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Manipal Hospitals</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Bangalore{% if hospital and hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
+                        <i class="bi bi-geo-alt me-1"></i>Bangalore
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -369,29 +369,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          
-          <!-- Video Feedback Section -->
-          <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-white">
-              <h5 class="mb-0">Video Feedback from Doctors</h5>
-            </div>
-            <div class="card-body">
-              {% if hospital and hospital.media_items.all %}
-                {% for media in hospital.media_items.all %}
-                  {% if media.video_url %}
-                    <div class="mb-4">
-                      <h6>{% if media.hospital %}{{ media.hospital.name }}{% else %}Hospital{% endif %}</h6>
-                      <div class="ratio ratio-16x9">
-                        <iframe src="{{ media.video_url }}" class="w-100" allowfullscreen></iframe>
-                      </div>
-                    </div>
-                  {% endif %}
-                {% endfor %}
-              {% else %}
-                <p class="text-muted">No video feedback available at the moment.</p>
-              {% endif %}
             </div>
           </div>
           

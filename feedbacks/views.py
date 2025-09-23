@@ -81,14 +81,14 @@ def submit_feedback(request, content_type, object_id):
     except ValueError:
         return JsonResponse({'error': 'Invalid rating'}, status=400)
     
-    # Create feedback
+    # Create feedback - Changed to is_approved=True so reviews are immediately visible
     feedback = Feedback.objects.create(
         patient=request.user.userprofile,
         feedback_type=content_type,
         rating=rating,
         title=title,
         comment=comment,
-        is_approved=False  # Awaiting admin approval
+        is_approved=True  # Changed from False to True - reviews are immediately public
     )
     
     # Set the appropriate foreign key based on content type
@@ -101,7 +101,7 @@ def submit_feedback(request, content_type, object_id):
     
     feedback.save()
     
-    messages.success(request, 'Thank you for your feedback! It will be reviewed by our team.')
+    messages.success(request, 'Thank you for your feedback! Your review is now visible to everyone.')
     
     # Redirect based on content type
     if content_type == 'doctor':

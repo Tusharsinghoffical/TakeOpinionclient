@@ -56,9 +56,6 @@
             <a href="/book/" class="btn btn-primary">
               <i class="bi bi-calendar-check me-2"></i>Request Appointment
             </a>
-            <a href="#" class="btn btn-outline-primary">
-              <i class="bi bi-download me-2"></i>Download Info
-            </a>
             <a href="#" class="btn btn-outline-secondary">
               <i class="bi bi-share me-2"></i>Share
             </a>
@@ -145,7 +142,11 @@
               <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm">
                 <div class="row g-0">
                   <div class="col-4">
-                    <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid h-100 w-100 object-fit-cover rounded-start" alt="{{ d.name }}">
+                    {% if d.profile_picture %}
+                      <img src="{{ d.profile_picture }}" class="img-fluid h-100 w-100 object-fit-cover rounded-start" alt="{{ d.name }}">
+                    {% else %}
+                      <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid h-100 w-100 object-fit-cover rounded-start" alt="{{ d.name }}">
+                    {% endif %}
                   </div>
                   <div class="col-8">
                     <div class="card-body">
@@ -280,16 +281,6 @@
             <div class="flex-grow-1 ms-3">
               <h6 class="mb-1"><a href="/blogs/" class="text-decoration-none">Treatment Guide</a></h6>
               <p class="small mb-0">Comprehensive guide to understanding this procedure</p>
-            </div>
-          </div>
-          
-          <div class="d-flex mb-3">
-            <div class="flex-shrink-0">
-              <i class="bi bi-camera-video fs-4 text-primary"></i>
-            </div>
-            <div class="flex-grow-1 ms-3">
-              <h6 class="mb-1"><a href="/videos/" class="text-decoration-none">Video Consultation</a></h6>
-              <p class="small mb-0">Watch expert explanations of the procedure</p>
             </div>
           </div>
           

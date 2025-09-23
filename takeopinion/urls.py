@@ -17,6 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from accounts.views import get_entities
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,4 +32,9 @@ urlpatterns = [
     path("book/", include("bookings.urls")),
     path("accounts/", include("accounts.urls")),
     path("feedbacks/", include("feedbacks.urls")),
+    path("api/v1/entities/<str:entity_type>/", csrf_exempt(get_entities), name='get_entities'),
 ]
+
+# Serve media files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

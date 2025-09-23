@@ -12,6 +12,10 @@ class LoginRequiredMiddleware(MiddlewareMixin):
     - Signup page
     - Admin pages (handled by Django's built-in authentication)
     - Health check endpoints
+    - Doctors pages (publicly accessible)
+    - Treatments pages (publicly accessible)
+    - Search page (publicly accessible)
+    - API endpoints (publicly accessible)
     """
     
     def __init__(self, get_response):
@@ -31,14 +35,29 @@ class LoginRequiredMiddleware(MiddlewareMixin):
         if request.path.startswith('/health/'):
             return None
             
+        # Allow access to API endpoints
+        if request.path.startswith('/api/') or request.path.startswith('/accounts/api/'):
+            return None
+            
         # Public URLs that don't require authentication
         public_urls = [
             '/',  # Home page
             '/accounts/login/',
             '/accounts/signup/',
             '/accounts/logout/',  # Logout should be accessible to redirect properly
+            '/doctors/',  # Doctors list page
+            '/treatments/',  # Treatments list page
+            '/search/',  # Search page
         ]
         
+        # Also allow access to individual doctor detail pages
+        if request.path.startswith('/doctors/') and request.path.endswith('/'):
+            return None
+            
+        # Also allow access to individual treatment detail pages
+        if request.path.startswith('/treatments/') and request.path.endswith('/'):
+            return None
+            
         # Check if the current path is a public URL
         if request.path in public_urls:
             return None
