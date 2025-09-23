@@ -8,14 +8,10 @@ services:
       - key: PYTHON_VERSION
         value: 3.11
       - key: DJANGO_SETTINGS_MODULE
-        value: takeopinion.settings
+        value: takeopinion.settings_prod
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
         value: False
       - key: ALLOWED_HOSTS
         value: takeopinionclient.onrender.com,.onrender.com
-      - key: WEB_CONCURRENCY
-        value: 3
-      - key: MONGO_DB_CONNECTION_STRING
-        value: mongodb+srv://taskopinion_db:TRPGt9E5zGHJiYoS@taskopinions.tydfmx5.mongodb.net/?retryWrites=true&w=majority&appName=taskopinions

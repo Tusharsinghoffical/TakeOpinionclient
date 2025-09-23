@@ -53,16 +53,11 @@ for host in CRITICAL_HOSTS:
 print(f"ALLOWED_HOSTS configured as: {ALLOWED_HOSTS}")
 
 # Database configuration for production
-# Use MongoDB connection string from environment variable
+# Using SQLite for now to avoid compatibility issues
 DATABASES: Dict[str, Any] = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'taskopinion_db',
-        'CLIENT': {
-            'host': os.environ.get('MONGO_DB_CONNECTION_STRING', 'mongodb+srv://taskopinion_db:TRPGt9E5zGHJiYoS@taskopinions.tydfmx5.mongodb.net/?retryWrites=true&w=majority&appName=taskopinions'),
-            'authMechanism': 'SCRAM-SHA-256',
-            'authSource': 'admin'
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
