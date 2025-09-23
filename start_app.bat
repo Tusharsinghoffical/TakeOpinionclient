@@ -13,6 +13,9 @@ echo.
 echo Applying migrations...
 python manage.py migrate
 echo.
+echo Collecting static files...
+python manage.py collectstatic --noinput
+echo.
 echo Starting server...
 echo Server will be available at: http://127.0.0.1:8000/
 echo Press CTRL+C to stop the server
