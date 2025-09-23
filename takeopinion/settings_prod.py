@@ -53,18 +53,18 @@ for host in CRITICAL_HOSTS:
 print(f"ALLOWED_HOSTS configured as: {ALLOWED_HOSTS}")
 
 # Database configuration for production
-# Render provides DATABASE_URL environment variable
+# Use MongoDB connection string from environment variable
 DATABASES: Dict[str, Any] = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'taskopinion_db',
+        'CLIENT': {
+            'host': os.environ.get('MONGO_DB_CONNECTION_STRING', 'mongodb+srv://taskopinion_db:TRPGt9E5zGHJiYoS@taskopinions.tydfmx5.mongodb.net/'),
+            'authMechanism': 'SCRAM-SHA-256',
+            'authSource': 'admin'
+        }
     }
 }
-
-# If DATABASE_URL is provided (e.g., by Render), use it
-if 'DATABASE_URL' in os.environ:
-    import dj_database_url
-    DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'])
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/

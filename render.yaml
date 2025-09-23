@@ -8,7 +8,7 @@ services:
       - key: PYTHON_VERSION
         value: 3.11
       - key: DJANGO_SETTINGS_MODULE
-        value: takeopinion.settings_prod
+        value: takeopinion.settings
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
@@ -17,11 +17,5 @@ services:
         value: takeopinionclient.onrender.com,.onrender.com
       - key: WEB_CONCURRENCY
         value: 3
-      - key: DATABASE_URL
-        fromDatabase:
-          name: takeopinion-db
-          property: connectionString
-
-databases:
-  - name: takeopinion-db
-    databaseName: takeopinion
+      - key: MONGO_DB_CONNECTION_STRING
+        value: mongodb+srv://taskopinion_db:TRPGt9E5zGHJiYoS@taskopinions.tydfmx5.mongodb.net/
