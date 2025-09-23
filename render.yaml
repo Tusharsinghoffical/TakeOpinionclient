@@ -18,4 +18,4 @@ services:
       - key: WEB_CONCURRENCY
         value: 3
       - key: MONGO_DB_CONNECTION_STRING
-        value: mongodb+srv://taskopinion_db:TRPGt9E5zGHJiYoS@taskopinions.tydfmx5.mongodb.net/
+        value: mongodb+srv://taskopinion_db:TRPGt9E5zGHJiYoS@taskopinions.tydfmx5.mongodb.net/?retryWrites=true&w=majority&appName=taskopinions

@@ -88,7 +88,7 @@ DATABASES = {
         "ENGINE": "djongo",
         "NAME": "taskopinion_db",
         "CLIENT": {
-            "host": "mongodb+srv://taskopinion_db:TRPGt9E5zGHJiYoS@taskopinions.tydfmx5.mongodb.net/",
+            "host": "mongodb+srv://taskopinion_db:TRPGt9E5zGHJiYoS@taskopinions.tydfmx5.mongodb.net/?retryWrites=true&w=majority&appName=taskopinions",
             "authMechanism": "SCRAM-SHA-256",
             "authSource": "admin"
         }
