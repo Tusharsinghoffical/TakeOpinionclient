@@ -255,17 +255,31 @@ def doctor_profile(request):
 
 @login_required
 def patient_dashboard(request):
-    if request.user.userprofile.user_type != 'patient':
-        messages.error(request, 'Access denied.')
+    # Check if user has a profile at all
+    try:
+        user_profile = request.user.userprofile
+    except:
+        messages.error(request, 'User profile not found. Please contact support.')
+        return redirect('home')
+    
+    # Check if user is a patient
+    if user_profile.user_type != 'patient':
+        messages.error(request, 'Access denied. Patients only.')
         return redirect('home')
     
     try:
-        patient_profile = request.user.userprofile.patient_details
+        # Try to get the patient profile
+        try:
+            patient_profile = user_profile.patient_details
+        except AttributeError:
+            # If user profile doesn't have patient_details, create one
+            from .models import PatientProfile
+            patient_profile = PatientProfile.objects.create(user_profile=user_profile)
         
         # Get upcoming appointments for this patient
         today = datetime.now().date()
         upcoming_appointments = Booking.objects.filter(
-            patient=request.user.userprofile,
+            patient=user_profile,
             preferred_date__gte=today
         ).select_related('preferred_doctor', 'treatment').order_by('preferred_date')
         
@@ -276,7 +290,7 @@ def patient_dashboard(request):
         ]
         
         # Get statistics
-        total_appointments = Booking.objects.filter(patient=request.user.userprofile).count()
+        total_appointments = Booking.objects.filter(patient=user_profile).count()
         medical_records = 12  # Placeholder
         prescriptions = 3  # Placeholder
         health_score = "85%"  # Placeholder
@@ -287,16 +301,6 @@ def patient_dashboard(request):
         # Get a random hospital for display (or None if no hospitals exist)
         hospital = Hospital.objects.first()
         
-    except PatientProfile.DoesNotExist:
-        patient_profile = None
-        upcoming_appointments = []
-        recent_records = []
-        total_appointments = 0
-        medical_records = 0
-        prescriptions = 0
-        health_score = "0%"
-        doctor = None
-        hospital = None
     except Exception as e:
         # Handle any other unexpected errors
         patient_profile = None
@@ -310,7 +314,7 @@ def patient_dashboard(request):
         hospital = None
     
     context = {
-        'user_profile': request.user.userprofile,
+        'user_profile': user_profile,
         'patient_profile': patient_profile,
         'upcoming_appointments': upcoming_appointments,
         'recent_records': recent_records,
@@ -326,13 +330,21 @@ def patient_dashboard(request):
 
 @login_required
 def patient_profile(request):
-    if request.user.userprofile.user_type != 'patient':
-        messages.error(request, 'Access denied.')
+    # Check if user has a profile at all
+    try:
+        user_profile = request.user.userprofile
+    except:
+        messages.error(request, 'User profile not found. Please contact support.')
+        return redirect('home')
+    
+    # Check if user is a patient
+    if user_profile.user_type != 'patient':
+        messages.error(request, 'Access denied. Patients only.')
         return redirect('home')
     
     try:
-        patient_profile = request.user.userprofile.patient_details
-    except PatientProfile.DoesNotExist:
+        patient_profile = user_profile.patient_details
+    except:
         patient_profile = None
     
     if request.method == 'POST':
@@ -355,7 +367,6 @@ def patient_profile(request):
         request.user.save()
         
         # Update user profile
-        user_profile = request.user.userprofile
         user_profile.phone = phone
         user_profile.address = address
         user_profile.city = city
@@ -373,7 +384,7 @@ def patient_profile(request):
         return redirect('patient_profile')
     
     context = {
-        'user_profile': request.user.userprofile,
+        'user_profile': user_profile,
         'patient_profile': patient_profile,
     }
     return render(request, 'accounts/patient_profile.html', context)
