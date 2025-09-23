@@ -56,7 +56,7 @@
     <div class="col-md-6 col-lg-4">
       <a href="/hospitals/{{ h.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm">
         <div class="position-relative">
-          <img src="https://picsum.photos/seed/h{{ forloop.counter0 }}{{ h.id }}/800/480" class="card-img-top object-fit-cover" alt="{{ h.name }}" style="height: 200px;">
+          <img src="{{ h.profile_picture|default:'https://picsum.photos/seed/h'|add:h.id|default:'https://picsum.photos/seed/hospital/800/480' }}" class="card-img-top object-fit-cover" alt="{{ h.name }}" style="height: 200px;">
           {% if h.is_takeopinion_choice %}
           <div class="position-absolute top-0 start-0 m-3">
             <span class="badge badge-choice">TakeOpinion Choice</span>

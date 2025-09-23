@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="h2 mb-4">Search Results for "{{ query }}"</h1>
+      
+      {% if total_results > 0 %}
+        <p class="mb-4">{{ total_results }} results found</p>
+        
+        <!-- Treatments Section -->
+        {% if treatments %}
+        <div class="mb-5">
+          <h3 class="h4 mb-3">Treatments</h3>
+          <div class="row g-4">
+            {% for treatment in treatments %}
+            <div class="col-md-6 col-lg-4">
+              <a href="/treatments/{{ treatment.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title">{{ treatment.name }}</h5>
+                  <p class="card-text small text-muted">{{ treatment.description|truncatewords:20 }}</p>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Doctors Section -->
+        {% if doctors %}
+        <div class="mb-5">
+          <h3 class="h4 mb-3">Doctors</h3>
+          <div class="row g-4">
+            {% for doctor in doctors %}
+            <div class="col-md-6 col-lg-4">
+              <a href="/doctors/{{ doctor.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title">{{ doctor.name }}</h5>
+                  <p class="card-text small text-muted">{{ doctor.key_points|truncatewords:20 }}</p>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Hospitals Section -->
+        {% if hospitals %}
+        <div class="mb-5">
+          <h3 class="h4 mb-3">Hospitals</h3>
+          <div class="row g-4">
+            {% for hospital in hospitals %}
+            <div class="col-md-6 col-lg-4">
+              <a href="/hospitals/{{ hospital.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title">{{ hospital.name }}</h5>
+                  <p class="card-text small text-muted">{{ hospital.about|truncatewords:20 }}</p>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      {% else %}
+        <div class="card border-0 shadow-sm py-5">
+          <div class="card-body text-center">
+            <i class="bi bi-search display-5 text-muted mb-3"></i>
+            <h5 class="card-title">No results found</h5>
+            <p class="card-text">Try different keywords or check your spelling.</p>
+            <a href="/" class="btn btn-primary">Back to Home</a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

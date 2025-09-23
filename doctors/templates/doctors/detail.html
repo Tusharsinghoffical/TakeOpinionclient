@@ -12,13 +12,10 @@
           <div class="row">
             <div class="col-md-4 mb-4 mb-md-0">
               <div class="position-relative">
-                <img src="https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid rounded object-fit-cover" alt="{{ doctor.name }}" style="height: 300px;">
-                {% if doctor.is_verified %}
-                <div class="position-absolute bottom-0 end-0 m-3">
-                  <span class="badge bg-success p-2 rounded-circle">
-                    <i class="bi bi-patch-check fs-5"></i>
-                  </span>
-                </div>
+                {% if doctor.profile_picture %}
+                  <img src="{{ doctor.profile_picture }}" class="img-fluid rounded object-fit-cover" alt="{{ doctor.name }}" style="height: 300px;">
+                {% else %}
+                  <img src="https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid rounded object-fit-cover" alt="{{ doctor.name }}" style="height: 300px;">
                 {% endif %}
               </div>
             </div>
@@ -28,15 +25,12 @@
                   <h1 class="h2 mb-1">{{ doctor.name }}</h1>
                   <div class="h5 mb-3">{{ doctor.specialization|default:'Medical Specialist' }}</div>
                 </div>
-                {% if doctor.is_takeopinion_choice %}
-                <span class="badge badge-choice">TakeOpinion Choice</span>
-                {% endif %}
               </div>
               
               <div class="d-flex align-items-center mb-3">
                 <div class="text-warning me-2">
                   {% for i in "12345" %}
-                    <i class="bi bi-star{% if forloop.counter <= doctor.rating|floatformat:0 %}{% else %}-half{% endif %}"></i>
+                    <i class="bi bi-star{% if forloop.counter <= doctor.rating|floatformat:0 %}-fill{% else %}-half{% endif %}"></i>
                   {% endfor %}
                 </div>
                 <span>({{ doctor.review_count|default:0 }} reviews)</span>
@@ -51,15 +45,6 @@
                     <div>
                       <div class="small">Experience</div>
                       <div class="fw-semibold">{{ doctor.experience_years }} years</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="d-flex align-items-center">
-                    <i class="bi bi-award text-primary fs-4 me-3"></i>
-                    <div>
-                      <div class="small">Specializations</div>
-                      <div class="fw-semibold">{{ doctor.procedures_count|default:10 }}+ procedures</div>
                     </div>
                   </div>
                 </div>
@@ -81,17 +66,20 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-6">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-translate text-primary fs-4 me-3"></i>
+                    <div>
+                      <div class="small">Languages</div>
+                      <div class="fw-semibold">{{ doctor.languages_spoken|default:'English' }}</div>
+                    </div>
+                  </div>
+                </div>
               </div>
               
               <div class="d-flex flex-wrap gap-2">
                 <a href="#" class="btn btn-primary">
                   <i class="bi bi-calendar-check me-2"></i>Book Consultation
-                </a>
-                <a href="#" class="btn btn-outline-primary">
-                  <i class="bi bi-camera-video me-2"></i>Video Call
-                </a>
-                <a href="#" class="btn btn-outline-secondary">
-                  <i class="bi bi-download me-2"></i>Download CV
                 </a>
               </div>
             </div>
@@ -99,13 +87,34 @@
         </div>
       </div>
       
+      <!-- Media Gallery Section -->
+      {% if doctor.media_items.all %}
       <div class="card mb-4 border-0 shadow-sm">
         <div class="card-header bg-white border-0">
-          <h5 class="mb-0">About Dr. {{ doctor.name|split:" "|first }}</h5>
+          <h5 class="mb-0">Media Gallery</h5>
         </div>
         <div class="card-body">
-          <p>{{ doctor.bio|default:'Dr. ' }}{{ doctor.name }} is a highly qualified medical professional with extensive experience in {{ doctor.specialization|default:'their field' }}. With over {{ doctor.experience_years }} years of practice, they have successfully treated numerous patients and contributed to advancing medical knowledge in their area of expertise.</p>
-          <p>They are affiliated with several top-rated hospitals and are recognized for their patient-centered approach and commitment to delivering exceptional healthcare outcomes.</p>
+          <div class="row g-3">
+            {% for media in doctor.media_items.all %}
+              {% if media.image_url %}
+              <div class="col-md-6 col-lg-4">
+                <div class="ratio ratio-16x9">
+                  <img src="{{ media.image_url }}" class="object-fit-cover rounded" alt="Doctor image">
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0">About Dr. {{ doctor.name|truncatewords:1 }}</h5>
+        </div>
+        <div class="card-body">
+          <p>{{ doctor.about|default:'Dr. ' }}{{ doctor.name }} is a highly qualified medical professional with extensive experience in {{ doctor.specialization|default:'their field' }}. With over {{ doctor.experience_years }} years of practice, they have successfully treated numerous patients and contributed to advancing medical knowledge in their area of expertise.</p>
         </div>
       </div>
       
@@ -115,9 +124,9 @@
         </div>
         <div class="card-body">
           <div class="row">
-            {% for expertise in doctor.expertise.all|slice:":6" %}
+            {% for treatment in doctor.treatments.all|slice:":6" %}
             <div class="col-md-6 mb-2">
-              <i class="bi bi-check-circle-fill text-success me-2"></i>{{ expertise.name|default:'Specialized Procedure ' }}{{ forloop.counter }}
+              <i class="bi bi-check-circle-fill text-success me-2"></i>{{ treatment.name }}
             </div>
             {% empty %}
             <div class="col-12">
@@ -138,7 +147,7 @@
           {% for h in doctor.hospitals.all|slice:":3" %}
           <div class="d-flex mb-3">
             <div class="flex-shrink-0">
-              <img src="https://picsum.photos/seed/h{{ h.id }}/100/100" class="rounded object-fit-cover" alt="{{ h.name }}" width="60" height="60">
+              <img src="{{ h.profile_picture|default:'https://picsum.photos/seed/h'|add:h.id|default:'https://picsum.photos/seed/hospital/100/100' }}" class="rounded object-fit-cover" alt="{{ h.name }}" width="60" height="60">
             </div>
             <div class="flex-grow-1 ms-3">
               <h6 class="mb-1"><a href="/hospitals/{{ h.slug }}/" class="text-decoration-none">{{ h.name }}</a></h6>
@@ -155,12 +164,6 @@
         </div>
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
-        <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Patient Reviews</h5>
-        </div>
-      </div>
-      
       <!-- Feedback Section -->
       <div class="card mb-4 border-0 shadow-sm">
         {% include "feedbacks/feedback_list.html" with content_type="doctor" object=doctor only %}
@@ -172,23 +175,21 @@
         </div>
         <div class="card-body">
           <div class="d-flex align-items-center mb-3">
-            <div class="display-6 text-primary me-3">4.8</div>
+            <div class="display-6 text-primary me-3">{{ doctor.rating|floatformat:1 }}</div>
             <div>
               <div class="text-warning">
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
+                {% for i in "12345" %}
+                  <i class="bi bi-star{% if forloop.counter <= doctor.rating|floatformat:0 %}-fill{% else %}-half{% endif %}"></i>
+                {% endfor %}
               </div>
-              <div class="small">Based on 120 reviews</div>
+              <div class="small">Based on {{ doctor.review_count }} reviews</div>
             </div>
           </div>
           
           <div class="mb-3">
             <div class="d-flex justify-content-between mb-1">
               <span class="small">Expertise</span>
-              <span class="small">4.9</span>
+              <span class="small">{{ doctor.rating|add:"0.1"|floatformat:1 }}</span>
             </div>
             <div class="progress" style="height: 6px;">
               <div class="progress-bar bg-primary" role="progressbar" style="width: 95%"></div>
@@ -198,7 +199,7 @@
           <div class="mb-3">
             <div class="d-flex justify-content-between mb-1">
               <span class="small">Communication</span>
-              <span class="small">4.7</span>
+              <span class="small">{{ doctor.rating|add:"-0.1"|floatformat:1 }}</span>
             </div>
             <div class="progress" style="height: 6px;">
               <div class="progress-bar bg-primary" role="progressbar" style="width: 90%"></div>
@@ -208,7 +209,7 @@
           <div class="mb-3">
             <div class="d-flex justify-content-between mb-1">
               <span class="small">Professionalism</span>
-              <span class="small">4.8</span>
+              <span class="small">{{ doctor.rating|floatformat:1 }}</span>
             </div>
             <div class="progress" style="height: 6px;">
               <div class="progress-bar bg-primary" role="progressbar" style="width: 92%"></div>

@@ -58,7 +58,11 @@
       <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm">
         <div class="row g-0">
           <div class="col-4 position-relative">
-            <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid h-100 w-100 object-fit-cover rounded-start" alt="{{ d.name }}">
+            {% if d.profile_picture %}
+              <img src="{{ d.profile_picture }}" class="img-fluid h-100 w-100 object-fit-cover rounded-start" alt="{{ d.name }}">
+            {% else %}
+              <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid h-100 w-100 object-fit-cover rounded-start" alt="{{ d.name }}">
+            {% endif %}
             {% if d.is_verified %}
             <div class="position-absolute bottom-0 end-0 m-2">
               <span class="badge bg-success">
@@ -79,7 +83,7 @@
               <div class="d-flex align-items-center mb-2">
                 <div class="text-warning me-1">
                   {% for i in "12345" %}
-                    <i class="bi bi-star{% if forloop.counter <= d.rating|floatformat:0 %}{% else %}-half{% endif %}"></i>
+                    <i class="bi bi-star{% if forloop.counter <= d.rating|floatformat:0 %}-fill{% else %}-half{% endif %}"></i>
                   {% endfor %}
                 </div>
                 <span class="small">({{ d.review_count|default:0 }} reviews)</span>
