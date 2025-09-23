@@ -71,8 +71,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Use a simpler static files storage for production to avoid manifest issues
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# Use WhiteNoise for static files with compressed storage
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files (user uploads)
 MEDIA_URL = '/media/'
@@ -89,8 +89,8 @@ X_FRAME_OPTIONS = 'DENY'
 # SECURE_HSTS_PRELOAD = True
 
 # Session settings
-SESSION_COOKIE_SECURE = 'SESSION_COOKIE_SECURE' in os.environ
-CSRF_COOKIE_SECURE = 'CSRF_COOKIE_SECURE' in os.environ
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Logging configuration
 LOGGING = {
@@ -101,27 +101,18 @@ LOGGING = {
             'class': 'logging.StreamHandler',
         },
     },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
     'loggers': {
         'django': {
             'handlers': ['console'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
         },
     },
 }
-
-# Additional settings for Render deployment
-# Ensure WhiteNoise is used for serving static files
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise for static files
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'core.middleware.LoginRequiredMiddleware',  # Custom middleware for login requirement
-]
 
 # Make sure to collect static files in production
 # Run 'python manage.py collectstatic' during deployment
