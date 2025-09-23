@@ -85,8 +85,13 @@ WSGI_APPLICATION = "takeopinion.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "djongo",
+        "NAME": "taskopinion_db",
+        "CLIENT": {
+            "host": "mongodb+srv://taskopinion_db:TRPGt9E5zGHJiYoS@taskopinions.tydfmx5.mongodb.net/",
+            "authMechanism": "SCRAM-SHA-256",
+            "authSource": "admin"
+        }
     }
 }
 
