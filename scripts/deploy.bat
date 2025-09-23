@@ -2,6 +2,7 @@
 echo Deploying TakeOpinion application to Render...
 
 REM Add all changes
+cd ..
 git add .
 
 REM Commit changes

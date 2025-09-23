@@ -5,6 +5,7 @@ echo Deploying TakeOpinion with MongoDB Support
 echo ========================================
 echo.
 
+cd ..
 echo Adding changes to git...
 git add .
 
