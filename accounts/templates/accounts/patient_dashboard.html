@@ -281,7 +281,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Apollo Hospitals</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Chennai{% if hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
+                        <i class="bi bi-geo-alt me-1"></i>Chennai{% if hospital and hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -306,7 +306,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Fortis Healthcare</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Mumbai{% if hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
+                        <i class="bi bi-geo-alt me-1"></i>Mumbai{% if hospital and hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -331,7 +331,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Max Healthcare</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Delhi{% if hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
+                        <i class="bi bi-geo-alt me-1"></i>Delhi{% if hospital and hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -356,7 +356,7 @@
                     <div class="card-body">
                       <h6 class="card-title mb-1">Manipal Hospitals</h6>
                       <div class="small text-muted mb-2">
-                        <i class="bi bi-geo-alt me-1"></i>Bangalore{% if hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
+                        <i class="bi bi-geo-alt me-1"></i>Bangalore{% if hospital and hospital.state %}, {{ hospital.state|default:'State' }}{% endif %}
                       </div>
                       <div class="d-flex gap-1 mb-2">
                         <span class="badge bg-info">JCI</span>
@@ -378,7 +378,7 @@
               <h5 class="mb-0">Video Feedback from Doctors</h5>
             </div>
             <div class="card-body">
-              {% if hospital.media_items.all %}
+              {% if hospital and hospital.media_items.all %}
                 {% for media in hospital.media_items.all %}
                   {% if media.video_url %}
                     <div class="mb-4">
@@ -576,7 +576,7 @@
               <h5 class="mb-0">Photo Gallery</h5>
             </div>
             <div class="card-body">
-              {% if hospital.media_items.all %}
+              {% if hospital and hospital.media_items.all %}
                 <div class="row g-3">
                   {% for media in hospital.media_items.all %}
                     {% if media.image_url %}
@@ -597,7 +597,7 @@
               <h5 class="mb-0">Doctor Awards</h5>
             </div>
             <div class="card-body">
-              {% if doctor.awards %}
+              {% if doctor and doctor.awards %}
                 <ul class="list-group list-group-flush">
                   {% for award in doctor.awards.split('\n') %}
                     {% if award.strip %}

@@ -1,44 +1,17 @@
 @echo off
-echo TakeOpinion Deployment Script
-echo =============================
+echo Deploying TakeOpinion application to Render...
 
-REM Check if virtual environment exists, if not create it
-if not exist ".venv" (
-    echo Creating virtual environment...
-    python -m venv .venv
-)
+REM Add all changes
+git add .
 
-REM Activate virtual environment
-echo Activating virtual environment...
-call .venv\Scripts\activate.bat
+REM Commit changes
+git commit -m "Fix patient dashboard 500 error - undefined variables"
 
-REM Upgrade pip
-echo Upgrading pip...
-python -m pip install --upgrade pip
-
-REM Install requirements
-echo Installing requirements...
-pip install -r requirements.txt
-
-REM Collect static files
-echo Collecting static files...
-python manage.py collectstatic --noinput
-
-REM Apply migrations
-echo Applying database migrations...
-python manage.py migrate
-
-REM Create superuser if it doesn't exist (optional)
-echo from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'admin') if not User.objects.filter(username='admin').exists() else None | python manage.py shell
+REM Push to GitHub (assuming 'origin' is the remote name)
+git push origin main
 
 echo.
-echo Deployment completed successfully!
-echo.
-echo To run the application in production mode, use:
-echo python manage.py runserver --settings=takeopinion.settings_prod
-echo.
-echo For production deployment, consider using a proper web server like Nginx with Gunicorn or uWSGI.
-echo.
-echo Static files have been collected to the 'staticfiles' directory.
-echo You can verify static files are working by visiting http://127.0.0.1:8000/static-check/ after starting the server.
+echo Deployment completed!
+echo Please go to your Render dashboard and trigger a new deployment.
+echo If you encounter issues, clear the build cache in Render settings.
 pause

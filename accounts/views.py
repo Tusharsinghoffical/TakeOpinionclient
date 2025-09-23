@@ -281,6 +281,12 @@ def patient_dashboard(request):
         prescriptions = 3  # Placeholder
         health_score = "85%"  # Placeholder
         
+        # Get a random doctor for display (or None if no doctors exist)
+        doctor = Doctor.objects.first()
+        
+        # Get a random hospital for display (or None if no hospitals exist)
+        hospital = Hospital.objects.first()
+        
     except PatientProfile.DoesNotExist:
         patient_profile = None
         upcoming_appointments = []
@@ -289,6 +295,19 @@ def patient_dashboard(request):
         medical_records = 0
         prescriptions = 0
         health_score = "0%"
+        doctor = None
+        hospital = None
+    except Exception as e:
+        # Handle any other unexpected errors
+        patient_profile = None
+        upcoming_appointments = []
+        recent_records = []
+        total_appointments = 0
+        medical_records = 0
+        prescriptions = 0
+        health_score = "0%"
+        doctor = None
+        hospital = None
     
     context = {
         'user_profile': request.user.userprofile,
@@ -299,6 +318,8 @@ def patient_dashboard(request):
         'medical_records': medical_records,
         'prescriptions': prescriptions,
         'health_score': health_score,
+        'doctor': doctor,
+        'hospital': hospital,
     }
     return render(request, 'accounts/patient_dashboard.html', context)
 
