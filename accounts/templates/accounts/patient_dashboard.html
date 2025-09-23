@@ -382,7 +382,7 @@
                 {% for media in hospital.media_items.all %}
                   {% if media.video_url %}
                     <div class="mb-4">
-                      <h6>{{ media.hospital.name }}</h6>
+                      <h6>{% if media.hospital %}{{ media.hospital.name }}{% else %}Hospital{% endif %}</h6>
                       <div class="ratio ratio-16x9">
                         <iframe src="{{ media.video_url }}" class="w-100" allowfullscreen></iframe>
                       </div>
@@ -506,18 +506,18 @@
                     <i class="bi bi-person fs-1 text-muted"></i>
                   </div>
                   <h5 class="mb-1 mt-3">Dr. {{ doctor.name }}</h5>
-                  <p class="mb-2 text-muted">Specialist in {{ doctor.treatments.all|join:", " }}</p>
-                  <p class="mb-4 text-muted">{{ doctor.experience_years }} years of experience</p>
+                  <p class="mb-2 text-muted">Specialist in {% if doctor.treatments.all %}{{ doctor.treatments.all|join:", " }}{% else %}General Medicine{% endif %}</p>
+                  <p class="mb-4 text-muted">{% if doctor.experience_years %}{{ doctor.experience_years }}{% else %}0{% endif %} years of experience</p>
                 </div>
                 
                 <div class="mb-3">
                   <h6>Education</h6>
-                  <p class="mb-0">{{ doctor.education|linebreaksbr }}</p>
+                  <p class="mb-0">{% if doctor.education %}{{ doctor.education|linebreaksbr }}{% else %}No education information available.{% endif %}</p>
                 </div>
                 
                 <div class="mb-3">
                   <h6>Key Points</h6>
-                  <p class="mb-0">{{ doctor.key_points|linebreaksbr }}</p>
+                  <p class="mb-0">{% if doctor.key_points %}{{ doctor.key_points|linebreaksbr }}{% else %}No key points available.{% endif %}</p>
                 </div>
               {% else %}
                 <p class="text-muted">No doctor information available.</p>
@@ -599,7 +599,7 @@
             <div class="card-body">
               {% if doctor and doctor.awards %}
                 <ul class="list-group list-group-flush">
-                  {% for award in doctor.awards.split('\n') %}
+                  {% for award in doctor.awards|linebreaksbr %}
                     {% if award.strip %}
                       <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                         <span>{{ award|safe }}</span>

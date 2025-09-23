@@ -1,26 +1,18 @@
 @echo off
-title TakeOpinion - Deploy Fix for 500 Error
-echo ========================================
-echo TakeOpinion - Deploy Fix for 500 Error
-echo ========================================
-echo.
-echo This script will deploy the fix for the patient dashboard 500 error.
+echo Fixing patient dashboard 500 error...
 echo.
 
-REM Add all changes to git
-echo Adding all changes to git...
+echo Adding changes to git...
 git add .
 
-REM Commit changes
 echo Committing changes...
-git commit -m "Fix patient dashboard 500 error - undefined variables in template and view and add .gitignore"
+git commit -m "Fix patient dashboard 500 error - Handle cases where users don't have profiles or patient details"
 
-REM Push to GitHub
 echo Pushing to GitHub...
-git push
+git push origin main
 
 echo.
-echo Deployment completed successfully!
+echo Changes have been pushed to GitHub!
 echo.
 echo Next steps:
 echo 1. Go to your Render dashboard
