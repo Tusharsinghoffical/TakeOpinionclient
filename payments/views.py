@@ -1,4 +1,5 @@
-import razorpay
+# Move this import inside functions where it's needed
+# import razorpay
 import json
 import logging
 from django.shortcuts import render, redirect, get_object_or_404
@@ -13,29 +14,35 @@ from bookings.models import Booking
 # Configure logging
 logger = logging.getLogger(__name__)
 
-# Initialize Razorpay client
-client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+# Initialize Razorpay client inside functions where needed
+# client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
 
 @login_required
 def create_razorpay_order(request):
     """Create a Razorpay order for the booking"""
     if request.method != 'POST':
-        return HttpResponseBadRequest("Invalid request method")
+        return HttpResponseBadRequest(b"Invalid request method")
     
     try:
+        # Import razorpay here to avoid issues during deployment
+        import razorpay
+        
+        # Initialize Razorpay client
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        
         # Get booking details from POST data
         booking_id = request.POST.get('booking_id')
         amount = request.POST.get('amount')
         
         if not booking_id or not amount:
-            return HttpResponseBadRequest("Missing required parameters")
+            return HttpResponseBadRequest(b"Missing required parameters")
         
         # Convert amount to paise (smallest currency unit)
         amount_in_paise = int(float(amount) * 100)
         
         # Create Razorpay order
-        razorpay_order = client.order.create({
+        razorpay_order = client.order.create({  # type: ignore
             'amount': amount_in_paise,
             'currency': 'INR',
             'payment_capture': 1  # Auto-capture payment
@@ -43,13 +50,14 @@ def create_razorpay_order(request):
         
         # Save payment record
         booking = get_object_or_404(Booking, id=booking_id)
-        payment = Payment.objects.create(
+        payment = Payment(  # type: ignore
             booking=booking,
             user=request.user.userprofile,
             razorpay_order_id=razorpay_order['id'],
             amount=amount,
             currency='INR'
         )
+        payment.save()  # Save after creation
         
         # Return order details to frontend
         context = {
@@ -71,9 +79,15 @@ def create_razorpay_order(request):
 def verify_payment(request):
     """Verify the payment using Razorpay's signature verification"""
     if request.method != 'POST':
-        return HttpResponseBadRequest("Invalid request method")
+        return HttpResponseBadRequest(b"Invalid request method")
     
     try:
+        # Import razorpay here to avoid issues during deployment
+        import razorpay
+        
+        # Initialize Razorpay client
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        
         # Get payment details from POST data
         payment_data = json.loads(request.body)
         
@@ -92,7 +106,7 @@ def verify_payment(request):
         }
         
         try:
-            client.utility.verify_payment_signature(params_dict)
+            client.utility.verify_payment_signature(params_dict)  # type: ignore
             
             # Update payment record
             payment = get_object_or_404(Payment, razorpay_order_id=razorpay_order_id)
@@ -107,7 +121,8 @@ def verify_payment(request):
             
             return JsonResponse({'status': 'success'})
             
-        except razorpay.errors.SignatureVerificationError:
+        except Exception as e:
+            # Handle signature verification error
             # Update payment record as failed
             payment = get_object_or_404(Payment, razorpay_order_id=razorpay_order_id)
             payment.status = 'failed'
