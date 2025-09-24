@@ -26,6 +26,7 @@ redis==6.4.0
 celery==5.5.3
 
 # Payment processing
+setuptools==75.1.0
 razorpay==1.4.2
 stripe==8.4.0
 
