@@ -102,11 +102,12 @@
                   >
                 </li>
                 {% elif user.userprofile.user_type == 'doctor' %}
+                <!-- Doctor navigation - now matches admin design -->
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.path|slice:':14' == '/doctor/profile/' %}active{% endif %}"
-                    href="{% url 'doctor_profile' %}"
-                    >Doctor Profile</a
+                    class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
+                    href="/doctors/"
+                    >Doctors</a
                   >
                 </li>
                 <li class="nav-item">
@@ -121,6 +122,13 @@
                     class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
                     href="/treatments/"
                     >Treatments</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}"
+                    href="/blogs/"
+                    >Blogs</a
                   >
                 </li>
                 <li class="nav-item">
@@ -131,12 +139,12 @@
                   >
                 </li>
                 {% elif user.userprofile.user_type == 'patient' %}
-                <!-- Patient specific navigation -->
+                <!-- Patient navigation - now matches admin design -->
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.path|slice:':14' == '/patient/portal/' %}active{% endif %}"
-                    href="{% url 'patient_portal' %}"
-                    >Patient Portal</a
+                    class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
+                    href="/doctors/"
+                    >Doctors</a
                   >
                 </li>
                 <li class="nav-item">
@@ -155,9 +163,9 @@
                 </li>
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
-                    href="/doctors/"
-                    >Doctors</a
+                    class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}"
+                    href="/blogs/"
+                    >Blogs</a
                   >
                 </li>
                 <li class="nav-item">
