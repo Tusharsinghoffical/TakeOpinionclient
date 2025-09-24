@@ -10,6 +10,6 @@ services:
       - key: SECRET_KEY
         generate: true
       - key: DEBUG
-        value: False
+        value: "False"
       - key: ALLOWED_HOSTS
-        value: .onrender.com,takeopinionclient.onrender.com
+        value: ".onrender.com,takeopinionclient.onrender.com"
