@@ -7,6 +7,7 @@ This file extends the base settings with production-specific configurations.
 import os
 from typing import Any, Dict
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,13 +54,17 @@ for host in CRITICAL_HOSTS:
 print(f"ALLOWED_HOSTS configured as: {ALLOWED_HOSTS}")
 
 # Database configuration for production
-# Using SQLite for now to avoid compatibility issues
+# Using SQLite for now to avoid compatibility issues, but can be configured for PostgreSQL
 DATABASES: Dict[str, Any] = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# If DATABASE_URL environment variable is provided, use it (for PostgreSQL)
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'])
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/

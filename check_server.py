@@ -1,27 +1,41 @@
-import requests
-import time
+#!/usr/bin/env python
+"""
+Health check script for the TakeOpinion application.
+This script can be used to verify the application is running correctly.
+"""
 
-def check_server():
-    """Check if the Django server is running"""
-    try:
-        response = requests.get('http://127.0.0.1:8000/accounts/reviews/', timeout=5)
-        print(f"Server is running. Status code: {response.status_code}")
-        print(f"Page title: {response.text[:100]}...")
-        return True
-    except requests.exceptions.ConnectionError:
-        print("Server is not running or not accessible")
-        return False
-    except requests.exceptions.Timeout:
-        print("Request timed out")
-        return False
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return False
+import os
+import sys
+import django
+from django.conf import settings
 
-if __name__ == "__main__":
-    print("Checking if the Django server is running...")
-    success = check_server()
-    if success:
-        print("Server check completed successfully!")
-    else:
-        print("Server check failed!")
+# Add the project directory to the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Set the Django settings module
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'takeopinion.settings_prod')
+
+try:
+    django.setup()
+    print("Django setup successful")
+    
+    # Check if the database is accessible
+    from django.db import connection
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT 1")
+        result = cursor.fetchone()
+        if result:
+            print("Database connection successful")
+        else:
+            print("Database connection failed")
+    
+    # Check if all apps are loaded
+    from django.apps import apps
+    loaded_apps = [app.name for app in apps.get_app_configs()]
+    print(f"Loaded apps: {', '.join(loaded_apps)}")
+    
+    print("Health check completed successfully!")
+    
+except Exception as e:
+    print(f"Health check failed: {e}")
+    sys.exit(1)

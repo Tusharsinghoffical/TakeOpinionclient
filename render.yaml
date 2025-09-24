@@ -12,4 +12,4 @@ services:
       - key: DEBUG
         value: False
       - key: ALLOWED_HOSTS
-        value: .onrender.com
+        value: .onrender.com,takeopinionclient.onrender.com
