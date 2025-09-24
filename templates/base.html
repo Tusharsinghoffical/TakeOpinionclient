@@ -15,8 +15,6 @@
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
       rel="stylesheet"
-      integrity="sha384-+g2R8Rtc4b3+9E4+ZUHeVvT1K9S6Y1B1B1C9C1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1B1"
-      crossorigin="anonymous"
     />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,10 +27,6 @@
     <!-- Dashboard CSS (load on all dashboard pages) -->
     {% if '/admin/dashboard/' in request.path or '/doctor/profile/' in request.path or '/patient/dashboard/' in request.path %}
     <link href="{% static 'css/dashboard.css' %}" rel="stylesheet" />
-    {% endif %}
-    <!-- Admin Dashboard Specific CSS -->
-    {% if '/admin/dashboard/' in request.path %}
-    <link href="{% static 'css/admin-dashboard.css' %}" rel="stylesheet" />
     {% endif %}
   </head>
   <body>
@@ -72,13 +66,6 @@
               {% if user.is_authenticated %}
                 {% if user.userprofile.user_type == 'admin' %}
                 <!-- Admin specific navigation -->
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if '/admin/dashboard/' in request.path %}active{% endif %}"
-                    href="{% url 'admin_dashboard' %}"
-                    >Admin Dashboard</a
-                  >
-                </li>
                 <li class="nav-item">
                   <a
                     class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
@@ -220,6 +207,15 @@
               </li>
               {% endif %}
             </ul>
+            <!-- Search Form -->
+            <form class="d-flex me-3" action="/search/" method="get">
+              <div class="input-group">
+                <input name="q" class="form-control border-end-0" type="search" placeholder="Search doctors, hospitals, treatments..." aria-label="Search">
+                <button class="btn btn-outline-primary border-start-0" type="submit">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </form>
             <div class="d-flex gap-2 align-items-center">
               {% if user.is_authenticated %}
               <div class="dropdown user-dropdown">
@@ -315,40 +311,40 @@
               your needs.
             </p>
             <div class="d-flex gap-3">
-              <a href="#" class="social-icon">
-                <i class="bi bi-facebook fs-4"></i>
+              <a href="#" class="social-icon text-white" title="Facebook">
+                <i class="bi bi-facebook"></i>
               </a>
-              <a href="#" class="social-icon">
-                <i class="bi bi-twitter fs-4"></i>
+              <a href="#" class="social-icon text-white" title="Twitter">
+                <i class="bi bi-twitter"></i>
               </a>
-              <a href="#" class="social-icon">
-                <i class="bi bi-instagram fs-4"></i>
+              <a href="#" class="social-icon text-white" title="Instagram">
+                <i class="bi bi-instagram"></i>
               </a>
-              <a href="#" class="social-icon">
-                <i class="bi bi-linkedin fs-4"></i>
+              <a href="#" class="social-icon text-white" title="LinkedIn">
+                <i class="bi bi-linkedin"></i>
               </a>
             </div>
           </div>
           <div class="col-md-3 mb-4 mb-md-0">
             <h6 class="fw-bold mb-3">Quick Links</h6>
-            <ul class="list-unstyled">
+            <ul class="list-unstyled footer-links">
               <li class="mb-2">
-                <a href="/" class="text-decoration-none text-white-50">Home</a>
+                <a href="/" class="text-decoration-none text-white">Home</a>
               </li>
               <li class="mb-2">
                 <a
                   href="/treatments/"
-                  class="text-decoration-none text-white-50"
+                  class="text-decoration-none text-white"
                   >Treatments</a
                 >
               </li>
               <li class="mb-2">
-                <a href="/doctors/" class="text-decoration-none text-white-50"
+                <a href="/doctors/" class="text-decoration-none text-white"
                   >Doctors</a
                 >
               </li>
               <li class="mb-2">
-                <a href="/hospitals/" class="text-decoration-none text-white-50"
+                <a href="/hospitals/" class="text-decoration-none text-white"
                   >Hospitals</a
                 >
               </li>
@@ -356,50 +352,50 @@
           </div>
           <div class="col-md-3">
             <h6 class="fw-bold mb-3">Support</h6>
-            <ul class="list-unstyled">
+            <ul class="list-unstyled footer-links">
               <li class="mb-2">
                 <a
                   href="{% url 'contact' %}"
-                  class="text-decoration-none text-white-50"
+                  class="text-decoration-none text-white"
                   >Contact Us</a
                 >
               </li>
               <li class="mb-2">
                 <a
                   href="{% url 'privacy' %}"
-                  class="text-decoration-none text-white-50"
+                  class="text-decoration-none text-white"
                   >Privacy Policy</a
                 >
               </li>
               <li class="mb-2">
                 <a
                   href="{% url 'terms' %}"
-                  class="text-decoration-none text-white-50"
+                  class="text-decoration-none text-white"
                   >Terms of Service</a
                 >
               </li>
               <li class="mb-2">
-                <a href="#" class="text-decoration-none text-white-50">FAQ</a>
+                <a href="#" class="text-decoration-none text-white">FAQ</a>
               </li>
             </ul>
           </div>
         </div>
         <hr class="my-4 border-secondary" />
-        <div class="row align-items-center">
+        <div class="row align-items-center footer-bottom">
           <div class="col-md-6 text-center text-md-start">
-            <p class="mb-0 small text-white-50">
+            <p class="mb-0 small footer-copyright">
               &copy; <span data-current-year></span> TakeOpinion. All rights
               reserved.
             </p>
           </div>
           <div class="col-md-6 text-center text-md-end">
             <a
-              class="me-3 text-decoration-none text-white-50"
+              class="me-3 text-decoration-none text-white"
               href="{% url 'privacy' %}"
               >Privacy</a
             >
             <a
-              class="text-decoration-none text-white-50"
+              class="text-decoration-none text-white"
               href="{% url 'terms' %}"
               >Terms</a
             >

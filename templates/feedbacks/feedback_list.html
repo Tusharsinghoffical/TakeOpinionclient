@@ -1,6 +1,4 @@
 <div class="feedback-section">
-    <h3>Feedback & Reviews</h3>
-    
     <!-- Feedback Form -->
     {% if user.is_authenticated and user.userprofile.user_type == 'patient' %}
     <div class="feedback-form mb-4 p-3 border rounded">
@@ -36,7 +34,7 @@
     {% elif user.is_authenticated %}
         <p class="text-muted">Only patients can submit feedback.</p>
     {% else %}
-        <p class="text-muted">Please <a href="{% url 'login' %}">login</a> to share your feedback.</p>
+        
     {% endif %}
     
     <!-- Feedback List -->

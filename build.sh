@@ -31,4 +31,13 @@ python manage.py collectstatic --no-input
 echo "=== Running migrations ==="
 python manage.py migrate
 
+# Import data if fixtures exist
+echo "=== Importing data ==="
+if [ -d "fixtures" ]; then
+    echo "Fixtures directory found, importing data..."
+    python import_data.py
+else
+    echo "No fixtures directory found, skipping data import"
+fi
+
 echo "=== Build completed successfully! ==="

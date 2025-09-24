@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum
 from datetime import datetime, timedelta
 from .models import UserProfile, PatientProfile, DoctorProfile
 from hospitals.models import Hospital
@@ -336,9 +336,36 @@ def reviews_page(request):
             Q(treatment__name__icontains=search_query)
         )
     
+    # Add pagination - show 10 reviews per page
+    from django.core.paginator import Paginator
+    paginator = Paginator(feedback_list, 10)  # Show 10 reviews per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    # Calculate real-time statistics (based on all reviews, not just current page)
+    total_reviews = feedback_list.count()
+    
+    # Calculate average rating
+    if total_reviews > 0:
+        # Calculate weighted average rating
+        rating_sum = feedback_list.aggregate(
+            total_rating=Sum('rating')
+        )['total_rating'] or 0
+        average_rating = round(rating_sum / total_reviews, 1)
+        
+        # Calculate percentage of 4+ star reviews (would recommend)
+        high_rating_count = feedback_list.filter(rating__gte=4).count()
+        recommend_percentage = round((high_rating_count / total_reviews) * 100)
+    else:
+        average_rating = 0
+        recommend_percentage = 0
+    
     context = {
-        'feedbacks': feedback_list,
+        'feedbacks': page_obj,  # Pass the paginated object instead of the full list
         'search_query': search_query,
+        'total_reviews': total_reviews,
+        'average_rating': average_rating,
+        'recommend_percentage': recommend_percentage,
     }
     return render(request, 'accounts/reviews.html', context)
 
@@ -362,9 +389,36 @@ def reviews_api(request):
             Q(treatment__name__icontains=search_query)
         )
     
-    # Convert to JSON serializable format
+    # Add pagination - show 10 reviews per page
+    from django.core.paginator import Paginator
+    paginator = Paginator(feedback_list, 10)  # Show 10 reviews per page
+    page_number = request.GET.get('page', 1)
+    try:
+        page_obj = paginator.page(page_number)
+    except:
+        page_obj = paginator.page(1)
+    
+    # Calculate real-time statistics (based on all reviews, not just current page)
+    total_reviews = feedback_list.count()
+    
+    # Calculate average rating
+    if total_reviews > 0:
+        # Calculate weighted average rating
+        rating_sum = feedback_list.aggregate(
+            total_rating=Sum('rating')
+        )['total_rating'] or 0
+        average_rating = round(rating_sum / total_reviews, 1)
+        
+        # Calculate percentage of 4+ star reviews (would recommend)
+        high_rating_count = feedback_list.filter(rating__gte=4).count()
+        recommend_percentage = round((high_rating_count / total_reviews) * 100)
+    else:
+        average_rating = 0
+        recommend_percentage = 0
+    
+    # Convert to JSON serializable format (only for current page)
     reviews_data = []
-    for feedback in feedback_list:
+    for feedback in page_obj:
         review_data = {
             'id': feedback.id,
             'title': feedback.title,
@@ -391,7 +445,23 @@ def reviews_api(request):
         
         reviews_data.append(review_data)
     
-    return JsonResponse({'reviews': reviews_data})
+    # Return both reviews and statistics
+    return JsonResponse({
+        'reviews': reviews_data,
+        'statistics': {
+            'total_reviews': total_reviews,
+            'average_rating': average_rating,
+            'recommend_percentage': recommend_percentage,
+        },
+        'pagination': {
+            'current_page': page_obj.number,
+            'total_pages': paginator.num_pages,
+            'has_next': page_obj.has_next(),
+            'has_previous': page_obj.has_previous(),
+            'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,
+            'previous_page_number': page_obj.previous_page_number() if page_obj.has_previous() else None,
+        }
+    })
 
 
 @require_http_methods(["POST"])

@@ -5,31 +5,38 @@
     <div class="col-lg-8">
       <div class="section-title mb-4">
         <i class="bi bi-calendar-check"></i>
-        <h1 class="h2 mb-0">Finalize Your Booking</h1>
+        <h1 class="h2 mb-0">Finalize Your Medical Travel Booking</h1>
       </div>
       
-      <p class="mb-4">Complete your medical travel arrangements by providing details about your preferred treatment, doctor, and hospital.</p>
+      <p class="mb-4">Complete your medical travel arrangements by providing details about your preferred treatment, doctor, and hospital. Our team will coordinate all aspects of your journey.</p>
       
       <div class="card border-0 shadow-sm">
         <div class="card-body">
-          <form class="row g-4">
+          <form id="bookingForm" class="row g-4" method="POST">
+            {% csrf_token %}
             <div class="col-12">
               <h5 class="card-title mb-3">Treatment Details</h5>
             </div>
             
             <div class="col-md-6">
-              <label class="form-label fw-semibold">Type of Treatment</label>
-              <input class="form-control form-control-lg" placeholder="e.g., Knee Replacement, Heart Surgery, etc." />
+              <label class="form-label fw-semibold">Type of Treatment <span class="text-danger">*</span></label>
+              <select class="form-select form-control-lg" id="treatmentSelect" name="treatment" required>
+                <option value="">Select Treatment</option>
+                {% for treatment in treatments %}
+                <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+                {% endfor %}
+              </select>
+              <div class="form-text">Choose the medical treatment you're interested in</div>
             </div>
             
             <div class="col-md-6">
               <label class="form-label fw-semibold">Special Requirements</label>
-              <select class="form-select form-control-lg">
-                <option selected>None</option>
-                <option>Wheelchair Access</option>
-                <option>Interpreter Needed</option>
-                <option>Dietary Restrictions</option>
-                <option>Other Medical Conditions</option>
+              <select class="form-select form-control-lg" name="special_requirements">
+                <option selected value="none">None</option>
+                <option value="wheelchair">Wheelchair Access</option>
+                <option value="interpreter">Interpreter Needed</option>
+                <option value="dietary">Dietary Restrictions</option>
+                <option value="medical">Other Medical Conditions</option>
               </select>
             </div>
             
@@ -39,22 +46,36 @@
             
             <div class="col-md-6">
               <label class="form-label fw-semibold">Preferred Doctor</label>
-              <input class="form-control form-control-lg" placeholder="Dr. Name or leave blank for recommendation" />
+              <select class="form-select form-control-lg" name="preferred_doctor">
+                <option value="">No preference (we'll recommend)</option>
+                {% for doctor in doctors %}
+                <option value="{{ doctor.id }}">Dr. {{ doctor.name }}</option>
+                {% endfor %}
+              </select>
+              <div class="form-text">Select a specific doctor or leave blank for our recommendation</div>
             </div>
             
             <div class="col-md-6">
               <label class="form-label fw-semibold">Preferred Hospital</label>
-              <input class="form-control form-control-lg" placeholder="Hospital Name or leave blank for recommendation" />
+              <select class="form-select form-control-lg" name="preferred_hospital">
+                <option value="">No preference (we'll recommend)</option>
+                {% for hospital in hospitals %}
+                <option value="{{ hospital.id }}">{{ hospital.name }}</option>
+                {% endfor %}
+              </select>
+              <div class="form-text">Select a specific hospital or leave blank for our recommendation</div>
             </div>
             
             <div class="col-md-6">
               <label class="form-label fw-semibold">Preferred Booking Dates</label>
-              <input type="date" class="form-control form-control-lg" />
+              <input type="date" class="form-control form-control-lg" name="preferred_date" min="{% now "Y-m-d" %}">
+              <div class="form-text">Select your preferred date for the consultation</div>
             </div>
             
             <div class="col-md-6">
               <label class="form-label fw-semibold">Estimated Budget (USD)</label>
-              <input type="number" class="form-control form-control-lg" placeholder="Enter amount" />
+              <input type="number" class="form-control form-control-lg" name="budget" placeholder="Enter amount" min="0" step="0.01">
+              <div class="form-text">Approximate budget for your treatment</div>
             </div>
             
             <div class="col-12">
@@ -63,29 +84,38 @@
             
             <div class="col-12">
               <label class="form-label fw-semibold">Medical History Summary</label>
-              <textarea class="form-control form-control-lg" rows="3" placeholder="Briefly describe your medical history relevant to this treatment..."></textarea>
+              <textarea class="form-control form-control-lg" name="medical_history" rows="3" placeholder="Briefly describe your medical history relevant to this treatment..."></textarea>
             </div>
             
-            <div class="col-12">
+            <div class="col-md-6">
               <label class="form-label fw-semibold">Travel Companions</label>
-              <select class="form-select form-control-lg">
-                <option selected>Traveling Alone</option>
-                <option>With Spouse/Partner</option>
-                <option>With Family Member</option>
-                <option>With Friend</option>
+              <select class="form-select form-control-lg" name="travel_companions">
+                <option selected value="alone">Traveling Alone</option>
+                <option value="spouse">With Spouse/Partner</option>
+                <option value="family">With Family Member</option>
+                <option value="friend">With Friend</option>
+              </select>
+            </div>
+            
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Urgency Level</label>
+              <select class="form-select form-control-lg" name="urgency">
+                <option value="flexible">Flexible Timeline</option>
+                <option value="soon">Within 1 Month</option>
+                <option value="urgent">Urgent (Within 2 Weeks)</option>
               </select>
             </div>
             
             <div class="col-12 mt-4">
               <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                <input class="form-check-input" type="checkbox" id="termsCheck" name="agree_terms" required>
                 <label class="form-check-label" for="termsCheck">
-                  I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a>
+                  I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a> <span class="text-danger">*</span>
                 </label>
               </div>
-              <a href="/book/post-payment/" class="btn btn-primary btn-lg w-100">
-                <i class="bi bi-credit-card me-2"></i>Proceed to Payment
-              </a>
+              <button type="submit" class="btn btn-primary btn-lg w-100" id="submitBooking">
+                <i class="bi bi-calendar-check me-2"></i>Submit Booking Request
+              </button>
             </div>
           </form>
         </div>
@@ -109,4 +139,29 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Set minimum date to today
+  document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelector('input[name="preferred_date"]').min = today;
+    
+    // Form submission handler
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      const submitBtn = document.getElementById('submitBooking');
+      const originalText = submitBtn.innerHTML;
+      
+      // Show loading state
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...';
+      submitBtn.disabled = true;
+      
+      // In a real implementation, this would submit the form via AJAX
+      // For now, we'll just show a success message
+      setTimeout(function() {
+        // Let the form submit normally to the server
+        // This is just for UI feedback during the submission
+      }, 500);
+    });
+  });
+</script>
 {% endblock %}

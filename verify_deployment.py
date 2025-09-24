@@ -1,95 +1,120 @@
 #!/usr/bin/env python
 """
-Deployment verification script for the TakeOpinion application.
-This script checks if all required components are properly configured for deployment.
+Script to verify deployment files and data
 """
-
 import os
 import sys
-import importlib.util
+import json
 
-def check_file_exists(filepath, description):
-    """Check if a file exists and report the result."""
-    if os.path.exists(filepath):
-        print(f"✓ {description} found")
-        return True
-    else:
-        print(f"✗ {description} not found")
+def check_files():
+    """Check if all required deployment files exist"""
+    required_files = [
+        'render.yaml',
+        'build.sh',
+        'requirements.txt',
+        'export_data.py',
+        'import_data.py',
+        'deploy_to_render.py',
+        'RENDER_DEPLOYMENT.md'
+    ]
+    
+    missing_files = []
+    for file in required_files:
+        if not os.path.exists(file):
+            missing_files.append(file)
+    
+    if missing_files:
+        print("Missing required files:")
+        for file in missing_files:
+            print(f"  - {file}")
         return False
+    
+    print("✓ All required deployment files present")
+    return True
 
-def check_environment_variable(var_name, description):
-    """Check if an environment variable is set."""
-    if os.environ.get(var_name):
-        print(f"✓ {description} is set")
-        return True
-    else:
-        print(f"✗ {description} is not set")
+def check_fixtures():
+    """Check if fixtures directory exists and has data"""
+    if not os.path.exists('fixtures'):
+        print("⚠ Fixtures directory not found")
         return False
+    
+    fixtures = os.listdir('fixtures')
+    if not fixtures:
+        print("⚠ Fixtures directory is empty")
+        return False
+    
+    print(f"✓ Found {len(fixtures)} fixture files:")
+    for fixture in fixtures:
+        print(f"  - {fixture}")
+    
+    return True
 
-def check_python_package(package_name, description):
-    """Check if a Python package is installed."""
+def check_build_script():
+    """Check if build script has correct permissions and content"""
+    if not os.path.exists('build.sh'):
+        print("⚠ build.sh not found")
+        return False
+    
+    # Check if build.sh is executable
+    if os.name != 'nt':  # Not Windows
+        import stat
+        st = os.stat('build.sh')
+        if not (st.st_mode & stat.S_IEXEC):
+            print("⚠ build.sh is not executable")
+            return False
+    
+    print("✓ build.sh script is properly configured")
+    return True
+
+def check_render_config():
+    """Check render.yaml configuration"""
+    if not os.path.exists('render.yaml'):
+        print("⚠ render.yaml not found")
+        return False
+    
     try:
-        importlib.util.find_spec(package_name)
-        print(f"✓ {description} is installed")
-        return True
-    except ImportError:
-        print(f"✗ {description} is not installed")
+        with open('render.yaml', 'r') as f:
+            content = f.read()
+            if 'buildCommand: "./build.sh"' not in content:
+                print("⚠ buildCommand not properly configured in render.yaml")
+                return False
+            if 'startCommand: "gunicorn' not in content:
+                print("⚠ startCommand not properly configured in render.yaml")
+                return False
+    except Exception as e:
+        print(f"⚠ Error reading render.yaml: {e}")
         return False
+    
+    print("✓ render.yaml configuration is correct")
+    return True
 
 def main():
-    print("TakeOpinion Deployment Verification")
-    print("=" * 40)
+    """Main verification function"""
+    print("=== TakeOpinion Deployment Verification ===")
     
-    # Check required files
-    print("\nChecking required files:")
-    files_to_check = [
-        ("takeopinion/settings.py", "Django settings file"),
-        ("takeopinion/settings_prod.py", "Production settings file"),
-        ("takeopinion/wsgi.py", "WSGI application file"),
-        ("build.sh", "Build script"),
-        ("requirements.txt", "Dependencies file"),
-        ("render.yaml", "Render configuration file"),
+    checks = [
+        check_files,
+        check_fixtures,
+        check_build_script,
+        check_render_config
     ]
     
-    all_files_found = True
-    for filepath, description in files_to_check:
-        if not check_file_exists(filepath, description):
-            all_files_found = False
+    all_passed = True
+    for check in checks:
+        if not check():
+            all_passed = False
+        print()
     
-    # Check required environment variables
-    print("\nChecking environment variables:")
-    env_vars_to_check = [
-        ("DJANGO_SETTINGS_MODULE", "Django settings module"),
-        ("SECRET_KEY", "Secret key"),
-    ]
-    
-    all_env_vars_set = True
-    for var_name, description in env_vars_to_check:
-        if not check_environment_variable(var_name, description):
-            all_env_vars_set = False
-    
-    # Check required Python packages
-    print("\nChecking required Python packages:")
-    packages_to_check = [
-        ("django", "Django framework"),
-        ("gunicorn", "Gunicorn WSGI server"),
-        ("whitenoise", "WhiteNoise static files"),
-        ("dj_database_url", "Database URL parser"),
-    ]
-    
-    all_packages_installed = True
-    for package_name, description in packages_to_check:
-        if not check_python_package(package_name, description):
-            all_packages_installed = False
-    
-    # Summary
-    print("\n" + "=" * 40)
-    if all_files_found and all_env_vars_set and all_packages_installed:
-        print("✓ All checks passed! Ready for deployment.")
-        return 0
+    if all_passed:
+        print("=== All deployment checks passed! ===")
+        print("Your application is ready for deployment to Render.")
+        print("Run commit_and_deploy.bat to commit changes and deploy.")
     else:
-        print("✗ Some checks failed. Please review the issues above.")
-        return 1
+        print("=== Some deployment checks failed ===")
+        print("Please fix the issues before deploying.")
+    
+    return all_passed
 
-if __name__ == "__main__":
-    sys.exit(main())
+if __name__ == '__main__':
+    success = main()
+    sys.exit(0 if success else 1)

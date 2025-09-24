@@ -5,7 +5,31 @@ document.addEventListener('DOMContentLoaded', () => {
     yearEl.textContent = new Date().getFullYear();
   }
 
-  // Search functionality
+  // Add fade-in animation to footer
+  const footer = document.querySelector('footer');
+  if (footer) {
+    footer.style.opacity = '0';
+    footer.style.transition = 'opacity 0.5s ease-in';
+    
+    // Trigger the animation after a short delay
+    setTimeout(() => {
+      footer.style.opacity = '1';
+    }, 100);
+  }
+
+  // Simple test to verify icons are loading
+  setTimeout(() => {
+    const socialIcons = document.querySelectorAll('.social-icon i');
+    socialIcons.forEach(icon => {
+      if (icon.offsetWidth === 0) {
+        // If icon is not visible, add a visual indicator
+        icon.parentElement.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+        icon.parentElement.style.border = '2px dashed rgba(255, 255, 255, 0.5)';
+      }
+    });
+  }, 1000);
+
+  // Search functionality for country cards (legacy)
   const searchInput = document.querySelector('[data-search-input]');
   const grid = document.querySelector(searchInput?.getAttribute('data-search-target') || '');
   if (searchInput && grid) {
@@ -83,4 +107,67 @@ document.addEventListener('DOMContentLoaded', () => {
     title.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     observer.observe(title);
   });
+
+  // Navbar search form submission
+  const navbarSearchForm = document.querySelector('nav .d-flex form');
+  if (navbarSearchForm) {
+    navbarSearchForm.addEventListener('submit', function(e) {
+      const searchInput = this.querySelector('input[name="q"]');
+      if (searchInput && searchInput.value.trim() === '') {
+        e.preventDefault();
+        searchInput.focus();
+        return false;
+      }
+    });
+  }
+  
+  // Enhanced search functionality
+  // Add real-time search suggestions
+  const searchInputs = document.querySelectorAll('input[name="q"]');
+  searchInputs.forEach(input => {
+    let searchTimeout;
+    
+    input.addEventListener('input', function() {
+      const query = this.value.trim();
+      
+      // Clear previous timeout
+      clearTimeout(searchTimeout);
+      
+      // If query is empty, hide suggestions
+      if (query === '') {
+        hideSearchSuggestions();
+        return;
+      }
+      
+      // Set new timeout for debouncing
+      searchTimeout = setTimeout(() => {
+        performSearch(query);
+      }, 300);
+    });
+    
+    // Hide suggestions when input loses focus
+    input.addEventListener('blur', function() {
+      setTimeout(hideSearchSuggestions, 150);
+    });
+  });
+  
+  function performSearch(query) {
+    // In a real implementation, this would make an AJAX call to the server
+    // For now, we'll just show a simple suggestion
+    if (query.length > 2) {
+      showSearchSuggestions(query);
+    } else {
+      hideSearchSuggestions();
+    }
+  }
+  
+  function showSearchSuggestions(query) {
+    // This is a placeholder for actual search suggestions
+    // In a real implementation, this would show dynamic suggestions
+    console.log('Searching for:', query);
+  }
+  
+  function hideSearchSuggestions() {
+    // This would hide any search suggestions UI
+  }
 });

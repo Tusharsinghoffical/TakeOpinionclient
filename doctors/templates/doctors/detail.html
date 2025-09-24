@@ -78,8 +78,11 @@
               </div>
               
               <div class="d-flex flex-wrap gap-2">
-                <a href="#" class="btn btn-primary">
-                  <i class="bi bi-calendar-check me-2"></i>Book Consultation
+                <a href="/book/consultation/{{ doctor.id }}/" class="btn btn-primary">
+                  <i class="bi bi-chat-dots me-2"></i>Consult
+                </a>
+                <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#appointmentModal">
+                  <i class="bi bi-calendar-check me-2"></i>Book Appointment
                 </a>
               </div>
             </div>
@@ -147,7 +150,11 @@
           {% for h in doctor.hospitals.all|slice:":3" %}
           <div class="d-flex mb-3">
             <div class="flex-shrink-0">
-              <img src="{{ h.profile_picture|default:'https://picsum.photos/seed/h'|add:h.id|default:'https://picsum.photos/seed/hospital/100/100' }}" class="rounded object-fit-cover" alt="{{ h.name }}" width="60" height="60">
+              {% if h.profile_picture %}
+                <img src="{{ h.profile_picture }}" class="rounded object-fit-cover" alt="{{ h.name }}" width="60" height="60">
+              {% else %}
+                <img src="https://picsum.photos/seed/h{{ h.id }}/100/100" class="rounded object-fit-cover" alt="{{ h.name }}" width="60" height="60">
+              {% endif %}
             </div>
             <div class="flex-grow-1 ms-3">
               <h6 class="mb-1"><a href="/hospitals/{{ h.slug }}/" class="text-decoration-none">{{ h.name }}</a></h6>
@@ -232,4 +239,179 @@
     </div>
   </div>
 </div>
+
+<!-- Consultation Modal -->
+<div class="modal fade" id="consultationModal" tabindex="-1" aria-labelledby="consultationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="consultationModalLabel">Consult with Dr. {{ doctor.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card border-primary h-100">
+              <div class="card-body text-center">
+                <i class="bi bi-camera-video text-primary fs-1 mb-3"></i>
+                <h5 class="card-title">Video Consultation</h5>
+                <p class="card-text">Get a face-to-face consultation with the doctor via secure video call.</p>
+                <a href="/book/consultation/{{ doctor.id }}/?type=video" class="btn btn-primary">Schedule Video Call</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card border-success h-100">
+              <div class="card-body text-center">
+                <i class="bi bi-telephone text-success fs-1 mb-3"></i>
+                <h5 class="card-title">Phone Consultation</h5>
+                <p class="card-text">Speak directly with the doctor over a secure phone line.</p>
+                <a href="/book/consultation/{{ doctor.id }}/?type=phone" class="btn btn-success">Schedule Phone Call</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <p class="mb-0"><small class="text-muted">Consultation fees start at $50. Select your preferred method to proceed.</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Appointment Modal -->
+<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="appointmentModalLabel">Book Appointment with Dr. {{ doctor.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-7">
+            <form id="appointmentForm">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Select Treatment</label>
+                <select class="form-select" id="treatmentSelect">
+                  <option value="">Choose a treatment</option>
+                  {% for treatment in doctor.treatments.all %}
+                  <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Preferred Date</label>
+                <input type="date" class="form-control" id="appointmentDate">
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Preferred Time</label>
+                <select class="form-select" id="appointmentTime">
+                  <option value="">Select time slot</option>
+                  <option value="09:00">09:00 AM</option>
+                  <option value="10:00">10:00 AM</option>
+                  <option value="11:00">11:00 AM</option>
+                  <option value="14:00">02:00 PM</option>
+                  <option value="15:00">03:00 PM</option>
+                  <option value="16:00">04:00 PM</option>
+                </select>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Additional Notes</label>
+                <textarea class="form-control" rows="3" placeholder="Any specific requirements or questions for the doctor..."></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-5">
+            <div class="card border-info h-100">
+              <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Appointment Details</h5>
+              </div>
+              <div class="card-body">
+                <div class="d-flex mb-3">
+                  <div class="flex-shrink-0">
+                    {% if doctor.profile_picture %}
+                      <img src="{{ doctor.profile_picture }}" class="rounded-circle" alt="{{ doctor.name }}" width="60" height="60">
+                    {% else %}
+                      <img src="https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=0D6EFD&color=fff&size=60" class="rounded-circle" alt="{{ doctor.name }}" width="60" height="60">
+                    {% endif %}
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-0">Dr. {{ doctor.name }}</h6>
+                    <p class="mb-0 small">{{ doctor.specialization }}</p>
+                    <p class="mb-0 small text-muted">{{ doctor.experience_years }} years experience</p>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <h6 class="mb-2">Estimated Cost</h6>
+                  <div class="d-flex justify-content-between">
+                    <span>Consultation Fee</span>
+                    <span>$100</span>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <span>Treatment (Estimate)</span>
+                    <span id="treatmentCost">$0</span>
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-between fw-bold">
+                    <span>Total</span>
+                    <span id="totalCost">$100</span>
+                  </div>
+                </div>
+                
+                <div class="alert alert-info">
+                  <i class="bi bi-info-circle me-2"></i>
+                  <small>You can modify your appointment details up to 24 hours before the scheduled time.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="proceedToPayment">
+          <i class="bi bi-credit-card me-2"></i>Proceed to Payment
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Update treatment cost when treatment is selected
+  document.getElementById('treatmentSelect').addEventListener('change', function() {
+    const treatmentId = this.value;
+    let cost = 0;
+    
+    // In a real implementation, you would fetch the actual cost from the server
+    // For demo purposes, we'll use sample costs
+    const treatmentCosts = {
+      // These would be dynamically populated in a real app
+    };
+    
+    if (treatmentId) {
+      // Sample costs for demonstration
+      cost = 500 + Math.floor(Math.random() * 2000);
+    }
+    
+    document.getElementById('treatmentCost').textContent = '$' + cost;
+    const total = 100 + cost;
+    document.getElementById('totalCost').textContent = '$' + total;
+  });
+  
+  // Proceed to payment button
+  document.getElementById('proceedToPayment').addEventListener('click', function() {
+    // In a real implementation, this would:
+    // 1. Validate form data
+    // 2. Create a booking record
+    // 3. Redirect to payment page
+    alert('In a real implementation, this would proceed to the payment page.');
+  });
+</script>
+
 {% endblock %}

@@ -4,8 +4,40 @@ from .models import Hospital
 
 
 def hospitals_list(request: HttpRequest) -> HttpResponse:
-    hospitals = Hospital.objects.all()
-    return render(request, "hospitals/list.html", {"hospitals": hospitals})
+    hospitals = Hospital.objects.all()  # type: ignore
+    
+    # Get filter parameters from request
+    treatment = request.GET.get('treatment', '')
+    accreditation = request.GET.get('accreditation', '')
+    rating = request.GET.get('rating', '')
+    
+    # Apply filters if provided
+    if treatment:
+        hospitals = hospitals.filter(treatments__name__icontains=treatment)  # type: ignore
+    
+    if accreditation:
+        if accreditation == 'JCI':
+            hospitals = hospitals.filter(jci_accredited=True)  # type: ignore
+        elif accreditation == 'NABH':
+            hospitals = hospitals.filter(nabh_accredited=True)  # type: ignore
+        elif accreditation == 'ISO':
+            hospitals = hospitals.filter(iso_certified=True)  # type: ignore
+    
+    if rating:
+        try:
+            rating_value = float(str(rating))
+            hospitals = hospitals.filter(rating__gte=rating_value)  # type: ignore
+        except (ValueError, TypeError):
+            pass  # Invalid rating value, ignore filter
+    
+    context = {
+        'hospitals': hospitals,
+        'treatment_filter': treatment,
+        'accreditation_filter': accreditation,
+        'rating_filter': rating,
+    }
+    
+    return render(request, "hospitals/list.html", context)
 
 
 def hospital_detail(request: HttpRequest, slug: str) -> HttpResponse:

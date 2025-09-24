@@ -2,13 +2,49 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 from .models import Doctor, DoctorMedia
 from .forms import DoctorMediaForm
 
 
 def doctors_list(request: HttpRequest) -> HttpResponse:
-    doctors = Doctor.objects.all()
-    return render(request, "doctors/list.html", {"doctors": doctors})
+    doctors = Doctor.objects.all()  # type: ignore
+    
+    # Get filter parameters from request
+    specialization = request.GET.get('specialization', '')
+    experience = request.GET.get('experience', '')
+    rating = request.GET.get('rating', '')
+    
+    # Apply filters if provided
+    if specialization:
+        doctors = doctors.filter(specialization__icontains=specialization)  # type: ignore
+    
+    if experience:
+        if experience == '5+ years':
+            doctors = doctors.filter(experience_years__gte=5)  # type: ignore
+        elif experience == '10+ years':
+            doctors = doctors.filter(experience_years__gte=10)  # type: ignore
+        elif experience == '15+ years':
+            doctors = doctors.filter(experience_years__gte=15)  # type: ignore
+        elif experience == '20+ years':
+            doctors = doctors.filter(experience_years__gte=20)  # type: ignore
+    
+    if rating:
+        if rating == '4.5+ stars':
+            doctors = doctors.filter(rating__gte=4.5)  # type: ignore
+        elif rating == '4.0+ stars':
+            doctors = doctors.filter(rating__gte=4.0)  # type: ignore
+        elif rating == '3.5+ stars':
+            doctors = doctors.filter(rating__gte=3.5)  # type: ignore
+    
+    context = {
+        'doctors': doctors,
+        'specialization_filter': specialization,
+        'experience_filter': experience,
+        'rating_filter': rating,
+    }
+    
+    return render(request, "doctors/list.html", context)
 
 
 def doctor_detail(request: HttpRequest, slug: str) -> HttpResponse:
@@ -44,10 +80,10 @@ def doctor_media_upload(request, doctor_id):
 def doctor_media_manage(request):
     # Get the doctor object by matching the user's full name with doctor names
     user_full_name = f"{request.user.first_name} {request.user.last_name}".strip()
-    doctor = Doctor.objects.filter(name__icontains=user_full_name).first()
+    doctor = Doctor.objects.filter(name__icontains=user_full_name).first()  # type: ignore
     if not doctor:
         # Fallback to get any doctor if name matching fails
-        doctor = Doctor.objects.first()
+        doctor = Doctor.objects.first()  # type: ignore
     
     if not doctor:
         messages.error(request, "No doctor profile found.")
@@ -59,17 +95,17 @@ def doctor_media_manage(request):
         return redirect('doctor_dashboard')
     
     # Get all media for this doctor
-    media_items = DoctorMedia.objects.filter(doctor=doctor)
+    media_items = DoctorMedia.objects.filter(doctor=doctor)  # type: ignore
     
     if request.method == 'POST':
         # Handle media deletion
         media_id = request.POST.get('media_id')
         if media_id:
             try:
-                media = DoctorMedia.objects.get(id=media_id, doctor=doctor)
+                media = DoctorMedia.objects.get(id=media_id, doctor=doctor)  # type: ignore
                 media.delete()
                 messages.success(request, "Media deleted successfully!")
-            except DoctorMedia.DoesNotExist:
+            except DoctorMedia.DoesNotExist:  # type: ignore
                 messages.error(request, "Media not found.")
         return redirect('doctor_media_manage')
     

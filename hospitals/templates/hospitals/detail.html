@@ -102,7 +102,11 @@
           </div>
           {% empty %}
           <div class="carousel-item active">
-            <img src="{{ hospital.profile_picture|default:'https://picsum.photos/seed/h'|add:hospital.id|default:'https://picsum.photos/seed/hospital/1200/500' }}" class="d-block w-100 object-fit-cover" alt="{{ hospital.name }} - Default" style="height: 400px;">
+            {% if hospital.profile_picture %}
+              <img src="{{ hospital.profile_picture }}" class="d-block w-100 object-fit-cover" alt="{{ hospital.name }} - Default" style="height: 400px;">
+            {% else %}
+              <img src="https://picsum.photos/seed/h{{ hospital.id }}/1200/500" class="d-block w-100 object-fit-cover" alt="{{ hospital.name }} - Default" style="height: 400px;">
+            {% endif %}
           </div>
           {% endfor %}
         </div>
@@ -158,7 +162,11 @@
             {% for d in hospital.doctors.all|slice:":4" %}
             <div class="col-md-6 col-lg-3">
               <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm">
-                <img src="{{ d.profile_picture|default:'https://ui-avatars.com/api/?name='|add:d.name|urlencode|default:'https://ui-avatars.com/api/?name=Doctor&background=0D6EFD&color=fff&size=256' }}" class="card-img-top object-fit-cover" alt="{{ d.name }}" style="height: 150px;">
+                {% if d.profile_picture %}
+                  <img src="{{ d.profile_picture }}" class="card-img-top object-fit-cover" alt="{{ d.name }}" style="height: 150px;">
+                {% else %}
+                  <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="card-img-top object-fit-cover" alt="{{ d.name }}" style="height: 150px;">
+                {% endif %}
                 <div class="card-body text-center">
                   <h6 class="card-title mb-1">{{ d.name }}</h6>
                   <div class="small">{{ d.specialization|default:'Specialist' }}</div>

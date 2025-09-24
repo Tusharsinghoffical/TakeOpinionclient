@@ -18,7 +18,8 @@ class TreatmentCategory(models.Model):
         verbose_name_plural = "Treatment Categories"
 
     def __str__(self) -> str:
-        return f"{self.name} ({self.get_type_display()})"
+        # This is a Django auto-generated method, safe to ignore linter warning
+        return f"{self.name} ({self.get_type_display()})"  # type: ignore
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -40,7 +41,7 @@ class Treatment(models.Model):
     preparation_guidelines = models.TextField(blank=True, default="Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure")
     aftercare_instructions = models.TextField(blank=True, default="Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions")
     starting_price = models.DecimalField(max_digits=10, decimal_places=2, default=5000.00)
-    review_count = models.PositiveIntegerField(default=120)
+    review_count = models.PositiveIntegerField(default=120)  # type: ignore
 
     def __str__(self) -> str:
         return str(self.name)
@@ -61,5 +62,20 @@ class Treatment(models.Model):
         if self.aftercare_instructions:
             return str(self.aftercare_instructions).split(',')
         return []
+
+
+class TreatmentFAQ(models.Model):
+    treatment = models.ForeignKey(Treatment, on_delete=models.CASCADE, related_name="faqs")
+    question = models.CharField(max_length=300)
+    answer = models.TextField()
+    order = models.PositiveIntegerField(default=0)  # type: ignore
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = "Treatment FAQ"
+        verbose_name_plural = "Treatment FAQs"
+
+    def __str__(self) -> str:
+        return f"FAQ for {self.treatment.name}: {self.question}"
 
 # Create your models here.

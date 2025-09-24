@@ -10,45 +10,40 @@
   
   <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
-      <div class="row g-3">
-        <div class="col-md-3">
-          <label class="form-label fw-semibold">Specialization</label>
-          <select class="form-select border-0 shadow-sm">
-            <option selected>All Specializations</option>
-            <option>Cardiology</option>
-            <option>Orthopedics</option>
-            <option>Dermatology</option>
-            <option>Oncology</option>
-            <option>Neurology</option>
-          </select>
+      <form id="doctor-filter-form" method="GET">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Specialization</label>
+            <select class="form-select border-0 shadow-sm" name="specialization" id="specialization-filter">
+              <option value="">All Specializations</option>
+              <option value="MBBS" {% if specialization_filter == 'MBBS' %}selected{% endif %}>MBBS</option>
+              <option value="Orthopedic Surgeon" {% if specialization_filter == 'Orthopedic Surgeon' %}selected{% endif %}>Orthopedic Surgeon</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Experience</label>
+            <select class="form-select border-0 shadow-sm" name="experience" id="experience-filter">
+              <option value="">Any Experience</option>
+              <option value="5+ years" {% if experience_filter == '5+ years' %}selected{% endif %}>5+ years</option>
+              <option value="10+ years" {% if experience_filter == '10+ years' %}selected{% endif %}>10+ years</option>
+              <option value="15+ years" {% if experience_filter == '15+ years' %}selected{% endif %}>15+ years</option>
+              <option value="20+ years" {% if experience_filter == '20+ years' %}selected{% endif %}>20+ years</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label fw-semibold">Rating</label>
+            <select class="form-select border-0 shadow-sm" name="rating" id="rating-filter">
+              <option value="">All Ratings</option>
+              <option value="4.5+ stars" {% if rating_filter == '4.5+ stars' %}selected{% endif %}>4.5+ stars</option>
+              <option value="4.0+ stars" {% if rating_filter == '4.0+ stars' %}selected{% endif %}>4.0+ stars</option>
+              <option value="3.5+ stars" {% if rating_filter == '3.5+ stars' %}selected{% endif %}>3.5+ stars</option>
+            </select>
+          </div>
+          <div class="col-md-1 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Filter</button>
+          </div>
         </div>
-        <div class="col-md-3">
-          <label class="form-label fw-semibold">Location</label>
-          <select class="form-select border-0 shadow-sm">
-            <option selected>All Locations</option>
-
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label class="form-label fw-semibold">Experience</label>
-          <select class="form-select border-0 shadow-sm">
-            <option selected>Any Experience</option>
-            <option>5+ years</option>
-            <option>10+ years</option>
-            <option>15+ years</option>
-            <option>20+ years</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label class="form-label fw-semibold">Rating</label>
-          <select class="form-select border-0 shadow-sm">
-            <option selected>All Ratings</option>
-            <option>4.5+ stars</option>
-            <option>4.0+ stars</option>
-            <option>3.5+ stars</option>
-          </select>
-        </div>
-      </div>
+      </form>
     </div>
   </div>
 
@@ -92,7 +87,12 @@
                 <i class="bi bi-briefcase me-1"></i>{{ d.experience_years }} years experience
               </div>
               <div class="small">
-                <i class="bi bi-hospital me-1"></i>{{ d.hospital|default:'Hospital' }}
+                <i class="bi bi-hospital me-1"></i>
+                {% for hospital in d.hospitals.all|slice:":1" %}
+                  {{ hospital.name }}
+                {% empty %}
+                  Hospital
+                {% endfor %}
               </div>
             </div>
           </div>
@@ -113,9 +113,25 @@
   </div>
   
   <div class="mt-4 text-center">
-    <button class="btn btn-outline-primary border-0 shadow-sm" type="button">
+    <button class="btn btn-outline-primary border-0 shadow-sm" type="button" id="load-more-doctors">
       <i class="bi bi-arrow-clockwise me-2"></i>Load More Doctors
     </button>
   </div>
 </div>
+
+<script>
+  // Auto-submit form when filters change
+  document.getElementById('specialization-filter').addEventListener('change', function() {
+    document.getElementById('doctor-filter-form').submit();
+  });
+  
+  document.getElementById('experience-filter').addEventListener('change', function() {
+    document.getElementById('doctor-filter-form').submit();
+  });
+  
+  document.getElementById('rating-filter').addEventListener('change', function() {
+    document.getElementById('doctor-filter-form').submit();
+  });
+</script>
+
 {% endblock %}

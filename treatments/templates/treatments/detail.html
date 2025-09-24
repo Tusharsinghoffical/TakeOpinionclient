@@ -56,9 +56,6 @@
             <a href="/book/" class="btn btn-primary">
               <i class="bi bi-calendar-check me-2"></i>Request Appointment
             </a>
-            <a href="#" class="btn btn-outline-secondary">
-              <i class="bi bi-share me-2"></i>Share
-            </a>
           </div>
         </div>
       </div>
@@ -71,19 +68,24 @@
           <h6 class="mb-3">Procedure Details</h6>
           <p>{{ treatment.procedure_details|default:'This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.' }}</p>
           
-          <h6 class="mt-4 mb-3">Preparation Guidelines</h6>
-          <ul>
-            {% for guideline in treatment.preparation_guidelines|default:"Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure" %}
-            <li>{{ guideline }}</li>
-            {% endfor %}
-          </ul>
-          
-          <h6 class="mt-4 mb-3">Aftercare Instructions</h6>
-          <ul>
-            {% for instruction in treatment.aftercare_instructions|default:"Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions" %}
-            <li>{{ instruction }}</li>
-            {% endfor %}
-          </ul>
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <h6 class="mb-3">Preparation Guidelines</h6>
+              <ul class="list-unstyled">
+                {% for guideline in treatment.get_preparation_guidelines %}
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>{{ guideline }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <h6 class="mb-3">Aftercare Instructions</h6>
+              <ul class="list-unstyled">
+                {% for instruction in treatment.get_aftercare_instructions %}
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>{{ instruction }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -105,11 +107,13 @@
               </div>
               <div class="d-flex align-items-center mb-2">
                 <div class="text-warning me-1">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-half"></i>
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= h.rating|floatformat:0 %}
+                      <i class="bi bi-star-fill"></i>
+                    {% else %}
+                      <i class="bi bi-star"></i>
+                    {% endif %}
+                  {% endfor %}
                 </div>
                 <span class="small">({{ h.review_count|default:120 }} reviews)</span>
               </div>
@@ -154,11 +158,13 @@
                       <div class="small mb-2">{{ d.specialization|default:'Specialist' }}</div>
                       <div class="d-flex align-items-center">
                         <div class="text-warning me-1">
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-fill"></i>
-                          <i class="bi bi-star-half"></i>
+                          {% for i in "12345" %}
+                            {% if forloop.counter <= d.rating|floatformat:0 %}
+                              <i class="bi bi-star-fill"></i>
+                            {% else %}
+                              <i class="bi bi-star"></i>
+                            {% endif %}
+                          {% endfor %}
                         </div>
                         <span class="small">({{ d.review_count|default:45 }})</span>
                       </div>
@@ -177,12 +183,6 @@
         </div>
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
-        <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Frequently Asked Questions</h5>
-        </div>
-      </div>
-      
       <!-- Feedback Section -->
       <div class="card mb-4 border-0 shadow-sm">
         {% include "feedbacks/feedback_list.html" with content_type="treatment" object=treatment only %}
@@ -193,16 +193,16 @@
           <h5 class="mb-0">Frequently Asked Questions</h5>
         </div>
         <div class="accordion accordion-flush" id="faq">
-          {% for faq in treatment.faqs|slice:":4" %}
+          {% for faq in faqs %}
           <div class="accordion-item">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ forloop.counter }}">
-                {{ faq.question|default:'What should I expect during this treatment?' }}
+                {{ faq.question }}
               </button>
             </h2>
             <div id="faq{{ forloop.counter }}" class="accordion-collapse collapse">
               <div class="accordion-body">
-                {{ faq.answer|default:'This treatment typically involves several stages including consultation, preparation, the procedure itself, and recovery. Your medical team will guide you through each step.' }}
+                {{ faq.answer }}
               </div>
             </div>
           </div>
@@ -231,7 +231,89 @@
               </div>
             </div>
           </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                What are the risks associated with this treatment?
+              </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                Like any medical procedure, this treatment carries some risks. Your doctor will discuss all potential risks and benefits with you during your consultation.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                How do I prepare for this treatment?
+              </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                Preparation guidelines include: {{ treatment.preparation_guidelines|default:'Consult your doctor, Stop certain medications, Complete medical tests, Fast before procedure' }}. Your medical team will provide detailed instructions.
+              </div>
+            </div>
+          </div>
           {% endfor %}
+        </div>
+      </div>
+      
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0">Success Stories</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="text-warning me-1">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                    </div>
+                    <span class="small">(5.0)</span>
+                  </div>
+                  <p class="card-text">"The treatment exceeded my expectations. The medical team was professional and caring throughout the entire process."</p>
+                  <div class="d-flex align-items-center">
+                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=0D6EFD&color=fff&size=40" class="rounded-circle me-2" alt="Patient" width="40" height="40">
+                    <div>
+                      <div class="fw-semibold">John Doe</div>
+                      <div class="small text-muted">Treated: 3 months ago</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="text-warning me-1">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
+                    </div>
+                    <span class="small">(4.5)</span>
+                  </div>
+                  <p class="card-text">"I was nervous about the procedure, but the staff made me feel comfortable. Recovery was faster than I expected."</p>
+                  <div class="d-flex align-items-center">
+                    <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=0D6EFD&color=fff&size=40" class="rounded-circle me-2" alt="Patient" width="40" height="40">
+                    <div>
+                      <div class="fw-semibold">Jane Smith</div>
+                      <div class="small text-muted">Treated: 6 months ago</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -251,9 +333,6 @@
             <a href="/book/" class="btn btn-primary btn-lg">
               <i class="bi bi-calendar-check me-2"></i>Request Appointment
             </a>
-            <a href="#" class="btn btn-outline-primary border-0 shadow-sm">
-              <i class="bi bi-chat-dots me-2"></i>Consult an Expert
-            </a>
           </div>
           
           <div class="mt-4">
@@ -264,7 +343,40 @@
               <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Surgery/procedure</li>
               <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Post-operative care</li>
               <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Follow-up appointments</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>24/7 support</li>
             </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0">Treatment Statistics</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span>Success Rate</span>
+            <span class="fw-bold text-success">98%</span>
+          </div>
+          <div class="progress mb-3">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 98%"></div>
+          </div>
+          
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span>Average Rating</span>
+            <span class="fw-bold">
+              <i class="bi bi-star-fill text-warning"></i> 4.9
+            </span>
+          </div>
+          
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span>Patients Treated</span>
+            <span class="fw-bold">1,240+</span>
+          </div>
+          
+          <div class="d-flex justify-content-between align-items-center">
+            <span>Hospitals</span>
+            <span class="fw-bold">24</span>
           </div>
         </div>
       </div>

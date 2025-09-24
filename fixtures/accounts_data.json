@@ -1,0 +1,68 @@
+[
+{
+  "model": "accounts.userprofile",
+  "pk": 1,
+  "fields": {
+    "user": 3,
+    "user_type": "admin",
+    "phone": "",
+    "address": "",
+    "city": "",
+    "profile_picture": "",
+    "created_at": "2025-09-18T16:17:11.044Z",
+    "updated_at": "2025-09-18T16:17:11.044Z"
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 7,
+  "fields": {
+    "user": 11,
+    "user_type": "patient",
+    "phone": "",
+    "address": "",
+    "city": "",
+    "profile_picture": "",
+    "created_at": "2025-09-23T14:15:37.440Z",
+    "updated_at": "2025-09-23T14:15:37.440Z"
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 8,
+  "fields": {
+    "user": 12,
+    "user_type": "patient",
+    "phone": "",
+    "address": "",
+    "city": "",
+    "profile_picture": "",
+    "created_at": "2025-09-24T16:49:35.734Z",
+    "updated_at": "2025-09-24T16:49:35.734Z"
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 9,
+  "fields": {
+    "user": 2,
+    "user_type": "patient",
+    "phone": "",
+    "address": "",
+    "city": "",
+    "profile_picture": "",
+    "created_at": "2025-09-24T17:03:05.568Z",
+    "updated_at": "2025-09-24T17:03:05.568Z"
+  }
+},
+{
+  "model": "accounts.patientprofile",
+  "pk": 4,
+  "fields": {
+    "user_profile": 7,
+    "medical_history": "",
+    "emergency_contact": "",
+    "blood_type": ""
+  }
+}
+]

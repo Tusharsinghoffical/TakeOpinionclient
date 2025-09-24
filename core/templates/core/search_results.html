@@ -64,6 +64,25 @@
           </div>
         </div>
         {% endif %}
+        
+        <!-- Blog Posts Section -->
+        {% if blog_posts %}
+        <div class="mb-5">
+          <h3 class="h4 mb-3">Blog Posts</h3>
+          <div class="row g-4">
+            {% for post in blog_posts %}
+            <div class="col-md-6 col-lg-4">
+              <a href="/blogs/{{ post.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title">{{ post.title }}</h5>
+                  <p class="card-text small text-muted">{{ post.content|truncatewords:20 }}</p>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
       {% else %}
         <div class="card border-0 shadow-sm py-5">
           <div class="card-body text-center">

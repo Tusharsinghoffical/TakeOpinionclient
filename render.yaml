@@ -13,3 +13,5 @@ services:
         value: "False"
       - key: ALLOWED_HOSTS
         value: ".onrender.com,takeopinionclient.onrender.com"
+      - key: PYTHON_VERSION
+        value: "3.11"
