@@ -42,7 +42,7 @@ if allowed_hosts_env:
     ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
 
 # Database configuration for production
-# Using SQLite for now to avoid compatibility issues, but can be configured for PostgreSQL
+# Default to SQLite for local development, but use PostgreSQL if DATABASE_URL is provided
 DATABASES: Dict[str, Any] = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -50,9 +50,12 @@ DATABASES: Dict[str, Any] = {
     }
 }
 
-# If DATABASE_URL environment variable is provided, use it (for PostgreSQL)
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'])
+# If DATABASE_URL environment variable is provided, use it (for PostgreSQL on Render)
+database_url = os.environ.get('DATABASE_URL')
+if database_url:
+    DATABASES['default'] = dj_database_url.parse(database_url)
+else:
+    print("WARNING: Using SQLite database. For production, set DATABASE_URL environment variable.")
 
 # Static files (CSS, JavaScript, Images)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
