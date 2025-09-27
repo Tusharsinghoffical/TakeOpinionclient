@@ -1,37 +1,46 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest, HttpResponse
+from django.db.models import Q
 from .models import Hospital
 
 
 def hospitals_list(request: HttpRequest) -> HttpResponse:
-    hospitals = Hospital.objects.all()  # type: ignore
+    hospitals = Hospital.objects.all()
     
     # Get filter parameters from request
+    search = request.GET.get('search', '')
     treatment = request.GET.get('treatment', '')
     accreditation = request.GET.get('accreditation', '')
     rating = request.GET.get('rating', '')
     
+    # Apply search filter
+    if search:
+        hospitals = hospitals.filter(
+            Q(name__icontains=search) | Q(city__icontains=search) | Q(state__name__icontains=search)
+        )
+    
     # Apply filters if provided
     if treatment:
-        hospitals = hospitals.filter(treatments__name__icontains=treatment)  # type: ignore
+        hospitals = hospitals.filter(treatments__name=treatment)
     
     if accreditation:
         if accreditation == 'JCI':
-            hospitals = hospitals.filter(jci_accredited=True)  # type: ignore
+            hospitals = hospitals.filter(jci_accredited=True)
         elif accreditation == 'NABH':
-            hospitals = hospitals.filter(nabh_accredited=True)  # type: ignore
+            hospitals = hospitals.filter(nabh_accredited=True)
         elif accreditation == 'ISO':
-            hospitals = hospitals.filter(iso_certified=True)  # type: ignore
+            hospitals = hospitals.filter(iso_certified=True)
     
     if rating:
         try:
             rating_value = float(str(rating))
-            hospitals = hospitals.filter(rating__gte=rating_value)  # type: ignore
+            hospitals = hospitals.filter(rating__gte=rating_value)
         except (ValueError, TypeError):
             pass  # Invalid rating value, ignore filter
     
     context = {
         'hospitals': hospitals,
+        'search_filter': search,
         'treatment_filter': treatment,
         'accreditation_filter': accreditation,
         'rating_filter': rating,

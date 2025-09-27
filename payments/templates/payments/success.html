@@ -8,7 +8,7 @@
     <h1 class="h2 mb-3">Payment Successful!</h1>
     <p class="mb-4">Your payment has been processed successfully. Your booking is now confirmed.</p>
     <div class="alert alert-success d-inline-block border-0 shadow-sm">
-      <i class="bi bi-ticket-detailed me-2"></i>Payment Reference: <strong>{{ payment.razorpay_payment_id|slice:":12" }}...</strong>
+      <i class="bi bi-ticket-detailed me-2"></i>Payment Reference: <strong>TXN-{{ payment.id }}{{ payment.booking.id }}{{ payment.created_at|date:"YmdHis" }}</strong>
     </div>
   </div>
   
@@ -33,7 +33,7 @@
                 <i class="bi bi-credit-card display-6 text-primary"></i>
               </div>
               <div>
-                <span class="badge bg-primary">Razorpay</span>
+                <span class="badge bg-primary">Payment Gateway</span>
               </div>
             </div>
           </div>

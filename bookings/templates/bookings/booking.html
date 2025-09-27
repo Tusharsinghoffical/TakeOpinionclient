@@ -1,18 +1,149 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container py-5">
+<style>
+  .booking-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
+
+  .booking-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    border: none;
+  }
+
+  .booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .booking-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .booking-form .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .booking-form .form-control, 
+  .booking-form .form-select {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+  }
+
+  .booking-form .form-control:focus, 
+  .booking-form .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .booking-form .input-group-text {
+    background-color: #e7f1ff;
+    border: 1px solid #dee2e6;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+  }
+
+  .booking-form .form-control {
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .booking-submit-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border: none;
+  }
+
+  .booking-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+  }
+
+  .booking-support-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .booking-support-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .booking-support-btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .booking-support-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .section-title i {
+    color: #0d6efd;
+  }
+
+  .section-title h1 {
+    color: #2c3e50;
+    font-weight: 700;
+  }
+
+  .card-title {
+    color: #2c3e50;
+    font-weight: 600;
+  }
+
+  .form-text {
+    color: #6c757d;
+  }
+
+  @media (max-width: 768px) {
+    .booking-page {
+      padding: 1rem;
+    }
+    
+    .booking-card {
+      margin-bottom: 1rem;
+    }
+    
+    .booking-form .form-control, 
+    .booking-form .form-select {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+</style>
+
+<div class="container py-5 booking-page">
   <div class="row justify-content-center">
     <div class="col-lg-8">
-      <div class="section-title mb-4">
-        <i class="bi bi-calendar-check"></i>
+      <div class="section-title mb-4 text-center">
+        <i class="bi bi-calendar-check display-5 mb-3"></i>
         <h1 class="h2 mb-0">Finalize Your Medical Travel Booking</h1>
       </div>
       
-      <p class="mb-4">Complete your medical travel arrangements by providing details about your preferred treatment, doctor, and hospital. Our team will coordinate all aspects of your journey.</p>
+      <p class="mb-4 text-center lead">Complete your medical travel arrangements by providing details about your preferred treatment, doctor, and hospital. Our team will coordinate all aspects of your journey.</p>
       
-      <div class="card border-0 shadow-sm">
+      <div class="card border-0 shadow-sm booking-card">
         <div class="card-body">
-          <form id="bookingForm" class="row g-4" method="POST">
+          <form id="bookingForm" class="row g-4 booking-form" method="POST">
             {% csrf_token %}
             <div class="col-12">
               <h5 class="card-title mb-3">Treatment Details</h5>
@@ -49,7 +180,7 @@
               <select class="form-select form-control-lg" name="preferred_doctor">
                 <option value="">No preference (we'll recommend)</option>
                 {% for doctor in doctors %}
-                <option value="{{ doctor.id }}">Dr. {{ doctor.name }}</option>
+                <option value="{{ doctor.id }}" {% if selected_doctor and selected_doctor.id == doctor.id %}selected{% endif %}>Dr. {{ doctor.name }}</option>
                 {% endfor %}
               </select>
               <div class="form-text">Select a specific doctor or leave blank for our recommendation</div>
@@ -113,7 +244,7 @@
                   I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a> <span class="text-danger">*</span>
                 </label>
               </div>
-              <button type="submit" class="btn btn-primary btn-lg w-100" id="submitBooking">
+              <button type="submit" class="btn btn-primary btn-lg w-100 booking-submit-btn" id="submitBooking">
                 <i class="bi bi-calendar-check me-2"></i>Submit Booking Request
               </button>
             </div>
@@ -121,7 +252,7 @@
         </div>
       </div>
       
-      <div class="card bg-light border-0 shadow-sm mt-4">
+      <div class="card bg-light border-0 shadow-sm mt-4 booking-support-card">
         <div class="card-body">
           <div class="row align-items-center">
             <div class="col-md-8">
@@ -129,7 +260,7 @@
               <p class="card-text mb-0">Our medical travel coordinators can assist you with selecting the best treatment options and providers.</p>
             </div>
             <div class="col-md-4 text-md-end mt-3 mt-md-0">
-              <a href="{% url 'contact' %}" class="btn btn-outline-primary">
+              <a href="{% url 'contact' %}" class="btn btn-outline-primary booking-support-btn">
                 <i class="bi bi-headset me-2"></i>Contact Support
               </a>
             </div>

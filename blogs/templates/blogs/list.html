@@ -1,118 +1,891 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<div class="container py-5">
-  <div class="section-title mb-4">
-    <i class="bi bi-journal-text"></i>
-    <h1 class="h2 mb-0">Medical Travel Insights</h1>
-  </div>
-  
-  <p class="mb-4">Stay informed with our latest articles on medical treatments, travel tips, and healthcare insights from around the world.</p>
-  
-  <div class="card border-0 shadow-sm mb-4">
-    <div class="card-body">
-      <div class="row g-3">
-        <div class="col-md-3">
-          <label class="form-label fw-semibold">Treatment Category</label>
-          <select class="form-select">
-            <option selected>All Treatments</option>
-            <option>Cardiac Surgery</option>
-            <option>Orthopedics</option>
-            <option>Cosmetic Surgery</option>
-            <option>Oncology</option>
-            <option>IVF</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label class="form-label fw-semibold">Medical Specialty</label>
-          <select class="form-select">
-            <option selected>All Specialties</option>
-            <option>Cardiology</option>
-            <option>Orthopedics</option>
-            <option>Dermatology</option>
-            <option>Oncology</option>
-            <option>Neurology</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label class="form-label fw-semibold">Destination</label>
-          <select class="form-select">
-            <option selected>All Destinations</option>
-            <option>India</option>
-            <option>Thailand</option>
-            <option>Turkey</option>
-            <option>Malaysia</option>
-            <option>Mexico</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label class="form-label fw-semibold">Topic</label>
-          <select class="form-select">
-            <option selected>All Topics</option>
-            <option>Medical Visa</option>
-            <option>Travel Tips</option>
-            <option>Recovery</option>
-            <option>Cost Savings</option>
-            <option>Accreditation</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row g-4">
-    {% for p in posts %}
-    <div class="col-md-6 col-lg-4">
-      <a href="{% url 'blog_detail' p.slug %}" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
-        <div class="position-relative">
-          <img src="https://picsum.photos/seed/b{{ forloop.counter0 }}{{ p.id }}/800/480" class="card-img-top object-fit-cover" alt="{{ p.title }}" style="height: 200px;">
-          {% if p.is_medical_visa %}
-          <div class="position-absolute top-0 start-0 m-3">
-            <span class="badge bg-info border-0">Medical Visa</span>
-          </div>
-          {% endif %}
-          <div class="position-absolute bottom-0 start-0 m-3">
-            <span class="badge bg-primary border-0">
-              {% if p.treatment %}
-                {{ p.treatment.name }}
-              {% else %}
-                General
-              {% endif %}
-            </span>
-          </div>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title mb-2">{{ p.title }}</h5>
-          <p class="card-text small">
-            {{ p.content|truncatewords:20 }}
-          </p>
-          <div class="d-flex justify-content-between align-items-center mt-3">
-            <small>
-              <i class="bi bi-calendar me-1"></i>{{ p.published_at|date:"M d, Y" }}
-            </small>
-            <small>
-              <i class="bi bi-clock me-1"></i>5 min read
-            </small>
-          </div>
-        </div>
-      </a>
-    </div>
-    {% empty %}
-    <div class="col-12">
-      <div class="card text-center py-5 border-0 shadow-sm">
-        <div class="card-body">
-          <i class="bi bi-journal-text display-5 text-muted mb-3"></i>
-          <h5 class="card-title">No blog posts available</h5>
-          <p class="card-text">Check back later for new insights and updates.</p>
+<style>
+/* Home Page Specific Styles */
+:root {
+  /* Enhanced color palette for better visibility */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #ddd;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+}
+
+/* Global home page styles */
+.home-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-large {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #ffffff;
+  color: #e74c3c;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary-large {
+  background-color: transparent;
+  color: var(--light-text);
+  border: 2px solid var(--light-text);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary-large:hover {
+  background-color: #ffffff;
+  color: #3498db;
+  transform: translateY(-3px);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #7f8c8d;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Core Services Section */
+.core-services-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.service-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.service-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.service-description {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+.service-link {
+  display: inline-block;
+  color: var(--primary-medium);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.5rem 1.5rem;
+  border: 2px solid var(--primary-medium);
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.service-link:hover {
+  background-color: var(--primary-medium);
+  color: white !important;
+}
+
+/* WhatsApp Section */
+.whatsapp-section {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.whatsapp-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.whatsapp-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.whatsapp-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+  background-color: transparent;
+  color: #25D366;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background-color: #25D369;
+  color: rgb(255, 255, 255);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-consultation {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-consultation:hover {
+  background-color: #25D369;
+  color: rgb(255, 255, 255);
+  transform: translateY(-3px);
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.testimonial-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.testimonial-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.testimonial-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--success);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.testimonial-content {
+  padding: 1.5rem;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.author-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-info h4 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--primary-dark);
+}
+
+.author-info p {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+.testimonial-text {
+  color: #555;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating-stars {
+  color: #f39c12;
+}
+
+.rating-date {
+  color: #95a5a6;
+  font-size: 0.9rem;
+}
+
+.btn-testimonials {
+  display: block;
+  margin: 3rem auto 0;
+  background-color: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-testimonials:hover {
+  background-color: var(--light-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgb(249, 248, 248);
+}
+
+/* Multi Speciality Section */
+.multi-speciality-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.treatment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.treatment-tag {
+  background-color: white;
+  color: var(--primary-medium);
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 2px solid var(--primary-medium);
+  transition: all 0.3s ease;
+}
+
+.treatment-tag:hover {
+  background-color: var(--primary-medium);
+  color: white !important;
+}
+
+.treatments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.treatment-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.treatment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.treatment-icon {
+  height: 100px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.treatment-icon i {
+  font-size: 2rem;
+  color: var(--primary-medium);
+}
+
+.treatment-body {
+  padding: 1rem;
+}
+
+.treatment-type {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin-bottom: 0.25rem;
+}
+
+.treatment-name {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.btn-view-all {
+  display: block;
+  margin: 2rem auto 0;
+  background-color: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-view-all:hover {
+  background-color: #ffffff;
+  color: #3498db;
+  transform: translateY(-3px);
+}
+
+/* Why Choose Section */
+.why-choose-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.why-choose-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.why-choose-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.why-choose-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.why-choose-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.why-choose-description {
+  color: #7f8c8d;
+}
+
+/* Top Hospitals/Doctors Section */
+.top-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.top-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.top-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.top-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.top-image {
+  height: 160px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.top-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #f1c40f;
+  color: #2c3e50;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.top-body {
+  padding: 1.5rem;
+}
+
+.top-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.top-specialty {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.top-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.top-rating i {
+  color: #f39c12;
+}
+
+.top-rating span {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* How It Works Section */
+.how-it-works-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.how-it-works-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.how-it-works-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.how-it-works-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.how-it-works-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.how-it-works-description {
+  color: #7f8c8d;
+}
+
+/* Latest Blogs Section */
+.blogs-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.blogs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.blog-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.blog-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.blog-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: var(--primary-medium);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.blog-date {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--primary-dark);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.blog-body {
+  padding: 1.5rem;
+}
+
+.blog-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--primary-dark);
+}
+
+.blog-excerpt {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons, .whatsapp-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary-large, .btn-secondary-large, .btn-whatsapp, .btn-consultation {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+</style>
+
+<div class="home-page">
+  <div class="container py-5">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-content">
+        <h1 class="hero-title">Medical Travel Insights</h1>
+        <p class="hero-subtitle">Stay informed with our latest articles on medical treatments, travel tips, and healthcare insights from around the world.</p>
+        <div class="hero-buttons">
+          <a href="/treatments/" class="btn-primary-large">
+            <i class="bi bi-activity me-2"></i> Explore Treatments
+          </a>
+          <a href="/doctors/" class="btn-secondary-large">
+            Find Doctors
+          </a>
         </div>
       </div>
-    </div>
-    {% endfor %}
-  </div>
-  
-  <div class="mt-4 text-center">
-    <button class="btn btn-outline-primary" type="button">
-      <i class="bi bi-arrow-clockwise me-2"></i>Load More Articles
-    </button>
-  </div>
-</div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="core-services-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Filter Blog Posts</h2>
+          </div>
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-3">
+                <label class="form-label fw-semibold">Treatment Category</label>
+                <select class="form-select">
+                  <option selected>All Treatments</option>
+                  <option>Cardiac Surgery</option>
+                  <option>Orthopedics</option>
+                  <option>Cosmetic Surgery</option>
+                  <option>Oncology</option>
+                  <option>IVF</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-semibold">Medical Specialty</label>
+                <select class="form-select">
+                  <option selected>All Specialties</option>
+                  <option>Cardiology</option>
+                  <option>Orthopedics</option>
+                  <option>Dermatology</option>
+                  <option>Oncology</option>
+                  <option>Neurology</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-semibold">Destination</label>
+                <select class="form-select">
+                  <option selected>All Destinations</option>
+                  <option>India</option>
+                  <option>Thailand</option>
+                  <option>Turkey</option>
+                  <option>Malaysia</option>
+                  <option>Mexico</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-semibold">Topic</label>
+                <select class="form-select">
+                  <option selected>All Topics</option>
+                  <option>Medical Visa</option>
+                  <option>Travel Tips</option>
+                  <option>Recovery</option>
+                  <option>Cost Savings</option>
+                  <option>Accreditation</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blogs Grid Section -->
+    <section class="blogs-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Latest Blog Posts</h2>
+        </div>
+        <div class="blogs-grid">
+          {% for p in posts %}
+          <a href="{% url 'blog_detail' p.slug %}" class="blog-card">
+            <div class="position-relative">
+              <img src="https://picsum.photos/seed/b{{ forloop.counter0 }}{{ p.id }}/800/480" class="blog-image" alt="{{ p.title }}">
+              {% if p.is_medical_visa %}
+              <span class="blog-badge">Medical Visa</span>
+              {% endif %}
+              <span class="blog-date">{{ p.published_at|date:"M d, Y" }}</span>
+            </div>
+            <div class="blog-body">
+              <h3 class="blog-title">{{ p.title }}</h3>
+              <p class="blog-excerpt">
+                {{ p.content|truncatewords:20 }}
+              </p>
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <small>
+                  {% if p.treatment %}
+                    <span class="badge bg-primary">{{ p.treatment.name }}</span>
+                  {% else %}
+                    <span class="badge bg-secondary">General</span>
+                  {% endif %}
+                </small>
+                <small>
+                  <i class="bi bi-clock me-1"></i>5 min read
+                </small>
+              </div>
+            </div>
+          </a>
+          {% empty %}
+          <div class="col-12">
+            <div class="card text-center py-5 border-0 shadow-sm">
+              <div class="card-body">
+                <i class="bi bi-journal-text display-5 text-muted mb-3"></i>
+                <h5 class="card-title">No blog posts available</h5>
+                <p class="card-text">Check back later for new insights and updates.</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- WhatsApp Section -->
+    <section class="whatsapp-section">
+      <div class="container">
+        <h2 class="whatsapp-title">Get Personalized Medical Advice</h2>
+        <p class="whatsapp-subtitle">Connect with our medical experts directly through WhatsApp for instant guidance and support.</p>
+        <div class="whatsapp-buttons">
+          <a href="https://wa.me/8851619647" class="btn-whatsapp">
+            <i class="bi bi-whatsapp me-2"></i> Chat on WhatsApp
+          </a>
+          <a href="/book/" class="btn-consultation">
+            <i class="bi bi-calendar-check me-2"></i> Schedule Consultation
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="why-choose-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Why Read TakeOpinion Blogs</h2>
+        </div>
+        <div class="why-choose-grid">
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-shield-check"></i>
+
+
+
 {% endblock %}

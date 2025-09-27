@@ -10,6 +10,29 @@ def treatments_home(request: HttpRequest) -> HttpResponse:
     return render(request, "treatments/home.html", {"categories": categories})
 
 
+def treatments_pricing(request: HttpRequest) -> HttpResponse:
+    # Get all treatments with their pricing information
+    treatments = Treatment.objects.select_related('category').all()
+    
+    # Group treatments by category for display
+    categories = TreatmentCategory.objects.prefetch_related('treatments').all()
+    
+    return render(request, "treatments/pricing.html", {
+        "treatments": treatments,
+        "categories": categories
+    })
+
+
+def new_treatments_pricing(request: HttpRequest) -> HttpResponse:
+    """New pricing page with treatment selection and hospital filtering"""
+    # Get all treatment categories for the dropdown
+    categories = TreatmentCategory.objects.prefetch_related('treatments').all().order_by("type", "name")  # type: ignore
+    
+    return render(request, "treatments/new_pricing.html", {
+        "categories": categories
+    })
+
+
 def treatment_detail(request: HttpRequest, slug: str) -> HttpResponse:
     treatment = get_object_or_404(Treatment, slug=slug)
     hospitals = treatment.hospitals.all()[:5]

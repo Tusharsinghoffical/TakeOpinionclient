@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "accounts",
     "feedbacks",
     "payments",
+    "hotels",
 ]
 
 MIDDLEWARE = [
@@ -141,10 +142,6 @@ if DEBUG:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 else:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Razorpay Settings
-RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_DEFAULT_KEY')
-RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'DEFAULT_SECRET')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

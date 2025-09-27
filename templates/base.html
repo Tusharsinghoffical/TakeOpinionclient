@@ -22,6 +22,10 @@
       rel="stylesheet"
     />
     <link href="{% static 'css/main.css' %}" rel="stylesheet" />
+    <!-- Home Page CSS (load only on home page) -->
+    {% if request.path == '/' %}
+    <link href="{% static 'css/home.css' %}" rel="stylesheet" />
+    {% endif %}
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}" />
     <!-- Dashboard CSS (load on all dashboard pages) -->
@@ -64,154 +68,151 @@
               </li>
 
               {% if user.is_authenticated %}
+                {% if user.userprofile.user_type == 'admin' or user.userprofile.user_type == 'doctor' or user.userprofile.user_type == 'patient' %}
+                <!-- Grouped navigation for authenticated users -->
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    Medical Services
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
+                        href="/doctors/"
+                        >Doctors</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}"
+                        href="/hospitals/"
+                        >Hospitals</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
+                        href="/treatments/"
+                        >Treatments</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    Resources
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a
+                        class="dropdown-item {% if request.path|slice:':8' == '/hotels/' %}active{% endif %}"
+                        href="{% url 'hotels:list' %}"
+                        >Hotels</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}"
+                        href="/blogs/"
+                        >Blogs</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        class="dropdown-item {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
+                        href="{% url 'reviews_page' %}"
+                        >Reviews</a
+                      >
+                    </li>
+                  </ul>
+                </li>
                 {% if user.userprofile.user_type == 'admin' %}
-                <!-- Admin specific navigation -->
                 <li class="nav-item">
                   <a
-                    class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
-                    href="/doctors/"
-                    >Doctors</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}"
-                    href="/hospitals/"
-                    >Hospitals</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
-                    href="/treatments/"
-                    >Treatments</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}"
-                    href="/blogs/"
-                    >Blogs</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
-                    href="{% url 'reviews_page' %}"
-                    >Reviews</a
-                  >
-                </li>
-                {% elif user.userprofile.user_type == 'doctor' %}
-                <!-- Doctor navigation - now matches admin design -->
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
-                    href="/doctors/"
-                    >Doctors</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}"
-                    href="/hospitals/"
-                    >Hospitals</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
-                    href="/treatments/"
-                    >Treatments</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}"
-                    href="/blogs/"
-                    >Blogs</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
-                    href="{% url 'reviews_page' %}"
-                    >Reviews</a
-                  >
-                </li>
-                {% elif user.userprofile.user_type == 'patient' %}
-                <!-- Patient navigation - now matches admin design -->
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
-                    href="/doctors/"
-                    >Doctors</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}"
-                    href="/hospitals/"
-                    >Hospitals</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
-                    href="/treatments/"
-                    >Treatments</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}"
-                    href="/blogs/"
-                    >Blogs</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
-                    href="{% url 'reviews_page' %}"
-                    >Reviews</a
+                    class="nav-link {% if request.path|slice:':18' == '/treatments/pricing/' %}active{% endif %}"
+                    href="/treatments/pricing/"
+                    >Pricing</a
                   >
                 </li>
                 {% endif %}
+                {% endif %}
               {% else %}
-              <!-- Guest navigation -->
-              <li class="nav-item">
+              <!-- Guest navigation with dropdowns -->
+              <li class="nav-item dropdown">
                 <a
-                  class="nav-link {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
-                  href="/doctors/"
-                  >Doctors</a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
                 >
+                  Medical Services
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a
+                      class="dropdown-item {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
+                      href="/doctors/"
+                      >Doctors</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}"
+                      href="/hospitals/"
+                      >Hospitals</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
+                      href="/treatments/"
+                      >Treatments</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item {% if request.path|slice:':18' == '/treatments/pricing/' %}active{% endif %}"
+                      href="/treatments/pricing/"
+                      >Pricing</a
+                    >
+                  </li>
+                </ul>
               </li>
-              <li class="nav-item">
+              <li class="nav-item dropdown">
                 <a
-                  class="nav-link {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}"
-                  href="/hospitals/"
-                  >Hospitals</a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
                 >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
-                  href="/treatments/"
-                  >Treatments</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}"
-                  href="/blogs/"
-                  >Blogs</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
-                  href="{% url 'reviews_page' %}"
-                  >Reviews</a
-                >
+                  Resources
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a
+                      class="dropdown-item {% if request.path|slice:':7' == '/blogs/' %}active{% endif %}"
+                      href="/blogs/"
+                      >Blogs</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
+                      href="{% url 'reviews_page' %}"
+                      >Reviews</a
+                    >
+                  </li>
+                </ul>
               </li>
               {% endif %}
             </ul>
@@ -356,36 +357,57 @@
                   >Hospitals</a
                 >
               </li>
+              <li class="mb-2">
+                <a href="/treatments/pricing/" class="text-decoration-none text-white"
+                  >Pricing</a
+                >
+              </li>
             </ul>
           </div>
           <div class="col-md-3">
-            <h6 class="fw-bold mb-3">Support</h6>
-            <ul class="list-unstyled footer-links">
-              <li class="mb-2">
-                <a
-                  href="{% url 'contact' %}"
-                  class="text-decoration-none text-white"
-                  >Contact Us</a
-                >
-              </li>
-              <li class="mb-2">
-                <a
-                  href="{% url 'privacy' %}"
-                  class="text-decoration-none text-white"
-                  >Privacy Policy</a
-                >
-              </li>
-              <li class="mb-2">
-                <a
-                  href="{% url 'terms' %}"
-                  class="text-decoration-none text-white"
-                  >Terms of Service</a
-                >
-              </li>
-              <li class="mb-2">
-                <a href="#" class="text-decoration-none text-white">FAQ</a>
-              </li>
-            </ul>
+            <h6 class="fw-bold mb-3">Patient Stories</h6>
+            <div class="mb-3">
+              <div class="d-flex align-items-center mb-2">
+                <div class="text-warning me-1">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <span class="small text-white">(5.0)</span>
+              </div>
+              <p class="small text-white-50 mb-1">"The treatment exceeded my expectations. Professional and caring team."</p>
+              <p class="small mb-0">- John Doe, 3 months ago</p>
+            </div>
+            <div class="mb-3">
+              <div class="d-flex align-items-center mb-2">
+                <div class="text-warning me-1">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-half"></i>
+                </div>
+                <span class="small text-white">(4.5)</span>
+              </div>
+              <p class="small text-white-50 mb-1">"Recovery was faster than expected. Great experience overall."</p>
+              <p class="small mb-0">- Jane Smith, 6 months ago</p>
+            </div>
+            <div>
+              <h6 class="fw-bold mb-3">Doctor Videos</h6>
+              <div class="d-flex gap-2">
+                <a href="#" class="text-white">
+                  <i class="bi bi-play-circle-fill fs-4"></i>
+                </a>
+                <a href="#" class="text-white">
+                  <i class="bi bi-play-circle-fill fs-4"></i>
+                </a>
+                <a href="#" class="text-white">
+                  <i class="bi bi-play-circle-fill fs-4"></i>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
         <hr class="my-4 border-secondary" />

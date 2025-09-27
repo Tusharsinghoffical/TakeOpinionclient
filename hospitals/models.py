@@ -13,6 +13,7 @@ class Hospital(models.Model):
     address = models.TextField(blank=True)
     about = models.TextField(blank=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=4.5)
+    starting_price = models.DecimalField(max_digits=10, decimal_places=2, default=5000.00)
     is_takeopinion_choice = models.BooleanField(default=False)
     treatments = models.ManyToManyField(Treatment, related_name="hospitals", blank=True)
     
@@ -36,7 +37,7 @@ class Hospital(models.Model):
     # Profile picture
     profile_picture = models.URLField(blank=True, help_text="URL to hospital's profile/thumbnail picture")
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
@@ -49,7 +50,7 @@ class HospitalMedia(models.Model):
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name="media_items")
     image_url = models.URLField(blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"Media for {self.hospital.name}"
 
 # Create your models here.

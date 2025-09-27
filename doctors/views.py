@@ -11,9 +11,17 @@ def doctors_list(request: HttpRequest) -> HttpResponse:
     doctors = Doctor.objects.all()  # type: ignore
     
     # Get filter parameters from request
+    search = request.GET.get('search', '')
     specialization = request.GET.get('specialization', '')
     experience = request.GET.get('experience', '')
     rating = request.GET.get('rating', '')
+    treatment = request.GET.get('treatment', '')  # Add treatment filter
+    
+    # Apply search filter
+    if search:
+        doctors = doctors.filter(
+            Q(name__icontains=search) | Q(specialization__icontains=search)
+        )  # type: ignore
     
     # Apply filters if provided
     if specialization:
@@ -37,11 +45,17 @@ def doctors_list(request: HttpRequest) -> HttpResponse:
         elif rating == '3.5+ stars':
             doctors = doctors.filter(rating__gte=3.5)  # type: ignore
     
+    # Add treatment filter
+    if treatment:
+        doctors = doctors.filter(treatments__name__icontains=treatment)  # type: ignore
+    
     context = {
         'doctors': doctors,
+        'search_filter': search,
         'specialization_filter': specialization,
         'experience_filter': experience,
         'rating_filter': rating,
+        'treatment_filter': treatment,  # Add treatment filter to context
     }
     
     return render(request, "doctors/list.html", context)

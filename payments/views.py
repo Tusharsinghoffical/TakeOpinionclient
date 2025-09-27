@@ -1,5 +1,3 @@
-# Move this import inside functions where it's needed
-# import razorpay
 import json
 import logging
 from django.shortcuts import render, redirect, get_object_or_404
@@ -10,176 +8,67 @@ from django.conf import settings
 from django.contrib import messages
 from .models import Payment
 from bookings.models import Booking
+from django.urls import reverse
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
-# Initialize Razorpay client inside functions where needed
-# client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-
-
-@login_required
-def create_razorpay_order(request):
-    """Create a Razorpay order for the booking"""
-    if request.method != 'POST':
-        return HttpResponseBadRequest(b"Invalid request method")
-    
-    try:
-        # Import razorpay here to avoid issues during deployment
-        import razorpay
-        
-        # Initialize Razorpay client
-        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-        
-        # Get booking details from POST data
-        booking_id = request.POST.get('booking_id')
-        amount = request.POST.get('amount')
-        
-        if not booking_id or not amount:
-            return HttpResponseBadRequest(b"Missing required parameters")
-        
-        # Convert amount to paise (smallest currency unit)
-        amount_in_paise = int(float(amount) * 100)
-        
-        # Create Razorpay order
-        razorpay_order = client.order.create({  # type: ignore
-            'amount': amount_in_paise,
-            'currency': 'INR',
-            'payment_capture': 1  # Auto-capture payment
-        })
-        
-        # Save payment record
-        booking = get_object_or_404(Booking, id=booking_id)
-        payment = Payment(  # type: ignore
-            booking=booking,
-            user=request.user.userprofile,
-            razorpay_order_id=razorpay_order['id'],
-            amount=amount,
-            currency='INR'
-        )
-        payment.save()  # Save after creation
-        
-        # Return order details to frontend
-        context = {
-            'order_id': razorpay_order['id'],
-            'amount': amount,
-            'currency': 'INR',
-            'razorpay_key': settings.RAZORPAY_KEY_ID,
-            'booking_id': booking_id,
-        }
-        
-        return JsonResponse(context)
-        
-    except Exception as e:
-        logger.error(f"Error creating Razorpay order: {str(e)}")
-        return JsonResponse({'error': 'Failed to create payment order'}, status=500)
-
-
-@csrf_exempt
-def verify_payment(request):
-    """Verify the payment using Razorpay's signature verification"""
-    if request.method != 'POST':
-        return HttpResponseBadRequest(b"Invalid request method")
-    
-    try:
-        # Import razorpay here to avoid issues during deployment
-        import razorpay
-        
-        # Initialize Razorpay client
-        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-        
-        # Get payment details from POST data
-        payment_data = json.loads(request.body)
-        
-        razorpay_payment_id = payment_data.get('razorpay_payment_id')
-        razorpay_order_id = payment_data.get('razorpay_order_id')
-        razorpay_signature = payment_data.get('razorpay_signature')
-        
-        if not all([razorpay_payment_id, razorpay_order_id, razorpay_signature]):
-            return JsonResponse({'error': 'Missing payment details'}, status=400)
-        
-        # Verify payment signature
-        params_dict = {
-            'razorpay_order_id': razorpay_order_id,
-            'razorpay_payment_id': razorpay_payment_id,
-            'razorpay_signature': razorpay_signature
-        }
-        
-        try:
-            client.utility.verify_payment_signature(params_dict)  # type: ignore
-            
-            # Update payment record
-            payment = get_object_or_404(Payment, razorpay_order_id=razorpay_order_id)
-            payment.razorpay_payment_id = razorpay_payment_id
-            payment.razorpay_signature = razorpay_signature
-            payment.status = 'completed'
-            payment.save()
-            
-            # Update booking status
-            payment.booking.status = 'confirmed'
-            payment.booking.save()
-            
-            return JsonResponse({'status': 'success'})
-            
-        except Exception as e:
-            # Handle signature verification error
-            # Update payment record as failed
-            payment = get_object_or_404(Payment, razorpay_order_id=razorpay_order_id)
-            payment.status = 'failed'
-            payment.save()
-            
-            return JsonResponse({'status': 'failure'}, status=400)
-            
-    except Exception as e:
-        logger.error(f"Error verifying payment: {str(e)}")
-        return JsonResponse({'error': 'Failed to verify payment'}, status=500)
-
 
 @login_required
 def payment_success(request):
-    """Display payment success page"""
-    order_id = request.GET.get('order_id')
-    
-    if not order_id:
-        messages.error(request, 'Invalid payment request')
-        return redirect('booking_page')
-    
-    try:
-        payment = get_object_or_404(Payment, razorpay_order_id=order_id)
-        
-        context = {
-            'payment': payment,
-            'booking': payment.booking,
-        }
-        
-        return render(request, 'payments/success.html', context)
-        
-    except Exception as e:
-        logger.error(f"Error displaying payment success: {str(e)}")
-        messages.error(request, 'Error processing payment success')
-        return redirect('booking_page')
+    """Display payment success page and redirect to hotel suggestions"""
+    # For static payment, we redirect directly to hotel suggestions
+    # This view is kept for backward compatibility
+    messages.info(request, 'Payment processed successfully!')
+    return redirect('accounts:admin_dashboard')
 
 
 @login_required
-def payment_failure(request):
-    """Display payment failure page"""
-    order_id = request.GET.get('order_id')
+def static_payment_demo(request, booking_id):
+    """Display static payment demo page"""
+    booking = get_object_or_404(Booking, id=booking_id)
     
-    if not order_id:
-        messages.error(request, 'Invalid payment request')
-        return redirect('booking_page')
+    # Calculate amount (this would normally come from the treatment pricing)
+    amount = booking.treatment.starting_price
     
-    try:
-        payment = get_object_or_404(Payment, razorpay_order_id=order_id)
-        
-        context = {
-            'payment': payment,
-            'booking': payment.booking,
-        }
-        
-        return render(request, 'payments/failure.html', context)
-        
-    except Exception as e:
-        logger.error(f"Error displaying payment failure: {str(e)}")
-        messages.error(request, 'Error processing payment failure')
-        return redirect('booking_page')
+    context = {
+        'booking': booking,
+        'amount': amount,
+    }
+    
+    return render(request, 'payments/static_payment.html', context)
+
+
+@login_required
+def process_static_payment(request, booking_id):
+    """Process static payment demo and show success page"""
+    booking = get_object_or_404(Booking, id=booking_id)
+    
+    # Create a payment record to simulate real payment processing
+    payment = Payment(
+        booking=booking,
+        user=request.user.userprofile,
+        amount=booking.treatment.starting_price,
+        currency='INR',
+        status='completed'
+    )
+    payment.save()
+    
+    # Update booking status to confirmed
+    booking.status = 'confirmed'
+    booking.save()
+    
+    # Redirect to payment success page
+    return redirect('payments:static_payment_success', payment_id=payment.id)
+
+
+@login_required
+def static_payment_success(request, payment_id):
+    """Display static payment success page"""
+    payment = get_object_or_404(Payment, id=payment_id)
+    
+    context = {
+        'payment': payment,
+    }
+    
+    return render(request, 'payments/static_success.html', context)

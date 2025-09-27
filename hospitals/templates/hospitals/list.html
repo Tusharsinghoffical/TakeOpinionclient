@@ -1,127 +1,926 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<div class="container py-5">
-  <div class="section-title mb-4">
-    <i class="bi bi-hospital"></i>
-    <h1 class="h2 mb-0">Accredited Hospitals</h1>
-  </div>
-  
-  <p class="mb-4">Browse our verified hospitals with international accreditations and exceptional patient care standards.</p>
-  
-  <div class="card border-0 shadow-sm mb-4">
-    <div class="card-body">
-      <form id="hospital-filter-form" method="GET">
-        <div class="row g-3">
-          <div class="col-md-4">
-            <label class="form-label fw-semibold">Treatment</label>
-            <select class="form-select border-0 shadow-sm" name="treatment" id="treatment-filter">
-              <option value="">Any Treatment</option>
-              <option value="Knee Replacement" {% if treatment_filter == 'Knee Replacement' %}selected{% endif %}>Knee Replacement</option>
-              <option value="Rhinoplasty" {% if treatment_filter == 'Rhinoplasty' %}selected{% endif %}>Rhinoplasty</option>
-              <option value="Panchakarma" {% if treatment_filter == 'Panchakarma' %}selected{% endif %}>Panchakarma</option>
-              <option value="AIDS" {% if treatment_filter == 'AIDS' %}selected{% endif %}>AIDS</option>
-              <option value="Diabetes" {% if treatment_filter == 'Diabetes' %}selected{% endif %}>Diabetes</option>
-              <option value="Knee Replacement Test" {% if treatment_filter == 'Knee Replacement Test' %}selected{% endif %}>Knee Replacement Test</option>
-              <option value="AIDS Treatment" {% if treatment_filter == 'AIDS Treatment' %}selected{% endif %}>AIDS Treatment</option>
-              <option value="Diabetes Management" {% if treatment_filter == 'Diabetes Management' %}selected{% endif %}>Diabetes Management</option>
-            </select>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label fw-semibold">Accreditation</label>
-            <select class="form-select border-0 shadow-sm" name="accreditation" id="accreditation-filter">
-              <option value="">Any Accreditation</option>
-              <option value="JCI" {% if accreditation_filter == 'JCI' %}selected{% endif %}>JCI</option>
-              <option value="NABH" {% if accreditation_filter == 'NABH' %}selected{% endif %}>NABH</option>
-              <option value="ISO" {% if accreditation_filter == 'ISO' %}selected{% endif %}>ISO</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label fw-semibold">Rating</label>
-            <select class="form-select border-0 shadow-sm" name="rating" id="rating-filter">
-              <option value="">All Ratings</option>
-              <option value="4.5" {% if rating_filter == '4.5' %}selected{% endif %}>4.5+ stars</option>
-              <option value="4.0" {% if rating_filter == '4.0' %}selected{% endif %}>4.0+ stars</option>
-              <option value="3.5" {% if rating_filter == '3.5' %}selected{% endif %}>3.5+ stars</option>
-            </select>
-          </div>
-          <div class="col-md-1 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary">Filter</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
 
-  <div class="row g-4">
-    {% for h in hospitals %}
-    <div class="col-md-6 col-lg-4">
-      <a href="/hospitals/{{ h.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm">
-        <div class="position-relative">
-          {% if h.profile_picture %}
-            <img src="{{ h.profile_picture }}" class="card-img-top object-fit-cover" alt="{{ h.name }}" style="height: 200px;">
-          {% else %}
-            <img src="https://picsum.photos/seed/h{{ h.id }}/800/480" class="card-img-top object-fit-cover" alt="{{ h.name }}" style="height: 200px;">
-          {% endif %}
-          {% if h.is_takeopinion_choice %}
-          <div class="position-absolute top-0 start-0 m-3">
-            <span class="badge badge-choice">TakeOpinion Choice</span>
-          </div>
-          {% endif %}
-          <div class="position-absolute bottom-0 end-0 m-3">
-            <span class="badge bg-white text-dark border-0 shadow-sm">
-              <i class="bi bi-star-fill text-warning me-1"></i>{{ h.rating|floatformat:1|default:'N/A' }}
-            </span>
-          </div>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title mb-1">{{ h.name }}</h5>
-          <div class="small mb-2">
-            <i class="bi bi-geo-alt me-1"></i>{{ h.state|default:'—' }}{% if h.country %}, {{ h.country|default:'—' }}{% endif %}
-          </div>
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <div class="small">
-              <i class="bi bi-calendar-check me-1"></i>Est. {{ h.established_year|default:'—' }}
-            </div>
-            <div class="small">
-              <i class="bi bi-people me-1"></i>{{ h.beds_count|default:'—' }} beds
-            </div>
-          </div>
-          <div class="d-flex flex-wrap gap-1">
-            {% if h.jci_accredited %}
-            <span class="badge bg-info">JCI</span>
-            {% endif %}
-            {% if h.nabh_accredited %}
-            <span class="badge bg-success">NABH</span>
-            {% endif %}
-            {% if h.iso_certified %}
-            <span class="badge bg-warning">ISO</span>
-            {% endif %}
-          </div>
-        </div>
-      </a>
-    </div>
-    {% empty %}
-    <div class="col-12">
-      <div class="card text-center py-5 border-0 shadow-sm">
-        <div class="card-body">
-          <i class="bi bi-hospital display-5 text-muted mb-3"></i>
-          <h5 class="card-title">No hospitals found</h5>
-          <p class="card-text">Try adjusting your filters or check back later.</p>
+<style>
+/* Home Page Specific Styles */
+:root {
+  /* Enhanced color palette for better visibility */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #ddd;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+}
+
+/* Global home page styles */
+.home-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-large {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #ffffff;
+  color: #e74c3c;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary-large {
+  background-color: transparent;
+  color: var(--light-text);
+  border: 2px solid var(--light-text);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary-large:hover {
+  background-color: #ffffff;
+  color: #3498db;
+  transform: translateY(-3px);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #7f8c8d;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Core Services Section */
+.core-services-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.service-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.service-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.service-description {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+.service-link {
+  display: inline-block;
+  color: var(--primary-medium);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.5rem 1.5rem;
+  border: 2px solid var(--primary-medium);
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.service-link:hover {
+  background-color: var(--primary-medium);
+  color: white !important;
+}
+
+/* WhatsApp Section */
+.whatsapp-section {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.whatsapp-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.whatsapp-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.whatsapp-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+  background-color: transparent;
+  color: #25D366;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background-color: #25D369;
+  color: rgb(255, 255, 255);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-consultation {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-consultation:hover {
+  background-color: #25D369;
+  color: rgb(255, 255, 255);
+  transform: translateY(-3px);
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.testimonial-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.testimonial-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.testimonial-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--success);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.testimonial-content {
+  padding: 1.5rem;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.author-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-info h4 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--primary-dark);
+}
+
+.author-info p {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+.testimonial-text {
+  color: #555;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating-stars {
+  color: #f39c12;
+}
+
+.rating-date {
+  color: #95a5a6;
+  font-size: 0.9rem;
+}
+
+.btn-testimonials {
+  display: block;
+  margin: 3rem auto 0;
+  background-color: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-testimonials:hover {
+  background-color: var(--light-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgb(249, 248, 248);
+}
+
+/* Multi Speciality Section */
+.multi-speciality-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.treatment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.treatment-tag {
+  background-color: white;
+  color: var(--primary-medium);
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 2px solid var(--primary-medium);
+  transition: all 0.3s ease;
+}
+
+.treatment-tag:hover {
+  background-color: var(--primary-medium);
+  color: white !important;
+}
+
+.treatments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.treatment-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.treatment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.treatment-icon {
+  height: 100px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.treatment-icon i {
+  font-size: 2rem;
+  color: var(--primary-medium);
+}
+
+.treatment-body {
+  padding: 1rem;
+}
+
+.treatment-type {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin-bottom: 0.25rem;
+}
+
+.treatment-name {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.btn-view-all {
+  display: block;
+  margin: 2rem auto 0;
+  background-color: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-view-all:hover {
+  background-color: #ffffff;
+  color: #3498db;
+  transform: translateY(-3px);
+}
+
+/* Why Choose Section */
+.why-choose-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.why-choose-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.why-choose-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.why-choose-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.why-choose-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.why-choose-description {
+  color: #7f8c8d;
+}
+
+/* Top Hospitals/Doctors Section */
+.top-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.top-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.top-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.top-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.top-image {
+  height: 160px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.top-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #f1c40f;
+  color: #2c3e50;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.top-body {
+  padding: 1.5rem;
+}
+
+.top-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.top-specialty {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.top-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.top-rating i {
+  color: #f39c12;
+}
+
+.top-rating span {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* How It Works Section */
+.how-it-works-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.how-it-works-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.how-it-works-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.how-it-works-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.how-it-works-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.how-it-works-description {
+  color: #7f8c8d;
+}
+
+/* Latest Blogs Section */
+.blogs-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.blogs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.blog-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.blog-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.blog-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: var(--primary-medium);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.blog-date {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--primary-dark);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.blog-body {
+  padding: 1.5rem;
+}
+
+.blog-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--primary-dark);
+}
+
+.blog-excerpt {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons, .whatsapp-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary-large, .btn-secondary-large, .btn-whatsapp, .btn-consultation {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+</style>
+
+<div class="home-page">
+  <div class="container py-5">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-content">
+        <h1 class="hero-title">Find the Right Hospitals</h1>
+        <p class="hero-subtitle">Discover our verified hospitals with world-class facilities, international accreditations, and exceptional patient care standards.</p>
+        <div class="hero-buttons">
+          <a href="/book/" class="btn-primary-large">
+            <i class="bi bi-chat-dots me-2"></i> Connect with Experts
+          </a>
+          <a href="/treatments/" class="btn-secondary-large">
+            Explore Treatments
+          </a>
         </div>
       </div>
-    </div>
-    {% endfor %}
-  </div>
-  
-  <div class="mt-4 text-center">
-    <button class="btn btn-outline-primary border-0 shadow-sm" type="button" id="load-more-hospitals">
-      <i class="bi bi-arrow-clockwise me-2"></i>Load More Hospitals
-    </button>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="core-services-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Filter Hospitals</h2>
+          <p class="section-subtitle">Find the perfect hospital based on your specific needs</p>
+        </div>
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <form id="hospital-filter-form" method="GET">
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Search Hospitals</label>
+                  <input type="text" class="form-control border-0 shadow-sm" name="search" id="search-filter" value="{{ search_filter }}" placeholder="Search by name or location">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Treatment</label>
+                  <input type="text" class="form-control border-0 shadow-sm" name="treatment" id="treatment-filter" value="{{ treatment_filter }}" placeholder="Treatment name">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Accreditation</label>
+                  <select class="form-select border-0 shadow-sm" name="accreditation" id="accreditation-filter">
+                    <option value="">Any Accreditation</option>
+                    <option value="JCI" {% if accreditation_filter == 'JCI' %}selected{% endif %}>JCI</option>
+                    <option value="NABH" {% if accreditation_filter == 'NABH' %}selected{% endif %}>NABH</option>
+                    <option value="ISO" {% if accreditation_filter == 'ISO' %}selected{% endif %}>ISO</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label fw-semibold">Rating</label>
+                  <select class="form-select border-0 shadow-sm" name="rating" id="rating-filter">
+                    <option value="">All Ratings</option>
+                    <option value="4.5" {% if rating_filter == '4.5' %}selected{% endif %}>4.5+ stars</option>
+                    <option value="4.0" {% if rating_filter == '4.0' %}selected{% endif %}>4.0+ stars</option>
+                    <option value="3.5" {% if rating_filter == '3.5' %}selected{% endif %}>3.5+ stars</option>
+                  </select>
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                  <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hospitals Grid Section -->
+    <section class="top-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Accredited Hospitals</h2>
+        </div>
+        <div class="top-grid">
+          {% for h in hospitals %}
+          <a href="/hospitals/{{ h.slug }}/" class="top-card">
+            <div class="position-relative">
+              {% if h.profile_picture %}
+                <img src="{{ h.profile_picture }}" class="top-image" alt="{{ h.name }}">
+              {% else %}
+                <img src="https://picsum.photos/seed/h{{ h.id }}/800/480" class="top-image" alt="{{ h.name }}">
+              {% endif %}
+              {% if h.is_takeopinion_choice %}
+              <span class="top-badge">TakeOpinion Choice</span>
+              {% endif %}
+            </div>
+            <div class="top-body">
+              <h3 class="top-name">{{ h.name }}</h3>
+              <div class="top-specialty">{{ h.state|default:'—' }}{% if h.country %}, {{ h.country|default:'—' }}{% endif %}</div>
+              <div class="top-rating">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <span>{{ h.rating|floatformat:1|default:'N/A' }}</span>
+              </div>
+              <div class="top-accreditations">
+                {% if h.jci_accredited %}
+                <span class="badge bg-info">JCI</span>
+                {% endif %}
+                {% if h.nabh_accredited %}
+                <span class="badge bg-success">NABH</span>
+                {% endif %}
+                {% if h.iso_certified %}
+                <span class="badge bg-warning">ISO</span>
+                {% endif %}
+              </div>
+            </div>
+          </a>
+          {% empty %}
+          <div class="col-12">
+            <div class="card text-center py-5 border-0 shadow-sm">
+              <div class="card-body">
+                <i class="bi bi-hospital display-5 text-muted mb-3"></i>
+                <h5 class="card-title">No hospitals found</h5>
+                <p class="card-text">Try adjusting your filters or check back later.</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- WhatsApp Section -->
+    <section class="whatsapp-section">
+      <div class="container">
+        <h2 class="whatsapp-title">Get Personalized Medical Advice</h2>
+        <p class="whatsapp-subtitle">Connect with our medical experts directly through WhatsApp for instant guidance and support.</p>
+        <div class="whatsapp-buttons">
+          <a href="https://wa.me/8851619647" class="btn-whatsapp">
+            <i class="bi bi-whatsapp me-2"></i> Chat on WhatsApp
+          </a>
+          <a href="/book/" class="btn-consultation">
+            <i class="bi bi-calendar-check me-2"></i> Schedule Consultation
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="why-choose-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Why Choose TakeOpinion Hospitals</h2>
+        </div>
+        <div class="why-choose-grid">
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-shield-check"></i>
+            </div>
+            <h3 class="why-choose-title">Verified Hospitals</h3>
+            <p class="why-choose-description">All our hospitals are verified with proven accreditations and quality standards.</p>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-translate"></i>
+            </div>
+            <h3 class="why-choose-title">Language Support</h3>
+            <p class="why-choose-description">Multilingual support to ensure clear communication throughout your medical journey.</p>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-headset"></i>
+            </div>
+            <h3 class="why-choose-title">24/7 Support</h3>
+            <p class="why-choose-description">Round-the-clock assistance for all your medical consultation needs.</p>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-currency-dollar"></i>
+            </div>
+            <h3 class="why-choose-title">Transparent Pricing</h3>
+            <p class="why-choose-description">Clear pricing information to help you make informed decisions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
 
 <script>
   // Auto-submit form when filters change
+  document.getElementById('search-filter').addEventListener('input', function() {
+    // Debounce the search to avoid too many requests
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      document.getElementById('hospital-filter-form').submit();
+    }, 500);
+  });
+  
   document.getElementById('treatment-filter').addEventListener('change', function() {
     document.getElementById('hospital-filter-form').submit();
   });
@@ -132,6 +931,13 @@
   
   document.getElementById('rating-filter').addEventListener('change', function() {
     document.getElementById('hospital-filter-form').submit();
+  });
+  
+  // Also submit on Enter key in treatment filter
+  document.getElementById('treatment-filter').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      document.getElementById('hospital-filter-form').submit();
+    }
   });
 </script>
 

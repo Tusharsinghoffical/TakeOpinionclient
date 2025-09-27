@@ -1,0 +1,370 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .pricing-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    padding: 2rem 0;
+  }
+
+  .pricing-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px;
+    padding: 3rem 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .pricing-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    border: none;
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .pricing-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .pricing-amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 1rem 0;
+  }
+
+  .pricing-features {
+    list-style: none;
+    padding: 0;
+  }
+
+  .pricing-features li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .pricing-features li:last-child {
+    border-bottom: none;
+  }
+
+  .pricing-features li i {
+    color: #28a745;
+    margin-right: 0.5rem;
+  }
+
+  .pricing-badge {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    position: absolute;
+    top: -15px;
+    right: 15px;
+  }
+
+  .pricing-stat-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .pricing-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .pricing-icon-box {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .pricing-cta-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .pricing-cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  .pricing-faq .accordion-button {
+    font-weight: 600;
+    color: #2c3e50;
+    background: #f8f9fa;
+    border: none;
+  }
+
+  .pricing-faq .accordion-button:not(.collapsed) {
+    color: #0d6efd;
+    background: #e7f1ff;
+  }
+
+  .pricing-faq .accordion-item {
+    border: 1px solid #e9ecef;
+    border-radius: 10px !important;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .pricing-page {
+      padding: 1rem;
+    }
+    
+    .pricing-header {
+      padding: 2rem 1rem;
+    }
+    
+    .pricing-card {
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+
+<div class="container pricing-page">
+  <div class="pricing-header">
+    <h1 class="display-4 fw-bold mb-3">Treatment Pricing</h1>
+    <p class="lead">Transparent pricing for all our medical treatments. Find the right package for your healthcare needs.</p>
+  </div>
+  
+  <div class="row mb-5">
+    <div class="col-lg-8">
+      <div class="card pricing-card">
+        <div class="card-body">
+          <h2 class="mb-4">Treatment Cost Breakdown</h2>
+          <p>Our treatment packages are designed to provide comprehensive care while maintaining transparency in pricing. Each package includes:</p>
+          
+          <div class="row g-4 mt-4">
+            <div class="col-md-4">
+              <div class="d-flex align-items-center">
+                <div class="pricing-icon-box">
+                  <i class="bi bi-person-check"></i>
+                </div>
+                <div class="ms-3">
+                  <div class="fw-semibold">Consultation</div>
+                  <div class="small text-muted">Expert medical advice</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex align-items-center">
+                <div class="pricing-icon-box">
+                  <i class="bi bi-clipboard2-pulse"></i>
+                </div>
+                <div class="ms-3">
+                  <div class="fw-semibold">Procedure</div>
+                  <div class="small text-muted">Medical treatment</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex align-items-center">
+                <div class="pricing-icon-box">
+                  <i class="bi bi-house-heart"></i>
+                </div>
+                <div class="ms-3">
+                  <div class="fw-semibold">Aftercare</div>
+                  <div class="small text-muted">Recovery support</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card pricing-card">
+        <div class="card-header bg-white border-0 position-relative">
+          <h2 class="mb-0">Popular Treatment Packages</h2>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Treatment</th>
+                  <th>Estimated Costing</th>
+                  <th>Hospitals</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="fw-semibold">Cardiac Surgery</div>
+                    <div class="small text-muted">Heart bypass, valve replacement</div>
+                  </td>
+                  <td>
+                    <span class="fw-bold text-primary">$12,000 - $25,000</span>
+                  </td>
+                  <td>12 hospitals</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="fw-semibold">Orthopedic Surgery</div>
+                    <div class="small text-muted">Joint replacement, spine surgery</div>
+                  </td>
+                  <td>
+                    <span class="fw-bold text-primary">$8,000 - $18,000</span>
+                  </td>
+                  <td>18 hospitals</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="fw-semibold">Cosmetic Surgery</div>
+                    <div class="small text-muted">Plastic surgery, aesthetic procedures</div>
+                  </td>
+                  <td>
+                    <span class="fw-bold text-primary">$5,000 - $15,000</span>
+                  </td>
+                  <td>24 hospitals</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="fw-semibold">Dental Treatment</div>
+                    <div class="small text-muted">Implants, braces, cosmetic dentistry</div>
+                  </td>
+                  <td>
+                    <span class="fw-bold text-primary">$2,000 - $10,000</span>
+                  </td>
+                  <td>32 hospitals</td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="fw-semibold">Fertility Treatment</div>
+                    <div class="small text-muted">IVF, IUI, egg donation</div>
+                  </td>
+                  <td>
+                    <span class="fw-bold text-primary">$4,000 - $12,000</span>
+                  </td>
+                  <td>15 hospitals</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card pricing-card pricing-faq">
+        <div class="card-header bg-white border-0">
+          <h2 class="mb-0">Frequently Asked Questions</h2>
+        </div>
+        <div class="accordion accordion-flush" id="pricingFAQ">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                What is included in the estimated costing?
+              </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                Our estimated costing includes all medical procedures, hospital stay, surgeon fees, anesthesia, medications, and standard post-operative care. Additional services like private rooms or specialized care may incur extra charges.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                Are there any hidden fees?
+              </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                We strive for complete transparency. All standard fees are included in our estimates. However, unforeseen complications or additional tests requested by the patient may result in extra charges, which will be communicated in advance.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                Do you offer payment plans?
+              </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                Yes, we offer flexible payment plans for most treatments. You can discuss financing options with our financial counselors who will help you find a plan that fits your budget.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                How do hospital ratings affect pricing?
+              </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                Higher-rated hospitals with advanced facilities and renowned specialists typically have higher pricing. However, they also offer better success rates and patient satisfaction. You can compare hospitals based on ratings, pricing, and specialties.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="card pricing-card">
+        <div class="card-header bg-white border-0 position-relative">
+          <h3 class="mb-0">Cost Factors</h3>
+        </div>
+        <div class="card-body">
+          <ul class="pricing-features">
+            <li><i class="bi bi-check-circle-fill"></i> Hospital reputation and facilities</li>
+            <li><i class="bi bi-check-circle-fill"></i> Surgeon experience and expertise</li>
+            <li><i class="bi bi-check-circle-fill"></i> Procedure complexity</li>
+            <li><i class="bi bi-check-circle-fill"></i> Length of hospital stay</li>
+            <li><i class="bi bi-check-circle-fill"></i> Post-operative care requirements</li>
+            <li><i class="bi bi-check-circle-fill"></i> Geographic location</li>
+            <li><i class="bi bi-check-circle-fill"></i> Type of room selected</li>
+            <li><i class="bi bi-check-circle-fill"></i> Additional services requested</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card pricing-stat-card">
+        <div class="card-body text-center">
+          <div class="pricing-icon-box mx-auto mb-3">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+          <h4 class="mb-3">Average Savings</h4>
+          <div class="display-6 text-primary fw-bold mb-3">40-60%</div>
+          <p class="mb-0">Patients typically save 40-60% compared to costs in developed countries</p>
+        </div>
+      </div>
+      
+      <div class="card pricing-card">
+        <div class="card-body">
+          <h4 class="mb-3">Get a Personalized Quote</h4>
+          <p>Receive a detailed cost estimate based on your specific medical needs and selected hospital.</p>
+          <a href="/book/" class="btn btn-primary w-100 pricing-cta-btn">
+            <i class="bi bi-calculator me-2"></i>Calculate Your Cost
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

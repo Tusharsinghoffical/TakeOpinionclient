@@ -14,8 +14,12 @@ class LoginRequiredMiddleware(MiddlewareMixin):
     - Health check endpoints
     - Doctors pages (publicly accessible)
     - Treatments pages (publicly accessible)
+    - Hospitals pages (publicly accessible)
+    - Blogs pages (publicly accessible)
     - Search page (publicly accessible)
     - API endpoints (publicly accessible)
+    - Content API endpoint (publicly accessible)
+    - Reviews page (publicly accessible)
     """
     
     def __init__(self, get_response):
@@ -47,7 +51,11 @@ class LoginRequiredMiddleware(MiddlewareMixin):
             '/accounts/logout/',  # Logout should be accessible to redirect properly
             '/doctors/',  # Doctors list page
             '/treatments/',  # Treatments list page
+            '/hospitals/',  # Hospitals list page
+            '/blogs/',  # Blogs list page
             '/search/',  # Search page
+            '/accounts/reviews/',  # Reviews page
+            '/content/',  # Content API endpoint
         ]
         
         # Also allow access to individual doctor detail pages
@@ -56,6 +64,14 @@ class LoginRequiredMiddleware(MiddlewareMixin):
             
         # Also allow access to individual treatment detail pages
         if request.path.startswith('/treatments/') and request.path.endswith('/'):
+            return None
+            
+        # Also allow access to individual hospital detail pages
+        if request.path.startswith('/hospitals/') and request.path.endswith('/'):
+            return None
+            
+        # Also allow access to individual blog detail pages
+        if request.path.startswith('/blogs/') and request.path.endswith('/'):
             return None
             
         # Check if the current path is a public URL

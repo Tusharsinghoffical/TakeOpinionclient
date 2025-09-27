@@ -43,7 +43,6 @@ class PaymentModelTest(TestCase):
         payment = Payment.objects.create(
             booking=self.booking,
             user=self.user_profile,
-            razorpay_order_id='order_test123',
             amount=5000.00,
             currency='INR',
             status='pending'
@@ -51,7 +50,6 @@ class PaymentModelTest(TestCase):
         
         self.assertEqual(payment.booking, self.booking)
         self.assertEqual(payment.user, self.user_profile)
-        self.assertEqual(payment.razorpay_order_id, 'order_test123')
         self.assertEqual(payment.amount, 5000.00)
         self.assertEqual(payment.currency, 'INR')
         self.assertEqual(payment.status, 'pending')
@@ -61,11 +59,10 @@ class PaymentModelTest(TestCase):
         payment = Payment.objects.create(
             booking=self.booking,
             user=self.user_profile,
-            razorpay_order_id='order_test123',
             amount=5000.00,
             currency='INR',
             status='pending'
         )
         
-        expected_string = f"Payment order_test123 - pending"
+        expected_string = f"Payment for booking {payment.booking.id} - pending"
         self.assertEqual(str(payment), expected_string)

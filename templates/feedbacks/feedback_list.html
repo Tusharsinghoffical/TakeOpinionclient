@@ -1,13 +1,113 @@
 <div class="feedback-section">
+    <style>
+        .feedback-card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .feedback-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feedback-form {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+        }
+
+        .feedback-item {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feedback-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .feedback-form .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .feedback-form .form-control {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .feedback-form .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        .feedback-submit-btn {
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+            background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+            border: none;
+        }
+
+        .feedback-submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+            background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+        }
+
+        .feedback-rating i.bi-star-fill {
+            color: #ffc107;
+        }
+
+        .feedback-rating i.bi-star {
+            color: #dee2e6;
+        }
+
+        .feedback-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-comment {
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        .feedback-user strong {
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .feedback-form, .feedback-item {
+                padding: 1rem;
+            }
+            
+            .feedback-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+    
     <!-- Feedback Form -->
     {% if user.is_authenticated and user.userprofile.user_type == 'patient' %}
-    <div class="feedback-form mb-4 p-3 border rounded">
+    <div class="feedback-form mb-4 feedback-card">
         <h4>Share Your Experience</h4>
         <form method="post" action="{% url 'feedbacks:submit_feedback' content_type=content_type object_id=object.id %}">
             {% csrf_token %}
             <div class="row">
                 <div class="col-md-12 mb-3">
-                    <label for="rating">Rating</label>
+                    <label for="rating" class="form-label">Rating</label>
                     <select name="rating" id="rating" class="form-control" required>
                         <option value="">Select Rating</option>
                         <option value="5">5 Stars - Excellent</option>
@@ -18,15 +118,15 @@
                     </select>
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label for="title">Title</label>
+                    <label for="title" class="form-label">Title</label>
                     <input type="text" name="title" id="title" class="form-control" placeholder="Brief summary of your experience" required>
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label for="comment">Your Feedback</label>
+                    <label for="comment" class="form-label">Your Feedback</label>
                     <textarea name="comment" id="comment" class="form-control" rows="4" placeholder="Share details about your experience..." required></textarea>
                 </div>
                 <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                    <button type="submit" class="btn btn-primary feedback-submit-btn">Submit Feedback</button>
                 </div>
             </div>
         </form>
@@ -41,18 +141,18 @@
     <div class="feedback-list">
         {% if feedbacks %}
             {% for feedback in feedbacks %}
-            <div class="feedback-item mb-3 p-3 border rounded">
+            <div class="feedback-item feedback-card">
                 <div class="d-flex justify-content-between">
                     <div class="feedback-user">
                         <strong>{{ feedback.patient.user.first_name }} {{ feedback.patient.user.last_name }}</strong>
-                        <small class="text-muted">{{ feedback.created_at|date:"M d, Y" }}</small>
+                        <small class="text-muted d-block">{{ feedback.created_at|date:"M d, Y" }}</small>
                     </div>
                     <div class="feedback-rating">
                         {% for i in "12345" %}
                             {% if forloop.counter <= feedback.rating %}
-                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill"></i>
                             {% else %}
-                                <i class="bi bi-star text-warning"></i>
+                                <i class="bi bi-star"></i>
                             {% endif %}
                         {% endfor %}
                     </div>

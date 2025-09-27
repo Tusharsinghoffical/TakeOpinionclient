@@ -1,13 +1,199 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container py-5">
+<style>
+  .treatment-detail-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
+
+  .treatment-detail-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    border: none;
+  }
+
+  .treatment-detail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .treatment-detail-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .treatment-badge {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  .treatment-stat-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .treatment-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .treatment-icon-box {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .treatment-faq .accordion-button {
+    font-weight: 600;
+    color: #2c3e50;
+    background: #f8f9fa;
+    border: none;
+  }
+
+  .treatment-faq .accordion-button:not(.collapsed) {
+    color: #0d6efd;
+    background: #e7f1ff;
+  }
+
+  .treatment-faq .accordion-item {
+    border: 1px solid #e9ecef;
+    border-radius: 10px !important;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+  }
+
+  .treatment-success-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+  }
+
+  .treatment-success-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .treatment-doctor-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+  }
+
+  .treatment-doctor-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .treatment-hospital-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .treatment-hospital-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .treatment-price-card {
+    border-radius: 15px;
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border: none;
+  }
+
+  .treatment-price-card .display-6 {
+    font-weight: 700;
+  }
+
+  .treatment-cta-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  .treatment-back-btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .treatment-back-btn:hover {
+    transform: translateX(-3px);
+  }
+
+  .treatment-appointment-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .treatment-appointment-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  .treatment-view-all-btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .treatment-view-all-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    .treatment-detail-page {
+      padding: 1rem;
+    }
+    
+    .treatment-detail-card {
+      margin-bottom: 1rem;
+    }
+    
+    .treatment-icon-box {
+      width: 50px;
+      height: 50px;
+      font-size: 1.25rem;
+    }
+  }
+</style>
+
+<div class="container py-5 treatment-detail-page">
   <div class="row">
     <div class="col-lg-8">
-      <a href="/treatments/" class="btn btn-sm btn-outline-secondary mb-3">
+      <a href="/treatments/" class="btn btn-sm btn-outline-secondary mb-3 treatment-back-btn">
         <i class="bi bi-arrow-left me-1"></i>Back to Treatments
       </a>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 treatment-detail-card">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-start mb-3">
             <div>
@@ -17,7 +203,7 @@
                 <span>{{ treatment.category|default:'Medical Treatment' }}</span>
               </div>
             </div>
-            <span class="badge bg-primary border-0">Popular</span>
+            <span class="badge treatment-badge">Popular</span>
           </div>
           
           <p class="mb-4">{{ treatment.description|default:'This comprehensive treatment offers advanced medical care with proven results and patient satisfaction.' }}</p>
@@ -25,42 +211,72 @@
           <div class="row g-3 mb-4">
             <div class="col-md-4">
               <div class="d-flex align-items-center">
-                <i class="bi bi-clock-history text-primary fs-4 me-3"></i>
-                <div>
-                  <div class="small">Duration</div>
+                <div class="treatment-icon-box">
+                  <i class="bi bi-clock-history"></i>
+                </div>
+                <div class="ms-3">
+                  <div class="small text-muted">Duration</div>
                   <div class="fw-semibold">{{ treatment.duration|default:'5-7 days' }}</div>
                 </div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="d-flex align-items-center">
-                <i class="bi bi-person-check text-primary fs-4 me-3"></i>
-                <div>
-                  <div class="small">Anesthesia</div>
+                <div class="treatment-icon-box">
+                  <i class="bi bi-person-check"></i>
+                </div>
+                <div class="ms-3">
+                  <div class="small text-muted">Anesthesia</div>
                   <div class="fw-semibold">{{ treatment.anesthesia_type|default:'General' }}</div>
                 </div>
               </div>
             </div>
             <div class="col-md-4">
               <div class="d-flex align-items-center">
-                <i class="bi bi-shield-check text-primary fs-4 me-3"></i>
-                <div>
-                  <div class="small">Recovery</div>
+                <div class="treatment-icon-box">
+                  <i class="bi bi-shield-check"></i>
+                </div>
+                <div class="ms-3">
+                  <div class="small text-muted">Recovery</div>
                   <div class="fw-semibold">{{ treatment.recovery_time|default:'2-3 weeks' }}</div>
                 </div>
               </div>
             </div>
           </div>
           
+          <!-- Replaced Request Appointment with Related Resources -->
           <div class="d-flex flex-wrap gap-2">
-            <a href="/book/" class="btn btn-primary">
-              <i class="bi bi-calendar-check me-2"></i>Request Appointment
-            </a>
+            <div class="card w-100 treatment-stat-card">
+              <div class="card-header bg-white border-0">
+                <h5 class="mb-0">Related Resources</h5>
+              </div>
+              <div class="card-body">
+                <div class="d-flex mb-3">
+                  <div class="flex-shrink-0">
+                    <i class="bi bi-journal-text fs-4 text-primary"></i>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-1"><a href="/blogs/" class="text-decoration-none">Treatment Guide</a></h6>
+                    <p class="small mb-0">Comprehensive guide to understanding this procedure</p>
+                  </div>
+                </div>
+                
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <i class="bi bi-chat-square-quote fs-4 text-primary"></i>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-1"><a href="/testimonials/" class="text-decoration-none">Patient Stories</a></h6>
+                    <p class="small mb-0">Read experiences from patients who underwent this treatment</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 treatment-detail-card">
         <div class="card-header bg-white border-0">
           <h5 class="mb-0">Treatment Overview</h5>
         </div>
@@ -89,13 +305,13 @@
         </div>
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 treatment-detail-card">
         <div class="card-header bg-white border-0">
           <h5 class="mb-0">Top Hospitals Offering This Treatment</h5>
         </div>
         <div class="card-body">
           {% for h in hospitals|slice:":3" %}
-          <div class="d-flex mb-3 border-bottom pb-3">
+          <div class="d-flex mb-3 border-bottom pb-3 treatment-hospital-card p-3">
             <div class="flex-shrink-0">
               <img src="https://picsum.photos/seed/h{{ h.id }}/100/100" class="rounded object-fit-cover" alt="{{ h.name }}" width="80" height="80">
             </div>
@@ -118,9 +334,10 @@
                 <span class="small">({{ h.review_count|default:120 }} reviews)</span>
               </div>
               <div class="d-flex justify-content-between align-items-center">
+                <!-- Changed from "starting price" to "Estimated Costing" -->
                 <div>
                   <span class="h6 text-primary mb-0">${{ h.starting_price|default:"5000" }}</span>
-                  <span class="small">starting price</span>
+                  <span class="small">estimated costing</span>
                 </div>
                 {% if h.is_takeopinion_choice %}
                 <span class="badge badge-choice">TO Choice</span>
@@ -131,11 +348,11 @@
           {% empty %}
           <p class="mb-0">No hospitals currently offering this treatment.</p>
           {% endfor %}
-          <a href="/hospitals/" class="btn btn-outline-primary border-0 shadow-sm w-100 mt-2">View All Hospitals</a>
+          <a href="/hospitals/?treatment={{ treatment.name|urlencode }}" class="btn btn-outline-primary border-0 shadow-sm w-100 mt-2 treatment-view-all-btn">View All Hospitals</a>
         </div>
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 treatment-detail-card">
         <div class="card-header bg-white border-0">
           <h5 class="mb-0">Specialist Doctors</h5>
         </div>
@@ -143,7 +360,7 @@
           <div class="row g-4">
             {% for d in doctors|slice:":4" %}
             <div class="col-md-6">
-              <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm">
+              <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none treatment-doctor-card">
                 <div class="row g-0">
                   <div class="col-4">
                     {% if d.profile_picture %}
@@ -179,16 +396,17 @@
             </div>
             {% endfor %}
           </div>
-          <a href="/doctors/" class="btn btn-outline-primary border-0 shadow-sm w-100 mt-3">View All Doctors</a>
+          <!-- Updated View All Doctors button to include treatment filter -->
+          <a href="/doctors/?treatment={{ treatment.name|urlencode }}" class="btn btn-outline-primary border-0 shadow-sm w-100 mt-3 treatment-view-all-btn">View All Doctors</a>
         </div>
       </div>
       
       <!-- Feedback Section -->
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 treatment-detail-card">
         {% include "feedbacks/feedback_list.html" with content_type="treatment" object=treatment only %}
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 treatment-detail-card treatment-faq">
         <div class="card-header bg-white border-0">
           <h5 class="mb-0">Frequently Asked Questions</h5>
         </div>
@@ -259,97 +477,42 @@
         </div>
       </div>
       
-      <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Success Stories</h5>
-        </div>
-        <div class="card-body">
-          <div class="row g-4">
-            <div class="col-md-6">
-              <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                  <div class="d-flex align-items-center mb-3">
-                    <div class="text-warning me-1">
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                    </div>
-                    <span class="small">(5.0)</span>
-                  </div>
-                  <p class="card-text">"The treatment exceeded my expectations. The medical team was professional and caring throughout the entire process."</p>
-                  <div class="d-flex align-items-center">
-                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=0D6EFD&color=fff&size=40" class="rounded-circle me-2" alt="Patient" width="40" height="40">
-                    <div>
-                      <div class="fw-semibold">John Doe</div>
-                      <div class="small text-muted">Treated: 3 months ago</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                  <div class="d-flex align-items-center mb-3">
-                    <div class="text-warning me-1">
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-half"></i>
-                    </div>
-                    <span class="small">(4.5)</span>
-                  </div>
-                  <p class="card-text">"I was nervous about the procedure, but the staff made me feel comfortable. Recovery was faster than I expected."</p>
-                  <div class="d-flex align-items-center">
-                    <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=0D6EFD&color=fff&size=40" class="rounded-circle me-2" alt="Patient" width="40" height="40">
-                    <div>
-                      <div class="fw-semibold">Jane Smith</div>
-                      <div class="small text-muted">Treated: 6 months ago</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Removed Success Stories section from here as per requirement to move to footer -->
     </div>
     
     <div class="col-lg-4">
-      <div class="card mb-4 border-0 shadow-sm">
-        <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Book This Treatment</h5>
+      <div class="card mb-4 treatment-price-card">
+        <div class="card-header bg-transparent border-0">
+          <h5 class="mb-0 text-white">Treatment Pricing</h5>
         </div>
         <div class="card-body">
           <div class="text-center mb-4">
-            <div class="display-6 text-primary mb-2">${{ treatment.starting_price|default:"5000" }}</div>
-            <div>starting price</div>
+            <!-- Changed from "starting price" to "Estimated Costing" -->
+            <div class="display-6 text-white mb-2">${{ treatment.starting_price|default:"5000" }}</div>
+            <div class="text-white-50">estimated costing</div>
           </div>
           
           <div class="d-grid gap-2">
-            <a href="/book/" class="btn btn-primary btn-lg">
+            <a href="/book/" class="btn btn-light btn-lg treatment-appointment-btn text-primary fw-bold">
               <i class="bi bi-calendar-check me-2"></i>Request Appointment
             </a>
           </div>
           
-          <div class="mt-4">
+          <div class="mt-4 text-white">
             <h6 class="mb-3">What's Included</h6>
             <ul class="list-unstyled">
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Initial consultation</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Pre-operative tests</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Surgery/procedure</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Post-operative care</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Follow-up appointments</li>
-              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>24/7 support</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Initial consultation</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Pre-operative tests</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Surgery/procedure</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Post-operative care</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Follow-up appointments</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-white me-2"></i>24/7 support</li>
             </ul>
           </div>
         </div>
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 treatment-stat-card">
         <div class="card-header bg-white border-0">
           <h5 class="mb-0">Treatment Statistics</h5>
         </div>
@@ -381,7 +544,8 @@
         </div>
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <!-- This section was already "Related Resources" so no change needed -->
+      <div class="card mb-4 treatment-stat-card">
         <div class="card-header bg-white border-0">
           <h5 class="mb-0">Related Resources</h5>
         </div>
@@ -408,11 +572,11 @@
         </div>
       </div>
       
-      <div class="card border-0 shadow-sm">
+      <div class="card treatment-cta-card">
         <div class="card-body">
           <h5 class="card-title">Need More Information?</h5>
           <p class="card-text">Our medical travel experts can provide personalized guidance for your treatment journey.</p>
-          <a href="{% url 'contact' %}" class="btn btn-primary w-100">
+          <a href="{% url 'contact' %}" class="btn btn-primary w-100 treatment-appointment-btn">
             <i class="bi bi-headset me-2"></i>Contact Support
           </a>
         </div>

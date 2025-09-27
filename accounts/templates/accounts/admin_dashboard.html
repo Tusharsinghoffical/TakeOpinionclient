@@ -1,277 +1,1244 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
-<div class="container-fluid admin-dashboard">
-  <div class="row">
-    <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center mb-4 welcome-section">
-        <div>
-          <h1 class="h3 mb-0">Admin Dashboard</h1>
-          <p class="mb-0 text-muted">Welcome back, {{ user_profile.user.first_name|default:user_profile.user.username }}</p>
-        </div>
-        <a href="{% url 'logout' %}" class="btn btn-outline-danger">
-          <i class="bi bi-box-arrow-right me-2"></i>Logout
-        </a>
+{% csrf_token %}
+
+<style>
+/* Dashboard Specific Styles */
+.dashboard-container {
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-action {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-action:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-action-secondary {
+  background-color: #27ae60;
+}
+
+.btn-action-secondary:hover {
+  background-color: #219653;
+}
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  border-left: 4px solid #3498db;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card-doctors {
+  border-left-color: #27ae60;
+}
+
+.stat-card-patients {
+  border-left-color: #e74c3c;
+}
+
+.stat-card-appointments {
+  border-left-color: #f39c12;
+}
+
+.stat-card-hospitals {
+  border-left-color: #9b59b6;
+}
+
+.stat-card-treatments {
+  border-left-color: #1abc9c;
+}
+
+.stat-card-blogs {
+  border-left-color: #34495e;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: #7f8c8d;
+  font-size: 1rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #eee;
+}
+
+.recent-activity-card, .user-management-card, .content-management-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.quick-action-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.quick-action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.quick-action-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #3498db;
+}
+
+.quick-action-title {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.quick-action-desc {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.table th {
+  font-weight: 600;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-secondary {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
+}
+
+.btn-secondary:hover {
+  background-color: #219653;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+.user-type-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge-doctor {
+  background-color: #3498db;
+  color: white;
+}
+
+.badge-patient {
+  background-color: #27ae60;
+  color: white;
+}
+
+.badge-admin {
+  background-color: #9b59b6;
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.btn-submit {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #2980b9;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 5% auto;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  
+  .stat-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-card {
+    margin-bottom: 1rem;
+  }
+  
+  .recent-activity-card, .user-management-card, .content-management-card {
+    margin-bottom: 1.5rem;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .dashboard-actions {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .quick-actions {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">Admin Dashboard</h1>
+    <div class="dashboard-actions">
+      <a href="{% url 'admin_dashboard' %}" class="btn-action">
+        <i class="bi bi-arrow-repeat me-1"></i> Refresh
+      </a>
+    </div>
+  </div>
+  
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <div class="quick-action-card" onclick="window.location.href='#doctors-section'">
+      <div class="quick-action-icon">
+        <i class="bi bi-person-badge"></i>
       </div>
-      
-      <!-- Stats Cards -->
-      <div class="row stats-row">
-        <div class="col-md-3 mb-3">
-          <div class="card bg-primary text-white h-100 stat-card border-0 shadow-sm">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="mb-0">Total Users</h5>
-                  <h2 class="mb-0">{{ total_users }}</h2>
-                  <small>+{{ recent_users }} new this week</small>
-                </div>
-                <i class="bi bi-people"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 mb-3">
-          <div class="card bg-success text-white h-100 stat-card border-0 shadow-sm">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="mb-0">Total Doctors</h5>
-                  <h2 class="mb-0">{{ total_doctors }}</h2>
-                  <small>Active professionals</small>
-                </div>
-                <i class="bi bi-person-badge"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 mb-3">
-          <div class="card bg-info text-white h-100 stat-card border-0 shadow-sm">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="mb-0">Total Patients</h5>
-                  <h2 class="mb-0">{{ total_patients }}</h2>
-                  <small>Registered patients</small>
-                </div>
-                <i class="bi bi-person"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 mb-3">
-          <div class="card bg-warning text-white h-100 stat-card border-0 shadow-sm">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="mb-0">Appointments</h5>
-                  <h2 class="mb-0">{{ total_appointments }}</h2>
-                  <small>{{ today_appointments }} today</small>
-                </div>
-                <i class="bi bi-calendar-check"></i>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="quick-action-title">Manage Doctors</div>
+      <div class="quick-action-desc">Add, edit, or remove doctors</div>
+    </div>
+    
+    <div class="quick-action-card" onclick="window.location.href='#hospitals-section'">
+      <div class="quick-action-icon">
+        <i class="bi bi-building"></i>
       </div>
-      
-      <div class="row">
-        <!-- Management Sections -->
-        <div class="col-lg-8">
-          <!-- User Management -->
-          <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-white">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">User Management</h5>
-                <a href="/admin/auth/user/" class="btn btn-sm btn-outline-primary">View All Users</a>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>User</th>
-                      <th>Role</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for user in recent_users_for_table %}
-                    <tr>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <div class="bg-light rounded-circle me-3 d-flex align-items-center justify-content-center user-avatar">
-                            <i class="bi bi-person text-muted"></i>
-                          </div>
-                          <div class="user-info">
-                            <div class="fw-semibold">{{ user.first_name }} {{ user.last_name }}</div>
-                            <div class="small text-muted">{{ user.email }}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        {% if user.userprofile.user_type == 'doctor' %}
-                        <span class="badge bg-primary">Doctor</span>
-                        {% elif user.userprofile.user_type == 'patient' %}
-                        <span class="badge bg-info">Patient</span>
-                        {% else %}
-                        <span class="badge bg-secondary">Admin</span>
-                        {% endif %}
-                      </td>
-                      <td><span class="badge bg-success">Active</span></td>
-                      <td>
-                        <div class="btn-group btn-group-sm">
-                          <a href="/admin/auth/user/{{ user.id }}/change/" class="btn btn-outline-primary">Edit</a>
-                        </div>
-                      </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                      <td colspan="4" class="text-center">No users found</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Hospital Management -->
-          <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-white">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Hospital Management</h5>
-                <a href="/admin/hospitals/hospital/" class="btn btn-sm btn-outline-primary">Manage All</a>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Hospital</th>
-                      <th>Location</th>
-                      <th>Rating</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for hospital in recent_hospitals %}
-                    <tr>
-                      <td>
-                        <div class="fw-semibold">{{ hospital.name }}</div>
-                      </td>
-                      <td>
-                        <div>{{ hospital.city|default:"N/A" }}</div>
-                      </td>
-                      <td>
-                        <span class="badge bg-warning">{{ hospital.rating }}</span>
-                      </td>
-                      <td>
-                        <div class="btn-group btn-group-sm">
-                          <a href="/admin/hospitals/hospital/{{ hospital.id }}/change/" class="btn btn-outline-primary">Edit</a>
-                          <a href="/admin/hospitals/hospital/{{ hospital.id }}/delete/" class="btn btn-outline-danger">Delete</a>
-                        </div>
-                      </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                      <td colspan="4" class="text-center py-4">
-                        <i class="bi bi-hospital text-muted fs-1 d-block mb-2"></i>
-                        <p class="mb-0 text-muted">No hospitals found</p>
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Content Management -->
-          <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-white">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Content Management</h5>
-                <a href="#" class="btn btn-sm btn-outline-primary">Manage All</a>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="row g-4">
-                <div class="col-md-4">
-                  <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center">
-                      <i class="bi bi-hospital fs-1 text-primary mb-3"></i>
-                      <h6 class="card-title">Hospitals</h6>
-                      <p class="card-text">{{ total_hospitals }} hospitals</p>
-                      <a href="/admin/hospitals/hospital/" class="btn btn-sm btn-outline-primary">Manage</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center">
-                      <i class="bi bi-activity fs-1 text-success mb-3"></i>
-                      <h6 class="card-title">Treatments</h6>
-                      <p class="card-text">{{ total_treatments }} treatments</p>
-                      <a href="/admin/treatments/treatment/" class="btn btn-sm btn-outline-primary">Manage</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center">
-                      <i class="bi bi-journal-text fs-1 text-info mb-3"></i>
-                      <h6 class="card-title">Blog Posts</h6>
-                      <p class="card-text">{{ total_blog_posts }} posts</p>
-                      <a href="/admin/blogs/blogpost/" class="btn btn-sm btn-outline-primary">Manage</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-lg-4">
-          <!-- Quick Actions -->
-          <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-white">
-              <h5 class="mb-0">Quick Actions</h5>
-            </div>
-            <div class="card-body">
-              <div class="d-grid gap-2">
-                <a href="/admin/auth/user/add/" class="btn btn-outline-primary d-flex align-items-center">
-                  <i class="bi bi-person-plus me-2"></i>
-                  <span>Add New User</span>
-                </a>
-                <a href="/admin/hospitals/hospital/add/" class="btn btn-outline-primary d-flex align-items-center">
-                  <i class="bi bi-hospital me-2"></i>
-                  <span>Add New Hospital</span>
-                </a>
-                <a href="/admin/treatments/treatment/add/" class="btn btn-outline-primary d-flex align-items-center">
-                  <i class="bi bi-activity me-2"></i>
-                  <span>Add New Treatment</span>
-                </a>
-                <a href="/admin/blogs/blogpost/add/" class="btn btn-outline-primary d-flex align-items-center">
-                  <i class="bi bi-journal-text me-2"></i>
-                  <span>Create Blog Post</span>
-                </a>
-                <a href="/admin/auth/group/" class="btn btn-outline-primary d-flex align-items-center">
-                  <i class="bi bi-people me-2"></i>
-                  <span>Manage Roles</span>
-                </a>
-                <a href="/admin/" class="btn btn-outline-primary d-flex align-items-center">
-                  <i class="bi bi-gear me-2"></i>
-                  <span>System Settings</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="quick-action-title">Manage Hospitals</div>
+      <div class="quick-action-desc">Add, edit, or remove hospitals</div>
+    </div>
+    
+    <div class="quick-action-card" onclick="window.location.href='#treatments-section'">
+      <div class="quick-action-icon">
+        <i class="bi bi-bandaid"></i>
       </div>
+      <div class="quick-action-title">Manage Treatments</div>
+      <div class="quick-action-desc">Add, edit, or remove treatments</div>
+    </div>
+    
+    <div class="quick-action-card" onclick="window.location.href='#users-section'">
+      <div class="quick-action-icon">
+        <i class="bi bi-people"></i>
+      </div>
+      <div class="quick-action-title">Manage Users</div>
+      <div class="quick-action-desc">View and manage user accounts</div>
+    </div>
+  </div>
+  
+  <!-- Statistics Cards -->
+  <div class="stat-cards">
+    <div class="stat-card stat-card-doctors">
+      <div class="stat-icon" style="color: #27ae60;">
+        <i class="bi bi-person-badge"></i>
+      </div>
+      <div class="stat-number">{{ total_doctors }}</div>
+      <div class="stat-label">Doctors</div>
+    </div>
+    
+    <div class="stat-card stat-card-patients">
+      <div class="stat-icon" style="color: #e74c3c;">
+        <i class="bi bi-person-heart"></i>
+      </div>
+      <div class="stat-number">{{ total_patients }}</div>
+      <div class="stat-label">Patients</div>
+    </div>
+    
+    <div class="stat-card stat-card-appointments">
+      <div class="stat-icon" style="color: #f39c12;">
+        <i class="bi bi-calendar-check"></i>
+      </div>
+      <div class="stat-number">{{ total_appointments }}</div>
+      <div class="stat-label">Total Appointments</div>
+    </div>
+    
+    <div class="stat-card stat-card-hospitals">
+      <div class="stat-icon" style="color: #9b59b6;">
+        <i class="bi bi-building"></i>
+      </div>
+      <div class="stat-number">{{ total_hospitals }}</div>
+      <div class="stat-label">Hospitals</div>
+    </div>
+    
+    <div class="stat-card stat-card-treatments">
+      <div class="stat-icon" style="color: #1abc9c;">
+        <i class="bi bi-bandaid"></i>
+      </div>
+      <div class="stat-number">{{ total_treatments }}</div>
+      <div class="stat-label">Treatments</div>
+    </div>
+    
+    <div class="stat-card stat-card-blogs">
+      <div class="stat-icon" style="color: #34495e;">
+        <i class="bi bi-file-earmark-text"></i>
+      </div>
+      <div class="stat-number">{{ total_blog_posts }}</div>
+      <div class="stat-label">Blog Posts</div>
+    </div>
+  </div>
+  
+  <!-- Doctors Management -->
+  <div class="content-management-card" id="doctors-section">
+    <h2 class="section-title">Doctor Management</h2>
+    <div class="dashboard-actions mb-3">
+      <button class="btn-action" onclick="openAddDoctorModal()">
+        <i class="bi bi-person-plus me-1"></i> Add New Doctor
+      </button>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Specialization</th>
+            <th>Experience</th>
+            <th>Rating</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for doctor in recent_doctors %}
+          <tr>
+            <td>
+              <div class="d-flex align-items-center">
+                {% if doctor.profile_picture %}
+                  <img src="{{ doctor.profile_picture }}" alt="{{ doctor.name }}" width="40" height="40" class="rounded-circle me-2">
+                {% else %}
+                  <div class="bg-light rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="bi bi-person"></i>
+                  </div>
+                {% endif %}
+                <div>
+                  <div>{{ doctor.name }}</div>
+                  <small class="text-muted">{{ doctor.email }}</small>
+                </div>
+              </div>
+            </td>
+            <td>{{ doctor.specialization|default:"Not specified" }}</td>
+            <td>{{ doctor.experience_years }} years</td>
+            <td>
+              <span class="badge bg-warning">{{ doctor.rating }}</span>
+              ({{ doctor.review_count }} reviews)
+            </td>
+            <td>
+              <button class="btn-primary" onclick="editDoctor({{ doctor.id }})">
+                <i class="bi bi-pencil"></i> Edit
+              </button>
+              <button class="btn-danger" onclick="deleteDoctor({{ doctor.id }})">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center">No doctors found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Hospitals Management -->
+  <div class="content-management-card" id="hospitals-section">
+    <h2 class="section-title">Hospital Management</h2>
+    <div class="dashboard-actions mb-3">
+      <button class="btn-action" onclick="openAddHospitalModal()">
+        <i class="bi bi-building-add me-1"></i> Add New Hospital
+      </button>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Established</th>
+            <th>Rating</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for hospital in recent_hospitals %}
+          <tr>
+            <td>
+              <div class="d-flex align-items-center">
+                {% if hospital.profile_picture %}
+                  <img src="{{ hospital.profile_picture }}" alt="{{ hospital.name }}" width="40" height="40" class="rounded me-2">
+                {% else %}
+                  <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="bi bi-building"></i>
+                  </div>
+                {% endif %}
+                <div>{{ hospital.name }}</div>
+              </div>
+            </td>
+            <td>{{ hospital.city }}, {{ hospital.state|default:"N/A" }}</td>
+            <td>{{ hospital.established_year|default:"N/A" }}</td>
+            <td>
+              <span class="badge bg-warning">{{ hospital.rating }}</span>
+            </td>
+            <td>
+              <button class="btn-primary" onclick="editHospital({{ hospital.id }})">
+                <i class="bi bi-pencil"></i> Edit
+              </button>
+              <button class="btn-danger" onclick="deleteHospital({{ hospital.id }})">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center">No hospitals found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Treatments Management -->
+  <div class="content-management-card" id="treatments-section">
+    <h2 class="section-title">Treatment Management</h2>
+    <div class="dashboard-actions mb-3">
+      <button class="btn-action" onclick="openAddTreatmentModal()">
+        <i class="bi bi-bandaid me-1"></i> Add New Treatment
+      </button>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Treatment</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for treatment in recent_treatments %}
+          <tr>
+            <td>{{ treatment.name }}</td>
+            <td>
+              <span class="badge bg-info">{{ treatment.category.name }}</span>
+            </td>
+            <td>${{ treatment.starting_price }}</td>
+            <td>
+              <button class="btn-primary" onclick="editTreatment({{ treatment.id }})">
+                <i class="bi bi-pencil"></i> Edit
+              </button>
+              <button class="btn-danger" onclick="deleteTreatment({{ treatment.id }})">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-center">No treatments found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- User Management -->
+  <div class="user-management-card" id="users-section">
+    <h2 class="section-title">User Management</h2>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>User Type</th>
+            <th>Joined</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in recent_users_for_table %}
+          <tr>
+            <td>{{ user.first_name }} {{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <span class="user-type-badge badge-{{ user.userprofile.user_type }}">
+                {{ user.userprofile.get_user_type_display }}
+              </span>
+            </td>
+            <td>{{ user.date_joined|date:"M d, Y" }}</td>
+            <td>
+              <button class="btn-primary" onclick="viewUser({{ user.id }})">
+                <i class="bi bi-eye"></i> View
+              </button>
+              <button class="btn-danger" onclick="deleteUser({{ user.id }})">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center">No users found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
+
+<!-- Add Doctor Modal -->
+<div id="addDoctorModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('addDoctorModal')">&times;</span>
+    <h2>Add New Doctor</h2>
+    <form id="addDoctorForm">
+      <div class="form-group">
+        <label for="doctorName">Name:</label>
+        <input type="text" id="doctorName" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="doctorSpecialization">Specialization:</label>
+        <input type="text" id="doctorSpecialization" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="doctorEmail">Email:</label>
+        <input type="email" id="doctorEmail" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="doctorExperience">Years of Experience:</label>
+        <input type="number" id="doctorExperience" class="form-control">
+      </div>
+      <button type="submit" class="btn-submit">Add Doctor</button>
+    </form>
+  </div>
+</div>
+
+<!-- Add Hospital Modal -->
+<div id="addHospitalModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('addHospitalModal')">&times;</span>
+    <h2>Add New Hospital</h2>
+    <form id="addHospitalForm">
+      <div class="form-group">
+        <label for="hospitalName">Name:</label>
+        <input type="text" id="hospitalName" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="hospitalCity">City:</label>
+        <input type="text" id="hospitalCity" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="hospitalState">State:</label>
+        <input type="text" id="hospitalState" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="hospitalEstablished">Established Year:</label>
+        <input type="number" id="hospitalEstablished" class="form-control">
+      </div>
+      <button type="submit" class="btn-submit">Add Hospital</button>
+    </form>
+  </div>
+</div>
+
+<!-- Add Treatment Modal -->
+<div id="addTreatmentModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('addTreatmentModal')">&times;</span>
+    <h2>Add New Treatment</h2>
+    <form id="addTreatmentForm">
+      <div class="form-group">
+        <label for="treatmentName">Name:</label>
+        <input type="text" id="treatmentName" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="treatmentCategory">Category:</label>
+        <select id="treatmentCategory" class="form-control">
+          <option value="medical">Medical</option>
+          <option value="aesthetic">Aesthetic</option>
+          <option value="wellness">Wellness</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="treatmentPrice">Starting Price:</label>
+        <input type="number" id="treatmentPrice" class="form-control" step="0.01">
+      </div>
+      <button type="submit" class="btn-submit">Add Treatment</button>
+    </form>
+  </div>
+</div>
+
+<script>
+// Function to get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    console.log('CSRF Token:', cookieValue);
+    return cookieValue;
+}
+
+// Test the CSRF token function
+console.log('CSRF Token from getCookie:', getCookie('csrftoken'));
+
+// Modal functions
+function openAddDoctorModal() {
+  document.getElementById('addDoctorModal').style.display = 'block';
+}
+
+function openAddHospitalModal() {
+  document.getElementById('addHospitalModal').style.display = 'block';
+}
+
+function openAddTreatmentModal() {
+  document.getElementById('addTreatmentModal').style.display = 'block';
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+  if (event.target.classList.contains('modal')) {
+    event.target.style.display = 'none';
+  }
+}
+
+// Form submission handlers
+document.getElementById('addDoctorForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  console.log('Submitting doctor form');
+  
+  const formData = new FormData();
+  formData.append('name', document.getElementById('doctorName').value);
+  formData.append('specialization', document.getElementById('doctorSpecialization').value);
+  formData.append('email', document.getElementById('doctorEmail').value);
+  formData.append('experience_years', document.getElementById('doctorExperience').value);
+  
+  const csrfToken = getCookie('csrftoken');
+  console.log('CSRF Token being used:', csrfToken);
+  
+  fetch('{% url "admin_add_doctor" %}', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-CSRFToken': csrfToken
+    }
+  })
+  .then(response => {
+    console.log('Response status:', response.status);
+    return response.json();
+  })
+  .then(data => {
+    console.log('Response data:', data);
+    if (data.success) {
+      alert('Doctor added successfully!');
+      closeModal('addDoctorModal');
+      document.getElementById('addDoctorForm').reset();
+      // Refresh the page to show updated data
+      location.reload();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  })
+  .catch(error => {
+    console.error('Error adding doctor:', error);
+    alert('Error adding doctor: ' + error);
+  });
+});
+
+document.getElementById('addHospitalForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData();
+  formData.append('name', document.getElementById('hospitalName').value);
+  formData.append('city', document.getElementById('hospitalCity').value);
+  formData.append('state', document.getElementById('hospitalState').value);
+  formData.append('established_year', document.getElementById('hospitalEstablished').value);
+  
+  fetch('{% url "admin_add_hospital" %}', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-CSRFToken': getCookie('csrftoken')
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert('Hospital added successfully!');
+      closeModal('addHospitalModal');
+      document.getElementById('addHospitalForm').reset();
+      // Refresh the page to show updated data
+      location.reload();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  })
+  .catch(error => {
+    alert('Error adding hospital: ' + error);
+  });
+});
+
+document.getElementById('addTreatmentForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData();
+  formData.append('name', document.getElementById('treatmentName').value);
+  formData.append('category', document.getElementById('treatmentCategory').value);
+  formData.append('starting_price', document.getElementById('treatmentPrice').value);
+  
+  fetch('{% url "admin_add_treatment" %}', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-CSRFToken': getCookie('csrftoken')
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert('Treatment added successfully!');
+      closeModal('addTreatmentModal');
+      document.getElementById('addTreatmentForm').reset();
+      // Refresh the page to show updated data
+      location.reload();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  })
+  .catch(error => {
+    alert('Error adding treatment: ' + error);
+  });
+});
+
+// Action functions with actual server calls
+function editDoctor(id) {
+  const newName = prompt('Enter new name for doctor:');
+  if (newName) {
+    const formData = new FormData();
+    formData.append('name', newName);
+    
+    fetch(`/accounts/admin/api/doctors/${id}/edit/`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Doctor updated successfully!');
+        location.reload();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    })
+    .catch(error => {
+      alert('Error updating doctor: ' + error);
+    });
+  }
+}
+
+function deleteDoctor(id) {
+  if (confirm('Are you sure you want to delete this doctor? This action cannot be undone.')) {
+    fetch(`/accounts/admin/api/doctors/${id}/delete/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Doctor deleted successfully!');
+        location.reload();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    })
+    .catch(error => {
+      alert('Error deleting doctor: ' + error);
+    });
+  }
+}
+
+function editHospital(id) {
+  const newName = prompt('Enter new name for hospital:');
+  if (newName) {
+    const formData = new FormData();
+    formData.append('name', newName);
+    
+    fetch(`/accounts/admin/api/hospitals/${id}/edit/`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Hospital updated successfully!');
+        location.reload();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    })
+    .catch(error => {
+      alert('Error updating hospital: ' + error);
+    });
+  }
+}
+
+function deleteHospital(id) {
+  if (confirm('Are you sure you want to delete this hospital? This action cannot be undone.')) {
+    fetch(`/accounts/admin/api/hospitals/${id}/delete/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Hospital deleted successfully!');
+        location.reload();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    })
+    .catch(error => {
+      alert('Error deleting hospital: ' + error);
+    });
+  }
+}
+
+function editTreatment(id) {
+  const newName = prompt('Enter new name for treatment:');
+  if (newName) {
+    const formData = new FormData();
+    formData.append('name', newName);
+    
+    fetch(`/accounts/admin/api/treatments/${id}/edit/`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Treatment updated successfully!');
+        location.reload();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    })
+    .catch(error => {
+      alert('Error updating treatment: ' + error);
+    });
+  }
+}
+
+function deleteTreatment(id) {
+  if (confirm('Are you sure you want to delete this treatment? This action cannot be undone.')) {
+    fetch(`/accounts/admin/api/treatments/${id}/delete/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Treatment deleted successfully!');
+        location.reload();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    })
+    .catch(error => {
+      alert('Error deleting treatment: ' + error);
+    });
+  }
+}
+
+function deleteUser(id) {
+  if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+    fetch(`/accounts/admin/api/users/${id}/delete/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('User deleted successfully!');
+        location.reload();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    })
+    .catch(error => {
+      alert('Error deleting user: ' + error);
+    });
+  }
+}
+
+// Function to update booking status
+function updateBookingStatus(bookingId, status) {
+  if (confirm(`Are you sure you want to ${status} this booking?`)) {
+    fetch(`/accounts/admin/api/bookings/${bookingId}/${status}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert(`Booking ${status} successfully!`);
+        location.reload();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    })
+    .catch(error => {
+      alert('Error updating booking: ' + error);
+    });
+  }
+}
+</script>
+
+<!-- Booking Management Section -->
+<div class="content-management-card" id="bookings-section" style="margin-top: 2rem;">
+  <h2 class="section-title">Booking Management</h2>
+  <div class="dashboard-actions mb-3">
+    <button class="btn-action" onclick="window.location.href='{% url 'admin_booking_dashboard' %}'">
+      <i class="bi bi-calendar-check me-1"></i> Advanced Booking Dashboard
+    </button>
+  </div>
+  
+  <!-- Booking Statistics -->
+  <div class="stat-cards">
+    <div class="stat-card stat-card-appointments">
+      <div class="stat-icon" style="color: #f39c12;">
+        <i class="bi bi-calendar-check"></i>
+      </div>
+      <div class="stat-number">{{ total_appointments }}</div>
+      <div class="stat-label">Total Appointments</div>
+    </div>
+    
+    <div class="stat-card stat-card pending">
+      <div class="stat-icon" style="color: #ffc107;">
+        <i class="bi bi-clock"></i>
+      </div>
+      <div class="stat-number">{{ pending_appointments }}</div>
+      <div class="stat-label">Pending</div>
+    </div>
+    
+    <div class="stat-card stat-card confirmed">
+      <div class="stat-icon" style="color: #27ae60;">
+        <i class="bi bi-check-circle"></i>
+      </div>
+      <div class="stat-number">{{ confirmed_appointments }}</div>
+      <div class="stat-label">Confirmed</div>
+    </div>
+    
+    <div class="stat-card stat-card cancelled">
+      <div class="stat-icon" style="color: #e74c3c;">
+        <i class="bi bi-x-circle"></i>
+      </div>
+      <div class="stat-number">{{ cancelled_appointments }}</div>
+      <div class="stat-label">Cancelled</div>
+    </div>
+  </div>
+  
+  <!-- Recent Bookings Table -->
+  <h3 class="section-title">Recent Bookings</h3>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>Patient</th>
+          <th>Treatment</th>
+          <th>Doctor</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in recent_bookings %}
+        <tr>
+          <td>#{{ booking.id }}</td>
+          <td>
+            {% if booking.patient %}
+              {{ booking.patient.user.first_name }} {{ booking.patient.user.last_name }}
+            {% else %}
+              Guest User
+            {% endif %}
+          </td>
+          <td>
+            {% if booking.treatment %}
+              {{ booking.treatment.name }}
+            {% else %}
+              General Consultation
+            {% endif %}
+          </td>
+          <td>
+            {% if booking.preferred_doctor %}
+              {{ booking.preferred_doctor.name }}
+            {% else %}
+              Not specified
+            {% endif %}
+          </td>
+          <td>
+            {% if booking.preferred_date %}
+              {{ booking.preferred_date|date:"M d, Y" }}
+            {% else %}
+              Not set
+            {% endif %}
+          </td>
+          <td>₹{{ booking.amount }}</td>
+          <td>
+            {% if booking.status == 'pending' %}
+              <span class="badge bg-warning">Pending</span>
+            {% elif booking.status == 'confirmed' %}
+              <span class="badge bg-success">Confirmed</span>
+            {% elif booking.status == 'cancelled' %}
+              <span class="badge bg-danger">Cancelled</span>
+            {% elif booking.status == 'in_progress' %}
+              <span class="badge bg-info">In Progress</span>
+            {% elif booking.status == 'completed' %}
+              <span class="badge bg-primary">Completed</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if booking.status == 'pending' %}
+              <button class="btn-primary btn-sm" onclick="updateBookingStatus({{ booking.id }}, 'confirmed')">
+                <i class="bi bi-check"></i> Accept
+              </button>
+              <button class="btn-danger btn-sm" onclick="updateBookingStatus({{ booking.id }}, 'cancelled')">
+                <i class="bi bi-x"></i> Reject
+              </button>
+            {% else %}
+              <span class="text-muted">{{ booking.status|title }}</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8" class="text-center">No bookings found</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
 {% endblock %}

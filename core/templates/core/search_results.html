@@ -1,24 +1,142 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container py-5">
+<style>
+  .search-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
+
+  .search-result-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    border: none;
+  }
+
+  .search-result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .search-result-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .search-section {
+    margin-bottom: 2rem;
+  }
+
+  .search-section h3 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+  }
+
+  .search-item-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  .search-item-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    color: inherit;
+  }
+
+  .search-item-card .card-title {
+    color: #0d6efd;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .search-item-card .card-text {
+    color: #495057;
+  }
+
+  .no-results-card {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .no-results-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .no-results-icon {
+    font-size: 3rem;
+    color: #6c757d;
+  }
+
+  .back-home-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border: none;
+  }
+
+  .back-home-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+  }
+
+  @media (max-width: 768px) {
+    .search-page {
+      padding: 1rem;
+    }
+    
+    .search-result-card {
+      margin-bottom: 1rem;
+    }
+    
+    .search-section {
+      margin-bottom: 1.5rem;
+    }
+    
+    .search-section h3 {
+      font-size: 1.25rem;
+    }
+  }
+</style>
+
+<div class="container py-5 search-page">
   <div class="row">
     <div class="col-12">
-      <h1 class="h2 mb-4">Search Results for "{{ query }}"</h1>
+      <h1 class="h2 mb-4 text-center">Search Results for "{{ query }}"</h1>
       
       {% if total_results > 0 %}
-        <p class="mb-4">{{ total_results }} results found</p>
+        <p class="mb-4 text-center"><span class="badge bg-primary">{{ total_results }}</span> results found</p>
         
         <!-- Treatments Section -->
         {% if treatments %}
-        <div class="mb-5">
+        <div class="search-section">
           <h3 class="h4 mb-3">Treatments</h3>
           <div class="row g-4">
             {% for treatment in treatments %}
             <div class="col-md-6 col-lg-4">
-              <a href="/treatments/{{ treatment.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+              <a href="/treatments/{{ treatment.slug }}/" class="card h-100 text-decoration-none search-item-card">
                 <div class="card-body">
                   <h5 class="card-title">{{ treatment.name }}</h5>
-                  <p class="card-text small text-muted">{{ treatment.description|truncatewords:20 }}</p>
+                  <p class="card-text small">{{ treatment.description|truncatewords:20 }}</p>
                 </div>
               </a>
             </div>
@@ -29,15 +147,15 @@
         
         <!-- Doctors Section -->
         {% if doctors %}
-        <div class="mb-5">
+        <div class="search-section">
           <h3 class="h4 mb-3">Doctors</h3>
           <div class="row g-4">
             {% for doctor in doctors %}
             <div class="col-md-6 col-lg-4">
-              <a href="/doctors/{{ doctor.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+              <a href="/doctors/{{ doctor.slug }}/" class="card h-100 text-decoration-none search-item-card">
                 <div class="card-body">
                   <h5 class="card-title">{{ doctor.name }}</h5>
-                  <p class="card-text small text-muted">{{ doctor.key_points|truncatewords:20 }}</p>
+                  <p class="card-text small">{{ doctor.key_points|truncatewords:20 }}</p>
                 </div>
               </a>
             </div>
@@ -48,15 +166,15 @@
         
         <!-- Hospitals Section -->
         {% if hospitals %}
-        <div class="mb-5">
+        <div class="search-section">
           <h3 class="h4 mb-3">Hospitals</h3>
           <div class="row g-4">
             {% for hospital in hospitals %}
             <div class="col-md-6 col-lg-4">
-              <a href="/hospitals/{{ hospital.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+              <a href="/hospitals/{{ hospital.slug }}/" class="card h-100 text-decoration-none search-item-card">
                 <div class="card-body">
                   <h5 class="card-title">{{ hospital.name }}</h5>
-                  <p class="card-text small text-muted">{{ hospital.about|truncatewords:20 }}</p>
+                  <p class="card-text small">{{ hospital.about|truncatewords:20 }}</p>
                 </div>
               </a>
             </div>
@@ -67,15 +185,15 @@
         
         <!-- Blog Posts Section -->
         {% if blog_posts %}
-        <div class="mb-5">
+        <div class="search-section">
           <h3 class="h4 mb-3">Blog Posts</h3>
           <div class="row g-4">
             {% for post in blog_posts %}
             <div class="col-md-6 col-lg-4">
-              <a href="/blogs/{{ post.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+              <a href="/blogs/{{ post.slug }}/" class="card h-100 text-decoration-none search-item-card">
                 <div class="card-body">
                   <h5 class="card-title">{{ post.title }}</h5>
-                  <p class="card-text small text-muted">{{ post.content|truncatewords:20 }}</p>
+                  <p class="card-text small">{{ post.content|truncatewords:20 }}</p>
                 </div>
               </a>
             </div>
@@ -84,12 +202,14 @@
         </div>
         {% endif %}
       {% else %}
-        <div class="card border-0 shadow-sm py-5">
+        <div class="card border-0 shadow-sm py-5 no-results-card">
           <div class="card-body text-center">
-            <i class="bi bi-search display-5 text-muted mb-3"></i>
+            <div class="no-results-icon mb-3">
+              <i class="bi bi-search"></i>
+            </div>
             <h5 class="card-title">No results found</h5>
             <p class="card-text">Try different keywords or check your spelling.</p>
-            <a href="/" class="btn btn-primary">Back to Home</a>
+            <a href="/" class="btn btn-primary back-home-btn">Back to Home</a>
           </div>
         </div>
       {% endif %}

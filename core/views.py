@@ -60,7 +60,7 @@ def get_home_content(request: HttpRequest) -> JsonResponse:
         top_doctors = list(Doctor.objects.all()[:4].values('id', 'name', 'slug', 'profile_picture', 'key_points'))  # type: ignore
         
         # Get latest blogs
-        latest_blogs = list(BlogPost.objects.all()[:3].values('id', 'title', 'slug', 'created_at'))  # type: ignore
+        latest_blogs = list(BlogPost.objects.all()[:3].values('id', 'title', 'slug', 'published_at'))  # type: ignore
         
         return JsonResponse({
             'success': True,

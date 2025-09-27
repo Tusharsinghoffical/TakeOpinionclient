@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="section-title mb-4 text-center">
+        <i class="bi bi-credit-card display-5 text-primary"></i>
+        <h1 class="h2 mb-0 mt-3">Secure Payment</h1>
+        <p class="text-muted">Complete your payment using our secure payment gateway</p>
+      </div>
+      
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Booking Summary</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Treatment:</strong> {{ booking.treatment.name }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Hospital:</strong> {{ booking.preferred_hospital.name|default:"To be assigned" }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Doctor:</strong> {{ booking.preferred_doctor.name|default:"To be assigned" }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Booking ID:</strong> #{{ booking.id }}</li>
+              </ul>
+            </div>
+            <div class="col-md-4 text-md-end">
+              <div class="mb-3">
+                <i class="bi bi-shield-lock display-6 text-primary"></i>
+              </div>
+              <div>
+                <span class="h4 text-success fw-bold">₹{{ amount }}</span>
+                <div class="small text-muted">Total Amount</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Payment Method</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <form method="post" action="{% url 'payments:process_static_payment' booking.id %}" id="payment-form">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="cardNumber" class="form-label">Card Number</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
+                    <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="expiryDate" class="form-label">Expiry Date</label>
+                    <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="cvv" class="form-label">CVV</label>
+                    <input type="password" class="form-control" id="cvv" placeholder="123" required>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="cardName" class="form-label">Cardholder Name</label>
+                  <input type="text" class="form-control" id="cardName" placeholder="Name on card" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg w-100" id="pay-button">
+                  <span id="button-text">Pay ₹{{ amount }}</span>
+                  <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                </button>
+              </form>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-light border-0">
+                <div class="card-body">
+                  <h6 class="card-title">Payment Security</h6>
+                  <ul class="list-unstyled small">
+                    <li class="mb-1"><i class="bi bi-shield-lock text-success me-1"></i> 256-bit SSL encryption</li>
+                    <li class="mb-1"><i class="bi bi-shield-check text-success me-1"></i> PCI DSS compliant</li>
+                    <li class="mb-1"><i class="bi bi-shield-fill-check text-success me-1"></i> 3D Secure authentication</li>
+                  </ul>
+                  <div class="d-flex justify-content-center mt-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/800px-Visa_Inc._logo.svg.png" alt="Visa" class="me-2" style="height: 30px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/800px-Mastercard-logo.svg.png" alt="Mastercard" style="height: 30px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alert alert-info d-flex align-items-center" role="alert">
+        <i class="bi bi-info-circle-fill me-2"></i>
+        <div>
+          <strong>Demo Mode:</strong> This is a demonstration payment page. No actual charges will be made to your card.
+        </div>
+      </div>
+      
+      <div class="d-flex justify-content-between">
+        <a href="{% url 'bookings:booking_page' %}" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left me-2"></i>Back to Booking
+        </a>
+        <a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-outline-primary">
+          <i class="bi bi-speedometer2 me-2"></i>Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+  <script>
+    document.getElementById('payment-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Show loading spinner
+      const buttonText = document.getElementById('button-text');
+      const spinner = document.getElementById('spinner');
+      const payButton = document.getElementById('pay-button');
+      
+      buttonText.textContent = 'Processing...';
+      spinner.classList.remove('d-none');
+      payButton.disabled = true;
+      
+      // Simulate payment processing delay
+      setTimeout(function() {
+        // Submit the form after delay to simulate processing
+        document.getElementById('payment-form').submit();
+      }, 2000);
+    });
+    
+    // Format card number input
+    document.getElementById('cardNumber').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      let formattedValue = '';
+      
+      for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 4 === 0) {
+          formattedValue += ' ';
+        }
+        formattedValue += value[i];
+      }
+      
+      e.target.value = formattedValue;
+    });
+    
+    // Format expiry date input
+    document.getElementById('expiryDate').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      
+      if (value.length > 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+      }
+      
+      e.target.value = value;
+    });
+  </script>
+{% endblock %}

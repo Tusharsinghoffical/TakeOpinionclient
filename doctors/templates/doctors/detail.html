@@ -1,13 +1,198 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container py-5">
+<style>
+/* Doctor Detail Page Specific Styles */
+.doctor-detail-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+.doctor-detail-card {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.doctor-detail-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.doctor-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.doctor-specialization {
+  font-size: 1.25rem;
+  color: #3498db;
+  margin-bottom: 1rem;
+}
+
+.rating-stars {
+  color: #f39c12;
+}
+
+.btn-primary-large {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #ffffff;
+  color: #e74c3c;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-success-large {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-success-large:hover {
+  background-color: #ffffff;
+  color: #27ae60;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.media-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.media-item {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.media-item:hover {
+  transform: scale(1.05);
+}
+
+.affiliated-hospitals .hospital-item {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.affiliated-hospitals .hospital-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.patient-reviews .review-item {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.patient-reviews .review-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.progress {
+  height: 8px;
+  border-radius: 4px;
+}
+
+.progress-bar {
+  border-radius: 4px;
+}
+
+.modal-content {
+  border-radius: 15px;
+  border: none;
+}
+
+.modal-header {
+  border-bottom: 1px solid #eee;
+  border-radius: 15px 15px 0 0;
+}
+
+.modal-footer {
+  border-top: 1px solid #eee;
+  border-radius: 0 0 15px 15px;
+}
+
+.card {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+  background-color: white;
+  border-bottom: 1px solid #eee;
+  border-radius: 15px 15px 0 0 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .doctor-name {
+    font-size: 1.75rem;
+  }
+  
+  .doctor-specialization {
+    font-size: 1.1rem;
+  }
+  
+  .btn-primary-large, .btn-success-large {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .media-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+</style>
+
+<div class="container py-5 doctor-detail-page">
   <div class="row">
     <div class="col-lg-8">
       <a href="/doctors/" class="btn btn-sm btn-outline-secondary mb-3">
         <i class="bi bi-arrow-left me-1"></i>Back to Doctors
       </a>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm doctor-detail-card">
         <div class="card-body">
           <div class="row">
             <div class="col-md-4 mb-4 mb-md-0">
@@ -22,13 +207,13 @@
             <div class="col-md-8">
               <div class="d-flex justify-content-between align-items-start">
                 <div>
-                  <h1 class="h2 mb-1">{{ doctor.name }}</h1>
-                  <div class="h5 mb-3">{{ doctor.specialization|default:'Medical Specialist' }}</div>
+                  <h1 class="h2 mb-1 doctor-name">{{ doctor.name }}</h1>
+                  <div class="h5 mb-3 doctor-specialization">{{ doctor.specialization|default:'Medical Specialist' }}</div>
                 </div>
               </div>
               
               <div class="d-flex align-items-center mb-3">
-                <div class="text-warning me-2">
+                <div class="text-warning me-2 rating-stars">
                   {% for i in "12345" %}
                     <i class="bi bi-star{% if forloop.counter <= doctor.rating|floatformat:0 %}-fill{% else %}-half{% endif %}"></i>
                   {% endfor %}
@@ -78,11 +263,11 @@
               </div>
               
               <div class="d-flex flex-wrap gap-2">
-                <a href="/book/consultation/{{ doctor.id }}/" class="btn btn-primary">
-                  <i class="bi bi-chat-dots me-2"></i>Consult
+                <a href="/book/consultation/{{ doctor.id }}/" class="btn btn-primary btn-primary-large">
+                  <i class="bi bi-camera-video me-2"></i>Video Consultation
                 </a>
-                <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#appointmentModal">
-                  <i class="bi bi-calendar-check me-2"></i>Book Appointment
+                <a href="/book/?doctor={{ doctor.id }}" class="btn btn-success btn-success-large">
+                  <i class="bi bi-check-circle me-2"></i>Finalize Doctor For Treatment
                 </a>
               </div>
             </div>
@@ -92,15 +277,15 @@
       
       <!-- Media Gallery Section -->
       {% if doctor.media_items.all %}
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm doctor-detail-card">
         <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Media Gallery</h5>
+          <h5 class="mb-0 section-title">Media Gallery</h5>
         </div>
         <div class="card-body">
-          <div class="row g-3">
+          <div class="media-gallery">
             {% for media in doctor.media_items.all %}
               {% if media.image_url %}
-              <div class="col-md-6 col-lg-4">
+              <div class="media-item">
                 <div class="ratio ratio-16x9">
                   <img src="{{ media.image_url }}" class="object-fit-cover rounded" alt="Doctor image">
                 </div>
@@ -112,18 +297,18 @@
       </div>
       {% endif %}
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm doctor-detail-card">
         <div class="card-header bg-white border-0">
-          <h5 class="mb-0">About Dr. {{ doctor.name|truncatewords:1 }}</h5>
+          <h5 class="mb-0 section-title">About Dr. {{ doctor.name|truncatewords:1 }}</h5>
         </div>
         <div class="card-body">
           <p>{{ doctor.about|default:'Dr. ' }}{{ doctor.name }} is a highly qualified medical professional with extensive experience in {{ doctor.specialization|default:'their field' }}. With over {{ doctor.experience_years }} years of practice, they have successfully treated numerous patients and contributed to advancing medical knowledge in their area of expertise.</p>
         </div>
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm doctor-detail-card">
         <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Areas of Expertise</h5>
+          <h5 class="mb-0 section-title">Areas of Expertise</h5>
         </div>
         <div class="card-body">
           <div class="row">
@@ -142,13 +327,13 @@
     </div>
     
     <div class="col-lg-4">
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm doctor-detail-card">
         <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Affiliated Hospitals</h5>
+          <h5 class="mb-0 section-title">Affiliated Hospitals</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body affiliated-hospitals">
           {% for h in doctor.hospitals.all|slice:":3" %}
-          <div class="d-flex mb-3">
+          <div class="d-flex mb-3 hospital-item">
             <div class="flex-shrink-0">
               {% if h.profile_picture %}
                 <img src="{{ h.profile_picture }}" class="rounded object-fit-cover" alt="{{ h.name }}" width="60" height="60">
@@ -172,19 +357,19 @@
       </div>
       
       <!-- Feedback Section -->
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm doctor-detail-card">
         {% include "feedbacks/feedback_list.html" with content_type="doctor" object=doctor only %}
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm doctor-detail-card">
         <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Patient Reviews</h5>
+          <h5 class="mb-0 section-title">Patient Reviews</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body patient-reviews">
           <div class="d-flex align-items-center mb-3">
             <div class="display-6 text-primary me-3">{{ doctor.rating|floatformat:1 }}</div>
             <div>
-              <div class="text-warning">
+              <div class="text-warning rating-stars">
                 {% for i in "12345" %}
                   <i class="bi bi-star{% if forloop.counter <= doctor.rating|floatformat:0 %}-fill{% else %}-half{% endif %}"></i>
                 {% endfor %}
@@ -227,9 +412,9 @@
         </div>
       </div>
       
-      <div class="card border-0 shadow-sm">
+      <div class="card border-0 shadow-sm doctor-detail-card">
         <div class="card-body">
-          <h5 class="card-title">Need Help Booking?</h5>
+          <h5 class="card-title section-title">Need Help Booking?</h5>
           <p class="card-text">Our medical travel coordinators can assist you with scheduling and any questions about this doctor.</p>
           <a href="{% url 'contact' %}" class="btn btn-primary w-100">
             <i class="bi bi-headset me-2"></i>Contact Support
@@ -250,7 +435,7 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-md-6 mb-3">
+          <div class="col-12 mb-3">
             <div class="card border-primary h-100">
               <div class="card-body text-center">
                 <i class="bi bi-camera-video text-primary fs-1 mb-3"></i>
@@ -260,19 +445,9 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 mb-3">
-            <div class="card border-success h-100">
-              <div class="card-body text-center">
-                <i class="bi bi-telephone text-success fs-1 mb-3"></i>
-                <h5 class="card-title">Phone Consultation</h5>
-                <p class="card-text">Speak directly with the doctor over a secure phone line.</p>
-                <a href="/book/consultation/{{ doctor.id }}/?type=phone" class="btn btn-success">Schedule Phone Call</a>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="mt-3">
-          <p class="mb-0"><small class="text-muted">Consultation fees start at $50. Select your preferred method to proceed.</small></p>
+          <p class="mb-0"><small class="text-muted">Consultation fee: $50. Select your preferred method to proceed.</small></p>
         </div>
       </div>
     </div>
@@ -284,16 +459,17 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="appointmentModalLabel">Book Appointment with Dr. {{ doctor.name }}</h5>
+        <h5 class="modal-title" id="appointmentModalLabel">Finalize Doctor For Treatment with Dr. {{ doctor.name }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="col-lg-7">
-            <form id="appointmentForm">
+            <form id="appointmentForm" action="/book/" method="GET">
+              <input type="hidden" name="doctor" value="{{ doctor.id }}">
               <div class="mb-3">
                 <label class="form-label fw-semibold">Select Treatment</label>
-                <select class="form-select" id="treatmentSelect">
+                <select class="form-select" id="treatmentSelect" name="treatment">
                   <option value="">Choose a treatment</option>
                   {% for treatment in doctor.treatments.all %}
                   <option value="{{ treatment.id }}">{{ treatment.name }}</option>
@@ -302,33 +478,24 @@
               </div>
               
               <div class="mb-3">
-                <label class="form-label fw-semibold">Preferred Date</label>
-                <input type="date" class="form-control" id="appointmentDate">
-              </div>
-              
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Preferred Time</label>
-                <select class="form-select" id="appointmentTime">
-                  <option value="">Select time slot</option>
-                  <option value="09:00">09:00 AM</option>
-                  <option value="10:00">10:00 AM</option>
-                  <option value="11:00">11:00 AM</option>
-                  <option value="14:00">02:00 PM</option>
-                  <option value="15:00">03:00 PM</option>
-                  <option value="16:00">04:00 PM</option>
-                </select>
+                <label class="form-label fw-semibold">Upload Medical Documents (Optional)</label>
+                <div class="input-group">
+                  <input type="file" class="form-control" id="medicalDocuments" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                  <label class="input-group-text" for="medicalDocuments">Browse</label>
+                </div>
+                <div class="form-text">Upload prescriptions, medical reports, or other relevant documents</div>
               </div>
               
               <div class="mb-3">
                 <label class="form-label fw-semibold">Additional Notes</label>
-                <textarea class="form-control" rows="3" placeholder="Any specific requirements or questions for the doctor..."></textarea>
+                <textarea class="form-control" name="notes" rows="3" placeholder="Any specific requirements or questions for the doctor..."></textarea>
               </div>
             </form>
           </div>
           <div class="col-lg-5">
             <div class="card border-info h-100">
               <div class="card-header bg-info text-white">
-                <h5 class="mb-0">Appointment Details</h5>
+                <h5 class="mb-0">Treatment Details</h5>
               </div>
               <div class="card-body">
                 <div class="d-flex mb-3">
@@ -347,7 +514,7 @@
                 </div>
                 
                 <div class="mb-3">
-                  <h6 class="mb-2">Estimated Cost</h6>
+                  <h6 class="mb-2">Estimated Costing</h6>
                   <div class="d-flex justify-content-between">
                     <span>Consultation Fee</span>
                     <span>$100</span>
@@ -356,16 +523,20 @@
                     <span>Treatment (Estimate)</span>
                     <span id="treatmentCost">$0</span>
                   </div>
+                  <div class="d-flex justify-content-between">
+                    <span>Hospital Charges</span>
+                    <span>$200</span>
+                  </div>
                   <hr>
                   <div class="d-flex justify-content-between fw-bold">
-                    <span>Total</span>
-                    <span id="totalCost">$100</span>
+                    <span>Total Estimate</span>
+                    <span id="totalCost">$300</span>
                   </div>
                 </div>
                 
                 <div class="alert alert-info">
                   <i class="bi bi-info-circle me-2"></i>
-                  <small>You can modify your appointment details up to 24 hours before the scheduled time.</small>
+                  <small>This is an estimated cost. Final pricing will be confirmed after consultation.</small>
                 </div>
               </div>
             </div>
@@ -374,8 +545,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="proceedToPayment">
-          <i class="bi bi-credit-card me-2"></i>Proceed to Payment
+        <button type="submit" class="btn btn-primary" form="appointmentForm">
+          <i class="bi bi-arrow-right-circle me-2"></i>Proceed to Booking
         </button>
       </div>
     </div>
@@ -400,17 +571,20 @@
     }
     
     document.getElementById('treatmentCost').textContent = '$' + cost;
-    const total = 100 + cost;
+    const total = 300 + cost;
     document.getElementById('totalCost').textContent = '$' + total;
   });
   
-  // Proceed to payment button
-  document.getElementById('proceedToPayment').addEventListener('click', function() {
-    // In a real implementation, this would:
-    // 1. Validate form data
-    // 2. Create a booking record
-    // 3. Redirect to payment page
-    alert('In a real implementation, this would proceed to the payment page.');
+  // Handle file upload
+  document.getElementById('medicalDocuments').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      // In a real implementation, you would upload the file to the server
+      console.log('File selected:', file.name);
+      // Show file name in UI
+      const fileName = file.name.length > 20 ? file.name.substring(0, 17) + '...' : file.name;
+      e.target.nextElementSibling.textContent = fileName;
+    }
   });
 </script>
 

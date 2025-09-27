@@ -1,9 +1,11 @@
 from django.urls import path
 from . import views
 
+app_name = 'payments'
+
 urlpatterns = [
-    path('create-order/', views.create_razorpay_order, name='create_razorpay_order'),
-    path('verify-payment/', views.verify_payment, name='verify_payment'),
     path('payment-success/', views.payment_success, name='payment_success'),
-    path('payment-failure/', views.payment_failure, name='payment_failure'),
+    path('static-payment/<int:booking_id>/', views.static_payment_demo, name='static_payment_demo'),
+    path('process-static-payment/<int:booking_id>/', views.process_static_payment, name='process_static_payment'),
+    path('static-payment-success/<int:payment_id>/', views.static_payment_success, name='static_payment_success'),
 ]

@@ -51,7 +51,7 @@
       </div>
       
       <div class="mt-4 text-center">
-        <a href="{% url 'booking_page' %}" class="btn btn-outline-primary">
+        <a href="{% url 'bookings:booking_page' %}" class="btn btn-outline-primary">
           <i class="bi bi-arrow-left me-2"></i>Back to Booking
         </a>
       </div>
@@ -63,65 +63,91 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 document.getElementById('rzp-button1').onclick = function(e){
-  var options = {
-    "key": "{{ razorpay_key }}", // Enter the Key ID generated from the Dashboard
-    "amount": "{{ amount_in_paise }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    "currency": "{{ currency }}",
-    "name": "TakeOpinion",
-    "description": "Payment for {{ booking.treatment.name }}",
-    "image": "https://example.com/your_logo",
-    "order_id": "{{ order_id }}", // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "handler": function (response){
-      // Verify payment on server
-      fetch("{% url 'verify_payment' %}", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': '{{ csrf_token }}'
-        },
-        body: JSON.stringify({
-          'razorpay_payment_id': response.razorpay_payment_id,
-          'razorpay_order_id': response.razorpay_order_id,
-          'razorpay_signature': response.razorpay_signature
+  // First, create a Razorpay order on the server
+  fetch("{% url 'create_razorpay_order' %}", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: JSON.stringify({
+      'booking_id': '{{ booking.id }}',
+      'amount': '{{ amount }}'
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      alert('Failed to create payment order: ' + data.error);
+      return;
+    }
+    
+    // Initialize Razorpay checkout with the created order
+    var options = {
+      "key": data.razorpay_key, // Enter the Key ID generated from the Dashboard
+      "amount": data.amount_in_paise || data.amount * 100, // Amount in currency subunits
+      "currency": data.currency,
+      "name": "TakeOpinion",
+      "description": "Payment for {{ booking.treatment.name }}",
+      "image": "https://example.com/your_logo",
+      "order_id": data.order_id, // This is the order ID from the server
+      "handler": function (response){
+        // Verify payment on server
+        fetch("{% url 'verify_payment' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: JSON.stringify({
+            'razorpay_payment_id': response.razorpay_payment_id,
+            'razorpay_order_id': response.razorpay_order_id,
+            'razorpay_signature': response.razorpay_signature
+          })
         })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'success') {
-          // Redirect to success page
-          window.location.href = "{% url 'payment_success' %}?order_id=" + response.razorpay_order_id;
-        } else {
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // Redirect to success page
+            window.location.href = "{% url 'payment_success' %}?order_id=" + response.razorpay_order_id;
+          } else {
+            // Redirect to failure page
+            window.location.href = "{% url 'payment_failure' %}?order_id=" + response.razorpay_order_id;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
           // Redirect to failure page
           window.location.href = "{% url 'payment_failure' %}?order_id=" + response.razorpay_order_id;
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        // Redirect to failure page
-        window.location.href = "{% url 'payment_failure' %}?order_id=" + response.razorpay_order_id;
-      });
-    },
-    "prefill": {
-      {% if user.is_authenticated %}
-      "name": "{{ user.get_full_name|default:user.username }}",
-      "email": "{{ user.email }}",
-      {% endif %}
-      "contact": ""
-    },
-    "notes": {
-      "booking_id": "{{ booking.id }}",
-      "treatment": "{{ booking.treatment.name }}"
-    },
-    "theme": {
-      "color": "#007bff"
-    }
-  };
-  var rzp1 = new Razorpay(options);
-  rzp1.on('payment.failed', function (response){
-    // Redirect to failure page
-    window.location.href = "{% url 'payment_failure' %}?order_id=" + response.error.metadata.order_id;
+        });
+      },
+      "prefill": {
+        {% if user.is_authenticated %}
+        "name": "{{ user.get_full_name|default:user.username }}",
+        "email": "{{ user.email }}",
+        {% endif %}
+        "contact": ""
+      },
+      "notes": {
+        "booking_id": "{{ booking.id }}",
+        "treatment": "{{ booking.treatment.name }}"
+      },
+      "theme": {
+        "color": "#007bff"
+      }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function (response){
+      // Redirect to failure page
+      window.location.href = "{% url 'payment_failure' %}?order_id=" + response.error.metadata.order_id;
+    });
+    rzp1.open();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Failed to initiate payment. Please try again.');
   });
-  rzp1.open();
+  
   e.preventDefault();
 }
 </script>

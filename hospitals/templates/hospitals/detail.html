@@ -1,20 +1,200 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container py-5">
+<style>
+/* Hospital Detail Page Specific Styles */
+.hospital-detail-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+.hospital-detail-card {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.hospital-detail-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.hospital-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.hospital-location {
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.badge-choice {
+  background-color: #f1c40f;
+  color: #2c3e50;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.btn-primary-large {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #ffffff;
+  color: #e74c3c;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-outline-secondary-large {
+  background-color: transparent;
+  color: #7f8c8d;
+  border: 2px solid #7f8c8d;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary-large:hover {
+  background-color: #7f8c8d;
+  color: white;
+  transform: translateY(-3px);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.carousel-item img {
+  object-fit: cover;
+}
+
+.treatment-item {
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.treatment-item:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
+}
+
+.doctor-card {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.doctor-card img {
+  object-fit: cover;
+}
+
+.hospital-info .info-item {
+  margin-bottom: 1.5rem;
+}
+
+.hospital-info .info-item:last-child {
+  margin-bottom: 0;
+}
+
+.hospital-info h6 {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.badge {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.progress {
+  height: 8px;
+  border-radius: 4px;
+}
+
+.progress-bar {
+  border-radius: 4px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.carousel-indicators button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hospital-name {
+    font-size: 1.75rem;
+  }
+  
+  .btn-primary-large, .btn-outline-secondary-large {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .doctor-card {
+    margin-bottom: 1rem;
+  }
+}
+</style>
+
+<div class="container py-5 hospital-detail-page">
   <div class="row">
     <div class="col-lg-8">
       <a href="/hospitals/" class="btn btn-sm btn-outline-secondary mb-3">
         <i class="bi bi-arrow-left me-1"></i>Back to Hospitals
       </a>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm hospital-detail-card">
         <div class="card-body">
           <div class="row">
             <div class="col-lg-12">
               <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
-                  <h1 class="h2 mb-2">{{ hospital.name }}</h1>
-                  <div class="d-flex flex-wrap align-items-center mb-3">
+                  <h1 class="h2 mb-2 hospital-name">{{ hospital.name }}</h1>
+                  <div class="d-flex flex-wrap align-items-center mb-3 hospital-location">
                     <div class="me-3">
                       <i class="bi bi-geo-alt me-1"></i>{{ hospital.city|default:'—' }}{% if hospital.state %}, {{ hospital.state }}{% endif %}{% if hospital.country %}, {{ hospital.country }}{% endif %}
                     </div>
@@ -77,10 +257,10 @@
               </div>
               
               <div class="d-flex flex-wrap gap-2">
-                <a href="/book/" class="btn btn-primary">
+                <a href="/book/" class="btn btn-primary btn-primary-large">
                   <i class="bi bi-calendar-check me-2"></i>Request Appointment
                 </a>
-                <a href="#" class="btn btn-outline-secondary">
+                <a href="#" class="btn btn-outline-secondary btn-outline-secondary-large">
                   <i class="bi bi-geo-alt me-2"></i>View on Map
                 </a>
               </div>
@@ -90,7 +270,7 @@
       </div>
       
       <!-- Media Gallery Section -->
-      <div id="gallery" class="carousel slide card mb-4 border-0 shadow-sm" data-bs-ride="carousel" data-bs-interval="5000">
+      <div id="gallery" class="carousel slide card mb-4 border-0 shadow-sm hospital-detail-card" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner rounded">
           {% for media in hospital.media_items.all %}
           <div class="carousel-item {% if forloop.first %}active{% endif %}">
@@ -128,15 +308,15 @@
         </div>
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm hospital-detail-card">
         <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Medical Services & Treatments</h5>
+          <h5 class="mb-0 section-title">Medical Services & Treatments</h5>
         </div>
         <div class="card-body">
           <div class="row">
             {% for t in hospital.treatments.all|slice:":8" %}
             <div class="col-md-6 col-lg-3 mb-3">
-              <a href="/treatments/{{ t.slug }}/" class="text-decoration-none">
+              <a href="/treatments/{{ t.slug }}/" class="text-decoration-none treatment-item">
                 <div class="d-flex align-items-center">
                   <i class="bi bi-check-circle-fill text-success me-2"></i>
                   <span>{{ t.name }}</span>
@@ -153,15 +333,15 @@
         </div>
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm hospital-detail-card">
         <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Our Medical Experts</h5>
+          <h5 class="mb-0 section-title">Our Medical Experts</h5>
         </div>
         <div class="card-body">
           <div class="row g-4">
             {% for d in hospital.doctors.all|slice:":4" %}
             <div class="col-md-6 col-lg-3">
-              <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm">
+              <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none border-0 shadow-sm doctor-card">
                 {% if d.profile_picture %}
                   <img src="{{ d.profile_picture }}" class="card-img-top object-fit-cover" alt="{{ d.name }}" style="height: 150px;">
                 {% else %}
@@ -192,25 +372,25 @@
     </div>
     
     <div class="col-lg-4">
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm hospital-detail-card">
         <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Hospital Information</h5>
+          <h5 class="mb-0 section-title">Hospital Information</h5>
         </div>
-        <div class="card-body">
-          <div class="mb-3">
+        <div class="card-body hospital-info">
+          <div class="info-item">
             <h6 class="mb-2">Address</h6>
             <p class="mb-0">{{ hospital.address|default:'123 Medical Plaza' }}</p>
             <p class="mb-0">{{ hospital.city|default:'Health City' }}{% if hospital.state %}, {{ hospital.state }}{% endif %}{% if hospital.country %}, {{ hospital.country }}{% endif %}
           </div>
           
-          <div class="mb-3">
+          <div class="info-item">
             <h6 class="mb-2">Contact</h6>
             <p class="mb-1"><i class="bi bi-telephone me-2"></i> {{ hospital.phone|default:'+1 (555) 123-4567' }}</p>
             <p class="mb-1"><i class="bi bi-envelope me-2"></i> {{ hospital.email|default:'info@hospital.com' }}</p>
             <p class="mb-0"><i class="bi bi-globe me-2"></i> {{ hospital.website|default:'www.hospital.com' }}</p>
           </div>
           
-          <div class="mb-3">
+          <div class="info-item">
             <h6 class="mb-2">Facilities</h6>
             <div class="d-flex flex-wrap gap-1">
               <span class="badge bg-light text-dark">ICU</span>
@@ -222,7 +402,7 @@
             </div>
           </div>
           
-          <div class="mb-3">
+          <div class="info-item">
             <h6 class="mb-2">Languages</h6>
             <div class="d-flex flex-wrap gap-1">
               <span class="badge bg-primary">English</span>
@@ -234,13 +414,129 @@
       </div>
       
       <!-- Feedback Section -->
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm hospital-detail-card">
         {% include "feedbacks/feedback_list.html" with content_type="hospital" object=hospital only %}
       </div>
       
-      <div class="card mb-4 border-0 shadow-sm">
+      <div class="card mb-4 border-0 shadow-sm hospital-detail-card">
         <div class="card-header bg-white border-0">
-          <h5 class="mb-0">Patient Reviews</h5>
+          <h5 class="mb-0 section-title">Patient Success Stories</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="text-warning me-1">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                    </div>
+                    <span class="small">(5.0)</span>
+                  </div>
+                  <p class="card-text">"The cardiac surgery at this hospital was life-changing. The medical team was professional, caring, and skilled. My recovery exceeded all expectations!"</p>
+                  <div class="d-flex align-items-center">
+                    <img src="https://ui-avatars.com/api/?name=Michael+Johnson&background=0D6EFD&color=fff&size=40" class="rounded-circle me-2" alt="Patient" width="40" height="40">
+                    <div>
+                      <div class="fw-semibold">Michael Johnson</div>
+                      <div class="small text-muted">Cardiac Surgery - 4 months ago</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="text-warning me-1">
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-half"></i>
+                    </div>
+                    <span class="small">(4.5)</span>
+                  </div>
+                  <p class="card-text">"After my knee replacement surgery, I was walking within days. The rehabilitation program is exceptional. I couldn't be happier with the results."</p>
+                  <div class="d-flex align-items-center">
+                    <img src="https://ui-avatars.com/api/?name=Sarah+Williams&background=0D6EFD&color=fff&size=40" class="rounded-circle me-2" alt="Patient" width="40" height="40">
+                    <div>
+                      <div class="fw-semibold">Sarah Williams</div>
+                      <div class="small text-muted">Orthopedic Surgery - 6 months ago</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card mb-4 border-0 shadow-sm hospital-detail-card">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0 section-title">Testimonial Videos & Images</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="ratio ratio-16x9">
+                <a href="#" class="d-block position-relative">
+                  <img src="https://picsum.photos/seed/patient1/600/400" class="rounded object-fit-cover" alt="Patient Testimonial">
+                  <div class="position-absolute top-50 start-50 translate-middle">
+                    <i class="bi bi-play-circle-fill text-white fs-3"></i>
+                  </div>
+                </a>
+              </div>
+              <div class="mt-2">
+                <h6 class="mb-0">Recovery Journey - Cardiac Surgery</h6>
+                <small class="text-muted">John's 3-month recovery story</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="ratio ratio-16x9">
+                <a href="#" class="d-block position-relative">
+                  <img src="https://picsum.photos/seed/patient2/600/400" class="rounded object-fit-cover" alt="Patient Testimonial">
+                  <div class="position-absolute top-50 start-50 translate-middle">
+                    <i class="bi bi-play-circle-fill text-white fs-3"></i>
+                  </div>
+                </a>
+              </div>
+              <div class="mt-2">
+                <h6 class="mb-0">Orthopedic Success Story</h6>
+                <small class="text-muted">Sarah's knee replacement experience</small>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3 mt-2">
+            <div class="col-md-4">
+              <img src="https://picsum.photos/seed/before1/300/200" class="img-fluid rounded object-fit-cover" alt="Before Treatment">
+              <div class="mt-1">
+                <small class="text-muted">Before Treatment</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <img src="https://picsum.photos/seed/after1/300/200" class="img-fluid rounded object-fit-cover" alt="After Treatment">
+              <div class="mt-1">
+                <small class="text-muted">After Treatment</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <img src="https://picsum.photos/seed/family1/300/200" class="img-fluid rounded object-fit-cover" alt="Family Celebration">
+              <div class="mt-1">
+                <small class="text-muted">Family Celebration</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card mb-4 border-0 shadow-sm hospital-detail-card">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0 section-title">Patient Reviews</h5>
         </div>
         <div class="card-body">
           <div class="d-flex align-items-center mb-3">
@@ -291,7 +587,7 @@
         </div>
       </div>
       
-      <div class="card border-0 shadow-sm">
+      <div class="card border-0 shadow-sm hospital-detail-card">
         <div class="card-body">
           <h5 class="card-title">Need Help Booking?</h5>
           <p class="card-text">Our medical travel coordinators can assist you with scheduling and any questions about this hospital.</p>
@@ -303,22 +599,4 @@
     </div>
   </div>
 </div>
-
-<!-- Initialize carousel -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var galleryCarousel = document.getElementById('gallery');
-    if (galleryCarousel) {
-      // Ensure carousel is properly initialized
-      var carousel = new bootstrap.Carousel(galleryCarousel, {
-        interval: 5000,
-        pause: 'hover',
-        wrap: true
-      });
-      
-      // Log to console for debugging
-      console.log('Carousel initialized');
-    }
-  });
-</script>
 {% endblock %}

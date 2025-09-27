@@ -33,6 +33,7 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("feedbacks/", include("feedbacks.urls")),
     path("payments/", include("payments.urls")),
+    path("hotels/", include("hotels.urls")),
     path("api/v1/entities/<str:entity_type>/", csrf_exempt(get_entities), name='get_entities'),
 ]
 

@@ -8,7 +8,7 @@
     <h1 class="h2 mb-3">Payment Failed</h1>
     <p class="mb-4">Unfortunately, your payment could not be processed. Please try again or contact support.</p>
     <div class="alert alert-warning d-inline-block border-0 shadow-sm">
-      <i class="bi bi-exclamation-triangle me-2"></i>Payment Reference: <strong>{{ payment.razorpay_order_id|slice:":12" }}...</strong>
+      <i class="bi bi-exclamation-triangle me-2"></i>Payment Reference: <strong>TXN-{{ payment.id }}{{ payment.booking.id }}{{ payment.created_at|date:"YmdHis" }}</strong>
     </div>
   </div>
   
@@ -33,7 +33,7 @@
                 <i class="bi bi-credit-card display-6 text-danger"></i>
               </div>
               <div>
-                <span class="badge bg-primary">Razorpay</span>
+                <span class="badge bg-primary">Payment Gateway</span>
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@
         <a href="/" class="btn btn-primary btn-lg">
           <i class="bi bi-house me-2"></i>Back to Home
         </a>
-        <a href="{% url 'booking_page' %}" class="btn btn-outline-primary btn-lg ms-2">
+        <a href="{% url 'bookings:booking_page' %}" class="btn btn-outline-primary btn-lg ms-2">
           <i class="bi bi-arrow-left me-2"></i>Back to Booking
         </a>
       </div>
@@ -91,7 +91,7 @@
 <script>
 function retryPayment() {
   // Redirect back to booking page to retry payment
-  window.location.href = "{% url 'booking_page' %}";
+  window.location.href = "{% url 'bookings:booking_page' %}";
 }
 </script>
 {% endblock %}
