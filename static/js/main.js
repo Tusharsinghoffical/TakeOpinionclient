@@ -170,4 +170,60 @@ document.addEventListener('DOMContentLoaded', () => {
   function hideSearchSuggestions() {
     // This would hide any search suggestions UI
   }
+
+  // Add animation to treatment cards
+  const treatmentCards = document.querySelectorAll('.treatment-card');
+  treatmentCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      const icon = card.querySelector('.card-img-top i');
+      if (icon) {
+        icon.style.transform = 'scale(1.2)';
+        icon.style.transition = 'transform 0.3s ease';
+      }
+    });
+  
+    card.addEventListener('mouseleave', () => {
+      const icon = card.querySelector('.card-img-top i');
+      if (icon) {
+        icon.style.transform = 'scale(1)';
+      }
+    });
+  });
+
+  // Add animation to treatment category cards
+  const treatmentCategoryCards = document.querySelectorAll('.treatment-category-card');
+  treatmentCategoryCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.transform = 'translateY(-5px)';
+      card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+    });
+  
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0)';
+    });
+  });
+
+  // Add hover effect to treatment items
+  const treatmentItems = document.querySelectorAll('.treatment-item');
+  treatmentItems.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      item.style.paddingLeft = '1.25rem';
+      item.style.transition = 'padding-left 0.2s ease';
+    });
+  
+    item.addEventListener('mouseleave', () => {
+      item.style.paddingLeft = '1rem';
+    });
+  });
+
+  // Add animation to tab navigation
+  const tabLinks = document.querySelectorAll('.nav-tabs .nav-link');
+  tabLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      // Remove active class from all tabs
+      tabLinks.forEach(l => l.classList.remove('active'));
+      // Add active class to clicked tab
+      this.classList.add('active');
+    });
+  });
 });

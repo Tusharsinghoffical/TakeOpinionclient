@@ -752,3 +752,153 @@ footer a:hover {
     padding-right: 5px;
   }
 }
+
+/* Treatment cards */
+.treatment-card {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.treatment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.treatment-card .card-img-top {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.treatment-card .card-img-top i {
+  transition: all 0.3s ease;
+}
+
+.treatment-card:hover .card-img-top i {
+  transform: scale(1.2);
+  color: #007bff !important;
+}
+
+/* Treatment category cards */
+.treatment-category-card {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.treatment-category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.treatment-category-card .card-header {
+  font-weight: 600;
+  padding: 1rem 1.25rem;
+}
+
+.treatment-category-card .card-header i {
+  font-size: 1.25rem;
+}
+
+/* Treatment items */
+.treatment-item {
+  border-radius: 0.5rem !important;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+  border: none !important;
+}
+
+.treatment-item:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+  padding-left: 1.25rem !important;
+}
+
+/* Tab navigation enhancements */
+.nav-tabs .nav-link {
+  font-weight: 500;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem 0.5rem 0 0;
+  color: var(--dark-gray);
+  transition: all 0.2s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #fff;
+  color: var(--medical-blue);
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-blue-dark) 100%);
+}
+
+.bg-gradient-info {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, var(--medical-green) 0%, var(--medical-green-dark) 100%);
+}
+
+/* Expert consultation banner */
+.bg-gradient {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.bg-gradient .card-body {
+  padding: 2rem;
+}
+
+/* Responsive adjustments for treatments page */
+@media (max-width: 768px) {
+  .treatment-category-card:hover {
+    transform: none;
+  }
+  
+  .treatment-item:hover {
+    padding-left: 1rem !important;
+  }
+  
+  .nav-tabs .nav-link {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .bg-gradient .card-body {
+    padding: 1.5rem;
+  }
+}
+
+/* Section title enhancements */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.section-title i {
+  color: #007bff;
+  font-size: 1.5rem;
+}
+
+.section-title h1, 
+.section-title h2, 
+.section-title h3, 
+.section-title h4, 
+.section-title h5, 
+.section-title h6 {
+  margin-bottom: 0;
+  font-weight: 700;
+}

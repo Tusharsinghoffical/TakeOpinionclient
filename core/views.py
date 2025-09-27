@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 import os
 from treatments.models import Treatment
 from hospitals.models import Hospital
@@ -18,6 +19,61 @@ def home(request: HttpRequest) -> HttpResponse:
         "latest_blogs": BlogPost.objects.all()[:3],  # type: ignore
     }
     return render(request, "core/home.html", context)
+
+
+@require_http_methods(["GET"])
+def get_home_stats(request: HttpRequest) -> JsonResponse:
+    """
+    Real-time statistics for the home page
+    """
+    try:
+        stats = {
+            'treatments_count': Treatment.objects.count(),  # type: ignore
+            'hospitals_count': Hospital.objects.count(),  # type: ignore
+            'doctors_count': Doctor.objects.count(),  # type: ignore
+            'blogs_count': BlogPost.objects.count(),  # type: ignore
+        }
+        return JsonResponse({
+            'success': True,
+            'stats': stats
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+
+
+@require_http_methods(["GET"])
+def get_home_content(request: HttpRequest) -> JsonResponse:
+    """
+    Real-time content for the home page (top treatments, hospitals, doctors)
+    """
+    try:
+        # Get top treatments
+        top_treatments = list(Treatment.objects.all()[:6].values('id', 'name', 'slug'))  # type: ignore
+        
+        # Get top hospitals
+        top_hospitals = list(Hospital.objects.all()[:4].values('id', 'name', 'slug', 'profile_picture', 'is_takeopinion_choice'))  # type: ignore
+        
+        # Get top doctors
+        top_doctors = list(Doctor.objects.all()[:4].values('id', 'name', 'slug', 'profile_picture', 'key_points'))  # type: ignore
+        
+        # Get latest blogs
+        latest_blogs = list(BlogPost.objects.all()[:3].values('id', 'title', 'slug', 'created_at'))  # type: ignore
+        
+        return JsonResponse({
+            'success': True,
+            'top_treatments': top_treatments,
+            'top_hospitals': top_hospitals,
+            'top_doctors': top_doctors,
+            'latest_blogs': latest_blogs
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
 
 
 def search(request: HttpRequest) -> HttpResponse:

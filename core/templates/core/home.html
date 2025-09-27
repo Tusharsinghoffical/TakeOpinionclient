@@ -24,19 +24,19 @@
       <div class="row text-center g-4">
         <div class="col-6 col-md-3">
           <div class="stat-item">
-            <div class="h4 fw-bold mb-0">50+</div>
+            <div class="h4 fw-bold mb-0" id="treatmentsCount">50+</div>
             <div class="small text-muted">Treatments</div>
           </div>
         </div>
         <div class="col-6 col-md-3">
           <div class="stat-item">
-            <div class="h4 fw-bold mb-0">100+</div>
+            <div class="h4 fw-bold mb-0" id="hospitalsCount">100+</div>
             <div class="small text-muted">Hospitals</div>
           </div>
         </div>
         <div class="col-6 col-md-3">
           <div class="stat-item">
-            <div class="h4 fw-bold mb-0">200+</div>
+            <div class="h4 fw-bold mb-0" id="doctorsCount">200+</div>
             <div class="small text-muted">Doctors</div>
           </div>
         </div>
@@ -58,11 +58,13 @@
       <a href="/treatments/" class="btn btn-outline-secondary btn-sm">Oncology</a>
       <a href="/treatments/" class="btn btn-outline-secondary btn-sm">Wellness</a>
     </div>
-    <div class="row g-4">
+    <div class="row g-4 treatments-container">
       {% for t in top_treatments %}
       <div class="col-6 col-md-4 col-lg-2">
-        <a class="card text-center text-decoration-none card-hover h-100" href="/treatments/{{ t.slug }}/">
-          <img src="https://picsum.photos/seed/t{{ forloop.counter }}/400/240" class="card-img-top object-fit-cover" alt="{{ t.name }}" style="height: 120px;">
+        <a class="card text-center text-decoration-none card-hover h-100 treatment-card" href="/treatments/{{ t.slug }}/">
+          <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 120px;">
+            <i class="bi bi-bandaid text-primary" style="font-size: 2.5rem;"></i>
+          </div>
           <div class="card-body">
             <div class="small text-muted">Treatment</div>
             <div class="fw-semibold">{{ t.name }}</div>
@@ -72,7 +74,7 @@
       {% endfor %}
     </div>
     <div class="text-center mt-4">
-      <a href="/treatments/" class="btn btn-outline-primary">View All Treatments</a>
+      <a href="/treatments/" class="btn btn-primary btn-lg px-4 py-2">View All Treatments</a>
     </div>
   </div>
 </section>
@@ -141,7 +143,7 @@
       <h2 class="h3 mb-0">Top Hospitals</h2>
       <a href="/hospitals/" class="btn btn-outline-secondary btn-sm">View all</a>
     </div>
-    <div class="row g-4">
+    <div class="row g-4 hospitals-container">
       {% for h in top_hospitals %}
       <div class="col-6 col-md-3">
         <a href="/hospitals/{{ h.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
@@ -169,7 +171,7 @@
       <h2 class="h3 mb-0">Top Doctors</h2>
       <a href="/doctors/" class="btn btn-outline-secondary btn-sm">View all</a>
     </div>
-    <div class="row g-4">
+    <div class="row g-4 doctors-container">
       {% for d in top_doctors %}
       <div class="col-6 col-md-3">
         <a href="/doctors/{{ d.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
@@ -320,7 +322,7 @@
       <h2 class="h3 mb-0">Latest Blogs & Resources</h2>
       <a href="/blogs/" class="btn btn-outline-secondary btn-sm">View all</a>
     </div>
-    <div class="row g-4">
+    <div class="row g-4 blogs-container">
       {% for b in latest_blogs %}
       <div class="col-md-4">
         <a href="/blogs/{{ b.slug }}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
@@ -341,3 +343,193 @@
 </section>
 
 {% endblock %}
+
+<!-- Real-time Statistics Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Function to fetch and update real-time statistics
+    function updateStats() {
+      fetch('/stats/')
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Update statistics with animation
+            animateStat('treatmentsCount', data.stats.treatments_count);
+            animateStat('hospitalsCount', data.stats.hospitals_count);
+            animateStat('doctorsCount', data.stats.doctors_count);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching stats:', error);
+        });
+    }
+    
+    // Function to fetch and update real-time content
+    function updateContent() {
+      fetch('/content/')
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Update top treatments
+            updateTreatments(data.top_treatments);
+            
+            // Update top hospitals
+            updateHospitals(data.top_hospitals);
+            
+            // Update top doctors
+            updateDoctors(data.top_doctors);
+            
+            // Update latest blogs
+            updateBlogs(data.latest_blogs);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching content:', error);
+        });
+    }
+    
+    // Function to animate statistics counter
+    function animateStat(elementId, targetValue) {
+      const element = document.getElementById(elementId);
+      if (!element) return;
+      
+      const currentValue = parseInt(element.textContent) || 0;
+      const increment = targetValue > currentValue ? Math.ceil((targetValue - currentValue) / 50) : -Math.ceil((currentValue - targetValue) / 50);
+      
+      let count = currentValue;
+      const timer = setInterval(() => {
+        count += increment;
+        
+        if ((increment > 0 && count >= targetValue) || (increment < 0 && count <= targetValue)) {
+          element.textContent = targetValue + '+';
+          clearInterval(timer);
+        } else {
+          element.textContent = count + '+';
+        }
+      }, 30);
+    }
+    
+    // Function to update treatments
+    function updateTreatments(treatments) {
+      const container = document.querySelector('.row.g-4.treatments-container');
+      if (!container) return;
+      
+      // Clear existing treatments
+      container.innerHTML = '';
+      
+      // Add updated treatments
+      treatments.forEach(treatment => {
+        const treatmentHtml = `
+          <div class="col-6 col-md-4 col-lg-2">
+            <a class="card text-center text-decoration-none card-hover h-100 treatment-card" href="/treatments/${treatment.slug}/">
+              <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 120px;">
+                <i class="bi bi-bandaid text-primary" style="font-size: 2.5rem;"></i>
+              </div>
+              <div class="card-body">
+                <div class="small text-muted">Treatment</div>
+                <div class="fw-semibold">${treatment.name}</div>
+              </div>
+            </a>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', treatmentHtml);
+      });
+    }
+    
+    // Function to update hospitals
+    function updateHospitals(hospitals) {
+      const container = document.querySelector('.row.g-4.hospitals-container');
+      if (!container) return;
+      
+      // Clear existing hospitals
+      container.innerHTML = '';
+      
+      // Add updated hospitals
+      hospitals.forEach(hospital => {
+        const hospitalHtml = `
+          <div class="col-6 col-md-3">
+            <a href="/hospitals/${hospital.slug}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+              ${hospital.profile_picture ? 
+                `<img src="${hospital.profile_picture}" class="card-img-top object-fit-cover" alt="${hospital.name}" style="height: 160px;">` :
+                `<img src="https://picsum.photos/seed/h${hospital.id}/600/360" class="card-img-top object-fit-cover" alt="${hospital.name}" style="height: 160px;">`}
+              <div class="card-body">
+                <div class="fw-semibold">${hospital.name}</div>
+                ${hospital.is_takeopinion_choice ? '<span class="badge badge-choice">TakeOpinion Choice</span>' : ''}
+                <div class="small text-muted mt-2">Accredited hospital</div>
+              </div>
+            </a>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', hospitalHtml);
+      });
+    }
+    
+    // Function to update doctors
+    function updateDoctors(doctors) {
+      const container = document.querySelector('.row.g-4.doctors-container');
+      if (!container) return;
+      
+      // Clear existing doctors
+      container.innerHTML = '';
+      
+      // Add updated doctors
+      doctors.forEach(doctor => {
+        const doctorHtml = `
+          <div class="col-6 col-md-3">
+            <a href="/doctors/${doctor.slug}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+              ${doctor.profile_picture ? 
+                `<img src="${doctor.profile_picture}" class="card-img-top object-fit-cover" alt="${doctor.name}" style="height: 160px;">` :
+                `<img src="https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.name)}&background=0D6EFD&color=fff&size=256" class="card-img-top object-fit-cover" alt="${doctor.name}" style="height: 160px;">`}
+              <div class="card-body">
+                <div class="fw-semibold">${doctor.name}</div>
+                <div class="small text-muted">${doctor.key_points || 'Specialist'}</div>
+                <div class="d-flex align-items-center mt-2">
+                  <i class="bi bi-star-fill text-warning me-1"></i>
+                  <span class="small">4.8 (120 reviews)</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', doctorHtml);
+      });
+    }
+    
+    // Function to update blogs
+    function updateBlogs(blogs) {
+      const container = document.querySelector('.row.g-4.blogs-container');
+      if (!container) return;
+      
+      // Clear existing blogs
+      container.innerHTML = '';
+      
+      // Add updated blogs
+      blogs.forEach(blog => {
+        const blogHtml = `
+          <div class="col-md-4">
+            <a href="/blogs/${blog.slug}/" class="card h-100 text-decoration-none card-hover border-0 shadow-sm">
+              <img src="https://picsum.photos/seed/b${blog.id}/800/480" class="card-img-top object-fit-cover" alt="${blog.title}" style="height: 200px;">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="badge bg-primary">Medical Travel</span>
+                  <small class="text-muted">May 15, 2023</small>
+                </div>
+                <div class="fw-semibold h5">${blog.title}</div>
+                <p class="card-text">Learn important considerations and tips for your medical travel journey...</p>
+              </div>
+            </a>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', blogHtml);
+      });
+    }
+    
+    // Update stats immediately and then every 30 seconds
+    updateStats();
+    setInterval(updateStats, 30000);
+    
+    // Update content immediately and then every minute
+    updateContent();
+    setInterval(updateContent, 60000);
+  });
+</script>

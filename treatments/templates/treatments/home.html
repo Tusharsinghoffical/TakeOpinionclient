@@ -1,66 +1,102 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container py-5">
-  <div class="section-title mb-4">
-    <i class="bi bi-activity"></i>
-    <h1 class="h2 mb-0">Medical Treatments</h1>
+  <!-- Hero Section -->
+  <div class="text-center mb-5">
+    <div class="section-title mb-4 justify-content-center">
+      <i class="bi bi-activity"></i>
+      <h1 class="h2 mb-0">Medical Treatments</h1>
+    </div>
+    <p class="lead mx-auto" style="max-width: 700px;">Explore our comprehensive range of medical treatments across various specialities, all offered by our verified healthcare partners.</p>
   </div>
-  
-  <p class="mb-4">Explore our comprehensive range of medical treatments across various specialities, all offered by our verified healthcare partners.</p>
-  
+
+  <!-- Category Filter -->
   <div class="card border-0 shadow-sm mb-4">
     <div class="card-body">
-      <div class="row g-3">
-        <div class="col-md-12">
-          <label class="form-label fw-semibold">Treatment Category</label>
-          <select class="form-select">
-            <option selected>All Categories</option>
-            <option>Medical Treatments</option>
-            <option>Aesthetic Procedures</option>
-            <option>Wellness Programs</option>
+      <div class="row g-3 align-items-center">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold mb-0">Treatment Category</label>
+        </div>
+        <div class="col-md-9">
+          <select class="form-select" id="categoryFilter">
+            <option value="all" selected>All Categories</option>
+            <option value="medical">Medical Treatments</option>
+            <option value="aesthetic">Aesthetic Procedures</option>
+            <option value="wellness">Wellness Programs</option>
           </select>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Search Filter -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold mb-0">Search Treatments</label>
+        </div>
+        <div class="col-md-9">
+          <div class="input-group">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search for treatments...">
+            <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
   <ul class="nav nav-tabs nav-justified mb-4" id="treatmentTabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#medical" type="button">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#medical" type="button" data-category="medical">
         <i class="bi bi-heart-pulse me-2"></i>Medical Treatments
       </button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aesthetic" type="button">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aesthetic" type="button" data-category="aesthetic">
         <i class="bi bi-stars me-2"></i>Aesthetic
       </button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#wellness" type="button">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#wellness" type="button" data-category="wellness">
         <i class="bi bi-flower1 me-2"></i>Wellness
       </button>
     </li>
   </ul>
   
-  <div class="tab-content">
+  <!-- Loading Indicator -->
+  <div id="loadingIndicator" class="text-center d-none">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
+  <!-- Tab Content -->
+  <div class="tab-content" id="treatmentsContainer">
     <div class="tab-pane fade show active" id="medical">
-      <div class="row g-4">
+      <div class="row g-4" id="medicalTreatments">
         {% for c in categories %}
         {% if c.type == 'medical' %}
         <div class="col-md-6 col-lg-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <div class="card-header bg-primary text-white">
+          <div class="card h-100 border-0 shadow-sm treatment-category-card">
+            <div class="card-header bg-primary text-white d-flex align-items-center">
+              <i class="bi bi-folder-fill me-2"></i>
               <h5 class="card-title mb-0">{{ c.name }}</h5>
             </div>
             <div class="card-body">
               <div class="list-group list-group-flush">
                 {% for t in c.treatments.all %}
-                <a href="/treatments/{{ t.slug }}/" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                  {{ t.name }}
+                <a href="/treatments/{{ t.slug }}/" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center treatment-item">
+                  <span>{{ t.name }}</span>
                   <i class="bi bi-chevron-right text-muted"></i>
                 </a>
                 {% empty %}
-                <div class="list-group-item">No treatments available</div>
+                <div class="list-group-item text-center text-muted">
+                  <i class="bi bi-info-circle me-1"></i>No treatments available
+                </div>
                 {% endfor %}
               </div>
             </div>
@@ -72,23 +108,26 @@
     </div>
     
     <div class="tab-pane fade" id="aesthetic">
-      <div class="row g-4">
+      <div class="row g-4" id="aestheticTreatments">
         {% for c in categories %}
         {% if c.type == 'aesthetic' %}
         <div class="col-md-6 col-lg-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <div class="card-header bg-info text-white">
+          <div class="card h-100 border-0 shadow-sm treatment-category-card">
+            <div class="card-header bg-info text-white d-flex align-items-center">
+              <i class="bi bi-stars me-2"></i>
               <h5 class="card-title mb-0">{{ c.name }}</h5>
             </div>
             <div class="card-body">
               <div class="list-group list-group-flush">
                 {% for t in c.treatments.all %}
-                <a href="/treatments/{{ t.slug }}/" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                  {{ t.name }}
+                <a href="/treatments/{{ t.slug }}/" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center treatment-item">
+                  <span>{{ t.name }}</span>
                   <i class="bi bi-chevron-right text-muted"></i>
                 </a>
                 {% empty %}
-                <div class="list-group-item">No treatments available</div>
+                <div class="list-group-item text-center text-muted">
+                  <i class="bi bi-info-circle me-1"></i>No treatments available
+                </div>
                 {% endfor %}
               </div>
             </div>
@@ -100,23 +139,26 @@
     </div>
     
     <div class="tab-pane fade" id="wellness">
-      <div class="row g-4">
+      <div class="row g-4" id="wellnessTreatments">
         {% for c in categories %}
         {% if c.type == 'wellness' %}
         <div class="col-md-6 col-lg-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <div class="card-header bg-success text-white">
+          <div class="card h-100 border-0 shadow-sm treatment-category-card">
+            <div class="card-header bg-success text-white d-flex align-items-center">
+              <i class="bi bi-flower1 me-2"></i>
               <h5 class="card-title mb-0">{{ c.name }}</h5>
             </div>
             <div class="card-body">
               <div class="list-group list-group-flush">
                 {% for t in c.treatments.all %}
-                <a href="/treatments/{{ t.slug }}/" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                  {{ t.name }}
+                <a href="/treatments/{{ t.slug }}/" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center treatment-item">
+                  <span>{{ t.name }}</span>
                   <i class="bi bi-chevron-right text-muted"></i>
                 </a>
                 {% empty %}
-                <div class="list-group-item">No treatments available</div>
+                <div class="list-group-item text-center text-muted">
+                  <i class="bi bi-info-circle me-1"></i>No treatments available
+                </div>
                 {% endfor %}
               </div>
             </div>
@@ -128,15 +170,21 @@
     </div>
   </div>
   
-  <div class="card bg-light border-0 shadow-sm mt-5">
+  <!-- Expert Consultation Banner -->
+  <div class="card bg-gradient border-0 shadow-sm mt-5">
     <div class="card-body">
       <div class="row align-items-center">
-        <div class="col-md-8">
+        <div class="col-md-2 text-center mb-3 mb-md-0">
+          <div class="rounded-circle bg-primary p-3 d-inline-block">
+            <i class="bi bi-headset text-white" style="font-size: 2rem;"></i>
+          </div>
+        </div>
+        <div class="col-md-7 mb-3 mb-md-0">
           <h5 class="card-title">Need Help Choosing a Treatment?</h5>
           <p class="card-text mb-0">Our medical experts can guide you to the best treatment options based on your specific needs.</p>
         </div>
-        <div class="col-md-4 text-md-end mt-3 mt-md-0">
-          <a href="{% url 'contact' %}" class="btn btn-primary">
+        <div class="col-md-3 text-md-end">
+          <a href="{% url 'contact' %}" class="btn btn-primary btn-lg w-100">
             <i class="bi bi-chat-dots me-2"></i>Consult an Expert
           </a>
         </div>
@@ -144,4 +192,226 @@
     </div>
   </div>
 </div>
+
+<!-- Custom Styles -->
+<style>
+  .bg-gradient {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+  
+  .treatment-category-card {
+    transition: all 0.3s ease;
+  }
+  
+  .treatment-category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .treatment-item {
+    border-radius: 0.5rem !important;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+  }
+  
+  .treatment-item:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    padding-left: 1.25rem;
+  }
+  
+  .nav-tabs .nav-link {
+    font-weight: 500;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  
+  .nav-tabs .nav-link.active {
+    background-color: #fff;
+    color: var(--medical-blue);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<!-- Real-time Filtering Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
+    const categoryFilter = document.getElementById('categoryFilter');
+    const searchInput = document.getElementById('searchInput');
+    const clearSearch = document.getElementById('clearSearch');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const treatmentsContainer = document.getElementById('treatmentsContainer');
+    
+    // Current filter state
+    let currentCategory = 'all';
+    let currentSearch = '';
+    let debounceTimer;
+    
+    // Function to update treatments based on filters
+    function updateTreatments() {
+      // Show loading indicator
+      loadingIndicator.classList.remove('d-none');
+      
+      // Prepare request data
+      const params = new URLSearchParams();
+      if (currentCategory !== 'all') {
+        params.append('category', currentCategory);
+      }
+      if (currentSearch) {
+        params.append('search', currentSearch);
+      }
+      
+      // Make AJAX request
+      fetch(`/treatments/filter/?${params.toString()}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            renderTreatments(data.categories);
+          }
+          loadingIndicator.classList.add('d-none');
+        })
+        .catch(error => {
+          console.error('Error fetching treatments:', error);
+          loadingIndicator.classList.add('d-none');
+        });
+    }
+    
+    // Function to render treatments
+    function renderTreatments(categories) {
+      // Clear all tab content
+      document.getElementById('medicalTreatments').innerHTML = '';
+      document.getElementById('aestheticTreatments').innerHTML = '';
+      document.getElementById('wellnessTreatments').innerHTML = '';
+      
+      // Render categories by type
+      categories.forEach(category => {
+        const categoryHtml = `
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm treatment-category-card">
+              <div class="card-header ${getCategoryHeaderClass(category.type)} text-white d-flex align-items-center">
+                <i class="${getCategoryIcon(category.type)} me-2"></i>
+                <h5 class="card-title mb-0">${category.name}</h5>
+              </div>
+              <div class="card-body">
+                <div class="list-group list-group-flush">
+                  ${category.treatments.length > 0 
+                    ? category.treatments.map(treatment => `
+                      <a href="/treatments/${treatment.slug}/" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center treatment-item">
+                        <span>${treatment.name}</span>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                      </a>
+                    `).join('')
+                    : `<div class="list-group-item text-center text-muted">
+                        <i class="bi bi-info-circle me-1"></i>No treatments available
+                      </div>`
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Add to appropriate tab
+        const containerId = getCategoryContainerId(category.type);
+        if (containerId) {
+          document.getElementById(containerId).insertAdjacentHTML('beforeend', categoryHtml);
+        }
+      });
+      
+      // Reattach event listeners to new elements
+      attachEventListeners();
+    }
+    
+    // Helper functions
+    function getCategoryHeaderClass(type) {
+      switch(type) {
+        case 'medical': return 'bg-primary';
+        case 'aesthetic': return 'bg-info';
+        case 'wellness': return 'bg-success';
+        default: return 'bg-primary';
+      }
+    }
+    
+    function getCategoryIcon(type) {
+      switch(type) {
+        case 'medical': return 'bi bi-folder-fill';
+        case 'aesthetic': return 'bi bi-stars';
+        case 'wellness': return 'bi bi-flower1';
+        default: return 'bi bi-folder-fill';
+      }
+    }
+    
+    function getCategoryContainerId(type) {
+      switch(type) {
+        case 'medical': return 'medicalTreatments';
+        case 'aesthetic': return 'aestheticTreatments';
+        case 'wellness': return 'wellnessTreatments';
+        default: return null;
+      }
+    }
+    
+    // Attach event listeners to interactive elements
+    function attachEventListeners() {
+      // Add hover effects to treatment cards
+      const treatmentCards = document.querySelectorAll('.treatment-category-card');
+      treatmentCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-5px)';
+          card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'translateY(0)';
+        });
+      });
+      
+      // Add hover effects to treatment items
+      const treatmentItems = document.querySelectorAll('.treatment-item');
+      treatmentItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+          item.style.paddingLeft = '1.25rem';
+          item.style.transition = 'padding-left 0.2s ease';
+        });
+        
+        item.addEventListener('mouseleave', () => {
+          item.style.paddingLeft = '1rem';
+        });
+      });
+    }
+    
+    // Event listeners
+    categoryFilter.addEventListener('change', function() {
+      currentCategory = this.value;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(updateTreatments, 300);
+    });
+    
+    searchInput.addEventListener('input', function() {
+      currentSearch = this.value;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(updateTreatments, 300);
+    });
+    
+    clearSearch.addEventListener('click', function() {
+      searchInput.value = '';
+      currentSearch = '';
+      updateTreatments();
+    });
+    
+    // Tab navigation event listeners
+    const tabLinks = document.querySelectorAll('.nav-tabs .nav-link');
+    tabLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        currentCategory = this.getAttribute('data-category') || 'all';
+        categoryFilter.value = currentCategory;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(updateTreatments, 300);
+      });
+    });
+    
+    // Initialize event listeners
+    attachEventListeners();
+  });
+</script>
 {% endblock %}
