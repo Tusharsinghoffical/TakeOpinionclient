@@ -1,0 +1,1184 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<style>
+  /* Home Page Specific Styles */
+  :root {
+    /* Enhanced color palette for better visibility */
+    --primary-dark: #2c3e50;
+    --primary-medium: #3498db;
+    --primary-light: #5dade2;
+    --accent: #e74c3c;
+    --success: #27ae60;
+    --light-bg: #f8f9fa;
+    --dark-text: #2c3e50;
+    --light-text: #ffffff;
+    --border: #ddd;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --gradient-start: #3498db;
+    --gradient-end: #2c3e50;
+  }
+
+  /* Global home page styles */
+  .home-page {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark-text);
+    line-height: 1.6;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    background: linear-gradient(
+      135deg,
+      var(--gradient-start) 0%,
+      var(--gradient-end) 100%
+    );
+    color: var(--light-text);
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+  }
+
+  .hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary-large {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-primary-large:hover {
+    background-color: #ffffff;
+    color: #e74c3c;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-secondary-large {
+    background-color: transparent;
+    color: var(--light-text);
+    border: 2px solid var(--light-text);
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary-large:hover {
+    background-color: #ffffff;
+    color: #3498db;
+    transform: translateY(-3px);
+  }
+
+  /* Section Headers */
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.25rem;
+    color: #7f8c8d;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* Core Services Section */
+  .core-services-section {
+    background-color: var(--light-bg);
+    padding: 5rem 0;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .service-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: all 0.3s ease;
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .service-icon {
+    font-size: 3rem;
+    color: var(--primary-medium);
+    margin-bottom: 1.5rem;
+  }
+
+  .service-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+  }
+
+  .service-description {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-link {
+    display: inline-block;
+    color: var(--primary-medium);
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0.5rem 1.5rem;
+    border: 2px solid var(--primary-medium);
+    border-radius: 30px;
+    transition: all 0.3s ease;
+  }
+
+  .service-link:hover {
+    background-color: var(--primary-medium);
+    color: white !important;
+  }
+
+  /* WhatsApp Section */
+  .whatsapp-section {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+  }
+
+  .whatsapp-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .whatsapp-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .whatsapp-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-whatsapp {
+    background-color: transparent;
+    color: #25D366;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-whatsapp:hover {
+    background-color: #25D369;
+    color: rgb(255, 255, 255);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-consultation {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-consultation:hover {
+    background-color: #25D369;
+    color: rgb(255, 255, 255);
+    transform: translateY(-3px);
+  }
+  /* Testimonials Section */
+  .testimonials-section {
+    background-color: white;
+    padding: 5rem 0;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .testimonial-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .testimonial-image {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .testimonial-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--success);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .testimonial-content {
+    padding: 1.5rem;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .author-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .author-info h4 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--primary-dark);
+  }
+
+  .author-info p {
+    margin: 0;
+    color: #7f8c8d;
+  }
+
+  .testimonial-text {
+    color: #555;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+
+  .testimonial-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rating-stars {
+    color: #f39c12;
+  }
+
+  .rating-date {
+    color: #95a5a6;
+    font-size: 0.9rem;
+  }
+
+  .btn-testimonials {
+    display: block;
+    margin: 3rem auto 0;
+    background-color: var(--primary-medium);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-testimonials:hover {
+    background-color: var(--light-bg);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgb(249, 248, 248);
+  }
+
+  /* Multi Speciality Section */
+  .multi-speciality-section {
+    background-color: var(--light-bg);
+    padding: 5rem 0;
+  }
+
+  .treatment-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .treatment-tag {
+    background-color: white;
+    color: var(--primary-medium);
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 2px solid var(--primary-medium);
+    transition: all 0.3s ease;
+  }
+
+  .treatment-tag:hover {
+    background-color: var(--primary-medium);
+    color: white !important;
+  }
+
+  .treatments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .treatment-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px var(--shadow);
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .treatment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .treatment-icon {
+    height: 100px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .treatment-icon i {
+    font-size: 2rem;
+    color: var(--primary-medium);
+  }
+
+  .treatment-body {
+    padding: 1rem;
+  }
+
+  .treatment-type {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-bottom: 0.25rem;
+  }
+
+  .treatment-name {
+    font-weight: 600;
+    color: var(--primary-dark);
+  }
+
+  .btn-view-all {
+    display: block;
+    margin: 2rem auto 0;
+    background-color: var(--primary-medium);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-view-all:hover {
+    background-color: #ffffff;
+    color: #3498db;
+    transform: translateY(-3px);
+  }
+
+  /* Why Choose Section */
+  .why-choose-section {
+    background-color: white;
+    padding: 5rem 0;
+  }
+
+  .why-choose-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .why-choose-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: all 0.3s ease;
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .why-choose-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .why-choose-icon {
+    font-size: 3rem;
+    color: var(--primary-medium);
+    margin-bottom: 1.5rem;
+  }
+
+  .why-choose-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+  }
+
+  .why-choose-description {
+    color: #7f8c8d;
+  }
+
+  /* Top Hospitals/Doctors Section */
+  .top-section {
+    background-color: var(--light-bg);
+    padding: 5rem 0;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .top-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .top-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .top-image {
+    height: 160px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .top-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: #f1c40f;
+    color: #2c3e50;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+
+  .top-body {
+    padding: 1.5rem;
+  }
+
+  .top-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--primary-dark);
+  }
+
+  .top-specialty {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 1rem;
+  }
+
+  .top-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .top-rating i {
+    color: #f39c12;
+  }
+
+  .top-rating span {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+
+  /* How It Works Section */
+  .how-it-works-section {
+    background-color: white;
+    padding: 5rem 0;
+  }
+
+  .how-it-works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .how-it-works-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: all 0.3s ease;
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .how-it-works-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .how-it-works-icon {
+    font-size: 3rem;
+    color: var(--primary-medium);
+    margin-bottom: 1.5rem;
+  }
+
+  .how-it-works-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+  }
+
+  .how-it-works-description {
+    color: #7f8c8d;
+  }
+
+  /* Latest Blogs Section */
+  .blogs-section {
+    background-color: var(--light-bg);
+    padding: 5rem 0;
+  }
+
+  .blogs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .blog-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .blog-image {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .blog-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: var(--primary-medium);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+
+  .blog-date {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--primary-dark);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+
+  .blog-body {
+    padding: 1.5rem;
+  }
+
+  .blog-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--primary-dark);
+  }
+
+  .blog-excerpt {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .whatsapp-title {
+      font-size: 2rem;
+    }
+
+    .hero-buttons,
+    .whatsapp-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn-primary-large,
+    .btn-secondary-large,
+    .btn-whatsapp,
+    .btn-consultation {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+</style>
+
+<link href="{% static 'css/home.css' %}" rel="stylesheet" />
+
+<div class="home-page">
+  <div class="container py-5">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-content">
+        <h1 class="hero-title">Find the Right Medical Treatments</h1>
+        <p class="hero-subtitle">
+          Explore our comprehensive range of medical treatments across various
+          specialities, all offered by our verified healthcare partners.
+        </p>
+        <div class="hero-buttons">
+          <a href="/book/" class="btn-primary-large">
+            <i class="bi bi-chat-dots me-2"></i> Connect with Experts
+          </a>
+          <a href="/doctors/" class="btn-secondary-large"> Find Doctors </a>
+        </div>
+      </div>
+    </section>
+    <!-- Tab Navigation -->
+    <section class="multi-speciality-section">
+      <div class="container">
+        <ul
+          class="nav nav-tabs nav-justified mb-4"
+          id="treatmentTabs"
+          role="tablist"
+        >
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              data-bs-toggle="tab"
+              data-bs-target="#medical"
+              type="button"
+              data-category="medical"
+            >
+              <i class="bi bi-heart-pulse me-2"></i>Medical Treatments
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              data-bs-toggle="tab"
+              data-bs-target="#aesthetic"
+              type="button"
+              data-category="aesthetic"
+            >
+              <i class="bi bi-stars me-2"></i>Aesthetic
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              data-bs-toggle="tab"
+              data-bs-target="#wellness"
+              type="button"
+              data-category="wellness"
+            >
+              <i class="bi bi-flower1 me-2"></i>Wellness
+            </button>
+          </li>
+        </ul>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="text-center d-none">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="treatmentsContainer">
+          <div class="tab-pane fade show active" id="medical">
+            <div class="row g-4" id="medicalTreatments">
+              {% for c in categories %} {% if c.type == 'medical' %}
+              <div class="col-md-6 col-lg-4">
+                <div
+                  class="card h-100 border-0 shadow-sm treatment-category-card"
+                >
+                  <div
+                    class="card-header bg-primary text-white d-flex align-items-center"
+                  >
+                    <i class="bi bi-folder-fill me-2"></i>
+                    <h5 class="card-title mb-0">{{ c.name }}</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="list-group list-group-flush">
+                      {% for t in c.treatments.all %}
+                      <a
+                        href="/treatments/{{ t.slug }}/"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center treatment-item"
+                      >
+                        <span>{{ t.name }}</span>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                      </a>
+                      {% empty %}
+                      <div class="list-group-item text-center text-muted">
+                        <i class="bi bi-info-circle me-1"></i>No treatments
+                        available
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %} {% endfor %}
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="aesthetic">
+            <div class="row g-4" id="aestheticTreatments">
+              {% for c in categories %} {% if c.type == 'aesthetic' %}
+              <div class="col-md-6 col-lg-4">
+                <div
+                  class="card h-100 border-0 shadow-sm treatment-category-card"
+                >
+                  <div
+                    class="card-header bg-info text-white d-flex align-items-center"
+                  >
+                    <i class="bi bi-stars me-2"></i>
+                    <h5 class="card-title mb-0">{{ c.name }}</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="list-group list-group-flush">
+                      {% for t in c.treatments.all %}
+                      <a
+                        href="/treatments/{{ t.slug }}/"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center treatment-item"
+                      >
+                        <span>{{ t.name }}</span>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                      </a>
+                      {% empty %}
+                      <div class="list-group-item text-center text-muted">
+                        <i class="bi bi-info-circle me-1"></i>No treatments
+                        available
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %} {% endfor %}
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="wellness">
+            <div class="row g-4" id="wellnessTreatments">
+              {% for c in categories %} {% if c.type == 'wellness' %}
+              <div class="col-md-6 col-lg-4">
+                <div
+                  class="card h-100 border-0 shadow-sm treatment-category-card"
+                >
+                  <div
+                    class="card-header bg-success text-white d-flex align-items-center"
+                  >
+                    <i class="bi bi-flower1 me-2"></i>
+                    <h5 class="card-title mb-0">{{ c.name }}</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="list-group list-group-flush">
+                      {% for t in c.treatments.all %}
+                      <a
+                        href="/treatments/{{ t.slug }}/"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center treatment-item"
+                      >
+                        <span>{{ t.name }}</span>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                      </a>
+                      {% empty %}
+                      <div class="list-group-item text-center text-muted">
+                        <i class="bi bi-info-circle me-1"></i>No treatments
+                        available
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %} {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WhatsApp Section -->
+   
+    <!-- Why Choose Section -->
+    <section class="why-choose-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Why Choose TakeOpinion Treatments</h2>
+        </div>
+        <div class="why-choose-grid">
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-shield-check"></i>
+            </div>
+            <h3 class="why-choose-title">Verified Treatments</h3>
+            <p class="why-choose-description">
+              All our treatments are offered by verified hospitals and doctors
+              with proven success rates.
+            </p>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-translate"></i>
+            </div>
+            <h3 class="why-choose-title">Language Support</h3>
+            <p class="why-choose-description">
+              Multilingual support to ensure clear communication throughout your
+              medical journey.
+            </p>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-headset"></i>
+            </div>
+            <h3 class="why-choose-title">24/7 Support</h3>
+            <p class="why-choose-description">
+              Round-the-clock assistance for all your medical consultation
+              needs.
+            </p>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-currency-dollar"></i>
+            </div>
+            <h3 class="why-choose-title">Transparent Pricing</h3>
+            <p class="why-choose-description">
+              Clear pricing information to help you make informed decisions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Real-time Filtering Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get DOM elements
+    const categoryFilter = document.getElementById("categoryFilter");
+    const searchInput = document.getElementById("searchInput");
+    const clearSearch = document.getElementById("clearSearch");
+    const loadingIndicator = document.getElementById("loadingIndicator");
+    const treatmentsContainer = document.getElementById("treatmentsContainer");
+
+    // Current filter state
+    let currentCategory = "all";
+    let currentSearch = "";
+    let debounceTimer;
+
+    // Function to update treatments based on filters
+    function updateTreatments() {
+      // Show loading indicator
+      loadingIndicator.classList.remove("d-none");
+
+      // Prepare request data
+      const params = new URLSearchParams();
+      if (currentCategory !== "all") {
+        params.append("category", currentCategory);
+      }
+      if (currentSearch) {
+        params.append("search", currentSearch);
+      }
+
+      // Make AJAX request
+      fetch(`/treatments/filter/?${params.toString()}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            renderTreatments(data.categories);
+          }
+          loadingIndicator.classList.add("d-none");
+        })
+        .catch((error) => {
+          console.error("Error fetching treatments:", error);
+          loadingIndicator.classList.add("d-none");
+        });
+    }
+
+    // Function to render treatments
+    function renderTreatments(categories) {
+      // Clear all tab content
+      document.getElementById("medicalTreatments").innerHTML = "";
+      document.getElementById("aestheticTreatments").innerHTML = "";
+      document.getElementById("wellnessTreatments").innerHTML = "";
+
+      // Render categories by type
+      categories.forEach((category) => {
+        const categoryHtml = `
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm treatment-category-card">
+              <div class="card-header ${getCategoryHeaderClass(
+                category.type
+              )} text-white d-flex align-items-center">
+                <i class="${getCategoryIcon(category.type)} me-2"></i>
+                <h5 class="card-title mb-0">${category.name}</h5>
+              </div>
+              <div class="card-body">
+                <div class="list-group list-group-flush">
+                  ${
+                    category.treatments.length > 0
+                      ? category.treatments
+                          .map(
+                            (treatment) => `
+                      <a href="/treatments/${treatment.slug}/" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center treatment-item">
+                        <span>${treatment.name}</span>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                      </a>
+                    `
+                          )
+                          .join("")
+                      : `<div class="list-group-item text-center text-muted">
+                        <i class="bi bi-info-circle me-1"></i>No treatments available
+                      </div>`
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Add to appropriate tab
+        const containerId = getCategoryContainerId(category.type);
+        if (containerId) {
+          document
+            .getElementById(containerId)
+            .insertAdjacentHTML("beforeend", categoryHtml);
+        }
+      });
+
+      // Reattach event listeners to new elements
+      attachEventListeners();
+    }
+
+    // Helper functions
+    function getCategoryHeaderClass(type) {
+      switch (type) {
+        case "medical":
+          return "bg-primary";
+        case "aesthetic":
+          return "bg-info";
+        case "wellness":
+          return "bg-success";
+        default:
+          return "bg-primary";
+      }
+    }
+
+    function getCategoryIcon(type) {
+      switch (type) {
+        case "medical":
+          return "bi bi-folder-fill";
+        case "aesthetic":
+          return "bi bi-stars";
+        case "wellness":
+          return "bi bi-flower1";
+        default:
+          return "bi bi-folder-fill";
+      }
+    }
+
+    function getCategoryContainerId(type) {
+      switch (type) {
+        case "medical":
+          return "medicalTreatments";
+        case "aesthetic":
+          return "aestheticTreatments";
+        case "wellness":
+          return "wellnessTreatments";
+        default:
+          return null;
+      }
+    }
+
+    // Attach event listeners to interactive elements
+    function attachEventListeners() {
+      // Add hover effects to treatment cards
+      const treatmentCards = document.querySelectorAll(
+        ".treatment-category-card"
+      );
+      treatmentCards.forEach((card) => {
+        card.addEventListener("mouseenter", () => {
+          card.style.transform = "translateY(-5px)";
+          card.style.transition = "transform 0.3s ease, box-shadow 0.3s ease";
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "translateY(0)";
+        });
+      });
+
+      // Add hover effects to treatment items
+      const treatmentItems = document.querySelectorAll(".treatment-item");
+      treatmentItems.forEach((item) => {
+        item.addEventListener("mouseenter", () => {
+          item.style.paddingLeft = "1.25rem";
+          item.style.transition = "padding-left 0.2s ease";
+        });
+
+        item.addEventListener("mouseleave", () => {
+          item.style.paddingLeft = "1rem";
+        });
+      });
+    }
+
+    // Event listeners
+    categoryFilter.addEventListener("change", function () {
+      currentCategory = this.value;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(updateTreatments, 300);
+    });
+
+    searchInput.addEventListener("input", function () {
+      currentSearch = this.value;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(updateTreatments, 300);
+    });
+
+    clearSearch.addEventListener("click", function () {
+      searchInput.value = "";
+      currentSearch = "";
+      updateTreatments();
+    });
+
+    // Tab navigation event listeners
+    const tabLinks = document.querySelectorAll(".nav-tabs .nav-link");
+    tabLinks.forEach((link) => {
+      link.addEventListener("click", function () {
+        currentCategory = this.getAttribute("data-category") || "all";
+        categoryFilter.value = currentCategory;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(updateTreatments, 300);
+      });
+    });
+
+    // Initialize event listeners
+    attachEventListeners();
+  });
+</script>
+{% endblock %}

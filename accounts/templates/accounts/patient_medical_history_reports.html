@@ -1,0 +1,93 @@
+{% extends 'accounts/patient_medical_history_base.html' %}
+{% load static %}
+{% block medical_history_content %}
+
+<div class="card border-0 shadow-sm medical-history-card">
+  <div class="card-header bg-white">
+    <h5 class="mb-0">Medical Reports</h5>
+  </div>
+  <div class="card-body">
+    {% if medical_reports %}
+    <div class="table-responsive">
+      <table class="table table-hover medical-history-table">
+        <thead>
+          <tr>
+            <th>Report Type</th>
+            <th>Date</th>
+            <th>Doctor</th>
+            <th>Hospital</th>
+            <th>Summary</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for report in medical_reports %}
+          <tr>
+            <td>
+              <div class="fw-semibold">{{ report.report_type }}</div>
+            </td>
+            <td>{{ report.date }}</td>
+            <td>{{ report.doctor }}</td>
+            <td>{{ report.hospital }}</td>
+            <td>{{ report.summary }}</td>
+            <td>
+
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+      <i class="bi bi-file-earmark-medical text-muted fs-1 d-block mb-3"></i>
+      <h5 class="text-muted">No medical reports available</h5>
+      <p class="text-muted">Your medical reports will appear here.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Report Details Modals -->
+{% for report in medical_reports %}
+<div class="modal fade" id="reportDetailsModal{{ forloop.counter }}" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Medical Report Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="text-muted">Report Type</label>
+            <p class="fw-semibold">{{ report.report_type }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="text-muted">Date</label>
+            <p class="fw-semibold">{{ report.date }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="text-muted">Doctor</label>
+            <p class="fw-semibold">{{ report.doctor }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="text-muted">Hospital</label>
+            <p class="fw-semibold">{{ report.hospital }}</p>
+          </div>
+          <div class="col-12 mb-3">
+            <label class="text-muted">Summary</label>
+            <p class="fw-semibold">{{ report.summary }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}

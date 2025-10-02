@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+.medical-history-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+.medical-history-card {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  border: none;
+}
+
+.medical-history-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.medical-history-card .card-header {
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  color: white;
+  border-radius: 15px 15px 0 0 !important;
+  border: none;
+}
+
+.medical-history-nav .nav-link {
+  font-weight: 600;
+  color: #6c757d;
+  border: none;
+}
+
+.medical-history-nav .nav-link.active {
+  color: #0d6efd;
+  border-bottom: 3px solid #0d6efd;
+  border-radius: 0;
+}
+
+.medical-history-table th {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.medical-history-table td {
+  vertical-align: middle;
+}
+
+.badge-status-active {
+  background-color: #198754;
+}
+
+.badge-status-completed {
+  background-color: #6c757d;
+}
+
+.badge-status-pending {
+  background-color: #ffc107;
+}
+
+@media (max-width: 768px) {
+  .medical-history-page {
+    padding: 1rem;
+  }
+  
+  .medical-history-card {
+    margin-bottom: 1rem;
+  }
+}
+</style>
+
+<div class="container py-5 medical-history-page">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 class="h3 mb-0">Medical History</h1>
+          <p class="mb-0 text-muted">View and manage your medical records</p>
+        </div>
+        <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger">
+          <i class="bi bi-box-arrow-right me-2"></i>Logout
+        </a>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="card border-0 shadow-sm mb-4 medical-history-card">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Medical History</h5>
+            </div>
+            <div class="card-body">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link {% if request.resolver_match.url_name == 'patient_medical_history_doctors' %}active{% endif %}" 
+                     href="{% url 'accounts:patient_medical_history_doctors' %}">
+                    <i class="bi bi-person me-2"></i>Doctors
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.resolver_match.url_name == 'patient_medical_history_hospitals' %}active{% endif %}" 
+                     href="{% url 'accounts:patient_medical_history_hospitals' %}">
+                    <i class="bi bi-hospital me-2"></i>Hospitals
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.resolver_match.url_name == 'patient_medical_history_treatments' %}active{% endif %}" 
+                     href="{% url 'accounts:patient_medical_history_treatments' %}">
+                    <i class="bi bi-bandaid me-2"></i>Treatments
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.resolver_match.url_name == 'patient_medical_history_reports' %}active{% endif %}" 
+                     href="{% url 'accounts:patient_medical_history_reports' %}">
+                    <i class="bi bi-file-earmark-medical me-2"></i>Reports
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="card border-0 shadow-sm medical-history-card">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Patient Profile</h5>
+            </div>
+            <div class="card-body text-center">
+              <div class="mb-3">
+                <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                  <i class="bi bi-person fs-1 text-muted"></i>
+                </div>
+              </div>
+              <h5>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h5>
+              <p class="text-muted">Patient ID: PT-{{ user_profile.id|default:"1245" }}</p>
+              <a href="{% url 'accounts:patient_profile' %}" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-pencil me-1"></i>Edit Profile
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-9">
+          {% block medical_history_content %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

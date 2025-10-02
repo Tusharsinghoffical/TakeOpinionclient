@@ -1,0 +1,98 @@
+{% extends 'accounts/patient_medical_history_base.html' %}
+{% load static %}
+{% block medical_history_content %}
+
+<div class="card border-0 shadow-sm medical-history-card">
+  <div class="card-header bg-white">
+    <h5 class="mb-0">Hospital Visits</h5>
+  </div>
+  <div class="card-body">
+    {% if hospital_visits %}
+    <div class="table-responsive">
+      <table class="table table-hover medical-history-table">
+        <thead>
+          <tr>
+            <th>Hospital</th>
+            <th>Department</th>
+            <th>Visit Date</th>
+            <th>Reason</th>
+            <th>Doctor</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for visit in hospital_visits %}
+          <tr>
+            <td>
+              <div class="fw-semibold">{{ visit.hospital_name }}</div>
+            </td>
+            <td>{{ visit.department }}</td>
+            <td>{{ visit.visit_date }}</td>
+            <td>{{ visit.reason }}</td>
+            <td>{{ visit.doctor }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#hospitalVisitDetailsModal{{ forloop.counter }}">
+                <i class="bi bi-eye"></i> View Details
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+      <i class="bi bi-hospital text-muted fs-1 d-block mb-3"></i>
+      <h5 class="text-muted">No hospital visits recorded</h5>
+      <p class="text-muted">Your hospital visit history will appear here.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Hospital Visit Details Modals -->
+{% for visit in hospital_visits %}
+<div class="modal fade" id="hospitalVisitDetailsModal{{ forloop.counter }}" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Hospital Visit Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="text-muted">Hospital Name</label>
+            <p class="fw-semibold">{{ visit.hospital_name }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="text-muted">Department</label>
+            <p class="fw-semibold">{{ visit.department }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="text-muted">Visit Date</label>
+            <p class="fw-semibold">{{ visit.visit_date }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="text-muted">Reason</label>
+            <p class="fw-semibold">{{ visit.reason }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="text-muted">Doctor</label>
+            <p class="fw-semibold">{{ visit.doctor }}</p>
+          </div>
+          <div class="col-12 mb-3">
+            <label class="text-muted">Notes</label>
+            <p class="fw-semibold">{{ visit.notes }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}

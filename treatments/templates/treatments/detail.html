@@ -1,0 +1,1030 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+/* Simplified and Attractive Treatment Detail Page Styles with Light Colors */
+.treatment-detail-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  background-color: #f8f9fa;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+  color: #333;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  border-radius: 0 0 20px 20px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.page-header h1 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.page-header .category {
+  opacity: 0.9;
+  font-size: 1.1rem;
+  color: #495057;
+}
+
+.main-content {
+  padding: 0 1rem;
+}
+
+.card-modern {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+  border: none;
+  background: white;
+}
+
+.card-modern:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-modern .card-header {
+  background: #f8f9fa;
+  color: #2c3e50;
+  border-radius: 15px 15px 0 0 !important;
+  border: none;
+  padding: 1.25rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.btn-modern {
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary-modern {
+  background: #adb5bd;
+  color: white;
+  box-shadow: 0 4px 15px rgba(173, 181, 189, 0.3);
+}
+
+.btn-primary-modern:hover {
+  background: #868e96;
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(173, 181, 189, 0.4);
+}
+
+.btn-outline-modern {
+  background: transparent;
+  color: #495057;
+  border: 2px solid #adb5bd;
+}
+
+.btn-outline-modern:hover {
+  background: #e9ecef;
+  transform: translateY(-3px);
+}
+
+.section-title-modern {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.section-title-modern::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: #adb5bd;
+  border-radius: 3px;
+}
+
+.treatment-icon-box {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: rgba(173, 181, 189, 0.1);
+  color: #868e96;
+  font-size: 2rem;
+  margin: 0 auto 1.5rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card i {
+  font-size: 2rem;
+  color: #868e96;
+  margin-bottom: 1rem;
+}
+
+.stat-card .number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.hospital-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.hospital-card-modern {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  background: white;
+  border: 1px solid #e9ecef;
+}
+
+.hospital-card-modern:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.hospital-card-modern img {
+  height: 150px;
+  object-fit: cover;
+}
+
+.doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.doctor-card-modern {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.doctor-card-modern:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-color: #2c7744;
+}
+
+.doctor-card-modern img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+}
+
+.faq-modern .accordion-button {
+  font-weight: 600;
+  color: #2c3e50;
+  background: #f8f9fa;
+  border: none;
+  border-radius: 10px !important;
+}
+
+.faq-modern .accordion-button:not(.collapsed) {
+  color: #2c7744;
+  background: #e8f5e9;
+}
+
+.faq-modern .accordion-item {
+  border: 1px solid #e9ecef;
+  border-radius: 10px !important;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.review-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.review-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.rating-modern {
+  color: #ffc107;
+}
+
+.progress-modern {
+  height: 10px;
+  border-radius: 5px;
+  background-color: #e9ecef;
+}
+
+.progress-bar-modern {
+  border-radius: 5px;
+  background: #2c7744;
+}
+
+.back-btn {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #495057;
+}
+
+.back-btn:hover {
+  background: #e9ecef;
+  transform: translateX(-3px);
+}
+
+.price-card {
+  border-radius: 15px;
+  background: #2c7744;
+  color: white;
+  border: none;
+  box-shadow: 0 10px 30px rgba(44, 119, 68, 0.3);
+}
+
+.price-card .display-4 {
+  font-weight: 700;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .hospital-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .doctor-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .review-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .stat-card {
+    padding: 1.25rem;
+  }
+  
+  .stat-card .number {
+    font-size: 1.75rem;
+  }
+  
+  .stat-card i {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .col-lg-8 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .col-lg-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .hospital-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
+  .doctor-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  .review-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .price-card {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 1.5rem 0;
+    border-radius: 0 0 15px 15px;
+  }
+  
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .main-content {
+    padding: 0 0.5rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  
+  .hospital-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .doctor-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .review-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .btn-modern {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .treatment-icon-box {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .section-title-modern {
+    font-size: 1.25rem;
+  }
+  
+  .stat-card {
+    padding: 1rem;
+  }
+  
+  .stat-card .number {
+    font-size: 1.5rem;
+  }
+  
+  .stat-card i {
+    font-size: 1.5rem;
+  }
+  
+  .hospital-card-modern img {
+    height: 120px;
+  }
+  
+  .doctor-card-modern img {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .price-card .display-4 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .hospital-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .doctor-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  
+  .review-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .page-header .category {
+    font-size: 1rem;
+  }
+  
+  .treatment-icon-box {
+    width: 50px;
+    height: 50px;
+    font-size: 1.25rem;
+  }
+  
+  .section-title-modern {
+    font-size: 1.1rem;
+  }
+  
+  .stat-card {
+    padding: 0.75rem;
+  }
+  
+  .stat-card .number {
+    font-size: 1.25rem;
+  }
+  
+  .stat-card i {
+    font-size: 1.25rem;
+  }
+  
+  .hospital-card-modern img {
+    height: 100px;
+  }
+  
+  .doctor-card-modern img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .price-card .display-4 {
+    font-size: 1.75rem;
+  }
+  
+  .btn-modern {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+</style>
+
+<div class="treatment-detail-page">
+  <div class="page-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <div class="treatment-icon-box">
+            <i class="bi bi-bandaid"></i>
+          </div>
+          <h1>{{ treatment.name }}</h1>
+          <div class="category">{{ treatment.category.name }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container main-content">
+    <div class="row">
+      <div class="col-lg-8">
+        <a href="/treatments/" class="btn back-btn mb-3">
+          <i class="bi bi-arrow-left me-1"></i>Back to Treatments
+        </a>
+        
+        <!-- Treatment Overview -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Treatment Overview</h5>
+          </div>
+          <div class="card-body">
+            <p>{{ treatment.description|default:'This treatment offers advanced medical care with proven results. Our experienced team uses the latest techniques to ensure the best possible outcomes for our patients.' }}</p>
+            
+            <div class="mt-4">
+              <h6 class="fw-semibold">Treatment Process</h6>
+              <div class="row mt-3">
+                <div class="col-md-3 text-center mb-3">
+                  <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 60px; height: 60px;">
+                    <i class="bi bi-1-circle text-primary"></i>
+                  </div>
+                  <div class="mt-2 fw-semibold">Consultation</div>
+                </div>
+                <div class="col-md-3 text-center mb-3">
+                  <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 60px; height: 60px;">
+                    <i class="bi bi-2-circle text-primary"></i>
+                  </div>
+                  <div class="mt-2 fw-semibold">Diagnosis</div>
+                </div>
+                <div class="col-md-3 text-center mb-3">
+                  <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 60px; height: 60px;">
+                    <i class="bi bi-3-circle text-primary"></i>
+                  </div>
+                  <div class="mt-2 fw-semibold">Treatment</div>
+                </div>
+                <div class="col-md-3 text-center mb-3">
+                  <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 60px; height: 60px;">
+                    <i class="bi bi-4-circle text-primary"></i>
+                  </div>
+                  <div class="mt-2 fw-semibold">Recovery</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Treatment Stats -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Treatment Statistics</h5>
+          </div>
+          <div class="card-body">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <i class="bi bi-currency-dollar"></i>
+                <div class="number">₹{{ treatment.starting_price|floatformat:0 }}</div>
+                <div class="text-muted">Starting Price</div>
+              </div>
+              <div class="stat-card">
+                <i class="bi bi-star-fill"></i>
+                <div class="number">{{ treatment.success_rate|floatformat:1|default:'92.5' }}%</div>
+                <div class="text-muted">Success Rate</div>
+              </div>
+              <div class="stat-card">
+                <i class="bi bi-clock"></i>
+                <div class="number">{{ treatment.avg_recovery_time|default:'7-14' }}</div>
+                <div class="text-muted">Recovery Time</div>
+              </div>
+              <div class="stat-card">
+                <i class="bi bi-people"></i>
+                <div class="number">{{ treatment.patients_treated|default:'5000' }}+</div>
+                <div class="text-muted">Patients Treated</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Hospitals Offering This Treatment -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Hospitals Offering This Treatment</h5>
+          </div>
+          <div class="card-body">
+            {% if hospitals_page_obj %}
+            <div class="hospital-grid">
+              {% for hospital in hospitals_page_obj %}
+              <a href="/hospitals/{{ hospital.slug }}/" class="hospital-card-modern">
+                <div class="position-relative">
+                  {% if hospital.profile_picture %}
+                  <img src="{{ hospital.profile_picture }}" class="w-100" alt="{{ hospital.name }}">
+                  {% else %}
+                  <img src="https://picsum.photos/seed/h{{ hospital.id }}/300/200" class="w-100" alt="{{ hospital.name }}">
+                  {% endif %}
+                  {% if hospital.is_takeopinion_choice %}
+                  <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">TO Choice</span>
+                  {% endif %}
+                </div>
+                <div class="p-3">
+                  <h6 class="mb-1">{{ hospital.name }}</h6>
+                  <div class="small text-muted mb-2">{{ hospital.city }}{% if hospital.state %}, {{ hospital.state }}{% endif %}</div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-warning">
+                      {% for i in "12345" %}
+                        {% if forloop.counter <= hospital.rating|floatformat:0 %}
+                          <i class="bi bi-star-fill"></i>
+                        {% else %}
+                          <i class="bi bi-star"></i>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                    <div class="fw-semibold">₹{{ hospital.starting_price|floatformat:0 }}</div>
+                  </div>
+                </div>
+              </a>
+              {% endfor %}
+            </div>
+            
+            <!-- Pagination for hospitals -->
+            {% if hospitals_page_obj.has_other_pages %}
+            <nav aria-label="Hospitals pagination" class="mt-3">
+              <ul class="pagination justify-content-center">
+                {% if hospitals_page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?hospitals_page={{ hospitals_page_obj.previous_page_number }}#hospitals-offering" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+                
+                {% for num in hospitals_page_obj.paginator.page_range %}
+                  {% if hospitals_page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% elif num > hospitals_page_obj.number|add:'-3' and num < hospitals_page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?hospitals_page={{ num }}#hospitals-offering">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if hospitals_page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?hospitals_page={{ hospitals_page_obj.next_page_number }}#hospitals-offering" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+            {% endif %}
+            
+            <div class="text-center mt-3">
+              <a href="/hospitals/" class="btn btn-outline-modern">View All Hospitals</a>
+            </div>
+            {% else %}
+            <p class="mb-0">No hospitals currently offering this treatment.</p>
+            {% endif %}
+          </div>
+        </div>
+        
+        <!-- Doctors Specializing in This Treatment -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Specialist Doctors</h5>
+          </div>
+          <div class="card-body">
+            {% if doctors_page_obj %}
+            <div class="doctor-grid">
+              {% for doctor in doctors_page_obj %}
+              <a href="/doctors/{{ doctor.slug }}/" class="doctor-card-modern text-decoration-none">
+                {% if doctor.profile_picture %}
+                <img src="{{ doctor.profile_picture }}" alt="{{ doctor.name }}">
+                {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=28a745&color=fff&size=128" alt="{{ doctor.name }}">
+                {% endif %}
+                <h6 class="mb-1">{{ doctor.name }}</h6>
+                <div class="small text-muted mb-2">{{ doctor.specialization }}</div>
+                <div class="d-flex justify-content-center">
+                  <div class="text-warning me-1">
+                    {% for i in "12345" %}
+                      {% if forloop.counter <= doctor.rating|floatformat:0 %}
+                        <i class="bi bi-star-fill"></i>
+                      {% else %}
+                        <i class="bi bi-star"></i>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <span class="small">({{ doctor.review_count }})</span>
+                </div>
+              </a>
+              {% endfor %}
+            </div>
+            
+            <!-- Pagination for doctors -->
+            {% if doctors_page_obj.has_other_pages %}
+            <nav aria-label="Doctors pagination" class="mt-3">
+              <ul class="pagination justify-content-center">
+                {% if doctors_page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?doctors_page={{ doctors_page_obj.previous_page_number }}#specialist-doctors" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+                
+                {% for num in doctors_page_obj.paginator.page_range %}
+                  {% if doctors_page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% elif num > doctors_page_obj.number|add:'-3' and num < doctors_page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?doctors_page={{ num }}#specialist-doctors">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if doctors_page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?doctors_page={{ doctors_page_obj.next_page_number }}#specialist-doctors" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+            {% endif %}
+            
+            <div class="text-center mt-3">
+              <a href="/doctors/" class="btn btn-outline-modern">View All Doctors</a>
+            </div>
+            {% else %}
+            <p class="mb-0">No doctors currently specializing in this treatment.</p>
+            {% endif %}
+          </div>
+        </div>
+        
+        <!-- FAQs -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Frequently Asked Questions</h5>
+          </div>
+          <div class="card-body">
+            <div class="accordion faq-modern" id="treatmentFAQs">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="faq1">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                    What is the recovery time for this treatment?
+                  </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#treatmentFAQs">
+                  <div class="accordion-body">
+                    Recovery time varies depending on individual factors, but most patients can expect to return to normal activities within {{ treatment.avg_recovery_time|default:'7-14 days' }}. Our medical team will provide personalized guidance based on your specific condition.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="faq2">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                    Is this treatment covered by insurance?
+                  </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#treatmentFAQs">
+                  <div class="accordion-body">
+                    Insurance coverage varies by provider and policy. We recommend contacting your insurance company directly to verify coverage for this treatment. Our team can also assist with insurance verification and documentation.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="faq3">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                    What are the potential risks or complications?
+                  </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#treatmentFAQs">
+                  <div class="accordion-body">
+                    As with any medical procedure, there are potential risks. However, our success rate of {{ treatment.success_rate|floatformat:1|default:'92.5' }}% demonstrates the safety and effectiveness of this treatment. Your doctor will discuss all potential risks and benefits during your consultation.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <!-- Price Card -->
+        <div class="card price-card mb-4">
+          <div class="card-body text-center">
+            <div class="display-4 fw-bold">₹{{ treatment.starting_price|floatformat:0 }}</div>
+            <div class="mb-3">Starting Price</div>
+            <p>This price includes consultation, procedure, and basic aftercare. Additional services may incur extra costs.</p>
+            <a href="/book/?treatment={{ treatment.id }}" class="btn btn-light w-100 btn-modern">
+              <i class="bi bi-calendar-check me-2"></i>Book Now
+            </a>
+          </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="card-modern mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Quick Actions</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-grid gap-2">
+              <a href="/book/?treatment={{ treatment.id }}" class="btn btn-primary-modern">
+                <i class="bi bi-calendar-check me-2"></i>Book Appointment
+              </a>
+              <button class="btn btn-outline-modern" data-bs-toggle="modal" data-bs-target="#consultationModal">
+                <i class="bi bi-camera-video me-2"></i>Video Consultation
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Treatment Benefits -->
+        <div class="card-modern mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Key Benefits</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled">
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>High success rate of {{ treatment.success_rate|floatformat:1|default:'92.5' }}%</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Minimally invasive procedure</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Experienced medical team</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Personalized treatment plans</li>
+              <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Comprehensive aftercare support</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Patient Reviews Summary -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Patient Reviews</h5>
+          </div>
+          <div class="card-body">
+            <div class="text-center mb-3">
+              <div class="display-5 fw-bold text-success">4.7</div>
+              <div class="text-warning mb-2">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+              </div>
+              <div class="small">Based on 240 reviews</div>
+            </div>
+            
+            <div class="mb-3">
+              <div class="d-flex justify-content-between small mb-1">
+                <span>Expertise</span>
+                <span>4.8</span>
+              </div>
+              <div class="progress-modern">
+                <div class="progress-bar-modern" role="progressbar" style="width: 95%"></div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <div class="d-flex justify-content-between small mb-1">
+                <span>Communication</span>
+                <span>4.7</span>
+              </div>
+              <div class="progress-modern">
+                <div class="progress-bar-modern" role="progressbar" style="width: 90%"></div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <div class="d-flex justify-content-between small mb-1">
+                <span>Professionalism</span>
+                <span>4.6</span>
+              </div>
+              <div class="progress-modern">
+                <div class="progress-bar-modern" role="progressbar" style="width: 85%"></div>
+              </div>
+            </div>
+            
+            <!-- Recent Reviews -->
+            <div class="mt-4">
+              <h6 class="mb-3">Recent Patient Reviews</h6>
+              
+              {% if feedbacks_page_obj %}
+              <div class="review-grid">
+                {% for feedback in feedbacks_page_obj %}
+                <div class="review-card">
+                  <div class="d-flex justify-content-between mb-2">
+                    <div class="d-flex align-items-center">
+                      <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 30px; height: 30px;">
+                        <i class="bi bi-person text-muted small"></i>
+                      </div>
+                      <div>
+                        <div class="fw-semibold small">
+                          {% if feedback.is_anonymous %}
+                            Anonymous Patient
+                          {% else %}
+                            {{ feedback.patient.user.first_name }} {{ feedback.patient.user.last_name }}
+                          {% endif %}
+                        </div>
+                        <div class="text-muted small">{{ feedback.title }}</div>
+                      </div>
+                    </div>
+                    <div class="text-warning">
+                      {% for i in "12345" %}
+                        {% if forloop.counter <= feedback.rating %}
+                          <i class="bi bi-star-fill"></i>
+                        {% else %}
+                          <i class="bi bi-star"></i>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <p class="mb-1 small">{{ feedback.comment }}</p>
+                  <small class="text-muted">{{ feedback.created_at|date:"M d, Y" }}</small>
+                </div>
+                {% endfor %}
+              </div>
+              
+              <!-- Pagination for feedbacks -->
+              {% if feedbacks_page_obj.has_other_pages %}
+              <nav aria-label="Reviews pagination" class="mt-3">
+                <ul class="pagination justify-content-center">
+                  {% if feedbacks_page_obj.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?feedbacks_page={{ feedbacks_page_obj.previous_page_number }}#patient-reviews" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                  
+                  {% for num in feedbacks_page_obj.paginator.page_range %}
+                    {% if feedbacks_page_obj.number == num %}
+                      <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% elif num > feedbacks_page_obj.number|add:'-3' and num < feedbacks_page_obj.number|add:'3' %}
+                      <li class="page-item"><a class="page-link" href="?feedbacks_page={{ num }}#patient-reviews">{{ num }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  
+                  {% if feedbacks_page_obj.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?feedbacks_page={{ feedbacks_page_obj.next_page_number }}#patient-reviews" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </nav>
+              {% endif %}
+              
+              {% else %}
+              <p class="text-muted">No reviews yet. Be the first to share your experience!</p>
+              {% endif %}
+            </div>
+            
+            <div class="text-center mt-3">
+              <a href="{% url 'accounts:reviews_page' %}?treatment={{ treatment.id }}" class="btn btn-outline-modern">View All Reviews</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Consultation Modal -->
+<div class="modal fade" id="consultationModal" tabindex="-1" aria-labelledby="consultationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="consultationModalLabel">Video Consultation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <i class="bi bi-camera-video text-success" style="font-size: 3rem;"></i>
+          <h5 class="mt-3">Schedule a Video Consultation</h5>
+          <p class="text-muted">Connect with a specialist for this treatment via secure video call</p>
+        </div>
+        
+        <form>
+          <div class="mb-3">
+            <label for="consultationDate" class="form-label">Preferred Date</label>
+            <input type="date" class="form-control" id="consultationDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="consultationTime" class="form-label">Preferred Time</label>
+            <input type="time" class="form-control" id="consultationTime" required>
+          </div>
+          <div class="mb-3">
+            <label for="patientName" class="form-label">Your Name</label>
+            <input type="text" class="form-control" id="patientName" required>
+          </div>
+          <div class="mb-3">
+            <label for="patientEmail" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="patientEmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="patientPhone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="patientPhone" required>
+          </div>
+          <button type="submit" class="btn btn-primary-modern w-100">Schedule Consultation</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

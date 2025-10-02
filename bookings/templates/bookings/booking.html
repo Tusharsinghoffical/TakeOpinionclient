@@ -1,0 +1,672 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+/* Simplified and Attractive Booking Page Styles with Light Colors */
+.booking-detail-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  background-color: #f8f9fa;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+  color: #333;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  border-radius: 0 0 20px 20px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.page-header h1 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.main-content {
+  padding: 0 1rem;
+}
+
+.card-modern {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+  border: none;
+  background: white;
+}
+
+.card-modern:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-modern .card-header {
+  background: #f8f9fa;
+  color: #2c3e50;
+  border-radius: 15px 15px 0 0 !important;
+  border: none;
+  padding: 1.25rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.btn-modern {
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary-modern {
+  background: #adb5bd;
+  color: white;
+  box-shadow: 0 4px 15px rgba(173, 181, 189, 0.3);
+}
+
+.btn-primary-modern:hover {
+  background: #868e96;
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(173, 181, 189, 0.4);
+}
+
+.btn-outline-modern {
+  background: transparent;
+  color: #495057;
+  border: 2px solid #adb5bd;
+}
+
+.btn-outline-modern:hover {
+  background: #e9ecef;
+  transform: translateY(-3px);
+}
+
+.section-title-modern {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.section-title-modern::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: #adb5bd;
+  border-radius: 3px;
+}
+
+.booking-form .form-label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.booking-form .form-control, 
+.booking-form .form-select {
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #dee2e6;
+}
+
+.booking-form .form-control:focus, 
+.booking-form .form-select:focus {
+  border-color: #adb5bd;
+  box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.25);
+}
+
+.file-upload-area {
+  border: 2px dashed #dee2e6;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: #adb5bd;
+  background-color: #e9ecef;
+}
+
+.file-upload-area.dragover {
+  border-color: #adb5bd;
+  background-color: #e9ecef;
+}
+
+.file-list {
+  margin-top: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
+}
+
+.file-item .file-name {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-item .file-remove {
+  color: #868e96;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.support-card {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: none;
+  background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+  color: #2c3e50;
+  border: 1px solid #dee2e6;
+}
+
+.support-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.support-card .btn-light {
+  background: white;
+  color: #495057;
+  border: 1px solid #adb5bd;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.support-card .btn-light:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: #e9ecef;
+}
+
+.back-btn {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #495057;
+}
+
+.back-btn:hover {
+  background: #e9ecef;
+  transform: translateX(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .page-header h1 {
+    font-size: 2.25rem;
+  }
+  
+  .section-title-modern {
+    font-size: 1.4rem;
+  }
+  
+  .booking-form .form-control, 
+  .booking-form .form-select {
+    padding: 0.625rem 0.875rem;
+  }
+  
+  .file-upload-area {
+    padding: 1.75rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .col-lg-8 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .col-lg-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .support-card {
+    margin-top: 1rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .section-title-modern {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 1.5rem 0;
+    border-radius: 0 0 15px 15px;
+  }
+  
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .main-content {
+    padding: 0 0.5rem;
+  }
+  
+  .booking-form .form-control, 
+  .booking-form .form-select {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .file-upload-area {
+    padding: 1.5rem;
+  }
+  
+  .btn-modern {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .section-title-modern {
+    font-size: 1.25rem;
+  }
+  
+  .support-card {
+    text-align: center;
+  }
+  
+  .support-card .btn-light {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .page-header p {
+    font-size: 0.9rem;
+  }
+  
+  .section-title-modern {
+    font-size: 1.1rem;
+  }
+  
+  .booking-form .form-control, 
+  .booking-form .form-select {
+    padding: 0.375rem 0.625rem;
+    font-size: 0.9rem;
+  }
+  
+  .booking-form .form-label {
+    font-size: 0.9rem;
+  }
+  
+  .file-upload-area {
+    padding: 1rem;
+  }
+  
+  .file-upload-area p {
+    font-size: 0.9rem;
+  }
+  
+  .btn-modern {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .card-modern .card-header {
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+}
+</style>
+
+<div class="booking-detail-page">
+  <div class="page-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <i class="bi bi-calendar-check display-5 mb-3"></i>
+          <h1>Finalize Your Medical Travel Booking</h1>
+          <p class="lead">Complete your medical travel arrangements by providing details about your preferred treatment, doctor, and hospital. Our team will coordinate all aspects of your journey.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container main-content">
+    <div class="row">
+      <div class="col-lg-8">
+        <a href="/" class="btn back-btn mb-3">
+          <i class="bi bi-arrow-left me-1"></i>Back to Home
+        </a>
+        
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Booking Details</h5>
+          </div>
+          <div class="card-body">
+            <form id="bookingForm" class="row g-4 booking-form" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              
+              <div class="col-12">
+                <h5 class="section-title-modern mb-3">Treatment Details</h5>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Type of Treatment <span class="text-danger">*</span></label>
+                <select class="form-select form-control-lg" id="treatmentSelect" name="treatment" required>
+                  <option value="">Select Treatment</option>
+                  {% for treatment in treatments %}
+                  <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">Choose the medical treatment you're interested in</div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Special Requirements</label>
+                <select class="form-select form-control-lg" name="special_requirements">
+                  <option selected value="none">None</option>
+                  <option value="wheelchair">Wheelchair Access</option>
+                  <option value="interpreter">Interpreter Needed</option>
+                  <option value="dietary">Dietary Restrictions</option>
+                  <option value="medical">Other Medical Conditions</option>
+                </select>
+              </div>
+              
+              <div class="col-12">
+                <h5 class="section-title-modern mt-4 mb-3">Provider Preferences</h5>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Preferred Doctor</label>
+                <select class="form-select form-control-lg" name="preferred_doctor">
+                  <option value="">No preference (we'll recommend)</option>
+                  {% for doctor in doctors %}
+                  <option value="{{ doctor.id }}" {% if selected_doctor and selected_doctor.id == doctor.id %}selected{% endif %}>Dr. {{ doctor.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">Select a specific doctor or leave blank for our recommendation</div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Preferred Hospital</label>
+                <select class="form-select form-control-lg" name="preferred_hospital">
+                  <option value="">No preference (we'll recommend)</option>
+                  {% for hospital in hospitals %}
+                  <option value="{{ hospital.id }}">{{ hospital.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">Select a specific hospital or leave blank for our recommendation</div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Preferred Booking Dates</label>
+                <input type="date" class="form-control form-control-lg" name="preferred_date" min="{% now "Y-m-d" %}">
+                <div class="form-text">Select your preferred date for the consultation</div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Estimated Budget (USD)</label>
+                <input type="number" class="form-control form-control-lg" name="budget" placeholder="Enter amount" min="0" step="0.01">
+                <div class="form-text">Approximate budget for your treatment</div>
+              </div>
+              
+              <div class="col-12">
+                <h5 class="section-title-modern mt-4 mb-3">Medical Information</h5>
+              </div>
+              
+              <div class="col-12">
+                <label class="form-label fw-semibold">Medical History Summary</label>
+                <textarea class="form-control form-control-lg" name="medical_history" rows="3" placeholder="Briefly describe your medical history relevant to this treatment..."></textarea>
+              </div>
+              
+              <div class="col-12">
+                <label class="form-label fw-semibold">Upload Medical Reports</label>
+                <div class="file-upload-area" id="medicalReportsDropArea">
+                  <i class="bi bi-cloud-upload display-5 text-primary mb-2"></i>
+                  <p class="mb-1">Drag & drop medical reports here or click to browse</p>
+                  <p class="small text-muted mb-2">Supports multiple files (PDF, JPG, PNG, DOC, DOCX)</p>
+                  <input type="file" class="form-control" id="medicalReportsInput" name="medical_reports" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                </div>
+                <div class="file-list" id="medicalReportsList"></div>
+                <div class="form-text">Upload your medical reports, test results, or other relevant documents</div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Travel Companions</label>
+                <select class="form-select form-control-lg" name="travel_companions">
+                  <option selected value="alone">Traveling Alone</option>
+                  <option value="spouse">With Spouse/Partner</option>
+                  <option value="family">With Family Member</option>
+                  <option value="friend">With Friend</option>
+                </select>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Urgency Level</label>
+                <select class="form-select form-control-lg" name="urgency">
+                  <option value="flexible">Flexible Timeline</option>
+                  <option value="soon">Within 1 Month</option>
+                  <option value="urgent">Urgent (Within 2 Weeks)</option>
+                </select>
+              </div>
+              
+              <div class="col-12 mt-4">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="termsCheck" name="agree_terms" required>
+                  <label class="form-check-label" for="termsCheck">
+                    I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a> <span class="text-danger">*</span>
+                  </label>
+                </div>
+                <button type="submit" class="btn btn-primary-modern btn-lg w-100" id="submitBooking">
+                  <i class="bi bi-calendar-check me-2"></i>Submit Booking Request
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <!-- Support Card -->
+        <div class="support-card mb-4">
+          <div class="card-body text-center">
+            <i class="bi bi-headset display-5 mb-3"></i>
+            <h5 class="mb-3">Need Help Finalizing Your Booking?</h5>
+            <p class="mb-4">Our medical travel coordinators can assist you with selecting the best treatment options and providers.</p>
+            <a href="{% url 'contact' %}" class="btn btn-light">
+              <i class="bi bi-telephone me-2"></i>Contact Support
+            </a>
+          </div>
+        </div>
+        
+        <!-- Booking Benefits -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Why Book With Us?</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled">
+              <li class="mb-3">
+                <div class="d-flex">
+                  <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                  <div>
+                    <div class="fw-semibold">Verified Providers</div>
+                    <div class="small text-muted">All doctors and hospitals are thoroughly vetted</div>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-3">
+                <div class="d-flex">
+                  <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                  <div>
+                    <div class="fw-semibold">Transparent Pricing</div>
+                    <div class="small text-muted">No hidden costs or surprise fees</div>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-3">
+                <div class="d-flex">
+                  <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                  <div>
+                    <div class="fw-semibold">24/7 Support</div>
+                    <div class="small text-muted">Dedicated coordinators throughout your journey</div>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-0">
+                <div class="d-flex">
+                  <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                  <div>
+                    <div class="fw-semibold">Travel Assistance</div>
+                    <div class="small text-muted">Visa, accommodation, and logistics support</div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Set minimum date to today
+  document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelector('input[name="preferred_date"]').min = today;
+    
+    // Handle medical reports file input
+    const medicalReportsInput = document.getElementById('medicalReportsInput');
+    const medicalReportsDropArea = document.getElementById('medicalReportsDropArea');
+    const medicalReportsList = document.getElementById('medicalReportsList');
+    
+    // Handle file selection
+    medicalReportsInput.addEventListener('change', function(e) {
+      updateFileList(e.target.files, medicalReportsList);
+    });
+    
+    // Handle drag and drop
+    medicalReportsDropArea.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      medicalReportsDropArea.classList.add('dragover');
+    });
+    
+    medicalReportsDropArea.addEventListener('dragleave', function(e) {
+      medicalReportsDropArea.classList.remove('dragover');
+    });
+    
+    medicalReportsDropArea.addEventListener('drop', function(e) {
+      e.preventDefault();
+      medicalReportsDropArea.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        medicalReportsInput.files = e.dataTransfer.files;
+        updateFileList(e.dataTransfer.files, medicalReportsList);
+      }
+    });
+    
+    // Handle click on drop area
+    medicalReportsDropArea.addEventListener('click', function() {
+      medicalReportsInput.click();
+    });
+    
+    // Function to update file list display
+    function updateFileList(files, fileListElement) {
+      fileListElement.innerHTML = '';
+      if (files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const fileItem = document.createElement('div');
+          fileItem.className = 'file-item';
+          fileItem.innerHTML = `
+            <span class="file-name">${file.name}</span>
+            <span class="file-size text-muted small">${formatFileSize(file.size)}</span>
+            <span class="file-remove" data-index="${i}">×</span>
+          `;
+          fileListElement.appendChild(fileItem);
+        }
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.file-remove').forEach(button => {
+          button.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            removeFile(index);
+          });
+        });
+      }
+    }
+    
+    // Function to format file size
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+    
+    // Function to remove a file from the list
+    function removeFile(index) {
+      const dt = new DataTransfer();
+      const files = medicalReportsInput.files;
+      
+      for (let i = 0; i < files.length; i++) {
+        if (i !== index) {
+          dt.items.add(files[i]);
+        }
+      }
+      
+      medicalReportsInput.files = dt.files;
+      updateFileList(dt.files, medicalReportsList);
+    }
+    
+    // Form submission handler
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      const submitBtn = document.getElementById('submitBooking');
+      const originalText = submitBtn.innerHTML;
+      
+      // Show loading state
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...';
+      submitBtn.disabled = true;
+      
+      // In a real implementation, this would submit the form via AJAX
+      // For now, we'll just show a success message
+      setTimeout(function() {
+        // Let the form submit normally to the server
+        // This is just for UI feedback during the submission
+      }, 500);
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: takeopinion
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn -c gunicorn.conf.py takeopinion.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: takeopinion.settings_prod
+      - key: SECRET_KEY
+        generate: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com,takeopinionclient.onrender.com"
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: PORT
+        value: "8000"

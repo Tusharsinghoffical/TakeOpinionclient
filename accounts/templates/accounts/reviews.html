@@ -1,0 +1,1225 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Patient Reviews - TakeOpinion{% endblock %}
+
+{% block content %}
+
+<style>
+/* Home Page Specific Styles */
+:root {
+  /* Enhanced color palette for better visibility */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #ddd;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+}
+
+/* Global home page styles */
+.home-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-large {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #ffffff;
+  color: #e74c3c;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary-large {
+  background-color: transparent;
+  color: var(--light-text);
+  border: 2px solid var(--light-text);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary-large:hover {
+  background-color: #ffffff;
+  color: #3498db;
+  transform: translateY(-3px);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #7f8c8d;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Core Services Section */
+.core-services-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.service-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.service-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.service-description {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+.service-link {
+  display: inline-block;
+  color: var(--primary-medium);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.5rem 1.5rem;
+  border: 2px solid var(--primary-medium);
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.service-link:hover {
+  background-color: var(--primary-medium);
+  color: white !important;
+}
+
+/* WhatsApp Section */
+.whatsapp-section {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.whatsapp-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.whatsapp-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.whatsapp-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+  background-color: transparent;
+  color: #25D366;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background-color: #25D369;
+  color: rgb(255, 255, 255);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-consultation {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-consultation:hover {
+  background-color: #25D369;
+  color: rgb(255, 255, 255);
+  transform: translateY(-3px);
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.testimonial-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.testimonial-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.testimonial-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--success);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.testimonial-content {
+  padding: 1.5rem;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.author-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-info h4 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--primary-dark);
+}
+
+.author-info p {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+.testimonial-text {
+  color: #555;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating-stars {
+  color: #f39c12;
+}
+
+.rating-date {
+  color: #95a5a6;
+  font-size: 0.9rem;
+}
+
+.btn-testimonials {
+  display: block;
+  margin: 3rem auto 0;
+  background-color: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-testimonials:hover {
+  background-color: var(--light-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgb(249, 248, 248);
+}
+
+/* Multi Speciality Section */
+.multi-speciality-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.treatment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.treatment-tag {
+  background-color: white;
+  color: var(--primary-medium);
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 2px solid var(--primary-medium);
+  transition: all 0.3s ease;
+}
+
+.treatment-tag:hover {
+  background-color: var(--primary-medium);
+  color: white !important;
+}
+
+.treatments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.treatment-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.treatment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.treatment-icon {
+  height: 100px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.treatment-icon i {
+  font-size: 2rem;
+  color: var(--primary-medium);
+}
+
+.treatment-body {
+  padding: 1rem;
+}
+
+.treatment-type {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin-bottom: 0.25rem;
+}
+
+.treatment-name {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.btn-view-all {
+  display: block;
+  margin: 2rem auto 0;
+  background-color: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-view-all:hover {
+  background-color: #ffffff;
+  color: #3498db;
+  transform: translateY(-3px);
+}
+
+/* Why Choose Section */
+.why-choose-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.why-choose-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.why-choose-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.why-choose-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.why-choose-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.why-choose-description {
+  color: #7f8c8d;
+}
+
+/* Top Hospitals/Doctors Section */
+.top-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.top-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.top-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.top-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.top-image {
+  height: 160px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.top-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #f1c40f;
+  color: #2c3e50;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.top-body {
+  padding: 1.5rem;
+}
+
+.top-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.top-specialty {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.top-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.top-rating i {
+  color: #f39c12;
+}
+
+.top-rating span {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* How It Works Section */
+.how-it-works-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.how-it-works-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.how-it-works-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.how-it-works-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.how-it-works-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.how-it-works-description {
+  color: #7f8c8d;
+}
+
+/* Latest Blogs Section */
+.blogs-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.blogs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.blog-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.blog-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.blog-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: var(--primary-medium);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.blog-date {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--primary-dark);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.blog-body {
+  padding: 1.5rem;
+}
+
+.blog-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--primary-dark);
+}
+
+.blog-excerpt {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons, .whatsapp-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary-large, .btn-secondary-large, .btn-whatsapp, .btn-consultation {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+</style>
+
+<div class="home-page">
+  <div class="container py-5">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-content">
+        <h1 class="hero-title">Patient Reviews</h1>
+        <p class="hero-subtitle">Discover what patients are saying about their healthcare experiences with our verified doctors, hospitals, and treatments.</p>
+        <div class="hero-buttons">
+          {% if user.is_authenticated and user.userprofile.user_type == 'patient' %}
+            <button class="btn-primary-large" id="writeReviewBtn">
+              <i class="bi bi-plus-circle me-2"></i>  Reviews
+            </button>
+          {% elif user.is_authenticated and user.userprofile.user_type == 'admin' %}
+            <button class="btn-primary-large" id="writeReviewBtn">
+              <i class="bi bi-plus-circle me-2"></i> Reviews
+            </button>
+          {% else %}
+            <a href="{% url 'accounts:login' %}" class="btn-primary-large">
+              <i class="bi bi-box-arrow-in-right me-2"></i> Login to Write a Review
+            </a>
+          {% endif %}
+          <a href="/treatments/" class="btn-secondary-large">
+            Explore Treatments
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="core-services-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Search Reviews</h2>
+          <p class="section-subtitle">Find reviews based on your specific interests</p>
+        </div>
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <form method="GET" action="." class="d-flex" id="searchForm">
+              <div class="input-group">
+                <input type="text" class="form-control" name="q" id="searchInput" placeholder="Search reviews by title, content, doctor, hospital, or treatment..." value="{{ search_query|default:'' }}">
+                <button class="btn btn-primary" type="submit">
+                  <i class="bi bi-search me-1"></i>Search
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews Grid Section -->
+    <section class="top-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Recent Patient Reviews</h2>
+        </div>
+        <div class="top-grid" id="reviewsList">
+          {% if feedbacks %}
+            {% for feedback in feedbacks %}
+            <div class="col-12">
+              <div class="card h-100 border-0 shadow-sm review-card">
+                <div class="card-body">
+                  <div class="d-flex flex-column flex-md-row">
+                    <div class="flex-grow-1">
+                      <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div>
+                          <h5 class="card-title mb-1">{{ feedback.title }}</h5>
+                          <div class="d-flex align-items-center mb-2">
+                            <div class="text-warning me-2 rating-display">
+                              {% for i in "12345" %}
+                                {% if forloop.counter <= feedback.rating %}
+                                  <i class="bi bi-star-fill"></i>
+                                {% else %}
+                                  <i class="bi bi-star"></i>
+                                {% endif %}
+                              {% endfor %}
+                            </div>
+                            <span class="small text-muted">
+                              {% if feedback.feedback_type == 'doctor' and feedback.doctor %}
+                                For Dr. {{ feedback.doctor.name }}
+                              {% elif feedback.feedback_type == 'hospital' and feedback.hospital %}
+                                For {{ feedback.hospital.name }}
+                              {% elif feedback.feedback_type == 'treatment' and feedback.treatment %}
+                                For {{ feedback.treatment.name }}
+                              {% endif %}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="text-end review-meta">
+                          <div class="small text-muted">
+                            {% if feedback.is_anonymous %}
+                              Anonymous
+                            {% else %}
+                              {{ feedback.patient.user.first_name }} {{ feedback.patient.user.last_name }}
+                            {% endif %}
+                          </div>
+                          <div class="small text-muted">{{ feedback.created_at|date:"M d, Y" }}</div>
+                        </div>
+                      </div>
+                      <p class="card-text">{{ feedback.comment }}</p>
+                      
+                      <!-- Video Review Display -->
+                      {% if feedback.video_url %}
+                      <div class="mt-3 video-review-container">
+                        <div class="ratio ratio-16x9">
+                          <video controls class="w-100 h-100" style="object-fit: cover; border-radius: 0.5rem;">
+                            <source src="{{ feedback.video_url }}" type="video/mp4">
+                            <source src="{{ feedback.video_url }}" type="video/webm">
+                            <source src="{{ feedback.video_url }}" type="video/ogg">
+                            Your browser does not support the video tag.
+                          </video>
+                        </div>
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+          <div class="col-12">
+            <div class="card text-center py-5 border-0 shadow-sm">
+              <div class="card-body">
+                <i class="bi bi-chat-left-text display-5 text-muted mb-3"></i>
+                <h5 class="card-title">No Reviews Found</h5>
+                <p class="card-text">No reviews match your search criteria. Try different keywords.</p>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <!-- WhatsApp Section -->
+    <section class="whatsapp-section">
+      <div class="container">
+        <h2 class="whatsapp-title">Get Personalized Medical Advice</h2>
+        <p class="whatsapp-subtitle">Connect with our medical experts directly through WhatsApp for instant guidance and support.</p>
+        <div class="whatsapp-buttons">
+          <a href="https://wa.me/8851619647" class="btn-whatsapp">
+            <i class="bi bi-whatsapp me-2"></i> Chat on WhatsApp
+          </a>
+          <a href="/book/" class="btn-consultation">
+            <i class="bi bi-calendar-check me-2"></i> Schedule Consultation
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="why-choose-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Why Trust TakeOpinion Reviews</h2>
+        </div>
+        <div class="why-choose-grid">
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-shield-check"></i>
+            </div>
+            <h3 class="why-choose-title">Verified Reviews</h3>
+            <p class="why-choose-description">All reviews are from verified patients who have actually experienced the care.</p>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-translate"></i>
+            </div>
+            <h3 class="why-choose-title">Diverse Perspectives</h3>
+            <p class="why-choose-description">Reviews from patients around the world with different medical needs.</p>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-headset"></i>
+            </div>
+            <h3 class="why-choose-title">Helpful Insights</h3>
+            <p class="why-choose-description">Detailed feedback to help you make informed healthcare decisions.</p>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-currency-dollar"></i>
+            </div>
+            <h3 class="why-choose-title">Transparent Process</h3>
+            <p class="why-choose-description">Clear information about costs, processes, and outcomes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Review Submission Form (Hidden by default) -->
+{% if user.is_authenticated and user.userprofile.user_type == 'patient' or user.userprofile.user_type == 'admin' %}
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reviewModalLabel">Write a Review</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="reviewForm" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Review Type *</label>
+            <select class="form-select" id="reviewType" name="reviewType" required>
+              <option value="">Select review type</option>
+              <option value="doctor">Doctor</option>
+              <option value="hospital">Hospital</option>
+              <option value="treatment">Treatment</option>
+            </select>
+          </div>
+          
+          <div class="mb-3" id="entitySelection" style="display: none;">
+            <label class="form-label">Select Entity *</label>
+            <select class="form-select" id="entityId" name="entityId">
+              <option value="">Select an entity</option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Rating *</label>
+            <div class="rating-input">
+              <div class="btn-group" role="group">
+                <input type="radio" class="btn-check" name="rating" id="rating1" value="1" required>
+                <label class="btn btn-outline-warning" for="rating1">1 <i class="bi bi-star-fill"></i></label>
+                
+                <input type="radio" class="btn-check" name="rating" id="rating2" value="2">
+                <label class="btn btn-outline-warning" for="rating2">2 <i class="bi bi-star-fill"></i></label>
+                
+                <input type="radio" class="btn-check" name="rating" id="rating3" value="3">
+                <label class="btn btn-outline-warning" for="rating3">3 <i class="bi bi-star-fill"></i></label>
+                
+                <input type="radio" class="btn-check" name="rating" id="rating4" value="4">
+                <label class="btn btn-outline-warning" for="rating4">4 <i class="bi bi-star-fill"></i></label>
+                
+                <input type="radio" class="btn-check" name="rating" id="rating5" value="5">
+                <label class="btn btn-outline-warning" for="rating5">5 <i class="bi bi-star-fill"></i></label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="title" class="form-label">Review Title *</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Give your review a title" required>
+          </div>
+          
+          <div class="mb-3">
+            <label for="comment" class="form-label">Your Review *</label>
+            <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Share your experience in detail..." required></textarea>
+          </div>
+          
+          <div class="mb-3">
+            <label for="video" class="form-label">Video Review (Optional)</label>
+            <input type="file" class="form-control" id="video" name="video" accept="video/*">
+            <div class="form-text">Upload a video review (MP4, MOV, AVI formats supported)</div>
+          </div>
+          
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="anonymous" name="anonymous">
+            <label class="form-check-label" for="anonymous">Post anonymously</label>
+          </div>
+          
+          <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle me-2"></i>
+            Your review will be immediately visible to all users after submission.
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="submitReviewBtn">Submit Review</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<script>
+// Handle Write a Review button click
+document.getElementById('writeReviewBtn').addEventListener('click', function() {
+  var reviewModal = new bootstrap.Modal(document.getElementById('reviewModal'));
+  reviewModal.show();
+});
+
+// Handle review type change
+document.getElementById('reviewType').addEventListener('change', function() {
+  var entityType = this.value;
+  var entitySelection = document.getElementById('entitySelection');
+  var entityIdSelect = document.getElementById('entityId');
+  
+  if (entityType) {
+    entitySelection.style.display = 'block';
+    entityIdSelect.innerHTML = '<option value="">Loading...</option>';
+    
+    // Fetch entities based on type
+    fetch('/api/v1/entities/' + entityType + '/')
+      .then(response => response.json())
+      .then(data => {
+        entityIdSelect.innerHTML = '<option value="">Select an entity</option>';
+        data.forEach(function(entity) {
+          var option = document.createElement('option');
+          option.value = entity.id;
+          option.textContent = entity.name;
+          entityIdSelect.appendChild(option);
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        entityIdSelect.innerHTML = '<option value="">Error loading entities</option>';
+      });
+  } else {
+    entitySelection.style.display = 'none';
+    entityIdSelect.innerHTML = '<option value="">Select an entity</option>';
+  }
+});
+
+// Handle review submission
+document.getElementById('submitReviewBtn').addEventListener('click', function() {
+  var form = document.getElementById('reviewForm');
+  var formData = new FormData(form);
+  
+  // Validate required fields before submission
+  var reviewType = document.getElementById('reviewType').value;
+  var entityId = document.getElementById('entityId').value;
+  var title = document.getElementById('title').value;
+  var comment = document.getElementById('comment').value;
+  var rating = document.querySelector('input[name="rating"]:checked');
+  
+  if (!reviewType) {
+    alert('Please select a review type.');
+    return;
+  }
+  
+  if (!entityId) {
+    alert('Please select an entity.');
+    return;
+  }
+  
+  if (!rating) {
+    alert('Please select a rating.');
+    return;
+  }
+  
+  if (!title.trim()) {
+    alert('Please enter a review title.');
+    return;
+  }
+  
+  if (!comment.trim()) {
+    alert('Please enter your review comment.');
+    return;
+  }
+  
+  // Show loading state
+  var submitBtn = this;
+  var originalText = submitBtn.innerHTML;
+  submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+  submitBtn.disabled = true;
+  
+  // Get CSRF token
+  var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  
+  fetch('/patient/submit-review/', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-CSRFToken': csrfToken
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.success) {
+      // Show success message
+      alert(data.message);
+      
+      // Close modal
+      var reviewModal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
+      reviewModal.hide();
+      
+      // Reset form
+      form.reset();
+      document.getElementById('entitySelection').style.display = 'none';
+      
+      // Refresh reviews
+      refreshReviews();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred while submitting your review. Please try again.');
+  })
+  .finally(() => {
+    // Reset button
+    submitBtn.innerHTML = originalText;
+    submitBtn.disabled = false;
+  });
+});
+
+// Function to refresh reviews (for real-time updates)
+function refreshReviews() {
+  // Fetch updated reviews from the API
+  fetch('/api/reviews/')
+    .then(response => response.json())
+    .then(data => {
+      // Update the reviews display
+      const reviewsList = document.getElementById('reviewsList');
+      if (reviewsList && data.reviews) {
+        // Clear current reviews
+        reviewsList.innerHTML = '';
+        
+        // Add updated reviews
+        data.reviews.forEach(review => {
+          const reviewElement = document.createElement('div');
+          reviewElement.className = 'col-12';
+          reviewElement.innerHTML = `
+            <div class="card h-100 border-0 shadow-sm review-card">
+              <div class="card-body">
+                <div class="d-flex flex-column flex-md-row">
+                  <div class="flex-grow-1">
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                      <div>
+                        <h5 class="card-title mb-1">${review.title}</h5>
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="text-warning me-2 rating-display">
+                            ${renderStars(review.rating)}
+                          </div>
+                          <span class="small text-muted">
+                            ${review.entity_name ? 'For ' + review.entity_name : ''}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="text-end review-meta">
+                        <div class="small text-muted">
+                          ${review.patient_name}
+                        </div>
+                        <div class="small text-muted">${review.created_at}</div>
+                      </div>
+                    </div>
+                    <p class="card-text">${review.comment}</p>
+                    ${review.video_url ? `
+                      <div class="mt-3 video-review-container">
+                        <div class="ratio ratio-16x9">
+                          <video controls class="w-100 h-100" style="object-fit: cover; border-radius: 0.5rem;">
+                            <source src="${review.video_url}" type="video/mp4">
+                            <source src="${review.video_url}" type="video/webm">
+                            <source src="${review.video_url}" type="video/ogg">
+                            Your browser does not support the video tag.
+                          </video>
+                        </div>
+                      </div>
+                    ` : ''}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          reviewsList.appendChild(reviewElement);
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error refreshing reviews:', error);
+    });
+}
+
+// Helper function to render star ratings
+function renderStars(rating) {
+  let stars = '';
+  for (let i = 1; i <= 5; i++) {
+    if (i <= rating) {
+      stars += '<i class="bi bi-star-fill"></i>';
+    } else {
+      stars += '<i class="bi bi-star"></i>';
+    }
+  }
+  return stars;
+}
+
+
+{% endblock %}
