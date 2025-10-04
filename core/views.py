@@ -113,6 +113,19 @@ def search(request: HttpRequest) -> HttpResponse:
         # Search blog posts by title and content
         blog_posts = list(BlogPost.objects.filter(title__icontains=query) | BlogPost.objects.filter(content__icontains=query))  # type: ignore
     
+    # Add related entities for each search result
+    for treatment in treatments:
+        treatment.related_hospitals = treatment.hospitals.all()[:3]  # Get up to 3 related hospitals
+        treatment.related_doctors = treatment.doctors.all()[:3]  # Get up to 3 related doctors
+    
+    for doctor in doctors:
+        doctor.related_hospitals = doctor.hospitals.all()[:3]  # Get up to 3 related hospitals
+        doctor.related_treatments = doctor.treatments.all()[:3]  # Get up to 3 related treatments
+    
+    for hospital in hospitals:
+        hospital.related_doctors = hospital.doctors.all()[:3]  # Get up to 3 related doctors
+        hospital.related_treatments = hospital.treatments.all()[:3]  # Get up to 3 related treatments
+    
     context = {
         'query': query,
         'treatments': treatments,

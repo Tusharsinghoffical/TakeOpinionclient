@@ -42,10 +42,19 @@ def process_static_payment(request, booking_id):
     """Process static payment demo and show success page"""
     booking = get_object_or_404(Booking, id=booking_id)
     
+    # Determine the user for the payment
+    user = None
+    if request.user.is_authenticated:
+        try:
+            user = request.user.userprofile
+        except AttributeError:
+            # If user profile doesn't exist, leave user as None
+            pass
+    
     # Create a payment record to simulate real payment processing
     payment = Payment(
         booking=booking,
-        user=None,  # Set to None for now, as user may not be logged in
+        user=user,  # Use the authenticated user if available
         amount=booking.treatment.starting_price,
         currency='INR',
         status='completed'

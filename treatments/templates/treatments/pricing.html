@@ -1,57 +1,242 @@
 {% extends 'base.html' %}
 {% block content %}
 <style>
-  .pricing-page {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #2c3e50;
-    line-height: 1.6;
-    padding: 2rem 0;
+  /* Use the same vibrant color palette as the home page */
+  :root {
+    --primary-dark: #2c3e50;
+    --primary-medium: #3498db;
+    --primary-light: #5dade2;
+    --accent: #e74c3c;
+    --success: #27ae60;
+    --warning: #f39c12;
+    --light-bg: #f8f9fa;
+    --dark-text: #2c3e50;
+    --light-text: #ffffff;
+    --border: #dee2e6;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --shadow-strong: rgba(0, 0, 0, 0.15);
+    --gradient-start: #3498db;
+    --gradient-end: #2c3e50;
+    --transition-speed: 0.3s;
   }
 
-  .pricing-header {
-    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
-    color: white;
-    border-radius: 15px;
-    padding: 3rem 2rem;
-    margin-bottom: 2rem;
+  .pricing-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark-text);
+    line-height: 1.6;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    color: var(--light-text);
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
     text-align: center;
   }
 
-  .pricing-card {
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 700;
     margin-bottom: 1.5rem;
-    border: none;
+    color: var(--light-text);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
   }
 
-  .pricing-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  .hero-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--light-text);
+    line-height: 1.5;
   }
 
-  .pricing-card .card-header {
-    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  /* Search Section */
+  .search-section {
+    background: white;
+    padding: 3rem 0;
+    box-shadow: 0 5px 15px var(--shadow);
+  }
+
+  .search-tabs .nav-link {
+    border-radius: 10px;
+    font-weight: 600;
+    color: #6c757d;
+    margin: 0 5px;
+    border: 2px solid transparent;
+  }
+
+  .search-tabs .nav-link.active {
+    background: linear-gradient(135deg, var(--primary-medium), var(--primary-dark));
     color: white;
-    border-radius: 15px 15px 0 0 !important;
     border: none;
   }
 
-  .pricing-amount {
+  .search-tabs .nav-link:hover:not(.active) {
+    border: 2px solid var(--primary-medium);
+    color: var(--primary-medium);
+  }
+
+  .search-form {
+    background: var(--light-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .search-results {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px var(--shadow);
+  }
+
+  .search-result-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+  }
+
+  .search-result-item:hover {
+    background-color: #e9ecef;
+  }
+
+  .search-result-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Key Highlights */
+  .key-highlights-section {
+    background-color: var(--light-bg);
+    padding: 5rem 0;
+  }
+
+  .key-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .highlight-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px var(--shadow);
+    text-align: center;
+    transition: all var(--transition-speed) ease;
+    border: 1px solid var(--border);
+  }
+
+  .highlight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px var(--shadow-strong);
+  }
+
+  .highlight-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-medium);
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-medium) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .highlight-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+    line-height: 1.3;
+  }
+
+  .highlight-description {
+    color: #6c757d;
+    line-height: 1.6;
+  }
+
+  /* FAQ Section */
+  .faq-section {
+    background-color: white;
+    padding: 5rem 0;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
     font-size: 2.5rem;
     font-weight: 700;
-    margin: 1rem 0;
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-size: 1.25rem;
+    color: #6c757d;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .pricing-faq .accordion-button {
+    font-weight: 600;
+    color: var(--primary-dark);
+    background: var(--light-bg);
+    border: none;
+    border-radius: 12px !important;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .pricing-faq .accordion-button:not(.collapsed) {
+    color: var(--primary-medium);
+    background: #e7f1ff;
+  }
+
+  .pricing-faq .accordion-item {
+    border: 1px solid var(--border);
+    border-radius: 12px !important;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    box-shadow: 0 3px 10px var(--shadow);
+  }
+
+  .pricing-faq .accordion-body {
+    padding: 1.5rem;
+  }
+
+  /* Cost Factors */
+  .cost-factors-section {
+    background-color: var(--light-bg);
+    padding: 5rem 0;
   }
 
   .pricing-features {
     list-style: none;
     padding: 0;
+    margin: 0;
   }
 
   .pricing-features li {
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #eee;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
   }
 
   .pricing-features li:last-child {
@@ -59,312 +244,544 @@
   }
 
   .pricing-features li i {
-    color: #28a745;
-    margin-right: 0.5rem;
+    color: var(--success);
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
   }
 
-  .pricing-badge {
-    background: linear-gradient(135deg, #28a745, #20c997);
+  /* Savings Highlight */
+  .savings-highlight {
+    background: linear-gradient(135deg, var(--success), #20c997);
     color: white;
-    padding: 0.5rem 1rem;
+    padding: 3rem;
     border-radius: 20px;
-    font-weight: 600;
-    position: absolute;
-    top: -15px;
-    right: 15px;
+    text-align: center;
+    margin: 2rem 0;
+    box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
   }
 
-  .pricing-stat-card {
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-  }
-
-  .pricing-stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-  }
-
-  .pricing-icon-box {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    background: rgba(13, 110, 253, 0.1);
-    color: #0d6efd;
-    font-size: 1.5rem;
+  .savings-highlight .display-6 {
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-bottom: 1rem;
   }
 
-  .pricing-cta-btn {
-    border-radius: 10px;
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  /* CTA Section */
+  .cta-section {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    color: var(--light-text);
+    padding: 5rem 0;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
   }
 
-  .pricing-cta-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+  .cta-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    color: var(--light-text);
   }
 
-  .pricing-faq .accordion-button {
-    font-weight: 600;
-    color: #2c3e50;
-    background: #f8f9fa;
+  .cta-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+    color: var(--light-text);
+  }
+
+  .btn-primary-large {
+    background-color: var(--accent);
+    color: white;
     border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    display: inline-block;
   }
 
-  .pricing-faq .accordion-button:not(.collapsed) {
-    color: #0d6efd;
-    background: #e7f1ff;
+  .btn-primary-large:hover {
+    background-color: #c0392b;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   }
 
-  .pricing-faq .accordion-item {
-    border: 1px solid #e9ecef;
-    border-radius: 10px !important;
-    margin-bottom: 0.75rem;
-    overflow: hidden;
+  /* Responsive Design */
+  @media (max-width: 992px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+    
+    .section-title {
+      font-size: 2.25rem;
+    }
+    
+    .cta-title {
+      font-size: 2.25rem;
+    }
   }
 
   @media (max-width: 768px) {
-    .pricing-page {
-      padding: 1rem;
+    .hero-section {
+      padding: 3rem 0;
     }
     
-    .pricing-header {
-      padding: 2rem 1rem;
+    .hero-title {
+      font-size: 2rem;
     }
     
-    .pricing-card {
-      margin-bottom: 1rem;
+    .hero-subtitle {
+      font-size: 1.1rem;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+    }
+    
+    .cta-title {
+      font-size: 2rem;
+    }
+    
+    .key-highlights,
+    .key-highlights-section .key-highlights {
+      grid-template-columns: 1fr;
+    }
+    
+    .savings-highlight {
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .hero-title {
+      font-size: 1.75rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+    
+    .section-title {
+      font-size: 1.75rem;
+    }
+    
+    .cta-title {
+      font-size: 1.75rem;
+    }
+    
+    .btn-primary-large {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
     }
   }
 </style>
 
-<div class="container pricing-page">
-  <div class="pricing-header">
-    <h1 class="display-4 fw-bold mb-3">Treatment Pricing</h1>
-    <p class="lead">Transparent pricing for all our medical treatments. Find the right package for your healthcare needs.</p>
-  </div>
-  
-  <div class="row mb-5">
-    <div class="col-lg-8">
-      <div class="card pricing-card">
-        <div class="card-body">
-          <h2 class="mb-4">Treatment Cost Breakdown</h2>
-          <p>Our treatment packages are designed to provide comprehensive care while maintaining transparency in pricing. Each package includes:</p>
-          
-          <div class="row g-4 mt-4">
-            <div class="col-md-4">
-              <div class="d-flex align-items-center">
-                <div class="pricing-icon-box">
-                  <i class="bi bi-person-check"></i>
-                </div>
-                <div class="ms-3">
-                  <div class="fw-semibold">Consultation</div>
-                  <div class="small text-muted">Expert medical advice</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="d-flex align-items-center">
-                <div class="pricing-icon-box">
-                  <i class="bi bi-clipboard2-pulse"></i>
-                </div>
-                <div class="ms-3">
-                  <div class="fw-semibold">Procedure</div>
-                  <div class="small text-muted">Medical treatment</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="d-flex align-items-center">
-                <div class="pricing-icon-box">
-                  <i class="bi bi-house-heart"></i>
-                </div>
-                <div class="ms-3">
-                  <div class="fw-semibold">Aftercare</div>
-                  <div class="small text-muted">Recovery support</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+<div class="pricing-page">
+  <!-- Hero Section -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="container hero-content">
+      <h1 id="hero-heading" class="hero-title">Treatment Pricing</h1>
+      <p class="hero-subtitle">Transparent pricing for all our medical treatments. Find the right package for your healthcare needs.</p>
+    </div>
+  </section>
+
+  <!-- Search Section -->
+  <section class="search-section" aria-labelledby="search-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="search-heading" class="section-title">Find Pricing Information</h2>
+        <p class="section-subtitle">Search for treatments, doctors, or hospitals to get detailed pricing information</p>
       </div>
       
-      <div class="card pricing-card">
-        <div class="card-header bg-white border-0 position-relative">
-          <h2 class="mb-0">Popular Treatment Packages</h2>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Treatment</th>
-                  <th>Estimated Costing</th>
-                  <th>Hospitals</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="fw-semibold">Cardiac Surgery</div>
-                    <div class="small text-muted">Heart bypass, valve replacement</div>
-                  </td>
-                  <td>
-                    <span class="fw-bold text-primary">$12,000 - $25,000</span>
-                  </td>
-                  <td>12 hospitals</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="fw-semibold">Orthopedic Surgery</div>
-                    <div class="small text-muted">Joint replacement, spine surgery</div>
-                  </td>
-                  <td>
-                    <span class="fw-bold text-primary">$8,000 - $18,000</span>
-                  </td>
-                  <td>18 hospitals</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="fw-semibold">Cosmetic Surgery</div>
-                    <div class="small text-muted">Plastic surgery, aesthetic procedures</div>
-                  </td>
-                  <td>
-                    <span class="fw-bold text-primary">$5,000 - $15,000</span>
-                  </td>
-                  <td>24 hospitals</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="fw-semibold">Dental Treatment</div>
-                    <div class="small text-muted">Implants, braces, cosmetic dentistry</div>
-                  </td>
-                  <td>
-                    <span class="fw-bold text-primary">$2,000 - $10,000</span>
-                  </td>
-                  <td>32 hospitals</td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="fw-semibold">Fertility Treatment</div>
-                    <div class="small text-muted">IVF, IUI, egg donation</div>
-                  </td>
-                  <td>
-                    <span class="fw-bold text-primary">$4,000 - $12,000</span>
-                  </td>
-                  <td>15 hospitals</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <ul class="nav nav-tabs search-tabs mb-4" id="searchTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="treatment-tab" data-bs-toggle="tab" data-bs-target="#treatment" type="button" role="tab">Treatments</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="doctor-tab" data-bs-toggle="tab" data-bs-target="#doctor" type="button" role="tab">Doctors</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="hospital-tab" data-bs-toggle="tab" data-bs-target="#hospital" type="button" role="tab">Hospitals</button>
+        </li>
+      </ul>
       
-      <div class="card pricing-card pricing-faq">
-        <div class="card-header bg-white border-0">
-          <h2 class="mb-0">Frequently Asked Questions</h2>
+      <div class="tab-content" id="searchTabContent">
+        <!-- Treatment Search -->
+        <div class="tab-pane fade show active" id="treatment" role="tabpanel">
+          <div class="search-form">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-lg" id="treatmentSearch" placeholder="Search treatments...">
+              <button class="btn btn-primary btn-lg" type="button" id="searchTreatmentBtn">
+                <i class="bi bi-search"></i> Search
+              </button>
+            </div>
+            <div class="search-results mt-3" id="treatmentResults" style="display: none;"></div>
+          </div>
         </div>
-        <div class="accordion accordion-flush" id="pricingFAQ">
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                What is included in the estimated costing?
+        
+        <!-- Doctor Search -->
+        <div class="tab-pane fade" id="doctor" role="tabpanel">
+          <div class="search-form">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-lg" id="doctorSearch" placeholder="Search doctors...">
+              <button class="btn btn-primary btn-lg" type="button" id="searchDoctorBtn">
+                <i class="bi bi-search"></i> Search
               </button>
-            </h2>
-            <div id="faq1" class="accordion-collapse collapse show">
-              <div class="accordion-body">
-                Our estimated costing includes all medical procedures, hospital stay, surgeon fees, anesthesia, medications, and standard post-operative care. Additional services like private rooms or specialized care may incur extra charges.
-              </div>
             </div>
+            <div class="search-results mt-3" id="doctorResults" style="display: none;"></div>
           </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                Are there any hidden fees?
+        </div>
+        
+        <!-- Hospital Search -->
+        <div class="tab-pane fade" id="hospital" role="tabpanel">
+          <div class="search-form">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-lg" id="hospitalSearch" placeholder="Search hospitals...">
+              <button class="btn btn-primary btn-lg" type="button" id="searchHospitalBtn">
+                <i class="bi bi-search"></i> Search
               </button>
-            </h2>
-            <div id="faq2" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                We strive for complete transparency. All standard fees are included in our estimates. However, unforeseen complications or additional tests requested by the patient may result in extra charges, which will be communicated in advance.
-              </div>
             </div>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                Do you offer payment plans?
-              </button>
-            </h2>
-            <div id="faq3" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                Yes, we offer flexible payment plans for most treatments. You can discuss financing options with our financial counselors who will help you find a plan that fits your budget.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                How do hospital ratings affect pricing?
-              </button>
-            </h2>
-            <div id="faq4" class="accordion-collapse collapse">
-              <div class="accordion-body">
-                Higher-rated hospitals with advanced facilities and renowned specialists typically have higher pricing. However, they also offer better success rates and patient satisfaction. You can compare hospitals based on ratings, pricing, and specialties.
-              </div>
-            </div>
+            <div class="search-results mt-3" id="hospitalResults" style="display: none;"></div>
           </div>
         </div>
       </div>
     </div>
-    
-    <div class="col-lg-4">
-      <div class="card pricing-card">
-        <div class="card-header bg-white border-0 position-relative">
-          <h3 class="mb-0">Cost Factors</h3>
-        </div>
-        <div class="card-body">
-          <ul class="pricing-features">
-            <li><i class="bi bi-check-circle-fill"></i> Hospital reputation and facilities</li>
-            <li><i class="bi bi-check-circle-fill"></i> Surgeon experience and expertise</li>
-            <li><i class="bi bi-check-circle-fill"></i> Procedure complexity</li>
-            <li><i class="bi bi-check-circle-fill"></i> Length of hospital stay</li>
-            <li><i class="bi bi-check-circle-fill"></i> Post-operative care requirements</li>
-            <li><i class="bi bi-check-circle-fill"></i> Geographic location</li>
-            <li><i class="bi bi-check-circle-fill"></i> Type of room selected</li>
-            <li><i class="bi bi-check-circle-fill"></i> Additional services requested</li>
-          </ul>
-        </div>
+  </section>
+
+  <!-- Key Highlights -->
+  <section class="key-highlights-section" aria-labelledby="highlights-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="highlights-heading" class="section-title">Why Choose Our Pricing</h2>
+        <p class="section-subtitle">Transparent, competitive pricing with exceptional value</p>
       </div>
       
-      <div class="card pricing-stat-card">
-        <div class="card-body text-center">
-          <div class="pricing-icon-box mx-auto mb-3">
+      <div class="key-highlights">
+        <div class="highlight-card">
+          <div class="highlight-icon">
             <i class="bi bi-currency-dollar"></i>
           </div>
-          <h4 class="mb-3">Average Savings</h4>
-          <div class="display-6 text-primary fw-bold mb-3">40-60%</div>
-          <p class="mb-0">Patients typically save 40-60% compared to costs in developed countries</p>
+          <h3 class="highlight-title">40-60% Savings</h3>
+          <p class="highlight-description">Patients typically save 40-60% compared to costs in developed countries</p>
         </div>
-      </div>
-      
-      <div class="card pricing-card">
-        <div class="card-body">
-          <h4 class="mb-3">Get a Personalized Quote</h4>
-          <p>Receive a detailed cost estimate based on your specific medical needs and selected hospital.</p>
-          <a href="/book/" class="btn btn-primary w-100 pricing-cta-btn">
-            <i class="bi bi-calculator me-2"></i>Calculate Your Cost
-          </a>
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <h3 class="highlight-title">95% Success Rate</h3>
+          <p class="highlight-description">Average success rate across all our partner hospitals</p>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h3 class="highlight-title">Verified Quality</h3>
+          <p class="highlight-description">JCI & NABH accredited hospitals with world-class facilities</p>
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" aria-labelledby="faq-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="faq-heading" class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Common questions about our pricing and services</p>
+      </div>
+      
+      <div class="accordion accordion-flush pricing-faq" id="pricingFAQ">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+              What is included in the estimated costing?
+            </button>
+          </h2>
+          <div id="faq1" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              Our estimated costing includes all medical procedures, hospital stay, surgeon fees, anesthesia, medications, and standard post-operative care. Additional services like private rooms or specialized care may incur extra charges.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+              Are there any hidden fees?
+            </button>
+          </h2>
+          <div id="faq2" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              We strive for complete transparency. All standard fees are included in our estimates. However, unforeseen complications or additional tests requested by the patient may result in extra charges, which will be communicated in advance.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+              Do you offer payment plans?
+            </button>
+          </h2>
+          <div id="faq3" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              Yes, we offer flexible payment plans for most treatments. You can discuss financing options with our financial counselors who will help you find a plan that fits your budget.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+              How do hospital ratings affect pricing?
+            </button>
+          </h2>
+          <div id="faq4" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              Higher-rated hospitals with advanced facilities and renowned specialists typically have higher pricing. However, they also offer better success rates and patient satisfaction. You can compare hospitals based on ratings, pricing, and specialties.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cost Factors -->
+  <section class="cost-factors-section" aria-labelledby="factors-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="factors-heading" class="section-title">Key Cost Factors</h2>
+        <p class="section-subtitle">Understanding what influences treatment pricing</p>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="card">
+            <div class="card-body">
+              <ul class="pricing-features">
+                <li><i class="bi bi-check-circle-fill"></i> Hospital reputation and facilities</li>
+                <li><i class="bi bi-check-circle-fill"></i> Surgeon experience and expertise</li>
+                <li><i class="bi bi-check-circle-fill"></i> Procedure complexity</li>
+                <li><i class="bi bi-check-circle-fill"></i> Length of hospital stay</li>
+                <li><i class="bi bi-check-circle-fill"></i> Post-operative care requirements</li>
+                <li><i class="bi bi-check-circle-fill"></i> Geographic location</li>
+                <li><i class="bi bi-check-circle-fill"></i> Type of room selected</li>
+                <li><i class="bi bi-check-circle-fill"></i> Additional services requested</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="savings-highlight">
+        <h3 class="mb-3">Average Savings</h3>
+        <div class="display-6 text-white fw-bold mb-3">40-60%</div>
+        <p class="mb-0">Patients typically save 40-60% compared to costs in developed countries</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" aria-labelledby="cta-heading">
+    <div class="container">
+      <h2 id="cta-heading" class="cta-title">Get a Personalized Quote</h2>
+      <p class="cta-subtitle">Receive a detailed cost estimate based on your specific medical needs and selected hospital.</p>
+      <a href="/book/" class="btn-primary-large">
+        <i class="bi bi-calculator me-2"></i>Calculate Your Cost
+      </a>
+    </div>
+  </section>
 </div>
+
+<script>
+  // Search functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    // Treatment search
+    const treatmentSearch = document.getElementById('treatmentSearch');
+    const searchTreatmentBtn = document.getElementById('searchTreatmentBtn');
+    const treatmentResults = document.getElementById('treatmentResults');
+    
+    // Doctor search
+    const doctorSearch = document.getElementById('doctorSearch');
+    const searchDoctorBtn = document.getElementById('searchDoctorBtn');
+    const doctorResults = document.getElementById('doctorResults');
+    
+    // Hospital search
+    const hospitalSearch = document.getElementById('hospitalSearch');
+    const searchHospitalBtn = document.getElementById('searchHospitalBtn');
+    const hospitalResults = document.getElementById('hospitalResults');
+    
+    // Treatment search function
+    function searchTreatments() {
+      const query = treatmentSearch.value.trim();
+      if (query.length < 2) {
+        treatmentResults.style.display = 'none';
+        return;
+      }
+      
+      // Make AJAX call to search treatments
+      fetch(`/treatments/api/search/?type=treatment&query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            displayResults(treatmentResults, data.results, 'treatment');
+          } else {
+            treatmentResults.innerHTML = '<div class="search-result-item">Error: ' + data.error + '</div>';
+            treatmentResults.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          treatmentResults.innerHTML = '<div class="search-result-item">Error searching treatments</div>';
+          treatmentResults.style.display = 'block';
+        });
+    }
+    
+    // Doctor search function
+    function searchDoctors() {
+      const query = doctorSearch.value.trim();
+      if (query.length < 2) {
+        doctorResults.style.display = 'none';
+        return;
+      }
+      
+      // Make AJAX call to search doctors
+      fetch(`/treatments/api/search/?type=doctor&query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            displayResults(doctorResults, data.results, 'doctor');
+          } else {
+            doctorResults.innerHTML = '<div class="search-result-item">Error: ' + data.error + '</div>';
+            doctorResults.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          doctorResults.innerHTML = '<div class="search-result-item">Error searching doctors</div>';
+          doctorResults.style.display = 'block';
+        });
+    }
+    
+    // Hospital search function
+    function searchHospitals() {
+      const query = hospitalSearch.value.trim();
+      if (query.length < 2) {
+        hospitalResults.style.display = 'none';
+        return;
+      }
+      
+      // Make AJAX call to search hospitals
+      fetch(`/treatments/api/search/?type=hospital&query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            displayResults(hospitalResults, data.results, 'hospital');
+          } else {
+            hospitalResults.innerHTML = '<div class="search-result-item">Error: ' + data.error + '</div>';
+            hospitalResults.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          hospitalResults.innerHTML = '<div class="search-result-item">Error searching hospitals</div>';
+          hospitalResults.style.display = 'block';
+        });
+    }
+    
+    // Display search results
+    function displayResults(container, results, type) {
+      container.innerHTML = '';
+      
+      if (results.length === 0) {
+        container.innerHTML = '<div class="search-result-item">No results found</div>';
+      } else {
+        results.forEach(item => {
+          const resultItem = document.createElement('div');
+          resultItem.className = 'search-result-item';
+          
+          if (type === 'treatment') {
+            resultItem.innerHTML = `
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">${item.name}</div>
+                  <div class="small text-muted">${item.category}</div>
+                </div>
+                <div class="price-range">$${item.price.toLocaleString()}</div>
+              </div>
+            `;
+          } else if (type === 'doctor') {
+            resultItem.innerHTML = `
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">${item.name}</div>
+                  <div class="small text-muted">${item.specialty}</div>
+                </div>
+                <div class="price-range">$${item.price.toLocaleString()}</div>
+              </div>
+            `;
+          } else if (type === 'hospital') {
+            resultItem.innerHTML = `
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">${item.name}</div>
+                  <div class="small text-muted">${item.location}</div>
+                </div>
+                <div class="price-range">$${item.price.toLocaleString()}</div>
+              </div>
+            `;
+          }
+          
+          resultItem.addEventListener('click', function() {
+            // Navigate to the item's page
+            window.location.href = item.url;
+          });
+          
+          container.appendChild(resultItem);
+        });
+      }
+      
+      container.style.display = 'block';
+    }
+    
+    // Event listeners
+    searchTreatmentBtn.addEventListener('click', searchTreatments);
+    treatmentSearch.addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') {
+        searchTreatments();
+      }
+    });
+    
+    searchDoctorBtn.addEventListener('click', searchDoctors);
+    doctorSearch.addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') {
+        searchDoctors();
+      }
+    });
+    
+    searchHospitalBtn.addEventListener('click', searchHospitals);
+    hospitalSearch.addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') {
+        searchHospitals();
+      }
+    });
+    
+    // Close search results when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-section')) {
+        treatmentResults.style.display = 'none';
+        doctorResults.style.display = 'none';
+        hospitalResults.style.display = 'none';
+      }
+    });
+  });
+</script>
 {% endblock %}

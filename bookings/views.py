@@ -334,7 +334,7 @@ def booking_page(request: HttpRequest) -> HttpResponse:
             preferred_doctor_id = request.POST.get('preferred_doctor')
             preferred_hospital_id = request.POST.get('preferred_hospital')
             preferred_date = request.POST.get('preferred_date')
-            budget = request.POST.get('budget')
+            total_cost = request.POST.get('total_cost')  # Changed from budget to total_cost
             medical_history = request.POST.get('medical_history')
             travel_companions = request.POST.get('travel_companions')
             urgency = request.POST.get('urgency')
@@ -390,9 +390,9 @@ def booking_page(request: HttpRequest) -> HttpResponse:
                 notes=notes
             )
             
-            # Set amount
-            if budget:
-                booking.amount = Decimal(str(budget))  # type: ignore
+            # Set amount - use total_cost from form or fallback to treatment price
+            if total_cost:
+                booking.amount = Decimal(str(total_cost))  # type: ignore
             else:
                 booking.amount = treatment.starting_price  # type: ignore
             

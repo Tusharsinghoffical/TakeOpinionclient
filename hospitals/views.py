@@ -7,23 +7,28 @@ from feedbacks.models import Feedback  # Add this import
 
 
 def hospitals_list(request: HttpRequest) -> HttpResponse:
-    hospitals = Hospital._default_manager.all()  # type: ignore
+    hospitals = Hospital.objects.all()  # type: ignore
     
     # Get filter parameters from request
     search = request.GET.get('search', '')
     treatment = request.GET.get('treatment', '')
     accreditation = request.GET.get('accreditation', '')
     rating = request.GET.get('rating', '')
+    doctor_id = request.GET.get('doctor', '')  # Add doctor filter for related hospitals
+    treatment_id = request.GET.get('treatment_id', '')  # Add treatment filter for related hospitals
     
     # Apply search filter
     if search:
-        search_filter = Q(name__icontains=search) | Q(city__icontains=search) | Q(state__name__icontains=search)  # type: ignore
-        hospitals = hospitals.filter(search_filter)  # type: ignore
+        name_filter = Q(name__icontains=search)
+        city_filter = Q(city__icontains=search)
+        state_filter = Q(state__name__icontains=search)
+        hospitals = hospitals.filter(name_filter | city_filter | state_filter)  # type: ignore
     
-    # Apply filters if provided
+    # Apply treatment filter
     if treatment:
-        hospitals = hospitals.filter(treatments__name=treatment)  # type: ignore
+        hospitals = hospitals.filter(treatments__name__icontains=treatment)  # type: ignore
     
+    # Apply accreditation filter
     if accreditation:
         if accreditation == 'JCI':
             hospitals = hospitals.filter(jci_accredited=True)  # type: ignore
@@ -32,12 +37,26 @@ def hospitals_list(request: HttpRequest) -> HttpResponse:
         elif accreditation == 'ISO':
             hospitals = hospitals.filter(iso_certified=True)  # type: ignore
     
+    # Apply rating filter
     if rating:
-        try:
-            rating_value = float(str(rating))
-            hospitals = hospitals.filter(rating__gte=rating_value)  # type: ignore
-        except (ValueError, TypeError):
-            pass  # Invalid rating value, ignore filter
+        if rating == '4.5':
+            hospitals = hospitals.filter(rating__gte=4.5)  # type: ignore
+        elif rating == '4.0':
+            hospitals = hospitals.filter(rating__gte=4.0)  # type: ignore
+        elif rating == '3.5':
+            hospitals = hospitals.filter(rating__gte=3.5)  # type: ignore
+    
+    # Add doctor filter for related hospitals
+    if doctor_id:
+        hospitals = hospitals.filter(doctors__id=doctor_id)  # type: ignore
+    
+    # Add treatment ID filter for related hospitals
+    if treatment_id:
+        hospitals = hospitals.filter(treatments__id=treatment_id)  # type: ignore
+    
+    # Remove duplicates if any filters were applied
+    if search or treatment or accreditation or rating or doctor_id or treatment_id:
+        hospitals = hospitals.distinct()  # type: ignore
     
     context = {
         'hospitals': hospitals,
@@ -45,6 +64,8 @@ def hospitals_list(request: HttpRequest) -> HttpResponse:
         'treatment_filter': treatment,
         'accreditation_filter': accreditation,
         'rating_filter': rating,
+        'doctor_filter': doctor_id,
+        'treatment_id_filter': treatment_id,
     }
     
     return render(request, "hospitals/list.html", context)
@@ -53,16 +74,16 @@ def hospitals_list(request: HttpRequest) -> HttpResponse:
 def hospital_detail(request: HttpRequest, slug: str) -> HttpResponse:
     hospital = get_object_or_404(Hospital, slug=slug)
     # Fetch approved feedback for this hospital
-    feedbacks = Feedback.objects.filter(hospital=hospital, is_approved=True).select_related('patient')  # type: ignore
+    feedbacks = Feedback.objects.filter(hospital=hospital, is_approved=True).select_related('patient').order_by('-created_at')  # type: ignore
     
     # Paginate treatments
-    treatments = hospital.treatments.all()
+    treatments = hospital.treatments.all().order_by('name')
     treatments_paginator = Paginator(treatments, 10)
     treatments_page_number = request.GET.get('treatments_page')
     treatments_page_obj = treatments_paginator.get_page(treatments_page_number)
     
     # Paginate doctors
-    doctors = hospital.doctors.all()
+    doctors = hospital.doctors.all().order_by('name')
     doctors_paginator = Paginator(doctors, 10)
     doctors_page_number = request.GET.get('doctors_page')
     doctors_page_obj = doctors_paginator.get_page(doctors_page_number)

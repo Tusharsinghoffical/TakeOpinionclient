@@ -35,4 +35,6 @@ urlpatterns = [
     path('get_entities/<str:entity_type>/', views.get_entities, name='get_entities'),
     path('reviews/', views.reviews_page, name='reviews_page'),
     path('api/reviews/', views.reviews_api, name='reviews_api'),
+    path('admin/api/reviews/<int:review_id>/delete/', views.admin_delete_review, name='admin_delete_review'),
+    path('patient/reviews/<int:review_id>/delete/', views.patient_delete_review, name='patient_delete_review'),
 ]

@@ -18,12 +18,14 @@ def doctors_list(request: HttpRequest) -> HttpResponse:
     experience = request.GET.get('experience', '')
     rating = request.GET.get('rating', '')
     treatment = request.GET.get('treatment', '')  # Add treatment filter
+    hospital_id = request.GET.get('hospital', '')  # Add hospital filter for related doctors
+    treatment_id = request.GET.get('treatment_id', '')  # Add treatment filter for related doctors
     
     # Apply search filter
     if search:
-        doctors = doctors.filter(
-            Q(name__icontains=search) | Q(specialization__icontains=search)
-        )  # type: ignore
+        name_filter = Q(name__icontains=search)
+        specialization_filter = Q(specialization__icontains=search)
+        doctors = doctors.filter(name_filter | specialization_filter)  # type: ignore
     
     # Apply filters if provided
     if specialization:
@@ -51,13 +53,27 @@ def doctors_list(request: HttpRequest) -> HttpResponse:
     if treatment:
         doctors = doctors.filter(treatments__name__icontains=treatment)  # type: ignore
     
+    # Add hospital filter for related doctors
+    if hospital_id:
+        doctors = doctors.filter(hospitals__id=hospital_id)  # type: ignore
+    
+    # Add treatment ID filter for related doctors
+    if treatment_id:
+        doctors = doctors.filter(treatments__id=treatment_id)  # type: ignore
+    
+    # Remove duplicates if any filters were applied
+    if search or specialization or experience or rating or treatment or hospital_id or treatment_id:
+        doctors = doctors.distinct()  # type: ignore
+    
     context = {
         'doctors': doctors,
         'search_filter': search,
         'specialization_filter': specialization,
         'experience_filter': experience,
         'rating_filter': rating,
-        'treatment_filter': treatment,  # Add treatment filter to context
+        'treatment_filter': treatment,
+        'hospital_filter': hospital_id,
+        'treatment_id_filter': treatment_id,
     }
     
     return render(request, "doctors/list.html", context)
@@ -66,10 +82,10 @@ def doctors_list(request: HttpRequest) -> HttpResponse:
 def doctor_detail(request: HttpRequest, slug: str) -> HttpResponse:
     doctor = get_object_or_404(Doctor, slug=slug)
     # Fetch approved feedback for this doctor
-    feedbacks = Feedback.objects.filter(doctor=doctor, is_approved=True).select_related('patient')  # type: ignore
+    feedbacks = Feedback.objects.filter(doctor=doctor, is_approved=True).select_related('patient').order_by('-created_at')  # type: ignore
     
     # Paginate treatments (areas of expertise)
-    treatments = doctor.treatments.all()
+    treatments = doctor.treatments.all().order_by('name')
     treatments_paginator = Paginator(treatments, 10)
     treatments_page_number = request.GET.get('treatments_page')
     treatments_page_obj = treatments_paginator.get_page(treatments_page_number)
@@ -79,10 +95,14 @@ def doctor_detail(request: HttpRequest, slug: str) -> HttpResponse:
     feedbacks_page_number = request.GET.get('feedbacks_page')
     feedbacks_page_obj = feedbacks_paginator.get_page(feedbacks_page_number)
     
+    # Get affiliated hospitals
+    affiliated_hospitals = doctor.hospitals.all()
+    
     return render(request, "doctors/detail.html", {
         "doctor": doctor, 
         "treatments_page_obj": treatments_page_obj,
-        "feedbacks_page_obj": feedbacks_page_obj
+        "feedbacks_page_obj": feedbacks_page_obj,
+        "affiliated_hospitals": affiliated_hospitals
     })
 
 

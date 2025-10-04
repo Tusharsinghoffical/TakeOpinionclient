@@ -675,7 +675,7 @@
             {% endif %}
             
             <div class="text-center mt-3">
-              <a href="/hospitals/" class="btn btn-outline-modern">View All Hospitals</a>
+              <a href="/hospitals/?treatment_id={{ treatment.id }}" class="btn btn-outline-modern">View All Hospitals</a>
             </div>
             {% else %}
             <p class="mb-0">No hospitals currently offering this treatment.</p>
@@ -748,7 +748,7 @@
             {% endif %}
             
             <div class="text-center mt-3">
-              <a href="/doctors/" class="btn btn-outline-modern">View All Doctors</a>
+              <a href="/doctors/?treatment_id={{ treatment.id }}" class="btn btn-outline-modern">View All Doctors</a>
             </div>
             {% else %}
             <p class="mb-0">No doctors currently specializing in this treatment.</p>

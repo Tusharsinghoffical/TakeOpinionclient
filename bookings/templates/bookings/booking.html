@@ -1,144 +1,239 @@
 {% extends 'base.html' %}
 {% block content %}
 <style>
-/* Simplified and Attractive Booking Page Styles with Light Colors */
-.booking-detail-page {
+/* Enhanced Booking Page Styles - Matching Doctor Page Design */
+:root {
+  /* Enhanced vibrant color palette from doctor page */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-strong: rgba(0, 0, 0, 0.15);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+  --transition-speed: 0.3s;
+}
+
+/* Global booking page styles */
+.booking-page {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  color: var(--dark-text);
   line-height: 1.6;
-  background-color: #f8f9fa;
 }
 
-.page-header {
-  background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
-  color: #333;
-  padding: 2rem 0;
-  margin-bottom: 2rem;
-  border-radius: 0 0 20px 20px;
-  border-bottom: 1px solid #dee2e6;
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
 }
 
-.page-header h1 {
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  color: var(--light-text);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
 }
 
-.main-content {
-  padding: 0 1rem;
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--light-text);
+  line-height: 1.5;
 }
 
-.card-modern {
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-large {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #c0392b;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary-large {
+  background-color: transparent;
+  color: var(--light-text);
+  border: 2px solid var(--light-text);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-secondary-large:hover {
+  background-color: var(--light-text);
+  color: var(--accent);
+  transform: translateY(-3px);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Booking Form Section */
+.booking-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.booking-card {
+  background: white;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  margin-bottom: 2rem;
-  border: none;
-  background: white;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 2rem;
 }
 
-.card-modern:hover {
+.booking-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-}
-
-.card-modern .card-header {
-  background: #f8f9fa;
-  color: #2c3e50;
-  border-radius: 15px 15px 0 0 !important;
-  border: none;
-  padding: 1.25rem;
-  font-weight: 600;
-  border-bottom: 1px solid #e9ecef;
-}
-
-.btn-modern {
-  border-radius: 10px;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  transition: all 0.3s ease;
-  border: none;
-}
-
-.btn-primary-modern {
-  background: #adb5bd;
-  color: white;
-  box-shadow: 0 4px 15px rgba(173, 181, 189, 0.3);
-}
-
-.btn-primary-modern:hover {
-  background: #868e96;
-  transform: translateY(-3px);
-  box-shadow: 0 7px 20px rgba(173, 181, 189, 0.4);
-}
-
-.btn-outline-modern {
-  background: transparent;
-  color: #495057;
-  border: 2px solid #adb5bd;
-}
-
-.btn-outline-modern:hover {
-  background: #e9ecef;
-  transform: translateY(-3px);
-}
-
-.section-title-modern {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
-  position: relative;
-  padding-bottom: 0.75rem;
-}
-
-.section-title-modern::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 60px;
-  height: 3px;
-  background: #adb5bd;
-  border-radius: 3px;
+  box-shadow: 0 15px 30px var(--shadow-strong);
 }
 
 .booking-form .form-label {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
 }
 
 .booking-form .form-control, 
 .booking-form .form-select {
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
   padding: 0.75rem 1rem;
-  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-speed) ease;
 }
 
 .booking-form .form-control:focus, 
 .booking-form .form-select:focus {
-  border-color: #adb5bd;
-  box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.25);
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+  border-color: var(--primary-medium);
+}
+
+.booking-form .input-group-text {
+  background-color: var(--light-bg);
+  border: 1px solid var(--border);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+}
+
+.booking-form .form-control {
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+}
+
+.booking-form .btn {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  background: var(--primary-medium);
+  color: white;
+  transition: all var(--transition-speed) ease;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.booking-form .btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, var(--accent), #c0392b);
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  width: 100%;
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
 }
 
 .file-upload-area {
-  border: 2px dashed #dee2e6;
+  border: 2px dashed var(--border);
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
-  background-color: #f8f9fa;
-  transition: all 0.3s ease;
+  background-color: var(--light-bg);
+  transition: all var(--transition-speed) ease;
   cursor: pointer;
 }
 
 .file-upload-area:hover {
-  border-color: #adb5bd;
+  border-color: var(--primary-medium);
   background-color: #e9ecef;
 }
 
 .file-upload-area.dragover {
-  border-color: #adb5bd;
+  border-color: var(--primary-medium);
   background-color: #e9ecef;
 }
 
@@ -157,7 +252,7 @@
   border-radius: 8px;
   margin-bottom: 0.5rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border);
 }
 
 .file-item .file-name {
@@ -175,44 +270,103 @@
   font-size: 1.2rem;
 }
 
+/* Support Card */
 .support-card {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: var(--light-text);
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
   border: none;
-  background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
-  color: #2c3e50;
-  border: 1px solid #dee2e6;
+  text-align: center;
+  padding: 2rem;
 }
 
 .support-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 30px var(--shadow-strong);
 }
 
 .support-card .btn-light {
   background: white;
-  color: #495057;
-  border: 1px solid #adb5bd;
+  color: #25D366;
+  border: none;
   font-weight: 600;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .support-card .btn-light:hover {
+  background-color: #25D369;
+  color: white;
   transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  background: #e9ecef;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
+/* Why Choose Section */
+.why-choose-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.why-choose-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--border);
+}
+
+.why-choose-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.why-choose-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-medium) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.why-choose-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+  line-height: 1.3;
+}
+
+.why-choose-description {
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+/* Back Button */
 .back-btn {
   border-radius: 8px;
   font-weight: 600;
   transition: all 0.2s ease;
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  color: #495057;
+  background: var(--light-bg);
+  border: 1px solid var(--border);
+  color: var(--primary-dark);
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
 }
 
 .back-btn:hover {
@@ -222,25 +376,75 @@
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .page-header h1 {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
     font-size: 2.25rem;
   }
   
-  .section-title-modern {
-    font-size: 1.4rem;
-  }
-  
-  .booking-form .form-control, 
-  .booking-form .form-select {
-    padding: 0.625rem 0.875rem;
-  }
-  
-  .file-upload-area {
-    padding: 1.75rem;
+  .why-choose-grid {
+    gap: 1.5rem;
   }
 }
 
 @media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .why-choose-grid {
+    gap: 1.25rem;
+  }
+  
+  .booking-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .btn-primary-large,
+  .btn-secondary-large {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary-large,
+  .btn-secondary-large {
+    width: 100%;
+    max-width: 300px;
+  }
+  
   .col-lg-8 {
     flex: 0 0 100%;
     max-width: 100%;
@@ -249,136 +453,103 @@
   .col-lg-4 {
     flex: 0 0 100%;
     max-width: 100%;
+    margin-top: 2rem;
   }
   
-  .support-card {
-    margin-top: 1rem;
+  .booking-card .card-body {
+    padding: 1.5rem;
   }
   
-  .page-header h1 {
-    font-size: 2rem;
+  .row.g-3 {
+    gap: 1rem;
   }
   
-  .section-title-modern {
-    font-size: 1.3rem;
+  .col-md-3, .col-md-2, .col-md-1 {
+    width: 100%;
+  }
+  
+  .btn-submit {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
   }
 }
 
-@media (max-width: 768px) {
-  .page-header {
-    padding: 1.5rem 0;
-    border-radius: 0 0 15px 15px;
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 2rem 0;
   }
   
-  .page-header h1 {
-    font-size: 1.75rem;
+  .hero-title {
+    font-size: 1.7rem;
   }
   
-  .main-content {
-    padding: 0 0.5rem;
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .section-header {
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  
+  .booking-card {
+    padding: 1rem;
   }
   
   .booking-form .form-control, 
   .booking-form .form-select {
-    padding: 0.5rem 0.75rem;
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .booking-form .btn {
+    padding: 0.6rem 1rem;
   }
   
   .file-upload-area {
     padding: 1.5rem;
   }
   
-  .btn-modern {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
-  
-  .section-title-modern {
-    font-size: 1.25rem;
-  }
-  
-  .support-card {
-    text-align: center;
-  }
-  
-  .support-card .btn-light {
-    width: 100%;
-    margin-top: 1rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .page-header h1 {
-    font-size: 1.5rem;
-  }
-  
-  .page-header p {
-    font-size: 0.9rem;
-  }
-  
-  .section-title-modern {
-    font-size: 1.1rem;
-  }
-  
-  .booking-form .form-control, 
-  .booking-form .form-select {
-    padding: 0.375rem 0.625rem;
-    font-size: 0.9rem;
-  }
-  
-  .booking-form .form-label {
-    font-size: 0.9rem;
-  }
-  
-  .file-upload-area {
-    padding: 1rem;
-  }
-  
-  .file-upload-area p {
-    font-size: 0.9rem;
-  }
-  
-  .btn-modern {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-  }
-  
-  .card-modern .card-header {
-    padding: 1rem;
-    font-size: 1.1rem;
+  .section-title {
+    font-size: 1.75rem;
   }
 }
 </style>
 
-<div class="booking-detail-page">
-  <div class="page-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 text-center">
-          <i class="bi bi-calendar-check display-5 mb-3"></i>
-          <h1>Finalize Your Medical Travel Booking</h1>
-          <p class="lead">Complete your medical travel arrangements by providing details about your preferred treatment, doctor, and hospital. Our team will coordinate all aspects of your journey.</p>
-        </div>
+<div class="booking-page">
+  <!-- Hero Section -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="container hero-content">
+      <h1 id="hero-heading" class="hero-title">Finalize Your Medical Travel Booking</h1>
+      <p class="hero-subtitle">Complete your medical travel arrangements by providing details about your preferred treatment, doctor, and hospital. Our team will coordinate all aspects of your journey.</p>
+      <div class="hero-buttons">
+        <a href="/" class="btn-primary-large">
+          <i class="bi bi-house me-2"></i> Back to Home
+        </a>
+        <a href="/treatments/" class="btn-secondary-large">
+          <i class="bi bi-search me-2"></i> Explore Treatments
+        </a>
       </div>
     </div>
-  </div>
-  
-  <div class="container main-content">
+  </section>
+
+  <div class="container py-5">
     <div class="row">
       <div class="col-lg-8">
-        <a href="/" class="btn back-btn mb-3">
-          <i class="bi bi-arrow-left me-1"></i>Back to Home
+        <a href="/" class="back-btn">
+          <i class="bi bi-arrow-left me-1"></i> Back to Home
         </a>
         
-        <div class="card-modern">
-          <div class="card-header">
-            <h5 class="mb-0">Booking Details</h5>
+        <section class="booking-section" aria-labelledby="booking-heading">
+          <div class="section-header">
+            <h2 id="booking-heading" class="section-title">Booking Details</h2>
+            <p class="section-subtitle">Provide your preferences to help us find the best medical care for you</p>
           </div>
-          <div class="card-body">
+          <div class="booking-card">
             <form id="bookingForm" class="row g-4 booking-form" method="POST" enctype="multipart/form-data">
               {% csrf_token %}
               
               <div class="col-12">
-                <h5 class="section-title-modern mb-3">Treatment Details</h5>
+                <h3 class="section-title" style="font-size: 1.75rem;">Treatment Details</h3>
               </div>
               
               <div class="col-md-6">
@@ -404,7 +575,7 @@
               </div>
               
               <div class="col-12">
-                <h5 class="section-title-modern mt-4 mb-3">Provider Preferences</h5>
+                <h3 class="section-title" style="font-size: 1.75rem; margin-top: 2rem;">Provider Preferences</h3>
               </div>
               
               <div class="col-md-6">
@@ -431,18 +602,21 @@
               
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Preferred Booking Dates</label>
-                <input type="date" class="form-control form-control-lg" name="preferred_date" min="{% now "Y-m-d" %}">
+                <input type="date" class="form-control form-control-lg" name="preferred_date" id="preferredDate" min="{% now "Y-m-d" %}">
                 <div class="form-text">Select your preferred date for the consultation</div>
               </div>
               
               <div class="col-md-6">
-                <label class="form-label fw-semibold">Estimated Budget (USD)</label>
-                <input type="number" class="form-control form-control-lg" name="budget" placeholder="Enter amount" min="0" step="0.01">
-                <div class="form-text">Approximate budget for your treatment</div>
+                <label class="form-label fw-semibold">Total Cost (USD)</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input type="text" class="form-control form-control-lg" id="totalCost" name="total_cost" value="0.00" readonly>
+                </div>
+                <div class="form-text">Automatically calculated based on your selections</div>
               </div>
               
               <div class="col-12">
-                <h5 class="section-title-modern mt-4 mb-3">Medical Information</h5>
+                <h3 class="section-title" style="font-size: 1.75rem; margin-top: 2rem;">Medical Information</h3>
               </div>
               
               <div class="col-12">
@@ -488,13 +662,13 @@
                     I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a> <span class="text-danger">*</span>
                   </label>
                 </div>
-                <button type="submit" class="btn btn-primary-modern btn-lg w-100" id="submitBooking">
+                <button type="submit" class="btn-submit" id="submitBooking">
                   <i class="bi bi-calendar-check me-2"></i>Submit Booking Request
                 </button>
               </div>
             </form>
           </div>
-        </div>
+        </section>
       </div>
       
       <div class="col-lg-4">
@@ -502,7 +676,7 @@
         <div class="support-card mb-4">
           <div class="card-body text-center">
             <i class="bi bi-headset display-5 mb-3"></i>
-            <h5 class="mb-3">Need Help Finalizing Your Booking?</h5>
+            <h3 class="mb-3">Need Help Finalizing Your Booking?</h3>
             <p class="mb-4">Our medical travel coordinators can assist you with selecting the best treatment options and providers.</p>
             <a href="{% url 'contact' %}" class="btn btn-light">
               <i class="bi bi-telephone me-2"></i>Contact Support
@@ -510,52 +684,42 @@
           </div>
         </div>
         
-        <!-- Booking Benefits -->
-        <div class="card-modern">
-          <div class="card-header">
-            <h5 class="mb-0">Why Book With Us?</h5>
+        <!-- Why Choose Section -->
+        <section class="why-choose-section" aria-labelledby="why-choose-heading">
+          <div class="section-header">
+            <h3 id="why-choose-heading" class="section-title" style="font-size: 1.75rem;">Why Book With Us?</h3>
           </div>
-          <div class="card-body">
-            <ul class="list-unstyled">
-              <li class="mb-3">
-                <div class="d-flex">
-                  <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
-                  <div>
-                    <div class="fw-semibold">Verified Providers</div>
-                    <div class="small text-muted">All doctors and hospitals are thoroughly vetted</div>
-                  </div>
-                </div>
-              </li>
-              <li class="mb-3">
-                <div class="d-flex">
-                  <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
-                  <div>
-                    <div class="fw-semibold">Transparent Pricing</div>
-                    <div class="small text-muted">No hidden costs or surprise fees</div>
-                  </div>
-                </div>
-              </li>
-              <li class="mb-3">
-                <div class="d-flex">
-                  <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
-                  <div>
-                    <div class="fw-semibold">24/7 Support</div>
-                    <div class="small text-muted">Dedicated coordinators throughout your journey</div>
-                  </div>
-                </div>
-              </li>
-              <li class="mb-0">
-                <div class="d-flex">
-                  <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
-                  <div>
-                    <div class="fw-semibold">Travel Assistance</div>
-                    <div class="small text-muted">Visa, accommodation, and logistics support</div>
-                  </div>
-                </div>
-              </li>
-            </ul>
+          <div class="why-choose-grid">
+            <div class="why-choose-card">
+              <div class="why-choose-icon">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <h4 class="why-choose-title">Verified Providers</h4>
+              <p class="why-choose-description">All doctors and hospitals are thoroughly vetted</p>
+            </div>
+            <div class="why-choose-card">
+              <div class="why-choose-icon">
+                <i class="bi bi-currency-dollar"></i>
+              </div>
+              <h4 class="why-choose-title">Transparent Pricing</h4>
+              <p class="why-choose-description">No hidden costs or surprise fees</p>
+            </div>
+            <div class="why-choose-card">
+              <div class="why-choose-icon">
+                <i class="bi bi-headset"></i>
+              </div>
+              <h4 class="why-choose-title">24/7 Support</h4>
+              <p class="why-choose-description">Dedicated coordinators throughout your journey</p>
+            </div>
+            <div class="why-choose-card">
+              <div class="why-choose-icon">
+                <i class="bi bi-airplane"></i>
+              </div>
+              <h4 class="why-choose-title">Travel Assistance</h4>
+              <p class="why-choose-description">Visa, accommodation, and logistics support</p>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   </div>
@@ -566,6 +730,65 @@
   document.addEventListener('DOMContentLoaded', function() {
     const today = new Date().toISOString().split('T')[0];
     document.querySelector('input[name="preferred_date"]').min = today;
+    
+    // Initialize cost calculation
+    let baseCost = 0;
+    let doctorCost = 0;
+    let hospitalCost = 0;
+    
+    // Get DOM elements
+    const treatmentSelect = document.getElementById('treatmentSelect');
+    const doctorSelect = document.querySelector('select[name="preferred_doctor"]');
+    const hospitalSelect = document.querySelector('select[name="preferred_hospital"]');
+    const totalCostInput = document.getElementById('totalCost');
+    
+    // Function to update total cost
+    function updateTotalCost() {
+      const total = baseCost + doctorCost + hospitalCost;
+      totalCostInput.value = total.toFixed(2);
+    }
+    
+    // Event listener for treatment selection
+    treatmentSelect.addEventListener('change', function() {
+      const treatmentId = this.value;
+      if (treatmentId) {
+        // In a real implementation, this would fetch the actual treatment cost from the server
+        // For demonstration, we'll use a mock cost based on treatment ID
+        baseCost = treatmentId * 100 + 500; // Mock calculation
+        updateTotalCost();
+      } else {
+        baseCost = 0;
+        updateTotalCost();
+      }
+    });
+    
+    // Event listener for doctor selection
+    doctorSelect.addEventListener('change', function() {
+      const doctorId = this.value;
+      if (doctorId) {
+        // In a real implementation, this would fetch the actual doctor cost from the server
+        // For demonstration, we'll use a mock cost based on doctor ID
+        doctorCost = doctorId * 50 + 200; // Mock calculation
+        updateTotalCost();
+      } else {
+        doctorCost = 0;
+        updateTotalCost();
+      }
+    });
+    
+    // Event listener for hospital selection
+    hospitalSelect.addEventListener('change', function() {
+      const hospitalId = this.value;
+      if (hospitalId) {
+        // In a real implementation, this would fetch the actual hospital cost from the server
+        // For demonstration, we'll use a mock cost based on hospital ID
+        hospitalCost = hospitalId * 75 + 300; // Mock calculation
+        updateTotalCost();
+      } else {
+        hospitalCost = 0;
+        updateTotalCost();
+      }
+    });
     
     // Handle medical reports file input
     const medicalReportsInput = document.getElementById('medicalReportsInput');

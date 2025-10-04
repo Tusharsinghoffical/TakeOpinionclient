@@ -550,7 +550,7 @@
             {% endif %}
             
             <div class="text-center mt-3">
-              <a href="/treatments/" class="btn btn-outline-modern">View All Treatments</a>
+              <a href="/treatments/?doctor_id={{ doctor.id }}" class="btn btn-outline-modern">View All Treatments</a>
             </div>
             {% else %}
             <p class="mb-0">Specialized in advanced treatment procedures and patient care.</p>
@@ -719,9 +719,9 @@
             <h5 class="mb-0">Affiliated Hospitals</h5>
           </div>
           <div class="card-body">
-            {% if doctor.hospitals.all %}
+            {% if affiliated_hospitals %}
             <div class="hospital-grid">
-              {% for h in doctor.hospitals.all|slice:":3" %}
+              {% for h in affiliated_hospitals|slice:":3" %}
               <a href="/hospitals/{{ h.slug }}/" class="hospital-card-modern">
                 <div class="position-relative">
                   {% if h.profile_picture %}
