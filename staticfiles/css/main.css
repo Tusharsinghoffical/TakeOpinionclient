@@ -754,22 +754,51 @@ footer .small {
 /* Professional User Dropdown */
 .user-dropdown .dropdown-toggle {
   background-color: transparent;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   color: var(--dark-gray);
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
 }
 
 .user-dropdown .dropdown-toggle:hover {
   border-color: var(--medical-blue);
   color: var(--medical-blue);
   background-color: rgba(173, 181, 189, 0.05);
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .user-dropdown .dropdown-toggle:focus {
   box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.25);
+}
+
+.user-dropdown .dropdown-menu {
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  padding: 0.75rem;
+  min-width: 250px;
+}
+
+.user-dropdown .dropdown-item {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin: 0.25rem 0;
+}
+
+.user-dropdown .dropdown-item:hover {
+  background-color: var(--light-gray);
+  color: var(--medical-blue);
+  transform: translateX(5px);
+}
+
+.user-dropdown .dropdown-divider {
+  margin: 0.5rem 0;
+  border-top: 1px solid var(--border-color);
 }
 
 /* Search form in navbar */

@@ -1,40 +1,18 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 
 <style>
-  /* Home Page Specific Styles */
-  :root {
-    /* Enhanced vibrant color palette */
-    --primary-dark: #2c3e50;
-    --primary-medium: #3498db;
-    --primary-light: #5dade2;
-    --accent: #e74c3c;
-    --success: #27ae60;
-    --light-bg: #f8f9fa;
-    --dark-text: #2c3e50;
-    --light-text: #ffffff;
-    --border: #dee2e6;
-    --shadow: rgba(0, 0, 0, 0.1);
-    --shadow-strong: rgba(0, 0, 0, 0.15);
-    --gradient-start: #3498db;
-    --gradient-end: #2c3e50;
-    --transition-speed: 0.3s;
-  }
-
-  /* Global home page styles */
-  .home-page {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--dark-text);
-    line-height: 1.6;
+  /* Treatment Home Page Styles - Matching Homepage Design */
+  .treatment-page {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   }
 
   /* Hero Section */
   .hero-section {
-    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-    color: var(--light-text);
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
     padding: 5rem 0;
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid var(--border);
   }
 
   .hero-content {
@@ -44,12 +22,11 @@
   }
 
   .hero-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
-    color: var(--light-text);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    line-height: 1.2;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .hero-subtitle {
@@ -58,79 +35,57 @@
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
-    color: var(--light-text);
-    line-height: 1.5;
-  }
-
-  .hero-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .btn-primary-large {
-    background-color: var(--accent);
-    color: white;
+    background: white;
+    color: #0d6efd;
     border: none;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
     font-weight: 600;
     border-radius: 50px;
-    transition: all var(--transition-speed) ease;
+    transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 0.5rem;
   }
 
   .btn-primary-large:hover {
-    background-color: #c0392b;
-    color: white;
+    background: #f8f9fa;
+    color: #0d6efd;
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   }
 
   .btn-secondary-large {
-    background-color: transparent;
-    color: var(--light-text);
-    border: 2px solid var(--light-text);
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
     font-weight: 600;
     border-radius: 50px;
-    transition: all var(--transition-speed) ease;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 0.5rem;
   }
 
   .btn-secondary-large:hover {
-    background-color: var(--light-text);
-    color: var(--accent);
+    background: white;
+    color: #0d6efd;
     transform: translateY(-3px);
-  }
-
-  /* Section Headers */
-  .section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  .section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--primary-dark);
-    margin-bottom: 1rem;
-    line-height: 1.2;
-  }
-
-  .section-subtitle {
-    font-size: 1.25rem;
-    color: #6c757d;
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.5;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   }
 
   /* Filter Section */
   .filter-section {
-    background-color: var(--light-bg);
+    background: white;
     padding: 3rem 0;
+    border-bottom: 1px solid #e9ecef;
   }
 
   .filter-card {
@@ -146,265 +101,259 @@
 
   .filter-form .form-label {
     font-weight: 600;
-    color: var(--primary-dark);
+    color: #2c3e50;
     margin-bottom: 0.5rem;
   }
 
   .filter-form .form-control, .filter-form .form-select {
-    border: none;
+    border: 1px solid #ced4da;
     border-radius: 10px;
     padding: 0.75rem 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
   }
 
   .filter-form .form-control:focus, .filter-form .form-select:focus {
-    box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
-    border: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
   }
 
   .filter-form .btn {
     border: none;
     padding: 0.75rem 1.5rem;
     font-weight: 600;
-    background: var(--primary-medium);
+    background: #0d6efd;
     color: white;
     transition: all 0.3s ease;
     border-radius: 10px;
   }
 
   .filter-form .btn:hover {
-    background: var(--primary-dark);
+    background: #0b5ed7;
     transform: translateY(-2px);
   }
 
-  /* Core Services Section */
-  .core-services-section {
-    background-color: var(--light-bg);
-    padding: 5rem 0;
-  }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-
-  .service-card {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px var(--shadow);
-    transition: all var(--transition-speed) ease;
+  /* Section Header */
+  .section-header {
     text-align: center;
-    padding: 2rem 1.5rem;
-    border: 1px solid var(--border);
-    position: relative;
-    z-index: 1;
+    margin-bottom: 3rem;
   }
 
-  .service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px var(--shadow-strong);
-  }
-
-  .service-icon {
-    font-size: 3rem;
-    color: var(--primary-medium);
-    margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-medium) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .service-title {
-    font-size: 1.5rem;
-    font-weight: 600;
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
     margin-bottom: 1rem;
-    color: var(--primary-dark);
-    line-height: 1.3;
   }
 
-  .service-description {
+  .section-subtitle {
+    font-size: 1.1rem;
     color: #6c757d;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-  }
-
-  .service-link {
-    display: inline-block;
-    color: var(--primary-medium);
-    font-weight: 600;
-    text-decoration: none;
-    padding: 0.5rem 1.5rem;
-    border: 2px solid var(--primary-medium);
-    border-radius: 30px;
-    transition: all var(--transition-speed) ease;
-  }
-
-  .service-link:hover {
-    background-color: var(--primary-medium);
-    color: white !important;
-    border-color: var(--primary-medium);
+    max-width: 700px;
+    margin: 0 auto;
   }
 
   /* Multi Speciality Section */
   .multi-speciality-section {
-    background-color: white;
+    background: #f8f9fa;
     padding: 5rem 0;
   }
 
   .treatment-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 1rem;
     justify-content: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
 
   .treatment-tag {
-    background-color: white;
-    color: var(--primary-medium);
+    background: white;
+    color: #0d6efd;
     padding: 0.5rem 1.5rem;
-    border-radius: 30px;
-    font-weight: 500;
+    border-radius: 50px;
     text-decoration: none;
-    border: 2px solid var(--primary-medium);
-    transition: all var(--transition-speed) ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
   }
 
   .treatment-tag:hover {
-    background-color: var(--primary-medium);
-    color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background: #0d6efd;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   }
 
   .treatments-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
   }
 
-  .treatment-category-card {
+  .treatment-card {
     background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px var(--shadow);
-    transition: all var(--transition-speed) ease;
-    border: 1px solid var(--border);
-  }
-
-  .treatment-category-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px var(--shadow-strong);
-  }
-
-  .card-header.bg-primary {
-    background-color: var(--primary-medium) !important;
-  }
-
-  .card-header.bg-info {
-    background-color: #17a2b8 !important;
-  }
-
-  .card-header.bg-success {
-    background-color: var(--success) !important;
-  }
-
-  .list-group-item {
-    border: none;
-    padding: 1rem;
-    transition: all var(--transition-speed) ease;
-    border-radius: 0 !important;
-  }
-
-  .list-group-item:first-child {
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
-  }
-
-  .list-group-item:last-child {
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-  }
-
-  .list-group-item:hover {
-    background-color: var(--light-bg);
-    padding-left: 1.5rem;
-  }
-
-  .treatment-item {
-    color: var(--dark-text);
-    text-decoration: none;
-    font-weight: 500;
+    border-radius: 12px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
   }
 
-  .treatment-item:hover {
-    color: var(--primary-medium);
-  }
-
-  /* Why Choose Section */
-  .why-choose-section {
-    background-color: var(--light-bg);
-    padding: 5rem 0;
-  }
-
-  .why-choose-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-
-  .why-choose-card {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px var(--shadow);
-    transition: all var(--transition-speed) ease;
-    text-align: center;
-    padding: 2rem 1.5rem;
-    border: 1px solid var(--border);
-  }
-
-  .why-choose-card:hover {
+  .treatment-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px var(--shadow-strong);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   }
 
-  .why-choose-icon {
-    font-size: 3rem;
-    color: var(--primary-medium);
-    margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-medium) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .why-choose-title {
+  .treatment-icon {
     font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--primary-dark);
-    line-height: 1.3;
+    color: #0d6efd;
+    background: rgba(13, 110, 253, 0.1);
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .why-choose-description {
+  .treatment-body {
+    flex: 1;
+  }
+
+  .treatment-type {
+    font-size: 0.85rem;
     color: #6c757d;
-    line-height: 1.6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+  }
+
+  .treatment-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .btn-view-all {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    background: #0d6efd;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .btn-view-all:hover {
+    background: #0b5ed7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  /* Tab Navigation */
+  .nav-tabs .nav-link {
+    border-radius: 10px;
+    font-weight: 600;
+    color: #6c757d;
+    margin: 0 5px;
+    border: 2px solid transparent;
+  }
+
+  .nav-tabs .nav-link.active {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border: none;
+  }
+
+  .nav-tabs .nav-link:hover:not(.active) {
+    border: 2px solid #0d6efd;
+    color: #0d6efd;
+  }
+
+  /* Custom dropdown styles */
+  .custom-select-wrapper {
+    position: relative;
+  }
+
+  .custom-select-wrapper::after {
+    content: "▼";
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+
+  .searchable-dropdown {
+    position: relative;
+  }
+
+  .searchable-dropdown-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .searchable-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+  }
+
+  .searchable-dropdown-menu.show {
+    display: block;
+  }
+
+  .searchable-dropdown-search {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    outline: none;
+  }
+
+  .searchable-dropdown-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color var(--transition-speed) ease;
+  }
+
+  .searchable-dropdown-item:hover {
+    background-color: var(--light-bg);
   }
 
   /* Responsive Design */
   @media (max-width: 768px) {
+    .hero-section {
+      padding: 3rem 0;
+    }
+
     .hero-title {
       font-size: 2rem;
     }
@@ -413,19 +362,15 @@
       font-size: 1rem;
     }
 
-    .section-title {
-      font-size: 2rem;
-    }
-
-    .hero-buttons {
-      flex-direction: column;
-      align-items: center;
-    }
-
     .btn-primary-large,
     .btn-secondary-large {
-      width: 100%;
-      max-width: 300px;
+      display: block;
+      margin: 0.5rem auto;
+      width: 80%;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
     }
     
     .treatments-grid {
@@ -434,11 +379,11 @@
   }
 </style>
 
-<div class="home-page">
+<div class="treatment-page">
   <!-- Hero Section -->
   <section class="hero-section" aria-labelledby="hero-heading">
     <div class="container hero-content">
-      <h1 id="hero-heading" class="hero-title">Find the Right Medical Treatments</h1>
+      <h1 id="hero-heading" class="hero-title">Find the Right Medical Treatment</h1>
       <p class="hero-subtitle">
         Explore our comprehensive range of medical treatments across various
         specialities, all offered by our verified healthcare partners.
@@ -469,11 +414,29 @@
               </div>
               <div class="col-md-3">
                 <label class="form-label">Hospital</label>
-                <input type="text" class="form-control" name="hospital" id="hospital-filter" value="{{ hospital_filter }}" placeholder="Hospital name">
+                <div class="searchable-dropdown">
+                  <input type="text" class="form-control searchable-dropdown-input" id="hospital-search-input" placeholder="Select hospital..." readonly>
+                  <input type="hidden" name="hospital" id="hospital-filter" value="{{ hospital_filter }}">
+                  <div class="searchable-dropdown-menu" id="hospital-dropdown-menu">
+                    <input type="text" class="searchable-dropdown-search" id="hospital-search-box" placeholder="Search hospitals...">
+                    <div class="searchable-dropdown-items" id="hospital-dropdown-items">
+                      <!-- Hospital options will be populated dynamically -->
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col-md-3">
                 <label class="form-label">Doctor</label>
-                <input type="text" class="form-control" name="doctor" id="doctor-filter" value="{{ doctor_filter }}" placeholder="Doctor name">
+                <div class="searchable-dropdown">
+                  <input type="text" class="form-control searchable-dropdown-input" id="doctor-search-input" placeholder="Select doctor..." readonly>
+                  <input type="hidden" name="doctor" id="doctor-filter" value="{{ doctor_filter }}">
+                  <div class="searchable-dropdown-menu" id="doctor-dropdown-menu">
+                    <input type="text" class="searchable-dropdown-search" id="doctor-search-box" placeholder="Search doctors...">
+                    <div class="searchable-dropdown-items" id="doctor-dropdown-items">
+                      <!-- Doctor options will be populated dynamically -->
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col-md-2 d-flex align-items-end">
                 <button type="submit" class="btn w-100">Filter</button>
@@ -606,252 +569,290 @@
       </div>
     </div>
   </section>
-
-  <!-- Why Choose Section -->
-  <section class="why-choose-section" aria-labelledby="why-choose-heading">
-    <div class="container">
-      <div class="section-header">
-        <h2 id="why-choose-heading" class="section-title">Why Choose TakeOpinion Treatments</h2>
-        <p class="section-subtitle">
-          We provide unmatched medical treatment services with transparency and excellence
-        </p>
-      </div>
-      <div class="why-choose-grid">
-        <div class="why-choose-card">
-          <div class="why-choose-icon">
-            <i class="bi bi-shield-check"></i>
-          </div>
-          <h3 class="why-choose-title">Verified Treatments</h3>
-          <p class="why-choose-description">
-            All our treatments are offered by verified hospitals and doctors
-            with proven success rates.
-          </p>
-        </div>
-        <div class="why-choose-card">
-          <div class="why-choose-icon">
-            <i class="bi bi-translate"></i>
-          </div>
-          <h3 class="why-choose-title">Language Support</h3>
-          <p class="why-choose-description">
-            Multilingual support to ensure clear communication throughout your
-            medical journey.
-          </p>
-        </div>
-        <div class="why-choose-card">
-          <div class="why-choose-icon">
-            <i class="bi bi-headset"></i>
-          </div>
-          <h3 class="why-choose-title">24/7 Support</h3>
-          <p class="why-choose-description">
-            Round-the-clock assistance for all your medical consultation
-            needs.
-          </p>
-        </div>
-        <div class="why-choose-card">
-          <div class="why-choose-icon">
-            <i class="bi bi-currency-dollar"></i>
-          </div>
-          <h3 class="why-choose-title">Transparent Pricing</h3>
-          <p class="why-choose-description">
-            Clear pricing information to help you make informed decisions.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
 </div>
 
-<!-- Real-time Filtering Script -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Get DOM elements
-    const searchFilter = document.getElementById("search-filter");
-    const hospitalFilter = document.getElementById("hospital-filter");
-    const doctorFilter = document.getElementById("doctor-filter");
-    const loadingIndicator = document.getElementById("loadingIndicator");
-    const treatmentsContainer = document.getElementById("treatmentsContainer");
-
-    // Current filter state
-    let currentSearch = "{{ search_filter|escapejs }}";
-    let currentHospital = "{{ hospital_filter|escapejs }}";
-    let currentDoctor = "{{ doctor_filter|escapejs }}";
-    let debounceTimer;
-
-    // Function to update treatments based on filters
-    function updateTreatments() {
-      // Show loading indicator
-      loadingIndicator.classList.remove("d-none");
-
-      // Prepare request data
-      const params = new URLSearchParams();
-      if (currentSearch) {
-        params.append("search", currentSearch);
-      }
-      if (currentHospital) {
-        params.append("hospital", currentHospital);
-      }
-      if (currentDoctor) {
-        params.append("doctor", currentDoctor);
-      }
-
-      // Make AJAX request
-      fetch(`/treatments/filter/?${params.toString()}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            renderTreatments(data.categories);
+document.addEventListener('DOMContentLoaded', function() {
+  // Hospital dropdown functionality
+  const hospitalFilter = document.getElementById('hospital-filter');
+  const hospitalSearchInput = document.getElementById('hospital-search-input');
+  const hospitalDropdownMenu = document.getElementById('hospital-dropdown-menu');
+  const hospitalSearchBox = document.getElementById('hospital-search-box');
+  const hospitalDropdownItems = document.getElementById('hospital-dropdown-items');
+  
+  // Doctor dropdown functionality
+  const doctorFilter = document.getElementById('doctor-filter');
+  const doctorSearchInput = document.getElementById('doctor-search-input');
+  const doctorDropdownMenu = document.getElementById('doctor-dropdown-menu');
+  const doctorSearchBox = document.getElementById('doctor-search-box');
+  const doctorDropdownItems = document.getElementById('doctor-dropdown-items');
+  
+  // Treatment filter form
+  const treatmentFilterForm = document.getElementById('treatment-filter-form');
+  
+  // Store all options for filtering
+  let allHospitalOptions = [];
+  let allDoctorOptions = [];
+  
+  // Load hospital options dynamically
+  if (hospitalFilter && hospitalSearchInput && hospitalDropdownMenu && hospitalSearchBox && hospitalDropdownItems) {
+    fetch('/hospitals/api/search/?query=a')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && hospitalDropdownItems) {
+          // Save all hospital options
+          allHospitalOptions = data.results || [];
+          
+          // Populate dropdown items
+          populateHospitalDropdown(allHospitalOptions);
+          
+          // Set the initial value if one is selected
+          const selectedHospital = hospitalFilter.value;
+          if (selectedHospital) {
+            const selectedOption = allHospitalOptions.find(hospital => hospital.name === selectedHospital);
+            if (selectedOption) {
+              hospitalSearchInput.value = selectedOption.name;
+            }
           }
-          loadingIndicator.classList.add("d-none");
-        })
-        .catch((error) => {
-          console.error("Error fetching treatments:", error);
-          loadingIndicator.classList.add("d-none");
+        }
+      })
+      .catch(error => {
+        console.error('Error loading hospitals:', error);
+      });
+  }
+  
+  // Load doctor options dynamically
+  if (doctorFilter && doctorSearchInput && doctorDropdownMenu && doctorSearchBox && doctorDropdownItems) {
+    fetch('/doctors/api/search/?query=a')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && doctorDropdownItems) {
+          // Save all doctor options
+          allDoctorOptions = data.results || [];
+          
+          // Populate dropdown items
+          populateDoctorDropdown(allDoctorOptions);
+          
+          // Set the initial value if one is selected
+          const selectedDoctor = doctorFilter.value;
+          if (selectedDoctor) {
+            const selectedOption = allDoctorOptions.find(doctor => doctor.name === selectedDoctor);
+            if (selectedOption) {
+              doctorSearchInput.value = selectedOption.name;
+            }
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error loading doctors:', error);
+      });
+  }
+  
+  // Populate hospital dropdown with options
+  function populateHospitalDropdown(hospitals) {
+    if (!hospitalDropdownItems) return;
+    
+    hospitalDropdownItems.innerHTML = '';
+    
+    // Add "All Hospitals" option
+    const allOption = document.createElement('div');
+    allOption.className = 'searchable-dropdown-item';
+    allOption.textContent = 'All Hospitals';
+    allOption.dataset.value = '';
+    allOption.addEventListener('click', function() {
+      hospitalFilter.value = '';
+      hospitalSearchInput.value = 'All Hospitals';
+      hospitalDropdownMenu.classList.remove('show');
+    });
+    hospitalDropdownItems.appendChild(allOption);
+    
+    // Add hospital options
+    if (hospitals && hospitals.length > 0) {
+      hospitals.forEach(hospital => {
+        const option = document.createElement('div');
+        option.className = 'searchable-dropdown-item';
+        option.textContent = hospital.name || 'Unnamed Hospital';
+        option.dataset.value = hospital.name || '';
+        option.addEventListener('click', function() {
+          hospitalFilter.value = hospital.name || '';
+          hospitalSearchInput.value = hospital.name || '';
+          hospitalDropdownMenu.classList.remove('show');
         });
+        hospitalDropdownItems.appendChild(option);
+      });
+    } else {
+      // Add a "No hospitals found" option
+      const noOption = document.createElement('div');
+      noOption.className = 'searchable-dropdown-item';
+      noOption.textContent = 'No hospitals found';
+      noOption.dataset.value = '';
+      hospitalDropdownItems.appendChild(noOption);
     }
-
-    // Function to render treatments
-    function renderTreatments(categories) {
-      // Clear all tab content
-      document.getElementById("medicalTreatments").innerHTML = "";
-      document.getElementById("aestheticTreatments").innerHTML = "";
-      document.getElementById("wellnessTreatments").innerHTML = "";
-
-      // Render categories by type
-      categories.forEach((category) => {
-        const categoryHtml = `
-          <div class="treatment-category-card">
-            <div class="card-header ${getCategoryHeaderClass(category.type)} text-white d-flex align-items-center">
-              <i class="${getCategoryIcon(category.type)} me-2"></i>
-              <h5 class="card-title mb-0">${category.name}</h5>
-            </div>
-            <div class="card-body p-0">
-              <div class="list-group list-group-flush">
-                ${
-                  category.treatments.length > 0
-                    ? category.treatments
-                        .map(
-                          (treatment) => `
-                      <a href="/treatments/${treatment.slug}/" class="list-group-item list-group-item-action treatment-item">
-                        <span>${treatment.name}</span>
-                        <i class="bi bi-chevron-right text-muted"></i>
-                      </a>
-                    `
-                        )
-                        .join("")
-                    : `<div class="list-group-item text-center text-muted">
-                        <i class="bi bi-info-circle me-1"></i>No treatments available
-                      </div>`
-                }
-              </div>
-            </div>
+  }
+  
+  // Populate doctor dropdown with options
+  function populateDoctorDropdown(doctors) {
+    if (!doctorDropdownItems) return;
+    
+    doctorDropdownItems.innerHTML = '';
+    
+    // Add "All Doctors" option
+    const allOption = document.createElement('div');
+    allOption.className = 'searchable-dropdown-item';
+    allOption.textContent = 'All Doctors';
+    allOption.dataset.value = '';
+    allOption.addEventListener('click', function() {
+      doctorFilter.value = '';
+      doctorSearchInput.value = 'All Doctors';
+      doctorDropdownMenu.classList.remove('show');
+    });
+    doctorDropdownItems.appendChild(allOption);
+    
+    // Add doctor options
+    if (doctors && doctors.length > 0) {
+      doctors.forEach(doctor => {
+        const option = document.createElement('div');
+        option.className = 'searchable-dropdown-item';
+        option.textContent = doctor.name || 'Unnamed Doctor';
+        option.dataset.value = doctor.name || '';
+        option.addEventListener('click', function() {
+          doctorFilter.value = doctor.name || '';
+          doctorSearchInput.value = doctor.name || '';
+          doctorDropdownMenu.classList.remove('show');
+        });
+        doctorDropdownItems.appendChild(option);
+      });
+    } else {
+      // Add a "No doctors found" option
+      const noOption = document.createElement('div');
+      noOption.className = 'searchable-dropdown-item';
+      noOption.textContent = 'No doctors found';
+      noOption.dataset.value = '';
+      doctorDropdownItems.appendChild(noOption);
+    }
+  }
+  
+  // Toggle hospital dropdown visibility
+  if (hospitalSearchInput) {
+    hospitalSearchInput.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (hospitalDropdownMenu) {
+        hospitalDropdownMenu.classList.toggle('show');
+      }
+      if (hospitalSearchBox) {
+        hospitalSearchBox.focus();
+      }
+    });
+  }
+  
+  // Toggle doctor dropdown visibility
+  if (doctorSearchInput) {
+    doctorSearchInput.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (doctorDropdownMenu) {
+        doctorDropdownMenu.classList.toggle('show');
+      }
+      if (doctorSearchBox) {
+        doctorSearchBox.focus();
+      }
+    });
+  }
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    if (hospitalSearchInput && hospitalDropdownMenu) {
+      if (!hospitalSearchInput.contains(e.target) && !hospitalDropdownMenu.contains(e.target)) {
+        hospitalDropdownMenu.classList.remove('show');
+      }
+    }
+    if (doctorSearchInput && doctorDropdownMenu) {
+      if (!doctorSearchInput.contains(e.target) && !doctorDropdownMenu.contains(e.target)) {
+        doctorDropdownMenu.classList.remove('show');
+      }
+    }
+  });
+  
+  // Filter hospital dropdown items based on search
+  if (hospitalSearchBox) {
+    hospitalSearchBox.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      if (allHospitalOptions && allHospitalOptions.length > 0) {
+        const filteredHospitals = allHospitalOptions.filter(hospital => 
+          hospital.name && hospital.name.toLowerCase().includes(searchTerm)
+        );
+        populateHospitalDropdown(filteredHospitals);
+      }
+    });
+  }
+  
+  // Filter doctor dropdown items based on search
+  if (doctorSearchBox) {
+    doctorSearchBox.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      if (allDoctorOptions && allDoctorOptions.length > 0) {
+        const filteredDoctors = allDoctorOptions.filter(doctor => 
+          doctor.name && doctor.name.toLowerCase().includes(searchTerm)
+        );
+        populateDoctorDropdown(filteredDoctors);
+      }
+    });
+  }
+  
+  // Form submission handler
+  if (treatmentFilterForm) {
+    treatmentFilterForm.addEventListener('submit', function(e) {
+      // The form will submit normally
+    });
+  }
+  
+  // Tab navigation functionality
+  const tabButtons = document.querySelectorAll('[data-bs-toggle="tab"]');
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const category = this.getAttribute('data-category');
+      loadTreatmentsByCategory(category);
+    });
+  });
+  
+  // Load treatments by category
+  function loadTreatmentsByCategory(category) {
+    fetch(`/treatments/filter/?category=${category}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          updateTreatmentDisplay(data.categories);
+        }
+      })
+      .catch(error => {
+        console.error('Error loading treatments:', error);
+      });
+  }
+  
+  // Update treatment display
+  function updateTreatmentDisplay(categories) {
+    const container = document.querySelector('.treatments-grid');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    categories.forEach(category => {
+      category.treatments.forEach(treatment => {
+        const treatmentCard = document.createElement('a');
+        treatmentCard.href = `/treatments/${treatment.slug}/`;
+        treatmentCard.className = 'treatment-card';
+        treatmentCard.innerHTML = `
+          <div class="treatment-icon">
+            <i class="bi bi-bandaid"></i>
+          </div>
+          <div class="treatment-body">
+            <div class="treatment-type">${category.name}</div>
+            <div class="treatment-name">${treatment.name}</div>
           </div>
         `;
-
-        // Add to appropriate tab
-        const containerId = getCategoryContainerId(category.type);
-        if (containerId) {
-          document
-            .getElementById(containerId)
-            .insertAdjacentHTML("beforeend", categoryHtml);
-        }
-      });
-
-      // Reattach event listeners to new elements
-      attachEventListeners();
-    }
-
-    // Helper functions
-    function getCategoryHeaderClass(type) {
-      switch (type) {
-        case "medical":
-          return "bg-primary";
-        case "aesthetic":
-          return "bg-info";
-        case "wellness":
-          return "bg-success";
-        default:
-          return "bg-primary";
-      }
-    }
-
-    function getCategoryIcon(type) {
-      switch (type) {
-        case "medical":
-          return "bi bi-folder-fill";
-        case "aesthetic":
-          return "bi bi-stars";
-        case "wellness":
-          return "bi bi-flower1";
-        default:
-          return "bi bi-folder-fill";
-      }
-    }
-
-    function getCategoryContainerId(type) {
-      switch (type) {
-        case "medical":
-          return "medicalTreatments";
-        case "aesthetic":
-          return "aestheticTreatments";
-        case "wellness":
-          return "wellnessTreatments";
-        default:
-          return null;
-      }
-    }
-
-    // Attach event listeners to interactive elements
-    function attachEventListeners() {
-      // Add hover effects to treatment items
-      const treatmentItems = document.querySelectorAll(".treatment-item");
-      treatmentItems.forEach((item) => {
-        item.addEventListener("mouseenter", () => {
-          item.style.paddingLeft = "1.5rem";
-          item.style.transition = "padding-left 0.2s ease";
-        });
-
-        item.addEventListener("mouseleave", () => {
-          item.style.paddingLeft = "1rem";
-        });
-      });
-    }
-
-    // Event listeners for filter inputs
-    if (searchFilter) {
-      searchFilter.addEventListener("input", function () {
-        currentSearch = this.value;
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(updateTreatments, 300);
-      });
-    }
-
-    if (hospitalFilter) {
-      hospitalFilter.addEventListener("input", function () {
-        currentHospital = this.value;
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(updateTreatments, 300);
-      });
-    }
-
-    if (doctorFilter) {
-      doctorFilter.addEventListener("input", function () {
-        currentDoctor = this.value;
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(updateTreatments, 300);
-      });
-    }
-
-    // Tab navigation event listeners
-    const tabLinks = document.querySelectorAll(".nav-tabs .nav-link");
-    tabLinks.forEach((link) => {
-      link.addEventListener("click", function () {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(updateTreatments, 300);
+        container.appendChild(treatmentCard);
       });
     });
-
-    // Initialize event listeners
-    attachEventListeners();
-  });
+  }
+});
 </script>
 {% endblock %}

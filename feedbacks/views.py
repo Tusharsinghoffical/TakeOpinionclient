@@ -105,8 +105,8 @@ def submit_feedback(request, content_type, object_id):
     
     # Redirect based on content type
     if content_type == 'doctor':
-        return redirect('doctors:detail', slug=obj.slug)
+        return redirect('doctor_detail', slug=obj.slug)
     elif content_type == 'hospital':
-        return redirect('hospitals:detail', slug=obj.slug)
+        return redirect('hospital_detail', slug=obj.slug)
     else:  # treatment
-        return redirect('treatments:detail', pk=object_id)
+        return redirect('treatment_detail', pk=object_id)

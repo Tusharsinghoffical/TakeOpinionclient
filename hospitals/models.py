@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from treatments.models import Treatment
 from core.models import Country, State
+from core.validators import validate_image_url
 
 
 class Hospital(models.Model):
@@ -35,10 +36,10 @@ class Hospital(models.Model):
     iso_certified = models.BooleanField(default=False)
     
     # Profile picture
-    profile_picture = models.URLField(blank=True, help_text="URL to hospital's profile/thumbnail picture")
+    profile_picture = models.URLField(blank=True, help_text="URL to hospital's profile/thumbnail picture", validators=[validate_image_url])
 
-    def __str__(self):
-        return self.name
+    def __str__(self) -> str:
+        return str(self.name)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -48,9 +49,9 @@ class Hospital(models.Model):
 
 class HospitalMedia(models.Model):
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE, related_name="media_items")
-    image_url = models.URLField(blank=True)
+    image_url = models.URLField(blank=True, validators=[validate_image_url])
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Media for {self.hospital.name}"
 
 # Create your models here.

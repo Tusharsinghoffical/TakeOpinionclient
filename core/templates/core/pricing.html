@@ -1,0 +1,1085 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+/* Enhanced Pricing Page Styles - Matching Home Page Design */
+:root {
+  /* Enhanced vibrant color palette from home page */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-strong: rgba(0, 0, 0, 0.15);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+  --transition-speed: 0.3s;
+}
+
+/* Global pricing page styles */
+.pricing-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--light-text);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--light-text);
+  line-height: 1.5;
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Treatment Selection Section */
+.treatment-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.treatment-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 2rem;
+}
+
+.treatment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.treatment-form .form-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.treatment-form .form-control, .treatment-form .form-select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-speed) ease;
+}
+
+.treatment-form .form-control:focus, .treatment-form .form-select:focus {
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+  border-color: var(--primary-medium);
+}
+
+.treatment-form .btn {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  background: var(--primary-medium);
+  color: white;
+  transition: all var(--transition-speed) ease;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.treatment-form .btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Hospitals Grid Section */
+.hospitals-section {
+  background-color: white;
+  padding: 5rem 0;
+  display: none; /* Hidden by default */
+}
+
+.hospitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.hospital-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.hospital-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.hospital-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hospital-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.hospital-location {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.hospital-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.hospital-rating {
+  display: flex;
+  align-items: center;
+}
+
+.rating-stars {
+  color: var(--warning);
+  margin-right: 0.5rem;
+}
+
+.rating-value {
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.hospital-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--success);
+  margin: 0.5rem 0;
+}
+
+.hospital-accreditations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.accreditation-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.accreditation-badge.jci {
+  background-color: #3498db;
+  color: white;
+}
+
+.accreditation-badge.nabh {
+  background-color: #27ae60;
+  color: white;
+}
+
+.accreditation-badge.iso {
+  background-color: #f39c12;
+  color: white;
+}
+
+/* Room Options */
+.room-options {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.room-option {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.room-name {
+  font-weight: 500;
+}
+
+.room-price {
+  color: var(--primary-medium);
+  font-weight: 600;
+}
+
+/* Filter Section */
+.filter-section {
+  background-color: var(--light-bg);
+  padding: 2rem 0;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  display: none; /* Hidden by default */
+}
+
+.filter-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+}
+
+.filter-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.filter-form .form-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.filter-form .form-control, .filter-form .form-select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-speed) ease;
+  font-size: 0.9rem;
+}
+
+.filter-form .form-control:focus, .filter-form .form-select:focus {
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+  border-color: var(--primary-medium);
+}
+
+.filter-form .btn {
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  background: var(--primary-medium);
+  color: white;
+  transition: all var(--transition-speed) ease;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+}
+
+.filter-form .btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.filter-form .btn-reset {
+  background: #6c757d;
+}
+
+.filter-form .btn-reset:hover {
+  background: #5a6268;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  display: none;
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  color: #bdc3c7;
+  margin-bottom: 1.5rem;
+}
+
+.no-results-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+/* Treatment Info */
+.treatment-info {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: none; /* Hidden by default */
+}
+
+.treatment-info:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.treatment-info h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.treatment-info p {
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+.treatment-price {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--success);
+  margin: 0.5rem 0;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-booking {
+  background: linear-gradient(135deg, var(--success), #20c997);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+  flex: 1;
+  text-align: center;
+}
+
+.btn-booking:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+}
+
+.btn-consultation {
+  background: linear-gradient(135deg, var(--accent), #c0392b);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  flex: 1;
+  text-align: center;
+}
+
+.btn-consultation:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+/* Consultation Section */
+.consultation-section {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.consultation-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: var(--light-text);
+}
+
+.consultation-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+  color: var(--light-text);
+}
+
+.consultation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+  background-color: transparent;
+  color: #25D366;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background-color: #25D369;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-consult {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-consult:hover {
+  background-color: #25D369;
+  color: white;
+  transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 2.25rem;
+  }
+  
+  .hospitals-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .hospitals-grid {
+    gap: 1.25rem;
+  }
+  
+  .treatment-card {
+    padding: 1.5rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .hospitals-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .treatment-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .row.g-3 {
+    gap: 1rem;
+  }
+  
+  .col-md-3, .col-md-2, .col-md-1 {
+    width: 100%;
+  }
+  
+  .consultation-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-whatsapp,
+  .btn-consult {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 2rem 0;
+  }
+  
+  .hero-title {
+    font-size: 1.7rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .section-header {
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  
+  .treatment-card {
+    padding: 1rem;
+  }
+  
+  .treatment-form .form-control, .treatment-form .form-select {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .treatment-form .btn {
+    padding: 0.6rem 1rem;
+  }
+  
+  .hospital-name {
+    font-size: 1.2rem;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .hospital-price {
+    font-size: 1.3rem;
+  }
+  
+  .consultation-title {
+    font-size: 2rem;
+  }
+}
+</style>
+
+<div class="pricing-page">
+  <!-- Hero Section -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="container hero-content">
+      <h1 id="hero-heading" class="hero-title">Transparent Medical Treatment Pricing</h1>
+      <p class="hero-subtitle">Compare prices across top hospitals and make informed decisions about your medical travel</p>
+    </div>
+  </section>
+
+  <!-- Treatment Selection Section -->
+  <section class="treatment-section" aria-labelledby="treatment-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="treatment-heading" class="section-title">Find Treatment Pricing</h2>
+        <p class="section-subtitle">Select a treatment to see pricing information across our network of accredited hospitals</p>
+      </div>
+      <div class="treatment-card">
+        <form id="treatment-selection-form" class="treatment-form">
+          <div class="row g-3">
+            <div class="col-md-10">
+              <label class="form-label">Select Treatment</label>
+              <select class="form-select form-control-lg" id="treatmentSelect" name="treatment" required>
+                <option value="">Choose a medical treatment</option>
+                {% for treatment in treatments %}
+                <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+              <button type="submit" class="btn w-100" id="getPricingBtn">
+                <i class="bi bi-search me-2"></i>Get Pricing
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Loading Spinner -->
+  <div class="loading-spinner" id="loadingSpinner">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Fetching hospital pricing information...</p>
+  </div>
+
+  <!-- Treatment Info -->
+  <div class="container">
+    <div class="treatment-info" id="treatmentInfo">
+      <h3 id="treatmentName"></h3>
+      <p id="treatmentDescription"></p>
+      <div class="d-flex align-items-center">
+        <span class="me-2">Starting from:</span>
+        <span class="treatment-price" id="treatmentPrice"></span>
+      </div>
+      <div class="action-buttons">
+        <a href="#" class="btn-booking" id="bookTreatmentBtn">
+          <i class="bi bi-calendar-check me-2"></i>Book This Treatment
+        </a>
+        <a href="#" class="btn-consultation" id="consultBtn">
+          <i class="bi bi-headset me-2"></i>Get Expert Consultation
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="container">
+    <div class="filter-section" id="filterSection">
+      <div class="filter-card">
+        <form id="hospital-filter-form" class="filter-form">
+          <div class="row g-2">
+            <div class="col-md-2">
+              <label class="form-label">Price Range</label>
+              <select class="form-select" id="priceFilter">
+                <option value="">All Prices</option>
+                <option value="0-5000">Under $5,000</option>
+                <option value="5000-10000">$5,000 - $10,000</option>
+                <option value="10000-20000">$10,000 - $20,000</option>
+                <option value="20000+">Over $20,000</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Minimum Rating</label>
+              <select class="form-select" id="ratingFilter">
+                <option value="">All Ratings</option>
+                <option value="4.5">4.5+ stars</option>
+                <option value="4.0">4.0+ stars</option>
+                <option value="3.5">3.5+ stars</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Hospital Name</label>
+              <input type="text" class="form-control" id="hospitalNameFilter" placeholder="Search hospitals">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Success Rate</label>
+              <select class="form-select" id="successRateFilter">
+                <option value="">All Rates</option>
+                <option value="95">95%+</option>
+                <option value="90">90%+</option>
+                <option value="85">85%+</option>
+              </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <div class="d-flex gap-2 w-100">
+                <button type="button" class="btn flex-grow-1" id="applyFiltersBtn">
+                  <i class="bi bi-funnel me-1"></i>Apply
+                </button>
+                <button type="button" class="btn btn-reset flex-grow-1" id="resetFiltersBtn">
+                  <i class="bi bi-arrow-repeat me-1"></i>Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hospitals Grid Section -->
+  <section class="hospitals-section" id="hospitalsSection" aria-labelledby="hospitals-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="hospitals-heading" class="section-title">Hospitals Offering This Treatment</h2>
+        <p class="section-subtitle">Compare pricing and quality across our network of accredited hospitals</p>
+      </div>
+      <div class="hospitals-grid" id="hospitalsGrid">
+        <!-- Hospital cards will be dynamically inserted here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Consultation Section -->
+  <section class="consultation-section" aria-labelledby="consultation-heading">
+    <div class="container">
+      <h2 id="consultation-heading" class="consultation-title">Get Personalized Medical Advice</h2>
+      <p class="consultation-subtitle">Connect with our medical experts directly for personalized guidance and support. Our team is available 24/7 to assist you.</p>
+      <div class="consultation-buttons">
+        <a href="https://wa.me/8851619647" class="btn-whatsapp">
+          <i class="bi bi-whatsapp me-2"></i> Chat on WhatsApp
+        </a>
+        <a href="/book/" class="btn-consult">
+          <i class="bi bi-calendar-check me-2"></i> Schedule Consultation
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- No Results -->
+  <div class="container">
+    <div class="no-results" id="noResults">
+      <div class="no-results-icon">
+        <i class="bi bi-hospital"></i>
+      </div>
+      <h3 class="no-results-title">No Hospitals Found</h3>
+      <p class="text-muted">We couldn't find any hospitals offering this treatment. Please try selecting a different treatment.</p>
+      <button class="btn btn-primary" id="resetSearchBtn">
+        <i class="bi bi-arrow-repeat me-2"></i>Reset Search
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const treatmentSelect = document.getElementById('treatmentSelect');
+    const getPricingBtn = document.getElementById('getPricingBtn');
+    const treatmentSelectionForm = document.getElementById('treatment-selection-form');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const treatmentInfo = document.getElementById('treatmentInfo');
+    const treatmentName = document.getElementById('treatmentName');
+    const treatmentDescription = document.getElementById('treatmentDescription');
+    const treatmentPrice = document.getElementById('treatmentPrice');
+    const hospitalsSection = document.getElementById('hospitalsSection');
+    const hospitalsGrid = document.getElementById('hospitalsGrid');
+    const filterSection = document.getElementById('filterSection');
+    const noResults = document.getElementById('noResults');
+    const resetSearchBtn = document.getElementById('resetSearchBtn');
+    const bookTreatmentBtn = document.getElementById('bookTreatmentBtn');
+    const consultBtn = document.getElementById('consultBtn');
+    
+    // Filter elements
+    const priceFilter = document.getElementById('priceFilter');
+    const ratingFilter = document.getElementById('ratingFilter');
+    const hospitalNameFilter = document.getElementById('hospitalNameFilter');
+    const successRateFilter = document.getElementById('successRateFilter');
+    const applyFiltersBtn = document.getElementById('applyFiltersBtn');
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+    
+    // Store all hospitals data for filtering
+    let allHospitals = [];
+    let currentTreatmentId = null;
+    
+    // Handle treatment selection form submission
+    treatmentSelectionForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const treatmentId = treatmentSelect.value;
+      if (!treatmentId) {
+        alert('Please select a treatment');
+        return;
+      }
+      
+      currentTreatmentId = treatmentId;
+      
+      // Update booking and consultation buttons
+      bookTreatmentBtn.href = `/book/?treatment=${treatmentId}`;
+      consultBtn.href = `/book/?treatment=${treatmentId}`;
+      
+      // Show loading spinner
+      loadingSpinner.style.display = 'block';
+      hospitalsSection.style.display = 'none';
+      treatmentInfo.style.display = 'none';
+      filterSection.style.display = 'none';
+      noResults.style.display = 'none';
+      
+      // Fetch hospital pricing data
+      fetch(`/api/hospitals-by-treatment/${treatmentId}/`)
+        .then(response => response.json())
+        .then(data => {
+          loadingSpinner.style.display = 'none';
+          
+          if (data.success) {
+            // Display treatment info
+            treatmentName.textContent = data.treatment.name;
+            treatmentDescription.textContent = data.treatment.description;
+            treatmentPrice.textContent = `$${data.treatment.starting_price.toFixed(2)}`;
+            treatmentInfo.style.display = 'block';
+            
+            // Store all hospitals data
+            allHospitals = data.hospitals;
+            
+            // Display hospitals
+            displayHospitals(data.hospitals);
+            
+            // Show hospitals section and filter section
+            hospitalsSection.style.display = 'block';
+            filterSection.style.display = 'block';
+            
+            // Scroll to hospitals section
+            hospitalsSection.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            // Show error message
+            noResults.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          loadingSpinner.style.display = 'none';
+          console.error('Error fetching hospital data:', error);
+          noResults.style.display = 'block';
+        });
+    });
+    
+    // Function to display hospitals
+    function displayHospitals(hospitals) {
+      hospitalsGrid.innerHTML = '';
+      
+      if (hospitals.length === 0) {
+        noResults.style.display = 'block';
+        hospitalsSection.style.display = 'none';
+        return;
+      }
+      
+      noResults.style.display = 'none';
+      hospitalsSection.style.display = 'block';
+      
+      hospitals.forEach(hospital => {
+        // Create room options HTML
+        let roomOptionsHtml = '';
+        if (hospital.room_options && hospital.room_options.length > 0) {
+          roomOptionsHtml = `
+            <div class="room-options">
+              <h6 class="mb-2">Room Options (per night):</h6>
+              ${hospital.room_options.map(room => `
+                <div class="room-option">
+                  <span class="room-name">${room.name}</span>
+                  <span class="room-price">$${room.price_per_night.toFixed(2)}</span>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+        
+        const hospitalCard = document.createElement('div');
+        hospitalCard.className = 'hospital-card';
+        hospitalCard.innerHTML = `
+          <div class="hospital-body">
+            <h3 class="hospital-name">${hospital.name}</h3>
+            <div class="hospital-location">${hospital.city}, ${hospital.state}, ${hospital.country}</div>
+            <div class="hospital-meta">
+              <div class="hospital-rating">
+                <div class="rating-stars">
+                  ${renderStars(hospital.rating)}
+                </div>
+                <span class="rating-value">${hospital.rating.toFixed(1)}</span>
+              </div>
+            </div>
+            <div class="hospital-price">Treatment: $${hospital.price.toFixed(2)}</div>
+            ${roomOptionsHtml}
+            <div class="hospital-accreditations">
+              ${hospital.jci_accredited ? '<span class="accreditation-badge jci">JCI</span>' : ''}
+              ${hospital.nabh_accredited ? '<span class="accreditation-badge nabh">NABH</span>' : ''}
+              ${hospital.iso_certified ? '<span class="accreditation-badge iso">ISO</span>' : ''}
+              ${hospital.is_takeopinion_choice ? '<span class="accreditation-badge" style="background-color: #e74c3c; color: white;">TakeOpinion Choice</span>' : ''}
+            </div>
+            <div class="mt-3">
+              <div class="d-flex justify-content-between small mb-1">
+                <span>Success Rate</span>
+                <span>${hospital.success_rate.toFixed(1)}%</span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar" role="progressbar" style="width: ${hospital.success_rate}%"></div>
+              </div>
+            </div>
+            <div class="mt-3">
+              <a href="/hospitals/${hospital.id}/" class="btn btn-outline-primary w-100 mb-2">
+                <i class="bi bi-hospital me-1"></i>View Hospital
+              </a>
+              <a href="/book/?hospital=${hospital.id}&treatment=${currentTreatmentId}" class="btn btn-success w-100">
+                <i class="bi bi-calendar-check me-1"></i>Book Treatment
+              </a>
+            </div>
+          </div>
+        `;
+        hospitalsGrid.appendChild(hospitalCard);
+      });
+    }
+    
+    // Function to render star ratings
+    function renderStars(rating) {
+      let stars = '';
+      const fullStars = Math.floor(rating);
+      const halfStar = rating % 1 >= 0.5;
+      
+      for (let i = 0; i < fullStars; i++) {
+        stars += '<i class="bi bi-star-fill"></i>';
+      }
+      
+      if (halfStar) {
+        stars += '<i class="bi bi-star-half"></i>';
+      }
+      
+      const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+      for (let i = 0; i < emptyStars; i++) {
+        stars += '<i class="bi bi-star"></i>';
+      }
+      
+      return stars;
+    }
+    
+    // Apply filters
+    applyFiltersBtn.addEventListener('click', function() {
+      const filteredHospitals = filterHospitals(allHospitals);
+      displayHospitals(filteredHospitals);
+    });
+    
+    // Reset filters
+    resetFiltersBtn.addEventListener('click', function() {
+      priceFilter.value = '';
+      ratingFilter.value = '';
+      hospitalNameFilter.value = '';
+      successRateFilter.value = '';
+      displayHospitals(allHospitals);
+    });
+    
+    // Reset search
+    resetSearchBtn.addEventListener('click', function() {
+      treatmentSelect.value = '';
+      treatmentInfo.style.display = 'none';
+      hospitalsSection.style.display = 'none';
+      filterSection.style.display = 'none';
+      noResults.style.display = 'none';
+    });
+    
+    // Function to filter hospitals
+    function filterHospitals(hospitals) {
+      return hospitals.filter(hospital => {
+        // Price filter
+        if (priceFilter.value) {
+          const [min, max] = priceFilter.value.split('-');
+          if (max === '+') {
+            if (hospital.price < parseFloat(min)) return false;
+          } else {
+            if (hospital.price < parseFloat(min) || hospital.price > parseFloat(max)) return false;
+          }
+        }
+        
+        // Rating filter
+        if (ratingFilter.value && hospital.rating < parseFloat(ratingFilter.value)) {
+          return false;
+        }
+        
+        // Hospital name filter
+        if (hospitalNameFilter.value && 
+            !hospital.name.toLowerCase().includes(hospitalNameFilter.value.toLowerCase())) {
+          return false;
+        }
+        
+        // Success rate filter
+        if (successRateFilter.value && hospital.success_rate < parseFloat(successRateFilter.value)) {
+          return false;
+        }
+        
+        return true;
+      });
+    }
+    
+    // Real-time filtering for hospital name
+    hospitalNameFilter.addEventListener('input', function() {
+      const filteredHospitals = filterHospitals(allHospitals);
+      displayHospitals(filteredHospitals);
+    });
+  });
+</script>
+{% endblock %}

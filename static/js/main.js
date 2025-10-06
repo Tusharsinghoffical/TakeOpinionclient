@@ -44,23 +44,107 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Add animation to stat counters
-  const statItems = document.querySelectorAll('.stat-item .h4');
-  statItems.forEach(item => {
-    const target = parseInt(item.textContent);
-    if (!isNaN(target)) {
-      let count = 0;
-      const increment = target / 50;
-      const timer = setInterval(() => {
-        count += increment;
-        if (count >= target) {
-          item.textContent = target + '+';
-          clearInterval(timer);
-        } else {
-          item.textContent = Math.ceil(count) + '+';
-        }
-      }, 30);
+  function animateStats() {
+    console.log('animateStats function called');
+    const statItems = document.querySelectorAll('.stat-number');
+    console.log('Found', statItems.length, 'stat items');
+    
+    if (statItems.length === 0) {
+      console.log('No stat items found, trying again in 500ms');
+      setTimeout(animateStats, 500);
+      return;
+    }
+    
+    statItems.forEach((item, index) => {
+      const target = parseInt(item.getAttribute('data-target'));
+      console.log('Stat item', index, 'target:', target);
+      
+      // Handle special cases
+      const textContent = item.textContent.trim();
+      if (textContent === '24/7' || textContent === '100%' || textContent === '100%+') {
+        // These are static values, no animation needed
+        console.log('Special case text, no animation needed for item', index);
+        return;
+      }
+      
+      if (!isNaN(target) && target > 0) {
+        // Reset the counter
+        item.textContent = '0';
+        
+        // Use a more gradual animation
+        let count = 0;
+        const duration = 2000; // 2 seconds
+        const steps = 100;
+        const increment = target / steps;
+        const interval = duration / steps;
+        
+        console.log('Starting animation for item', index, 'to', target);
+        const timer = setInterval(() => {
+          count += increment;
+          if (count >= target) {
+            item.textContent = target.toLocaleString() + '+'; // Add commas for large numbers and plus sign
+            clearInterval(timer);
+            console.log('Finished animating item', index, 'to', target);
+          } else {
+            item.textContent = Math.ceil(count).toLocaleString() + '+'; // Add commas for large numbers and plus sign
+          }
+        }, interval);
+      } else {
+        console.log('Invalid target for item', index, ':', target);
+        // If target is 0 or invalid, just set it to 0
+        item.textContent = '0';
+      }
+    });
+  }
+  
+  // Trigger animation after page load
+  window.addEventListener('load', function() {
+    console.log('Window loaded, triggering stat animation');
+    // Use a longer delay to ensure everything is loaded
+    setTimeout(animateStats, 1500);
+  });
+  
+  // Also trigger animation when the stats section comes into view
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM content loaded');
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+      console.log('Stats section found, setting up observer');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            console.log('Stats section is in view, triggering animation');
+            animateStats();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 }); // Lower threshold to trigger sooner
+      
+      observer.observe(statsSection);
+    } else {
+      console.log('Stats section not found in DOM');
+      // If stats section not found, try to animate anyway after a delay
+      setTimeout(animateStats, 2000);
     }
   });
+  
+  // Fallback: Try to animate stats every 5 seconds if not already animated
+  let statsAnimated = false;
+  setInterval(() => {
+    if (!statsAnimated) {
+      console.log('Fallback: Checking if stats need animation');
+      const statItems = document.querySelectorAll('.stat-number');
+      if (statItems.length > 0) {
+        const firstItem = statItems[0];
+        // If the first item still shows 0, animate the stats
+        if (firstItem.textContent === '0' && firstItem.getAttribute('data-target') !== '0') {
+          console.log('Fallback: Triggering stats animation');
+          animateStats();
+          statsAnimated = true;
+        }
+      }
+    }
+  }, 5000);
 
   // Add hover effect to cards
   const cards = document.querySelectorAll('.card-hover');

@@ -1,12 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.views.decorators.http import require_http_methods
 from .models import Doctor, DoctorMedia
 from .forms import DoctorMediaForm
 from feedbacks.models import Feedback  # Add this import
+from treatments.models import Treatment
+from hospitals.models import Hospital
 
 
 def doctors_list(request: HttpRequest) -> HttpResponse:
@@ -166,4 +169,39 @@ def doctor_media_manage(request):
     return render(request, 'doctors/media_manage.html', {
         'doctor': doctor,
         'media_items': media_items
+    })
+
+
+@require_http_methods(["GET"])
+def search_doctors_api(request: HttpRequest) -> JsonResponse:
+    """
+    API endpoint to search for doctors by name
+    """
+    query = request.GET.get('query', '')
+    
+    if not query or len(query) < 2:
+        return JsonResponse({
+            'success': False,
+            'error': 'Query too short'
+        })
+    
+    doctors = Doctor.objects.filter(name__icontains=query)[:10]  # type: ignore
+    
+    results = []
+    for doctor in doctors:
+        # Use a default price since doctors don't have a direct price field
+        # We'll use the average of treatments they offer or a default value
+        default_price = 100.0  # Default consultation fee
+        results.append({
+            'id': doctor.id,
+            'name': doctor.name,
+            'slug': doctor.slug,
+            'specialty': doctor.specialization if doctor.specialization else '',
+            'price': default_price,
+            'url': f'/doctors/{doctor.slug}/'
+        })
+    
+    return JsonResponse({
+        'success': True,
+        'results': results
     })

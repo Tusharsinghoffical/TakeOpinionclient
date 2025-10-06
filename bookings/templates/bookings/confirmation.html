@@ -76,6 +76,17 @@
                   <p class="mb-1"><strong>{{ booking.created_at|date:"M d, Y" }}</strong></p>
                 </div>
               </div>
+              <!-- Payment confirmation message -->
+              <div class="row mt-3">
+                <div class="col-12">
+                  <div class="alert alert-success d-flex align-items-center" role="alert">
+                    <i class="bi bi-credit-card-fill me-2"></i>
+                    <div>
+                      <strong>Payment Confirmed!</strong> Your payment of ${{ booking.amount }} has been successfully processed.
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="col-md-4 text-center">
               <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 100px; height: 100px;">

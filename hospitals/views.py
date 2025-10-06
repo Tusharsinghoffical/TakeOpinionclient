@@ -1,9 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.views.decorators.http import require_http_methods
 from .models import Hospital
 from feedbacks.models import Feedback  # Add this import
+from treatments.models import Treatment
+from doctors.models import Doctor
 
 
 def hospitals_list(request: HttpRequest) -> HttpResponse:
@@ -22,7 +25,8 @@ def hospitals_list(request: HttpRequest) -> HttpResponse:
         name_filter = Q(name__icontains=search)
         city_filter = Q(city__icontains=search)
         state_filter = Q(state__name__icontains=search)
-        hospitals = hospitals.filter(name_filter | city_filter | state_filter)  # type: ignore
+        country_filter = Q(country__name__icontains=search)
+        hospitals = hospitals.filter(name_filter | city_filter | state_filter | country_filter)  # type: ignore
     
     # Apply treatment filter
     if treatment:
@@ -39,24 +43,34 @@ def hospitals_list(request: HttpRequest) -> HttpResponse:
     
     # Apply rating filter
     if rating:
-        if rating == '4.5':
-            hospitals = hospitals.filter(rating__gte=4.5)  # type: ignore
-        elif rating == '4.0':
-            hospitals = hospitals.filter(rating__gte=4.0)  # type: ignore
-        elif rating == '3.5':
-            hospitals = hospitals.filter(rating__gte=3.5)  # type: ignore
+        try:
+            rating_value = float(str(rating))
+            hospitals = hospitals.filter(rating__gte=rating_value)  # type: ignore
+        except (ValueError, TypeError):
+            pass
     
     # Add doctor filter for related hospitals
     if doctor_id:
-        hospitals = hospitals.filter(doctors__id=doctor_id)  # type: ignore
+        try:
+            doctor_id_int = int(str(doctor_id))
+            hospitals = hospitals.filter(doctors__id=doctor_id_int)  # type: ignore
+        except (ValueError, TypeError):
+            pass
     
     # Add treatment ID filter for related hospitals
     if treatment_id:
-        hospitals = hospitals.filter(treatments__id=treatment_id)  # type: ignore
+        try:
+            treatment_id_int = int(str(treatment_id))
+            hospitals = hospitals.filter(treatments__id=treatment_id_int)  # type: ignore
+        except (ValueError, TypeError):
+            pass
     
     # Remove duplicates if any filters were applied
     if search or treatment or accreditation or rating or doctor_id or treatment_id:
         hospitals = hospitals.distinct()  # type: ignore
+    
+    # Add ordering by rating (top hospitals first)
+    hospitals = hospitals.order_by('-rating')  # type: ignore
     
     context = {
         'hospitals': hospitals,
@@ -131,4 +145,36 @@ def hospital_media_debug(request: HttpRequest, slug: str) -> HttpResponse:
     return render(request, "hospitals/simple_test.html", {
         "hospital": hospital,
         "debug_info": debug_info
+    })
+
+
+@require_http_methods(["GET"])
+def search_hospitals_api(request: HttpRequest) -> JsonResponse:
+    """
+    API endpoint to search for hospitals by name
+    """
+    query = request.GET.get('query', '')
+    
+    if not query or len(query) < 2:
+        return JsonResponse({
+            'success': False,
+            'error': 'Query too short'
+        })
+    
+    hospitals = Hospital.objects.filter(name__icontains=query)[:10]  # type: ignore
+    
+    results = []
+    for hospital in hospitals:
+        results.append({
+            'id': hospital.id,
+            'name': hospital.name,
+            'slug': hospital.slug,
+            'location': f'{hospital.city}, {hospital.state.name if hospital.state else ""}',
+            'price': float(hospital.starting_price),
+            'url': f'/hospitals/{hospital.slug}/'
+        })
+    
+    return JsonResponse({
+        'success': True,
+        'results': results
     })

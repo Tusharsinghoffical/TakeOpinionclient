@@ -69,15 +69,15 @@
 }
 
 .btn-primary-modern {
-  background: #adb5bd;
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
   color: white;
-  box-shadow: 0 4px 15px rgba(173, 181, 189, 0.3);
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
 }
 
 .btn-primary-modern:hover {
-  background: #868e96;
+  background: linear-gradient(135deg, #0b5ed7, #0d6efd);
   transform: translateY(-3px);
-  box-shadow: 0 7px 20px rgba(173, 181, 189, 0.4);
+  box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
 }
 
 .btn-outline-modern {
@@ -89,6 +89,7 @@
 .btn-outline-modern:hover {
   background: #e9ecef;
   transform: translateY(-3px);
+  border-color: #6c757d;
 }
 
 .section-title-modern {
@@ -107,7 +108,7 @@
   left: 0;
   width: 60px;
   height: 3px;
-  background: #adb5bd;
+  background: #0d6efd;
   border-radius: 3px;
 }
 
@@ -142,7 +143,7 @@
 
 .stat-card i {
   font-size: 1.75rem;
-  color: #868e96;
+  color: #0d6efd;
   margin-bottom: 0.75rem;
 }
 
@@ -169,11 +170,13 @@
   color: inherit;
   background: white;
   border: 1px solid #e9ecef;
+  position: relative;
 }
 
 .hospital-card-modern:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border-color: #0d6efd;
 }
 
 .hospital-card-modern img {
@@ -205,7 +208,7 @@
 
 .treatment-item-modern i {
   font-size: 1.5rem;
-  color: #868e96;
+  color: #0d6efd;
   margin-bottom: 0.75rem;
 }
 
@@ -218,7 +221,7 @@
 }
 
 .faq-modern .accordion-button:not(.collapsed) {
-  color: #adb5bd;
+  color: #0d6efd;
   background: #e9ecef;
 }
 
@@ -262,7 +265,7 @@
 
 .progress-bar-modern {
   border-radius: 5px;
-  background: #adb5bd;
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
 }
 
 .back-btn {
@@ -277,6 +280,122 @@
 .back-btn:hover {
   background: #e9ecef;
   transform: translateX(-3px);
+}
+
+/* Media Gallery Styles */
+.media-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.media-item {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  height: 150px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.media-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.media-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-item.video::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-item.video::before {
+  content: "▶";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.modal-media-content {
+  max-width: 90%;
+  max-height: 80vh;
+}
+
+.modal-media-content img,
+.modal-media-content video {
+  max-width: 100%;
+  max-height: 70vh;
+  border-radius: 10px;
+}
+
+/* File Upload Styles */
+.file-upload-area {
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: #0d6efd;
+  background-color: #e7f1ff;
+}
+
+.file-upload-area.dragover {
+  border-color: #0d6efd;
+  background-color: #e7f1ff;
+}
+
+.file-list {
+  margin-top: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.file-item .file-name {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-item .file-remove {
+  color: #dc3545;
+  cursor: pointer;
+  margin-left: 0.5rem;
 }
 
 @media (max-width: 1200px) {
@@ -313,6 +432,10 @@
   .review-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
+  
+  .media-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
@@ -345,8 +468,12 @@
   }
   
   .review-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
+  }
+  
+  .media-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
   
   .btn-modern {
@@ -380,6 +507,10 @@
   
   .review-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .media-gallery {
+    grid-template-columns: 1fr 1fr;
   }
   
   .doctor-profile-img {
@@ -558,6 +689,32 @@
           </div>
         </div>
         
+        <!-- Success Stories & Media Gallery -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Success Stories & Media</h5>
+          </div>
+          <div class="card-body">
+            {% if doctor.media_items.all %}
+            <div class="media-gallery">
+              {% for media in doctor.media_items.all %}
+                {% if media.is_image %}
+                <div class="media-item" data-bs-toggle="modal" data-bs-target="#mediaModal" data-media-type="image" data-media-src="{{ media.image_url }}">
+                  <img src="{{ media.image_url }}" alt="Success story image">
+                </div>
+                {% elif media.is_video %}
+                <div class="media-item video" data-bs-toggle="modal" data-bs-target="#mediaModal" data-media-type="video" data-media-src="{{ media.video_url }}">
+                  <img src="https://picsum.photos/seed/video{{ media.id }}/300/200" alt="Video thumbnail">
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% else %}
+            <p class="mb-0">No success stories or media available yet. Check back soon for updates!</p>
+            {% endif %}
+          </div>
+        </div>
+        
         <!-- Patient Reviews -->
         <div class="card-modern">
           <div class="card-header">
@@ -716,27 +873,33 @@
         <!-- Affiliated Hospitals -->
         <div class="card-modern mb-4">
           <div class="card-header">
-            <h5 class="mb-0">Affiliated Hospitals</h5>
+            <h5 class="mb-0"><i class="bi bi-building me-2"></i>Affiliated Hospitals</h5>
           </div>
           <div class="card-body">
             {% if affiliated_hospitals %}
             <div class="hospital-grid">
               {% for h in affiliated_hospitals|slice:":3" %}
-              <a href="/hospitals/{{ h.slug }}/" class="hospital-card-modern">
+              <a href="/hospitals/{{ h.slug }}/" class="hospital-card-modern text-decoration-none">
                 <div class="position-relative">
                   {% if h.profile_picture %}
                     <img src="{{ h.profile_picture }}" class="w-100" alt="{{ h.name }}">
                   {% else %}
-                    <img src="https://picsum.photos/seed/h{{ h.id }}/300/200" class="w-100" alt="{{ h.name }}">
+                    <div class="bg-light w-100 d-flex align-items-center justify-content-center" style="height: 150px;">
+                      <i class="bi bi-building text-muted" style="font-size: 3rem;"></i>
+                    </div>
                   {% endif %}
                   {% if h.is_takeopinion_choice %}
-                  <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">TO Choice</span>
+                  <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">
+                    <i class="bi bi-star-fill me-1"></i>TO Choice
+                  </span>
                   {% endif %}
                 </div>
                 <div class="p-3">
-                  <h6 class="mb-1">{{ h.name }}</h6>
-                  <div class="small text-muted mb-2">{{ h.city }}{% if h.state %}, {{ h.state }}{% endif %}</div>
-                  <div class="d-flex justify-content-between align-items-center">
+                  <h6 class="mb-1 fw-bold">{{ h.name }}</h6>
+                  <div class="small text-muted mb-2">
+                    <i class="bi bi-geo-alt me-1"></i>{{ h.city }}{% if h.state %}, {{ h.state }}{% endif %}
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="text-warning">
                       {% for i in "12345" %}
                         {% if forloop.counter <= h.rating|floatformat:0 %}
@@ -746,17 +909,30 @@
                         {% endif %}
                       {% endfor %}
                     </div>
-                    <div class="fw-semibold">₹{{ h.starting_price|floatformat:0 }}</div>
+                    <div class="fw-semibold text-success">
+                      <i class="bi bi-currency-rupee"></i>{{ h.starting_price|floatformat:0 }}
+                    </div>
+                  </div>
+                  <div class="small text-muted">
+                    <i class="bi bi-hospital me-1"></i>{{ h.beds_count|default:'N/A' }} beds
                   </div>
                 </div>
               </a>
               {% endfor %}
             </div>
+            {% if affiliated_hospitals|length > 3 %}
             <div class="text-center mt-3">
-              <a href="/hospitals/" class="btn btn-outline-modern">View All Hospitals</a>
+              <a href="/hospitals/?doctor={{ doctor.id }}" class="btn btn-outline-modern">
+                <i class="bi bi-building me-2"></i>View All {{ affiliated_hospitals|length }} Hospitals
+              </a>
             </div>
+            {% endif %}
             {% else %}
-            <p class="mb-0">No affiliated hospitals listed.</p>
+            <div class="text-center py-4">
+              <i class="bi bi-building-x text-muted" style="font-size: 3rem;"></i>
+              <h5 class="mt-3 text-muted">No Affiliated Hospitals</h5>
+              <p class="text-muted">This doctor is not currently affiliated with any hospitals.</p>
+            </div>
             {% endif %}
           </div>
         </div>
@@ -772,6 +948,23 @@
               <i class="bi bi-headset me-2"></i>Contact Support
             </a>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Media Modal -->
+<div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mediaModalLabel">Media Content</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div id="modalMediaContent" class="modal-media-content">
+          <!-- Media content will be loaded here -->
         </div>
       </div>
     </div>
@@ -813,5 +1006,75 @@
     </div>
   </div>
 </div>
+
+<script>
+// Handle media modal
+document.addEventListener('DOMContentLoaded', function() {
+  const mediaModal = document.getElementById('mediaModal');
+  const modalMediaContent = document.getElementById('modalMediaContent');
+  
+  mediaModal.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+    const mediaType = button.getAttribute('data-media-type');
+    const mediaSrc = button.getAttribute('data-media-src');
+    
+    // Clear previous content
+    modalMediaContent.innerHTML = '';
+    
+    if (mediaType === 'image') {
+      const img = document.createElement('img');
+      img.src = mediaSrc;
+      img.alt = 'Success story image';
+      img.className = 'img-fluid';
+      modalMediaContent.appendChild(img);
+    } else if (mediaType === 'video') {
+      // Check if it's a YouTube or Vimeo URL
+      const youtubeId = extractYouTubeId(mediaSrc);
+      const vimeoId = extractVimeoId(mediaSrc);
+      
+      if (youtubeId) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
+        iframe.width = '100%';
+        iframe.height = '400';
+        iframe.frameBorder = '0';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        modalMediaContent.appendChild(iframe);
+      } else if (vimeoId) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://player.vimeo.com/video/${vimeoId}`;
+        iframe.width = '100%';
+        iframe.height = '400';
+        iframe.frameBorder = '0';
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+        iframe.allowFullscreen = true;
+        modalMediaContent.appendChild(iframe);
+      } else {
+        // For other video URLs, try to embed directly
+        const video = document.createElement('video');
+        video.src = mediaSrc;
+        video.controls = true;
+        video.className = 'w-100';
+        modalMediaContent.appendChild(video);
+      }
+    }
+  });
+  
+  // Extract YouTube video ID
+  function extractYouTubeId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  }
+  
+  // Extract Vimeo video ID
+  function extractVimeoId(url) {
+    const regExp = /(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:[a-zA-Z0-9_\-]+)?/i;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  }
+});
+</script>
 
 {% endblock %}

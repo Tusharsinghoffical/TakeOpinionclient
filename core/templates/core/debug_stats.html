@@ -1,0 +1,88 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="container mt-5">
+  <h1>Debug Stats</h1>
+  
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5 class="card-title">Treatments</h5>
+          <h2 class="stat-number" data-target="{{ treatments_count }}">0</h2>
+          <p>Data-target value: {{ treatments_count }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5 class="card-title">Hospitals</h5>
+          <h2 class="stat-number" data-target="{{ hospitals_count }}">0</h2>
+          <p>Data-target value: {{ hospitals_count }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5 class="card-title">Doctors</h5>
+          <h2 class="stat-number" data-target="{{ doctors_count }}">0</h2>
+          <p>Data-target value: {{ doctors_count }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="mt-4">
+    <button class="btn btn-primary" onclick="testAnimation()">Test Animation</button>
+    <button class="btn btn-secondary" onclick="checkElements()">Check Elements</button>
+  </div>
+  
+  <div id="debug-output" class="mt-3"></div>
+</div>
+
+<script>
+function testAnimation() {
+  const output = document.getElementById('debug-output');
+  output.innerHTML = '<p>Testing animation...</p>';
+  
+  // Add animation to stat counters
+  const statItems = document.querySelectorAll('.stat-number');
+  output.innerHTML += `<p>Found ${statItems.length} stat items</p>`;
+  
+  statItems.forEach((item, index) => {
+    const target = parseInt(item.getAttribute('data-target'));
+    output.innerHTML += `<p>Item ${index}: data-target = ${target}</p>`;
+    
+    if (!isNaN(target)) {
+      let count = 0;
+      const increment = target / 50;
+      const timer = setInterval(() => {
+        count += increment;
+        if (count >= target) {
+          item.textContent = target;
+          clearInterval(timer);
+          output.innerHTML += `<p>Finished animating item ${index}</p>`;
+        } else {
+          item.textContent = Math.ceil(count);
+        }
+      }, 30);
+    }
+  });
+}
+
+function checkElements() {
+  const output = document.getElementById('debug-output');
+  const statItems = document.querySelectorAll('.stat-number');
+  output.innerHTML = `<p>Found ${statItems.length} stat items</p>`;
+  
+  statItems.forEach((item, index) => {
+    const target = item.getAttribute('data-target');
+    output.innerHTML += `<p>Item ${index}: data-target = "${target}"</p>`;
+  });
+}
+</script>
+
+{% endblock %}

@@ -4,10 +4,12 @@
 {% csrf_token %}
 
 <style>
-/* Dashboard Specific Styles */
+/* Premium Dashboard Styles with Vibrant Colors */
 .dashboard-container {
   padding: 2rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+  min-height: 100vh;
 }
 
 .dashboard-header {
@@ -17,12 +19,18 @@
   margin-bottom: 2rem;
   flex-wrap: wrap;
   gap: 1rem;
+  background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  color: white;
 }
 
 .dashboard-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #2c3e50;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .dashboard-actions {
@@ -32,30 +40,32 @@
 }
 
 .btn-action {
-  background-color: #3498db;
-  color: white;
+  background: linear-gradient(120deg, #ff9a9e 0%, #fad0c4 100%);
+  color: #333;
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
   font-weight: 600;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .btn-action:hover {
-  background-color: #2980b9;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(120deg, #fad0c4 0%, #ff9a9e 100%);
 }
 
 .btn-action-secondary {
-  background-color: #27ae60;
+  background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
 }
 
 .btn-action-secondary:hover {
-  background-color: #219653;
+  background: linear-gradient(120deg, #c2e9fb 0%, #a1c4fd 100%);
 }
 
 .stat-cards {
@@ -67,112 +77,263 @@
 
 .stat-card {
   background: white;
-  border-radius: 10px;
+  border-radius: 15px;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  border-left: 4px solid #3498db;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 5px solid #6a11cb;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 .stat-card-doctors {
-  border-left-color: #27ae60;
+  border-left-color: #00c9ff;
+}
+
+.stat-card-doctors::before {
+  background: linear-gradient(90deg, #00c9ff, #92fe9d);
 }
 
 .stat-card-patients {
-  border-left-color: #e74c3c;
+  border-left-color: #f85032;
+}
+
+.stat-card-patients::before {
+  background: linear-gradient(90deg, #f85032, #e73827);
 }
 
 .stat-card-appointments {
-  border-left-color: #f39c12;
+  border-left-color: #ffd26f;
+}
+
+.stat-card-appointments::before {
+  background: linear-gradient(90deg, #ffd26f, #ff7e5f);
 }
 
 .stat-card-hospitals {
-  border-left-color: #9b59b6;
+  border-left-color: #8E2DE2;
+}
+
+.stat-card-hospitals::before {
+  background: linear-gradient(90deg, #8E2DE2, #4A00E0);
 }
 
 .stat-card-treatments {
-  border-left-color: #1abc9c;
+  border-left-color: #11998e;
+}
+
+.stat-card-treatments::before {
+  background: linear-gradient(90deg, #11998e, #38ef7d);
 }
 
 .stat-card-blogs {
-  border-left-color: #34495e;
+  border-left-color: #f46b45;
+}
+
+.stat-card-blogs::before {
+  background: linear-gradient(90deg, #f46b45, #eea849);
 }
 
 .stat-icon {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
+  background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card-doctors .stat-icon {
+  background: linear-gradient(120deg, #00c9ff 0%, #92fe9d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card-patients .stat-icon {
+  background: linear-gradient(120deg, #f85032 0%, #e73827 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card-appointments .stat-icon {
+  background: linear-gradient(120deg, #ffd26f 0%, #ff7e5f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card-hospitals .stat-icon {
+  background: linear-gradient(120deg, #8E2DE2 0%, #4A00E0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card-treatments .stat-icon {
+  background: linear-gradient(120deg, #11998e 0%, #38ef7d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card-blogs .stat-icon {
+  background: linear-gradient(120deg, #f46b45 0%, #eea849 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .stat-number {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.5rem;
+  font-weight: 800;
   margin-bottom: 0.5rem;
+  background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .stat-label {
   color: #7f8c8d;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 700;
   color: #2c3e50;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #eee;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid #6a11cb;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
 }
 
 .recent-activity-card, .user-management-card, .content-management-card {
   background: white;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .quick-actions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
 .quick-action-card {
   background: white;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: all 0.3s ease;
   cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.quick-action-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
 }
 
 .quick-action-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.quick-action-card:nth-child(2)::before {
+  background: linear-gradient(90deg, #00c9ff, #92fe9d);
+}
+
+.quick-action-card:nth-child(3)::before {
+  background: linear-gradient(90deg, #f85032, #e73827);
+}
+
+.quick-action-card:nth-child(4)::before {
+  background: linear-gradient(90deg, #8E2DE2, #4A00E0);
 }
 
 .quick-action-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: #3498db;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.quick-action-card:nth-child(2) .quick-action-icon {
+  background: linear-gradient(120deg, #00c9ff 0%, #92fe9d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.quick-action-card:nth-child(3) .quick-action-icon {
+  background: linear-gradient(120deg, #f85032 0%, #e73827 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.quick-action-card:nth-child(4) .quick-action-icon {
+  background: linear-gradient(120deg, #8E2DE2 0%, #4A00E0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .quick-action-title {
-  font-weight: 600;
+  font-weight: 700;
   color: #2c3e50;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.3rem;
 }
 
 .quick-action-desc {
   color: #7f8c8d;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .table-responsive {
@@ -181,125 +342,176 @@
 
 .table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.table th, .table td {
-  padding: 0.75rem;
+.table th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-weight: 700;
+  color: #2c3e50;
+  background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.table td {
+  padding: 1rem 1.5rem;
   text-align: left;
   border-bottom: 1px solid #eee;
 }
 
-.table th {
-  font-weight: 600;
-  color: #2c3e50;
-  background-color: #f8f9fa;
+.table tbody tr {
+  transition: all 0.2s ease;
 }
 
 .table tbody tr:hover {
-  background-color: #f8f9fa;
+  background-color: rgba(106, 17, 203, 0.05);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .btn-primary {
-  background-color: #3498db;
+  background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(106, 17, 203, 0.2);
+  border: none;
   margin-right: 0.5rem;
 }
 
 .btn-primary:hover {
-  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(106, 17, 203, 0.3);
 }
 
 .btn-secondary {
-  background-color: #27ae60;
-  color: white;
+  background: linear-gradient(120deg, #00c9ff 0%, #92fe9d 100%);
+  color: #333;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 201, 255, 0.2);
+  border: none;
   margin-right: 0.5rem;
 }
 
 .btn-secondary:hover {
-  background-color: #219653;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 201, 255, 0.3);
 }
 
 .btn-danger {
-  background-color: #e74c3c;
+  background: linear-gradient(120deg, #f85032 0%, #e73827 100%);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(248, 80, 50, 0.2);
+  border: none;
 }
 
 .btn-danger:hover {
-  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(248, 80, 50, 0.3);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
 }
 
 .user-type-badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
   font-weight: 600;
+  display: inline-block;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .badge-doctor {
-  background-color: #3498db;
-  color: white;
+  background: linear-gradient(120deg, #00c9ff 0%, #92fe9d 100%);
+  color: #333;
 }
 
 .badge-patient {
-  background-color: #27ae60;
+  background: linear-gradient(120deg, #f85032 0%, #e73827 100%);
   color: white;
 }
 
 .badge-admin {
-  background-color: #9b59b6;
+  background: linear-gradient(120deg, #8E2DE2 0%, #4A00E0 100%);
   color: white;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .form-control {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 10px;
   font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.form-control:focus {
+  border-color: #6a11cb;
+  box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+  outline: none;
+  background: white;
 }
 
 .btn-submit {
-  background-color: #3498db;
+  background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
+  padding: 0.9rem 2rem;
+  border-radius: 50px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .btn-submit:hover {
-  background-color: #2980b9;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(106, 17, 203, 0.4);
 }
 
 .modal {
@@ -310,29 +522,46 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.7);
+  backdrop-filter: blur(5px);
 }
 
 .modal-content {
-  background-color: white;
+  background: white;
   margin: 5% auto;
-  padding: 2rem;
-  border-radius: 10px;
+  padding: 2.5rem;
+  border-radius: 20px;
   width: 90%;
-  max-width: 600px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  max-width: 700px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-weight: 700;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .close {
   color: #aaa;
   float: right;
-  font-size: 28px;
+  font-size: 2.5rem;
   font-weight: bold;
   cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  transition: all 0.3s ease;
 }
 
 .close:hover {
-  color: #000;
+  color: #6a11cb;
+  transform: rotate(90deg);
 }
 
 /* Responsive adjustments */
@@ -351,11 +580,13 @@
   
   .recent-activity-card, .user-management-card, .content-management-card {
     margin-bottom: 1.5rem;
+    padding: 1.5rem;
   }
   
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
+    padding: 1.5rem;
   }
   
   .dashboard-actions {
@@ -366,15 +597,19 @@
   .quick-actions {
     grid-template-columns: 1fr;
   }
+  
+  .table th, .table td {
+    padding: 0.75rem 1rem;
+  }
 }
 </style>
 
 <div class="dashboard-container">
   <div class="dashboard-header">
-    <h1 class="dashboard-title">Admin Dashboard</h1>
+    <h1 class="dashboard-title"><i class="bi bi-speedometer2 me-3"></i>Admin Dashboard</h1>
     <div class="dashboard-actions">
       <a href="{% url 'accounts:admin_dashboard' %}" class="btn-action">
-        <i class="bi bi-arrow-repeat me-1"></i> Refresh
+        <i class="bi bi-arrow-repeat me-2"></i> Refresh Dashboard
       </a>
     </div>
   </div>
@@ -383,7 +618,7 @@
   <div class="quick-actions">
     <div class="quick-action-card" onclick="window.location.href='#doctors-section'">
       <div class="quick-action-icon">
-        <i class="bi bi-person-badge"></i>
+        <i class="bi bi-person-badge-fill"></i>
       </div>
       <div class="quick-action-title">Manage Doctors</div>
       <div class="quick-action-desc">Add, edit, or remove doctors</div>
@@ -391,7 +626,7 @@
     
     <div class="quick-action-card" onclick="window.location.href='#hospitals-section'">
       <div class="quick-action-icon">
-        <i class="bi bi-building"></i>
+        <i class="bi bi-building-fill"></i>
       </div>
       <div class="quick-action-title">Manage Hospitals</div>
       <div class="quick-action-desc">Add, edit, or remove hospitals</div>
@@ -399,7 +634,7 @@
     
     <div class="quick-action-card" onclick="window.location.href='#treatments-section'">
       <div class="quick-action-icon">
-        <i class="bi bi-bandaid"></i>
+        <i class="bi bi-bandaid-fill"></i>
       </div>
       <div class="quick-action-title">Manage Treatments</div>
       <div class="quick-action-desc">Add, edit, or remove treatments</div>
@@ -407,7 +642,7 @@
     
     <div class="quick-action-card" onclick="window.location.href='#users-section'">
       <div class="quick-action-icon">
-        <i class="bi bi-people"></i>
+        <i class="bi bi-people-fill"></i>
       </div>
       <div class="quick-action-title">Manage Users</div>
       <div class="quick-action-desc">View and manage user accounts</div>
@@ -417,15 +652,15 @@
   <!-- Statistics Cards -->
   <div class="stat-cards">
     <div class="stat-card stat-card-doctors">
-      <div class="stat-icon" style="color: #27ae60;">
-        <i class="bi bi-person-badge"></i>
+      <div class="stat-icon">
+        <i class="bi bi-person-badge-fill"></i>
       </div>
       <div class="stat-number">{{ total_doctors }}</div>
       <div class="stat-label">Doctors</div>
     </div>
     
     <div class="stat-card stat-card-patients">
-      <div class="stat-icon" style="color: #e74c3c;">
+      <div class="stat-icon">
         <i class="bi bi-person-heart"></i>
       </div>
       <div class="stat-number">{{ total_patients }}</div>
@@ -433,32 +668,32 @@
     </div>
     
     <div class="stat-card stat-card-appointments">
-      <div class="stat-icon" style="color: #f39c12;">
-        <i class="bi bi-calendar-check"></i>
+      <div class="stat-icon">
+        <i class="bi bi-calendar-check-fill"></i>
       </div>
       <div class="stat-number">{{ total_appointments }}</div>
       <div class="stat-label">Total Appointments</div>
     </div>
     
     <div class="stat-card stat-card-hospitals">
-      <div class="stat-icon" style="color: #9b59b6;">
-        <i class="bi bi-building"></i>
+      <div class="stat-icon">
+        <i class="bi bi-building-fill"></i>
       </div>
       <div class="stat-number">{{ total_hospitals }}</div>
       <div class="stat-label">Hospitals</div>
     </div>
     
     <div class="stat-card stat-card-treatments">
-      <div class="stat-icon" style="color: #1abc9c;">
-        <i class="bi bi-bandaid"></i>
+      <div class="stat-icon">
+        <i class="bi bi-bandaid-fill"></i>
       </div>
       <div class="stat-number">{{ total_treatments }}</div>
       <div class="stat-label">Treatments</div>
     </div>
     
     <div class="stat-card stat-card-blogs">
-      <div class="stat-icon" style="color: #34495e;">
-        <i class="bi bi-file-earmark-text"></i>
+      <div class="stat-icon">
+        <i class="bi bi-file-earmark-text-fill"></i>
       </div>
       <div class="stat-number">{{ total_blog_posts }}</div>
       <div class="stat-label">Blog Posts</div>
@@ -468,20 +703,20 @@
   <!-- Doctors Management -->
   <div class="content-management-card" id="doctors-section">
     <h2 class="section-title">Doctor Management</h2>
-    <div class="dashboard-actions mb-3">
-      <button class="btn-action" onclick="openAddDoctorModal()">
-        <i class="bi bi-person-plus me-1"></i> Add New Doctor
+    <div class="dashboard-actions mb-4">
+      <button class="btn-action btn-action-secondary" onclick="openAddDoctorModal()">
+        <i class="bi bi-person-plus-fill me-2"></i> Add New Doctor
       </button>
     </div>
     <div class="table-responsive">
       <table class="table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Specialization</th>
-            <th>Experience</th>
-            <th>Rating</th>
-            <th>Actions</th>
+            <th><i class="bi bi-person-fill me-2"></i> Name</th>
+            <th><i class="bi bi-star-fill me-2"></i> Specialization</th>
+            <th><i class="bi bi-briefcase-fill me-2"></i> Experience</th>
+            <th><i class="bi bi-star-half me-2"></i> Rating</th>
+            <th><i class="bi bi-gear-fill me-2"></i> Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -490,36 +725,49 @@
             <td>
               <div class="d-flex align-items-center">
                 {% if doctor.profile_picture %}
-                  <img src="{{ doctor.profile_picture }}" alt="{{ doctor.name }}" width="40" height="40" class="rounded-circle me-2">
+                  <img src="{{ doctor.profile_picture }}" alt="{{ doctor.name }}" width="50" height="50" class="rounded-circle me-3 border" style="object-fit: cover;">
                 {% else %}
-                  <div class="bg-light rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                    <i class="bi bi-person"></i>
+                  <div class="bg-light rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border: 2px solid #eee;">
+                    <i class="bi bi-person-fill text-muted"></i>
                   </div>
                 {% endif %}
                 <div>
-                  <div>{{ doctor.name }}</div>
+                  <div class="fw-bold">{{ doctor.name }}</div>
                   <small class="text-muted">{{ doctor.email }}</small>
                 </div>
               </div>
             </td>
-            <td>{{ doctor.specialization|default:"Not specified" }}</td>
-            <td>{{ doctor.experience_years }} years</td>
             <td>
-              <span class="badge bg-warning">{{ doctor.rating }}</span>
-              ({{ doctor.review_count }} reviews)
+              <span class="badge bg-info">{{ doctor.specialization|default:"Not specified" }}</span>
+            </td>
+            <td>
+              <span class="fw-bold">{{ doctor.experience_years }}</span> years
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-star-fill text-warning me-1"></i>
+                <span class="fw-bold">{{ doctor.rating }}</span>
+                <small class="text-muted ms-1">({{ doctor.review_count }} reviews)</small>
+              </div>
             </td>
             <td>
               <button class="btn-primary" onclick="editDoctor({{ doctor.id }})">
-                <i class="bi bi-pencil"></i> Edit
+                <i class="bi bi-pencil-square me-1"></i> Edit
               </button>
               <button class="btn-danger" onclick="deleteDoctor({{ doctor.id }})">
-                <i class="bi bi-trash"></i> Delete
+                <i class="bi bi-trash-fill me-1"></i> Delete
               </button>
             </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="5" class="text-center">No doctors found</td>
+            <td colspan="5" class="text-center py-5">
+              <i class="bi bi-person-x-fill text-muted" style="font-size: 3rem;"></i>
+              <div class="mt-3">
+                <h5 class="text-muted">No doctors found</h5>
+                <p class="text-muted">Add your first doctor to get started</p>
+              </div>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -530,20 +778,20 @@
   <!-- Hospitals Management -->
   <div class="content-management-card" id="hospitals-section">
     <h2 class="section-title">Hospital Management</h2>
-    <div class="dashboard-actions mb-3">
-      <button class="btn-action" onclick="openAddHospitalModal()">
-        <i class="bi bi-building-add me-1"></i> Add New Hospital
+    <div class="dashboard-actions mb-4">
+      <button class="btn-action btn-action-secondary" onclick="openAddHospitalModal()">
+        <i class="bi bi-building-add me-2"></i> Add New Hospital
       </button>
     </div>
     <div class="table-responsive">
       <table class="table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Established</th>
-            <th>Rating</th>
-            <th>Actions</th>
+            <th><i class="bi bi-building-fill me-2"></i> Name</th>
+            <th><i class="bi bi-geo-alt-fill me-2"></i> Location</th>
+            <th><i class="bi bi-calendar-event-fill me-2"></i> Established</th>
+            <th><i class="bi bi-star-half me-2"></i> Rating</th>
+            <th><i class="bi bi-gear-fill me-2"></i> Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -552,32 +800,48 @@
             <td>
               <div class="d-flex align-items-center">
                 {% if hospital.profile_picture %}
-                  <img src="{{ hospital.profile_picture }}" alt="{{ hospital.name }}" width="40" height="40" class="rounded me-2">
+                  <img src="{{ hospital.profile_picture }}" alt="{{ hospital.name }}" width="50" height="50" class="rounded me-3 border" style="object-fit: cover;">
                 {% else %}
-                  <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                    <i class="bi bi-building"></i>
+                  <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; border: 2px solid #eee;">
+                    <i class="bi bi-building-fill text-muted"></i>
                   </div>
                 {% endif %}
-                <div>{{ hospital.name }}</div>
+                <div class="fw-bold">{{ hospital.name }}</div>
               </div>
             </td>
-            <td>{{ hospital.city }}, {{ hospital.state|default:"N/A" }}</td>
-            <td>{{ hospital.established_year|default:"N/A" }}</td>
             <td>
-              <span class="badge bg-warning">{{ hospital.rating }}</span>
+              <div>
+                <div class="fw-bold">{{ hospital.city }}</div>
+                <small class="text-muted">{{ hospital.state|default:"N/A" }}, {{ hospital.country }}</small>
+              </div>
+            </td>
+            <td>
+              <span class="fw-bold">{{ hospital.established_year|default:"N/A" }}</span>
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-star-fill text-warning me-1"></i>
+                <span class="fw-bold">{{ hospital.rating }}</span>
+              </div>
             </td>
             <td>
               <button class="btn-primary" onclick="editHospital({{ hospital.id }})">
-                <i class="bi bi-pencil"></i> Edit
+                <i class="bi bi-pencil-square me-1"></i> Edit
               </button>
               <button class="btn-danger" onclick="deleteHospital({{ hospital.id }})">
-                <i class="bi bi-trash"></i> Delete
+                <i class="bi bi-trash-fill me-1"></i> Delete
               </button>
             </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="5" class="text-center">No hospitals found</td>
+            <td colspan="5" class="text-center py-5">
+              <i class="bi bi-building-x text-muted" style="font-size: 3rem;"></i>
+              <div class="mt-3">
+                <h5 class="text-muted">No hospitals found</h5>
+                <p class="text-muted">Add your first hospital to get started</p>
+              </div>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -588,41 +852,50 @@
   <!-- Treatments Management -->
   <div class="content-management-card" id="treatments-section">
     <h2 class="section-title">Treatment Management</h2>
-    <div class="dashboard-actions mb-3">
-      <button class="btn-action" onclick="openAddTreatmentModal()">
-        <i class="bi bi-bandaid me-1"></i> Add New Treatment
+    <div class="dashboard-actions mb-4">
+      <button class="btn-action btn-action-secondary" onclick="openAddTreatmentModal()">
+        <i class="bi bi-bandaid-fill me-2"></i> Add New Treatment
       </button>
     </div>
     <div class="table-responsive">
       <table class="table">
         <thead>
           <tr>
-            <th>Treatment</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Actions</th>
+            <th><i class="bi bi-bandaid-fill me-2"></i> Treatment</th>
+            <th><i class="bi bi-tag-fill me-2"></i> Category</th>
+            <th><i class="bi bi-currency-dollar me-2"></i> Price</th>
+            <th><i class="bi bi-gear-fill me-2"></i> Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for treatment in recent_treatments %}
           <tr>
-            <td>{{ treatment.name }}</td>
+            <td class="fw-bold">{{ treatment.name }}</td>
             <td>
-              <span class="badge bg-info">{{ treatment.category.name }}</span>
+              <span class="badge bg-success">{{ treatment.category.name }}</span>
             </td>
-            <td>${{ treatment.starting_price }}</td>
+            <td>
+              <span class="fw-bold text-success">$</span>
+              <span class="fw-bold">{{ treatment.starting_price }}</span>
+            </td>
             <td>
               <button class="btn-primary" onclick="editTreatment({{ treatment.id }})">
-                <i class="bi bi-pencil"></i> Edit
+                <i class="bi bi-pencil-square me-1"></i> Edit
               </button>
               <button class="btn-danger" onclick="deleteTreatment({{ treatment.id }})">
-                <i class="bi bi-trash"></i> Delete
+                <i class="bi bi-trash-fill me-1"></i> Delete
               </button>
             </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="4" class="text-center">No treatments found</td>
+            <td colspan="4" class="text-center py-5">
+              <i class="bi bi-bandaid text-muted" style="font-size: 3rem;"></i>
+              <div class="mt-3">
+                <h5 class="text-muted">No treatments found</h5>
+                <p class="text-muted">Add your first treatment to get started</p>
+              </div>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -637,36 +910,53 @@
       <table class="table">
         <thead>
           <tr>
-            <th>User</th>
-            <th>Email</th>
-            <th>User Type</th>
-            <th>Joined</th>
-            <th>Actions</th>
+            <th><i class="bi bi-person-fill me-2"></i> User</th>
+            <th><i class="bi bi-envelope-fill me-2"></i> Email</th>
+            <th><i class="bi bi-person-badge-fill me-2"></i> User Type</th>
+            <th><i class="bi bi-calendar-date-fill me-2"></i> Joined</th>
+            <th><i class="bi bi-gear-fill me-2"></i> Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for user in recent_users_for_table %}
           <tr>
-            <td>{{ user.first_name }} {{ user.last_name }}</td>
-            <td>{{ user.email }}</td>
+            <td>
+              <div class="fw-bold">{{ user.first_name }} {{ user.last_name }}</div>
+            </td>
+            <td>
+              <a href="mailto:{{ user.email }}" class="text-decoration-none">
+                <i class="bi bi-envelope me-1"></i>{{ user.email }}
+              </a>
+            </td>
             <td>
               <span class="user-type-badge badge-{{ user.userprofile.user_type }}">
-                {{ user.userprofile.get_user_type_display }}
+                <i class="bi bi-person-badge me-1"></i>{{ user.userprofile.get_user_type_display }}
               </span>
             </td>
-            <td>{{ user.date_joined|date:"M d, Y" }}</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <i class="bi bi-calendar-event me-1 text-muted"></i>
+                <span>{{ user.date_joined|date:"M d, Y" }}</span>
+              </div>
+            </td>
             <td>
               <button class="btn-primary" onclick="viewUser({{ user.id }})">
-                <i class="bi bi-eye"></i> View
+                <i class="bi bi-eye-fill me-1"></i> View
               </button>
               <button class="btn-danger" onclick="deleteUser({{ user.id }})">
-                <i class="bi bi-trash"></i> Delete
+                <i class="bi bi-trash-fill me-1"></i> Delete
               </button>
             </td>
           </tr>
           {% empty %}
           <tr>
-            <td colspan="5" class="text-center">No users found</td>
+            <td colspan="5" class="text-center py-5">
+              <i class="bi bi-people-fill text-muted" style="font-size: 3rem;"></i>
+              <div class="mt-3">
+                <h5 class="text-muted">No users found</h5>
+                <p class="text-muted">No user accounts available</p>
+              </div>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -679,25 +969,32 @@
 <div id="addDoctorModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('addDoctorModal')">&times;</span>
-    <h2>Add New Doctor</h2>
+    <h2><i class="bi bi-person-plus-fill me-2 text-primary"></i>Add New Doctor</h2>
     <form id="addDoctorForm">
       <div class="form-group">
-        <label for="doctorName">Name:</label>
-        <input type="text" id="doctorName" class="form-control" required>
+        <label for="doctorName" class="form-label fw-bold"><i class="bi bi-person-fill me-1"></i>Name</label>
+        <input type="text" id="doctorName" class="form-control" placeholder="Enter doctor's full name" required>
       </div>
       <div class="form-group">
-        <label for="doctorSpecialization">Specialization:</label>
-        <input type="text" id="doctorSpecialization" class="form-control">
+        <label for="doctorSpecialization" class="form-label fw-bold"><i class="bi bi-star-fill me-1"></i>Specialization</label>
+        <input type="text" id="doctorSpecialization" class="form-control" placeholder="e.g., Cardiologist, Neurologist">
       </div>
       <div class="form-group">
-        <label for="doctorEmail">Email:</label>
-        <input type="email" id="doctorEmail" class="form-control">
+        <label for="doctorEmail" class="form-label fw-bold"><i class="bi bi-envelope-fill me-1"></i>Email</label>
+        <input type="email" id="doctorEmail" class="form-control" placeholder="doctor@example.com">
       </div>
       <div class="form-group">
-        <label for="doctorExperience">Years of Experience:</label>
-        <input type="number" id="doctorExperience" class="form-control">
+        <label for="doctorExperience" class="form-label fw-bold"><i class="bi bi-briefcase-fill me-1"></i>Years of Experience</label>
+        <input type="number" id="doctorExperience" class="form-control" placeholder="Enter years of experience">
       </div>
-      <button type="submit" class="btn-submit">Add Doctor</button>
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn-danger" onclick="closeModal('addDoctorModal')">
+          <i class="bi bi-x-circle me-1"></i> Cancel
+        </button>
+        <button type="submit" class="btn-submit">
+          <i class="bi bi-check-circle me-1"></i> Add Doctor
+        </button>
+      </div>
     </form>
   </div>
 </div>
@@ -706,25 +1003,32 @@
 <div id="addHospitalModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('addHospitalModal')">&times;</span>
-    <h2>Add New Hospital</h2>
+    <h2><i class="bi bi-building-add me-2 text-primary"></i>Add New Hospital</h2>
     <form id="addHospitalForm">
       <div class="form-group">
-        <label for="hospitalName">Name:</label>
-        <input type="text" id="hospitalName" class="form-control" required>
+        <label for="hospitalName" class="form-label fw-bold"><i class="bi bi-building-fill me-1"></i>Name</label>
+        <input type="text" id="hospitalName" class="form-control" placeholder="Enter hospital name" required>
       </div>
       <div class="form-group">
-        <label for="hospitalCity">City:</label>
-        <input type="text" id="hospitalCity" class="form-control">
+        <label for="hospitalCity" class="form-label fw-bold"><i class="bi bi-geo-alt-fill me-1"></i>City</label>
+        <input type="text" id="hospitalCity" class="form-control" placeholder="Enter city">
       </div>
       <div class="form-group">
-        <label for="hospitalState">State:</label>
-        <input type="text" id="hospitalState" class="form-control">
+        <label for="hospitalState" class="form-label fw-bold"><i class="bi bi-map-fill me-1"></i>State</label>
+        <input type="text" id="hospitalState" class="form-control" placeholder="Enter state">
       </div>
       <div class="form-group">
-        <label for="hospitalEstablished">Established Year:</label>
-        <input type="number" id="hospitalEstablished" class="form-control">
+        <label for="hospitalEstablished" class="form-label fw-bold"><i class="bi bi-calendar-event-fill me-1"></i>Established Year</label>
+        <input type="number" id="hospitalEstablished" class="form-control" placeholder="e.g., 1998">
       </div>
-      <button type="submit" class="btn-submit">Add Hospital</button>
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn-danger" onclick="closeModal('addHospitalModal')">
+          <i class="bi bi-x-circle me-1"></i> Cancel
+        </button>
+        <button type="submit" class="btn-submit">
+          <i class="bi bi-check-circle me-1"></i> Add Hospital
+        </button>
+      </div>
     </form>
   </div>
 </div>
@@ -733,25 +1037,35 @@
 <div id="addTreatmentModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('addTreatmentModal')">&times;</span>
-    <h2>Add New Treatment</h2>
+    <h2><i class="bi bi-bandaid-fill me-2 text-primary"></i>Add New Treatment</h2>
     <form id="addTreatmentForm">
       <div class="form-group">
-        <label for="treatmentName">Name:</label>
-        <input type="text" id="treatmentName" class="form-control" required>
+        <label for="treatmentName" class="form-label fw-bold"><i class="bi bi-bandaid-fill me-1"></i>Name</label>
+        <input type="text" id="treatmentName" class="form-control" placeholder="Enter treatment name" required>
       </div>
       <div class="form-group">
-        <label for="treatmentCategory">Category:</label>
+        <label for="treatmentCategory" class="form-label fw-bold"><i class="bi bi-tag-fill me-1"></i>Category</label>
         <select id="treatmentCategory" class="form-control">
+          <option value="">Select a category</option>
           <option value="medical">Medical</option>
           <option value="aesthetic">Aesthetic</option>
           <option value="wellness">Wellness</option>
+          <option value="surgical">Surgical</option>
+          <option value="diagnostic">Diagnostic</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="treatmentPrice">Starting Price:</label>
-        <input type="number" id="treatmentPrice" class="form-control" step="0.01">
+        <label for="treatmentPrice" class="form-label fw-bold"><i class="bi bi-currency-dollar me-1"></i>Starting Price ($)</label>
+        <input type="number" id="treatmentPrice" class="form-control" step="0.01" placeholder="e.g., 5000.00">
       </div>
-      <button type="submit" class="btn-submit">Add Treatment</button>
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <button type="button" class="btn-danger" onclick="closeModal('addTreatmentModal')">
+          <i class="bi bi-x-circle me-1"></i> Cancel
+        </button>
+        <button type="submit" class="btn-submit">
+          <i class="bi bi-check-circle me-1"></i> Add Treatment
+        </button>
+      </div>
     </form>
   </div>
 </div>
@@ -1115,41 +1429,41 @@ function updateBookingStatus(bookingId, status) {
 <!-- Booking Management Section -->
 <div class="content-management-card" id="bookings-section" style="margin-top: 2rem;">
   <h2 class="section-title">Booking Management</h2>
-  <div class="dashboard-actions mb-3">
-    <button class="btn-action" onclick="window.location.href='{% url 'accounts:admin_booking_dashboard' %}'">
-      <i class="bi bi-calendar-check me-1"></i> Advanced Booking Dashboard
+  <div class="dashboard-actions mb-4">
+    <button class="btn-action btn-action-secondary" onclick="window.location.href='{% url 'accounts:admin_booking_dashboard' %}'">
+      <i class="bi bi-calendar-check-fill me-2"></i> Advanced Booking Dashboard
     </button>
   </div>
   
   <!-- Booking Statistics -->
   <div class="stat-cards">
     <div class="stat-card stat-card-appointments">
-      <div class="stat-icon" style="color: #f39c12;">
-        <i class="bi bi-calendar-check"></i>
+      <div class="stat-icon">
+        <i class="bi bi-calendar-check-fill"></i>
       </div>
       <div class="stat-number">{{ total_appointments }}</div>
       <div class="stat-label">Total Appointments</div>
     </div>
     
     <div class="stat-card stat-card pending">
-      <div class="stat-icon" style="color: #ffc107;">
-        <i class="bi bi-clock"></i>
+      <div class="stat-icon">
+        <i class="bi bi-clock-history"></i>
       </div>
       <div class="stat-number">{{ pending_appointments }}</div>
       <div class="stat-label">Pending</div>
     </div>
     
     <div class="stat-card stat-card confirmed">
-      <div class="stat-icon" style="color: #27ae60;">
-        <i class="bi bi-check-circle"></i>
+      <div class="stat-icon">
+        <i class="bi bi-check-circle-fill"></i>
       </div>
       <div class="stat-number">{{ confirmed_appointments }}</div>
       <div class="stat-label">Confirmed</div>
     </div>
     
     <div class="stat-card stat-card cancelled">
-      <div class="stat-icon" style="color: #e74c3c;">
-        <i class="bi bi-x-circle"></i>
+      <div class="stat-icon">
+        <i class="bi bi-x-circle-fill"></i>
       </div>
       <div class="stat-number">{{ cancelled_appointments }}</div>
       <div class="stat-label">Cancelled</div>
@@ -1162,78 +1476,100 @@ function updateBookingStatus(bookingId, status) {
     <table class="table">
       <thead>
         <tr>
-          <th>Booking ID</th>
-          <th>Patient</th>
-          <th>Treatment</th>
-          <th>Doctor</th>
-          <th>Date</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th><i class="bi bi-hash me-1"></i> Booking ID</th>
+          <th><i class="bi bi-person-fill me-1"></i> Patient</th>
+          <th><i class="bi bi-bandaid-fill me-1"></i> Treatment</th>
+          <th><i class="bi bi-person-badge-fill me-1"></i> Doctor</th>
+          <th><i class="bi bi-calendar-date-fill me-1"></i> Date</th>
+          <th><i class="bi bi-currency-dollar me-1"></i> Amount</th>
+          <th><i class="bi bi-info-circle-fill me-1"></i> Status</th>
+          <th><i class="bi bi-gear-fill me-1"></i> Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for booking in recent_bookings %}
         <tr>
-          <td>#{{ booking.id }}</td>
+          <td>
+            <span class="fw-bold text-primary">#{{ booking.id }}</span>
+          </td>
           <td>
             {% if booking.patient %}
-              {{ booking.patient.user.first_name }} {{ booking.patient.user.last_name }}
+              <div class="fw-bold">{{ booking.patient.user.first_name }} {{ booking.patient.user.last_name }}</div>
             {% else %}
-              Guest User
+              <div class="fw-bold">Guest User</div>
             {% endif %}
           </td>
           <td>
             {% if booking.treatment %}
-              {{ booking.treatment.name }}
+              <span class="badge bg-info">{{ booking.treatment.name }}</span>
             {% else %}
-              General Consultation
+              <span class="badge bg-secondary">General Consultation</span>
             {% endif %}
           </td>
           <td>
             {% if booking.preferred_doctor %}
-              {{ booking.preferred_doctor.name }}
+              <div class="fw-bold">{{ booking.preferred_doctor.name }}</div>
             {% else %}
-              Not specified
+              <span class="text-muted">Not specified</span>
             {% endif %}
           </td>
           <td>
             {% if booking.preferred_date %}
-              {{ booking.preferred_date|date:"M d, Y" }}
+              <div class="fw-bold">{{ booking.preferred_date|date:"M d, Y" }}</div>
             {% else %}
-              Not set
+              <span class="text-muted">Not set</span>
             {% endif %}
           </td>
-          <td>₹{{ booking.amount }}</td>
+          <td>
+            <span class="fw-bold text-success">₹{{ booking.amount }}</span>
+          </td>
           <td>
             {% if booking.status == 'pending' %}
-              <span class="badge bg-warning">Pending</span>
+              <span class="badge bg-warning text-dark">
+                <i class="bi bi-clock-history me-1"></i>Pending
+              </span>
             {% elif booking.status == 'confirmed' %}
-              <span class="badge bg-success">Confirmed</span>
+              <span class="badge bg-success">
+                <i class="bi bi-check-circle-fill me-1"></i>Confirmed
+              </span>
             {% elif booking.status == 'cancelled' %}
-              <span class="badge bg-danger">Cancelled</span>
+              <span class="badge bg-danger">
+                <i class="bi bi-x-circle-fill me-1"></i>Cancelled
+              </span>
             {% elif booking.status == 'in_progress' %}
-              <span class="badge bg-info">In Progress</span>
+              <span class="badge bg-info">
+                <i class="bi bi-arrow-repeat me-1"></i>In Progress
+              </span>
             {% elif booking.status == 'completed' %}
-              <span class="badge bg-primary">Completed</span>
+              <span class="badge bg-primary">
+                <i class="bi bi-check-all me-1"></i>Completed
+              </span>
             {% endif %}
           </td>
           <td>
             {% if booking.status == 'pending' %}
               <button class="btn-primary btn-sm" onclick="updateBookingStatus({{ booking.id }}, 'confirmed')">
-                <i class="bi bi-check"></i> Accept
+                <i class="bi bi-check-lg me-1"></i> Accept
               </button>
               <button class="btn-danger btn-sm" onclick="updateBookingStatus({{ booking.id }}, 'cancelled')">
-                <i class="bi bi-x"></i> Reject
+                <i class="bi bi-x-lg me-1"></i> Reject
               </button>
             {% else %}
-              <span class="text-muted">{{ booking.status|title }}</span>
+              <span class="text-muted">
+                <i class="bi bi-check-circle-fill me-1"></i>{{ booking.status|title }}
+              </span>
             {% endif %}
           </td>
         </tr>
         {% empty %}
         <tr>
-          <td colspan="8" class="text-center">No bookings found</td>
+          <td colspan="8" class="text-center py-5">
+            <i class="bi bi-calendar-x-fill text-muted" style="font-size: 3rem;"></i>
+            <div class="mt-3">
+              <h5 class="text-muted">No bookings found</h5>
+              <p class="text-muted">No recent bookings available</p>
+            </div>
+          </td>
         </tr>
         {% endfor %}
       </tbody>

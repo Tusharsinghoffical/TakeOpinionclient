@@ -11,4 +11,11 @@ urlpatterns = [
     path("search/", views.search, name="search"),
     path("stats/", views.get_home_stats, name="home_stats"),
     path("content/", views.get_home_content, name="home_content"),
+    path("pricing/", views.pricing_page, name="pricing_page"),
+    path("portfolio/", views.portfolio, name="portfolio"),
+    path("api/hospitals-by-treatment/<int:treatment_id>/", views.get_hospitals_by_treatment, name="get_hospitals_by_treatment"),
+    path("debug-stats/", views.debug_home_stats, name="debug_home_stats"),
+    path("debug-stats-page/", views.debug_stats_page, name="debug_stats_page"),
+    path("debug-home/", views.debug_home_page, name="debug_home_page"),
+    path("test-stats/", views.test_stats_page, name="test_stats_page"),
 ]

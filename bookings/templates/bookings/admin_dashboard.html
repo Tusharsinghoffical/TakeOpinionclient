@@ -15,7 +15,7 @@
         --purple: #6f42c1;
         --orange: #fd7e14;
         --dark: #343a40;
-        --light: #f8f9fa;
+        --light: #ffffff;
         --gray-100: #f8f9fa;
         --gray-200: #e9ecef;
         --gray-300: #dee2e6;
@@ -25,21 +25,31 @@
         --gray-700: #495057;
         --gray-800: #343a40;
         --gray-900: #212529;
+        --white: #ffffff;
     }
 
     .admin-dashboard {
-        background-color: #f5f7fa;
+        background-color: #ffffff;
         min-height: 100vh;
         padding: 20px 0;
     }
     
     .dashboard-header {
-        background: linear-gradient(120deg, #007bff, #0056b3);
-        color: white;
+        background: linear-gradient(120deg, #ffffff, #f8f9fa);
+        color: var(--dark);
         border-radius: 12px;
         padding: 25px;
         margin-bottom: 25px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--gray-200);
+    }
+    
+    .dashboard-header h4 {
+        color: var(--dark);
+    }
+    
+    .dashboard-header p {
+        color: var(--gray-700);
     }
     
     .stats-grid {
@@ -50,19 +60,21 @@
     }
     
     .stat-card {
-        background: white;
+        background: var(--white);
         border-radius: 12px;
         padding: 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         transition: all 0.3s ease;
         border-left: 4px solid var(--primary);
         display: flex;
         align-items: center;
+        border: 1px solid var(--gray-200);
     }
     
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+        border-color: var(--gray-300);
     }
     
     .stat-icon {
@@ -75,6 +87,7 @@
         margin-right: 15px;
         font-size: 24px;
         color: white;
+        background: linear-gradient(135deg, var(--primary), #0056b3);
     }
     
     .stat-content {
@@ -150,14 +163,15 @@
     }
     
     .content-card {
-        background: white;
+        background: var(--white);
         border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         overflow: hidden;
+        border: 1px solid var(--gray-200);
     }
     
     .card-header {
-        background: white;
+        background: var(--white);
         border-bottom: 1px solid var(--gray-200);
         padding: 20px;
         display: flex;
@@ -184,7 +198,7 @@
         font-size: 13px;
         font-weight: 500;
         border: 1px solid var(--gray-300);
-        background: white;
+        background: var(--white);
         color: var(--gray-700);
         cursor: pointer;
         transition: all 0.2s ease;
@@ -192,7 +206,8 @@
     
     .filter-btn:hover, .filter-btn.active {
         transform: translateY(-2px);
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        border-color: var(--primary);
     }
     
     .filter-btn.active {
@@ -216,7 +231,7 @@
     }
     
     .appointments-table th {
-        background: #f8f9fa;
+        background: #ffffff;
         padding: 16px 20px;
         text-align: left;
         font-weight: 600;
@@ -230,6 +245,7 @@
         border-bottom: 1px solid var(--gray-200);
         font-size: 14px;
         color: var(--gray-700);
+        background: var(--white);
     }
     
     .appointments-table tr:last-child td {
@@ -237,7 +253,7 @@
     }
     
     .appointments-table tr:hover {
-        background-color: rgba(0, 123, 255, 0.03);
+        background-color: rgba(0, 123, 255, 0.02);
     }
     
     .patient-info {
@@ -264,28 +280,33 @@
     }
     
     .status-badge.pending {
-        background: rgba(255, 193, 7, 0.15);
+        background: rgba(255, 193, 7, 0.1);
         color: #856404;
+        border: 1px solid rgba(255, 193, 7, 0.3);
     }
     
     .status-badge.confirmed {
-        background: rgba(40, 167, 69, 0.15);
+        background: rgba(40, 167, 69, 0.1);
         color: #155724;
+        border: 1px solid rgba(40, 167, 69, 0.3);
     }
     
     .status-badge.cancelled {
-        background: rgba(220, 53, 69, 0.15);
+        background: rgba(220, 53, 69, 0.1);
         color: #721c24;
+        border: 1px solid rgba(220, 53, 69, 0.3);
     }
     
     .status-badge.in-progress {
-        background: rgba(23, 162, 184, 0.15);
+        background: rgba(23, 162, 184, 0.1);
         color: #0c5460;
+        border: 1px solid rgba(23, 162, 184, 0.3);
     }
     
     .status-badge.completed {
-        background: rgba(111, 66, 193, 0.15);
+        background: rgba(111, 66, 193, 0.1);
         color: #3d2173;
+        border: 1px solid rgba(111, 66, 193, 0.3);
     }
     
     .action-cell {
@@ -361,6 +382,7 @@
         height: 200px;
         padding: 20px;
         position: relative;
+        background: var(--white);
     }
     
     .trend-bar-container {
@@ -408,6 +430,7 @@
         justify-content: space-between;
         padding: 12px 20px;
         border-bottom: 1px solid var(--gray-200);
+        background: var(--white);
     }
     
     .treatment-item:last-child {
@@ -432,6 +455,7 @@
         text-align: center;
         padding: 40px 20px;
         color: var(--gray-500);
+        background: var(--white);
     }
     
     .empty-state i {
@@ -502,7 +526,7 @@
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <h4 class="mb-0"><i class="fas fa-calendar-check me-3"></i>Appointment Management Dashboard</h4>
-                    <p class="mb-0 mt-2 opacity-75">Manage all patient appointments and booking requests</p>
+                    <p class="mb-0 mt-2">Manage all patient appointments and booking requests</p>
                 </div>
                 <div class="col-md-4 text-md-end">
                     <span class="badge bg-light text-dark px-3 py-2">
@@ -576,7 +600,7 @@
                 <div class="card-header">
                     <h5 class="card-title"><i class="fas fa-list me-2"></i>All Appointments</h5>
                     <div class="filter-buttons">
-                        <a href="{% url 'admin_booking_dashboard' %}" class="filter-btn {% if not status_filter %}active{% endif %}">All</a>
+                        <a href="{% url 'accounts:admin_booking_dashboard' %}" class="filter-btn {% if not status_filter %}active{% endif %}">All</a>
                         <a href="?status=pending" class="filter-btn {% if status_filter == 'pending' %}active{% endif %}">Pending</a>
                         <a href="?status=confirmed" class="filter-btn {% if status_filter == 'confirmed' %}active{% endif %}">Confirmed</a>
                         <a href="?status=in_progress" class="filter-btn {% if status_filter == 'in_progress' %}active{% endif %}">In Progress</a>
@@ -758,8 +782,6 @@
                         {% endif %}
                     </div>
                 </div>
-                
-                
                 
                 <!-- Top Treatments -->
                 <div class="content-card">

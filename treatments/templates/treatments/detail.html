@@ -1,513 +1,381 @@
 {% extends 'base.html' %}
 {% block content %}
 <style>
-/* Simplified and Attractive Treatment Detail Page Styles with Light Colors */
-.treatment-detail-page {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-  line-height: 1.6;
-  background-color: #f8f9fa;
-}
-
-.page-header {
-  background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
-  color: #333;
-  padding: 2rem 0;
-  margin-bottom: 2rem;
-  border-radius: 0 0 20px 20px;
-  border-bottom: 1px solid #dee2e6;
-}
-
-.page-header h1 {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #2c3e50;
-}
-
-.page-header .category {
-  opacity: 0.9;
-  font-size: 1.1rem;
-  color: #495057;
-}
-
-.main-content {
-  padding: 0 1rem;
-}
-
-.card-modern {
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  margin-bottom: 2rem;
-  border: none;
-  background: white;
-}
-
-.card-modern:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-}
-
-.card-modern .card-header {
-  background: #f8f9fa;
-  color: #2c3e50;
-  border-radius: 15px 15px 0 0 !important;
-  border: none;
-  padding: 1.25rem;
-  font-weight: 600;
-  border-bottom: 1px solid #e9ecef;
-}
-
-.btn-modern {
-  border-radius: 10px;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  transition: all 0.3s ease;
-  border: none;
-}
-
-.btn-primary-modern {
-  background: #adb5bd;
-  color: white;
-  box-shadow: 0 4px 15px rgba(173, 181, 189, 0.3);
-}
-
-.btn-primary-modern:hover {
-  background: #868e96;
-  transform: translateY(-3px);
-  box-shadow: 0 7px 20px rgba(173, 181, 189, 0.4);
-}
-
-.btn-outline-modern {
-  background: transparent;
-  color: #495057;
-  border: 2px solid #adb5bd;
-}
-
-.btn-outline-modern:hover {
-  background: #e9ecef;
-  transform: translateY(-3px);
-}
-
-.section-title-modern {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
-  position: relative;
-  padding-bottom: 0.75rem;
-}
-
-.section-title-modern::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 60px;
-  height: 3px;
-  background: #adb5bd;
-  border-radius: 3px;
-}
-
-.treatment-icon-box {
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20px;
-  background: rgba(173, 181, 189, 0.1);
-  color: #868e96;
-  font-size: 2rem;
-  margin: 0 auto 1.5rem;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-.stat-card i {
-  font-size: 2rem;
-  color: #868e96;
-  margin-bottom: 1rem;
-}
-
-.stat-card .number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-}
-
-.hospital-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.hospital-card-modern {
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: inherit;
-  background: white;
-  border: 1px solid #e9ecef;
-}
-
-.hospital-card-modern:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-.hospital-card-modern img {
-  height: 150px;
-  object-fit: cover;
-}
-
-.doctor-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.doctor-card-modern {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
-}
-
-.doctor-card-modern:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  border-color: #2c7744;
-}
-
-.doctor-card-modern img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0 auto 1rem;
-}
-
-.faq-modern .accordion-button {
-  font-weight: 600;
-  color: #2c3e50;
-  background: #f8f9fa;
-  border: none;
-  border-radius: 10px !important;
-}
-
-.faq-modern .accordion-button:not(.collapsed) {
-  color: #2c7744;
-  background: #e8f5e9;
-}
-
-.faq-modern .accordion-item {
-  border: 1px solid #e9ecef;
-  border-radius: 10px !important;
-  margin-bottom: 0.75rem;
-  overflow: hidden;
-}
-
-.review-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.review-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
-}
-
-.review-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-.rating-modern {
-  color: #ffc107;
-}
-
-.progress-modern {
-  height: 10px;
-  border-radius: 5px;
-  background-color: #e9ecef;
-}
-
-.progress-bar-modern {
-  border-radius: 5px;
-  background: #2c7744;
-}
-
-.back-btn {
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  color: #495057;
-}
-
-.back-btn:hover {
-  background: #e9ecef;
-  transform: translateX(-3px);
-}
-
-.price-card {
-  border-radius: 15px;
-  background: #2c7744;
-  color: white;
-  border: none;
-  box-shadow: 0 10px 30px rgba(44, 119, 68, 0.3);
-}
-
-.price-card .display-4 {
-  font-weight: 700;
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .hospital-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+  /* Treatment Detail Page Styles - Matching Homepage Design */
+  .treatment-detail-page {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
   }
-  
-  .doctor-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-  
-  .review-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-  }
-  
-  .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-  
-  .stat-card {
-    padding: 1.25rem;
-  }
-  
-  .stat-card .number {
-    font-size: 1.75rem;
-  }
-  
-  .stat-card i {
-    font-size: 1.75rem;
-  }
-}
 
-@media (max-width: 992px) {
-  .col-lg-8 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  
-  .col-lg-4 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  
-  .hospital-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-  
-  .doctor-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
-  
-  .review-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-  
-  .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
-  
-  .price-card {
-    margin-top: 1rem;
-  }
-}
-
-@media (max-width: 768px) {
+  /* Page Header */
   .page-header {
-    padding: 1.5rem 0;
-    border-radius: 0 0 15px 15px;
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
   }
-  
+
   .page-header h1 {
-    font-size: 1.75rem;
-  }
-  
-  .main-content {
-    padding: 0 0.5rem;
-  }
-  
-  .stats-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  
-  .hospital-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .doctor-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-  
-  .review-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .btn-modern {
-    width: 100%;
+    font-weight: 700;
     margin-bottom: 0.5rem;
   }
-  
-  .treatment-icon-box {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
-  }
-  
-  .section-title-modern {
-    font-size: 1.25rem;
-  }
-  
-  .stat-card {
-    padding: 1rem;
-  }
-  
-  .stat-card .number {
-    font-size: 1.5rem;
-  }
-  
-  .stat-card i {
-    font-size: 1.5rem;
-  }
-  
-  .hospital-card-modern img {
-    height: 120px;
-  }
-  
-  .doctor-card-modern img {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .price-card .display-4 {
-    font-size: 2rem;
-  }
-}
 
-@media (max-width: 576px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-  
-  .hospital-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .doctor-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-  }
-  
-  .review-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .page-header h1 {
-    font-size: 1.5rem;
-  }
-  
   .page-header .category {
-    font-size: 1rem;
-  }
-  
-  .treatment-icon-box {
-    width: 50px;
-    height: 50px;
-    font-size: 1.25rem;
-  }
-  
-  .section-title-modern {
+    opacity: 0.9;
     font-size: 1.1rem;
   }
-  
-  .stat-card {
-    padding: 0.75rem;
+
+  .treatment-icon-box {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 2rem;
+    margin: 0 auto 1.5rem;
   }
-  
-  .stat-card .number {
-    font-size: 1.25rem;
+
+  /* Main Content */
+  .main-content {
+    padding: 0 1rem;
   }
-  
-  .stat-card i {
-    font-size: 1.25rem;
+
+  /* Card Styles */
+  .card-modern {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+    border: none;
+    background: white;
   }
-  
-  .hospital-card-modern img {
-    height: 100px;
+
+  .card-modern:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
   }
-  
-  .doctor-card-modern img {
-    width: 50px;
-    height: 50px;
+
+  .card-modern .card-header {
+    background: #f8f9fa;
+    color: #2c3e50;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+    padding: 1.25rem;
+    font-weight: 600;
+    border-bottom: 1px solid #e9ecef;
   }
-  
-  .price-card .display-4 {
-    font-size: 1.75rem;
-  }
-  
+
+  /* Button Styles */
   .btn-modern {
-    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    border: none;
+  }
+
+  .btn-primary-modern {
+    background: #0d6efd;
+    color: white;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .btn-primary-modern:hover {
+    background: #0b5ed7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  .btn-outline-modern {
+    background: transparent;
+    color: #0d6efd;
+    border: 2px solid #0d6efd;
+  }
+
+  .btn-outline-modern:hover {
+    background: #e9ecef;
+    transform: translateY(-3px);
+  }
+
+  .btn-light-modern {
+    background: white;
+    color: #0d6efd;
+    border: 1px solid #e9ecef;
+  }
+
+  .btn-light-modern:hover {
+    background: #f8f9fa;
+    transform: translateY(-3px);
+  }
+
+  /* Section Titles */
+  .section-title-modern {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.75rem;
+  }
+
+  .section-title-modern::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: #0d6efd;
+    border-radius: 3px;
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .stat-card i {
+    font-size: 2rem;
+    color: #0d6efd;
+    margin-bottom: 1rem;
+  }
+
+  .stat-card .number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-card .text-muted {
+    color: #6c757d !important;
     font-size: 0.9rem;
   }
-}
+
+  /* Hospital Grid */
+  .hospital-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .hospital-card-modern {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border: 1px solid #e9ecef;
+  }
+
+  .hospital-card-modern:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .hospital-card-modern img {
+    height: 150px;
+    object-fit: cover;
+  }
+
+  /* Doctor Grid */
+  .doctor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .doctor-card-modern {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #e9ecef;
+  }
+
+  .doctor-card-modern:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .doctor-card-modern img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    border: 3px solid #0d6efd;
+  }
+
+  /* Price Card */
+  .price-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: none;
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+  }
+
+  .price-card .card-body {
+    padding: 2rem;
+  }
+
+  .price-card .display-4 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .price-card .btn-light {
+    background: white;
+    color: #0d6efd;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .price-card .btn-light:hover {
+    background: #f8f9fa;
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Review Card */
+  .review-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #e9ecef;
+  }
+
+  /* Progress Bar */
+  .progress-modern {
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-modern {
+    height: 100%;
+    background: linear-gradient(90deg, #0d6efd, #0b5ed7);
+    border-radius: 4px;
+  }
+
+  /* Back Button */
+  .back-btn {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .back-btn:hover {
+    background: #e9ecef;
+    color: #0b5ed7;
+    transform: translateX(-3px);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 992px) {
+    .hospital-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .doctor-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    
+    .review-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .page-header h1 {
+      font-size: 1.5rem;
+    }
+    
+    .page-header .category {
+      font-size: 1rem;
+    }
+    
+    .treatment-icon-box {
+      width: 50px;
+      height: 50px;
+      font-size: 1.25rem;
+    }
+    
+    .section-title-modern {
+      font-size: 1.1rem;
+    }
+    
+    .stat-card {
+      padding: 0.75rem;
+    }
+    
+    .stat-card .number {
+      font-size: 1.25rem;
+    }
+    
+    .stat-card i {
+      font-size: 1.25rem;
+    }
+    
+    .hospital-card-modern img {
+      height: 100px;
+    }
+    
+    .doctor-card-modern img {
+      width: 50px;
+      height: 50px;
+    }
+    
+    .price-card .display-4 {
+      font-size: 1.75rem;
+    }
+    
+    .btn-modern {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
 </style>
 
 <div class="treatment-detail-page">
@@ -582,22 +450,22 @@
               <div class="stat-card">
                 <i class="bi bi-currency-dollar"></i>
                 <div class="number">₹{{ treatment.starting_price|floatformat:0 }}</div>
-                <div class="text-muted">Starting Price</div>
+                <div class="text-muted" style="color: #6c757d !important; font-weight: 500;">Estimated Costing</div>
               </div>
               <div class="stat-card">
                 <i class="bi bi-star-fill"></i>
                 <div class="number">{{ treatment.success_rate|floatformat:1|default:'92.5' }}%</div>
-                <div class="text-muted">Success Rate</div>
+                <div class="text-muted" style="color: #6c757d !important; font-weight: 500;">Success Rate</div>
               </div>
               <div class="stat-card">
                 <i class="bi bi-clock"></i>
                 <div class="number">{{ treatment.avg_recovery_time|default:'7-14' }}</div>
-                <div class="text-muted">Recovery Time</div>
+                <div class="text-muted" style="color: #6c757d !important; font-weight: 500;">Recovery Time</div>
               </div>
               <div class="stat-card">
                 <i class="bi bi-people"></i>
                 <div class="number">{{ treatment.patients_treated|default:'5000' }}+</div>
-                <div class="text-muted">Patients Treated</div>
+                <div class="text-muted" style="color: #6c757d !important; font-weight: 500;">Patients Treated</div>
               </div>
             </div>
           </div>
@@ -700,18 +568,16 @@
                 {% endif %}
                 <h6 class="mb-1">{{ doctor.name }}</h6>
                 <div class="small text-muted mb-2">{{ doctor.specialization }}</div>
-                <div class="d-flex justify-content-center">
-                  <div class="text-warning me-1">
-                    {% for i in "12345" %}
-                      {% if forloop.counter <= doctor.rating|floatformat:0 %}
-                        <i class="bi bi-star-fill"></i>
-                      {% else %}
-                        <i class="bi bi-star"></i>
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                  <span class="small">({{ doctor.review_count }})</span>
+                <div class="d-flex justify-content-center text-warning mb-2">
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= doctor.rating|floatformat:0 %}
+                      <i class="bi bi-star-fill"></i>
+                    {% else %}
+                      <i class="bi bi-star"></i>
+                    {% endif %}
+                  {% endfor %}
                 </div>
+                <div class="small fw-semibold">₹{{ doctor.consultation_fee|floatformat:0 }}</div>
               </a>
               {% endfor %}
             </div>
@@ -722,7 +588,7 @@
               <ul class="pagination justify-content-center">
                 {% if doctors_page_obj.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="?doctors_page={{ doctors_page_obj.previous_page_number }}#specialist-doctors" aria-label="Previous">
+                    <a class="page-link" href="?doctors_page={{ doctors_page_obj.previous_page_number }}#doctors-specializing" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -732,13 +598,13 @@
                   {% if doctors_page_obj.number == num %}
                     <li class="page-item active"><span class="page-link">{{ num }}</span></li>
                   {% elif num > doctors_page_obj.number|add:'-3' and num < doctors_page_obj.number|add:'3' %}
-                    <li class="page-item"><a class="page-link" href="?doctors_page={{ num }}#specialist-doctors">{{ num }}</a></li>
+                    <li class="page-item"><a class="page-link" href="?doctors_page={{ num }}#doctors-specializing">{{ num }}</a></li>
                   {% endif %}
                 {% endfor %}
                 
                 {% if doctors_page_obj.has_next %}
                   <li class="page-item">
-                    <a class="page-link" href="?doctors_page={{ doctors_page_obj.next_page_number }}#specialist-doctors" aria-label="Next">
+                    <a class="page-link" href="?doctors_page={{ doctors_page_obj.next_page_number }}#doctors-specializing" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -756,50 +622,32 @@
           </div>
         </div>
         
-        <!-- FAQs -->
+        <!-- FAQs Section -->
         <div class="card-modern">
           <div class="card-header">
             <h5 class="mb-0">Frequently Asked Questions</h5>
           </div>
           <div class="card-body">
-            <div class="accordion faq-modern" id="treatmentFAQs">
+            {% if faqs %}
+            <div class="accordion" id="treatmentFAQs">
+              {% for faq in faqs %}
               <div class="accordion-item">
-                <h2 class="accordion-header" id="faq1">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
-                    What is the recovery time for this treatment?
+                <h2 class="accordion-header">
+                  <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ forloop.counter }}">
+                    {{ faq.question }}
                   </button>
                 </h2>
-                <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#treatmentFAQs">
+                <div id="faq{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}">
                   <div class="accordion-body">
-                    Recovery time varies depending on individual factors, but most patients can expect to return to normal activities within {{ treatment.avg_recovery_time|default:'7-14 days' }}. Our medical team will provide personalized guidance based on your specific condition.
+                    {{ faq.answer }}
                   </div>
                 </div>
               </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="faq2">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                    Is this treatment covered by insurance?
-                  </button>
-                </h2>
-                <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#treatmentFAQs">
-                  <div class="accordion-body">
-                    Insurance coverage varies by provider and policy. We recommend contacting your insurance company directly to verify coverage for this treatment. Our team can also assist with insurance verification and documentation.
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="faq3">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                    What are the potential risks or complications?
-                  </button>
-                </h2>
-                <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#treatmentFAQs">
-                  <div class="accordion-body">
-                    As with any medical procedure, there are potential risks. However, our success rate of {{ treatment.success_rate|floatformat:1|default:'92.5' }}% demonstrates the safety and effectiveness of this treatment. Your doctor will discuss all potential risks and benefits during your consultation.
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
             </div>
+            {% else %}
+            <p class="mb-0">No FAQs available for this treatment yet.</p>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -809,11 +657,19 @@
         <div class="card price-card mb-4">
           <div class="card-body text-center">
             <div class="display-4 fw-bold">₹{{ treatment.starting_price|floatformat:0 }}</div>
-            <div class="mb-3">Starting Price</div>
-            <p>This price includes consultation, procedure, and basic aftercare. Additional services may incur extra costs.</p>
+            <div class="mb-3" style="color: rgba(255, 255, 255, 0.9); font-weight: 500;">Estimated Costing</div>
+            <p style="color: rgba(255, 255, 255, 0.85);">This price includes consultation, procedure, and basic aftercare. Additional services may incur extra costs.</p>
             <a href="/book/?treatment={{ treatment.id }}" class="btn btn-light w-100 btn-modern">
               <i class="bi bi-calendar-check me-2"></i>Book Now
             </a>
+            <a href="/treatments/pricing/" class="btn btn-outline-light w-100 btn-modern mt-2">
+              <i class="bi bi-list me-2"></i>View Price List
+            </a>
+            <div class="mt-3 pt-3 border-top" style="border-color: rgba(255, 255, 255, 0.2) !important;">
+              <a href="/treatments/pricing/" class="btn btn-outline-light w-100 btn-modern" style="color: white; border-color: rgba(255, 255, 255, 0.5);">
+                <i class="bi bi-table me-2"></i>View Detailed Hospital Pricing
+              </a>
+            </div>
           </div>
         </div>
         
@@ -824,10 +680,10 @@
           </div>
           <div class="card-body">
             <div class="d-grid gap-2">
-              <a href="/book/?treatment={{ treatment.id }}" class="btn btn-primary-modern">
+              <a href="/book/?treatment={{ treatment.id }}" class="btn btn-primary-modern" style="color: white; font-weight: 600;">
                 <i class="bi bi-calendar-check me-2"></i>Book Appointment
               </a>
-              <button class="btn btn-outline-modern" data-bs-toggle="modal" data-bs-target="#consultationModal">
+              <button class="btn btn-outline-modern" data-bs-toggle="modal" data-bs-target="#consultationModal" style="color: #0d6efd; font-weight: 600;">
                 <i class="bi bi-camera-video me-2"></i>Video Consultation
               </button>
             </div>
@@ -847,6 +703,27 @@
               <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Personalized treatment plans</li>
               <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Comprehensive aftercare support</li>
             </ul>
+          </div>
+        </div>
+        
+        <!-- Hospital Pricing -->
+        <div class="card-modern mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Hospital Pricing</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <div class="fw-semibold">Estimated Treatment Cost</div>
+                <div class="small text-muted">Starting from</div>
+              </div>
+              <div class="display-6 fw-bold text-primary">₹{{ treatment.starting_price|floatformat:0 }}</div>
+            </div>
+            <div class="text-center">
+              <a href="/treatments/pricing/" class="btn btn-primary w-100">
+                <i class="bi bi-list me-2"></i>View Detailed Price List
+              </a>
+            </div>
           </div>
         </div>
         
@@ -1002,29 +879,35 @@
         <form>
           <div class="mb-3">
             <label for="consultationDate" class="form-label">Preferred Date</label>
-            <input type="date" class="form-control" id="consultationDate" required>
+            <input type="date" class="form-control" id="consultationDate">
           </div>
           <div class="mb-3">
             <label for="consultationTime" class="form-label">Preferred Time</label>
-            <input type="time" class="form-control" id="consultationTime" required>
+            <input type="time" class="form-control" id="consultationTime">
           </div>
           <div class="mb-3">
-            <label for="patientName" class="form-label">Your Name</label>
-            <input type="text" class="form-control" id="patientName" required>
+            <label for="consultationNotes" class="form-label">Special Notes</label>
+            <textarea class="form-control" id="consultationNotes" rows="3" placeholder="Any specific questions or concerns..."></textarea>
           </div>
-          <div class="mb-3">
-            <label for="patientEmail" class="form-label">Email Address</label>
-            <input type="email" class="form-control" id="patientEmail" required>
-          </div>
-          <div class="mb-3">
-            <label for="patientPhone" class="form-label">Phone Number</label>
-            <input type="tel" class="form-control" id="patientPhone" required>
-          </div>
-          <button type="submit" class="btn btn-primary-modern w-100">Schedule Consultation</button>
         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Schedule Consultation</button>
       </div>
     </div>
   </div>
 </div>
 
+<script>
+  // Initialize tooltips
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set min date for consultation date picker to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('consultationDate').min = today;
+    
+    // Set default time for consultation time picker
+    document.getElementById('consultationTime').value = '09:00';
+  });
+</script>
 {% endblock %}

@@ -110,36 +110,92 @@
 
 /* Stats Section */
 .stats-section {
-  background-color: white;
-  padding: 3rem 0;
-  box-shadow: 0 5px 15px var(--shadow);
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuMSIvPjxyZWN0IHk9IjIiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjIiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==') center/cover;
+  opacity: 0.3;
 }
 
 .stats-container {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  position: relative;
+  z-index: 2;
 }
 
 .stat-item {
   text-align: center;
-  min-width: 150px;
+  padding: 1.5rem;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #0d6efd, #6f42c1, #28a745);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 15px 35px rgba(31, 38, 135, 0.25);
+}
+
+.stat-item:hover::before {
+  transform: scaleX(1);
 }
 
 .stat-number {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary-medium);
+  font-size: 2.8rem;
+  font-weight: 800;
   margin-bottom: 0.5rem;
-  line-height: 1;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 50%, #28a745 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 10px rgba(13, 110, 253, 0.2);
+  position: relative;
+  display: inline-block;
+}
+
+.stat-number::after {
+  content: '+';
+  font-size: 1.5rem;
+  vertical-align: super;
+  color: #0d6efd;
 }
 
 .stat-label {
   font-size: 1.1rem;
-  color: var(--dark-text);
-  font-weight: 500;
+  color: #495057;
+  font-weight: 600;
+  line-height: 1.4;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Section Headers */
@@ -219,6 +275,73 @@
   background: var(--primary-light);
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom dropdown styles */
+.custom-select-wrapper {
+  position: relative;
+}
+
+.custom-select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.searchable-dropdown {
+  position: relative;
+}
+
+.searchable-dropdown-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: white;
+  cursor: pointer;
+  text-align: left;
+}
+
+.searchable-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.searchable-dropdown-menu.show {
+  display: block;
+}
+
+.searchable-dropdown-search {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  outline: none;
+}
+
+.searchable-dropdown-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease;
+}
+
+.searchable-dropdown-item:hover {
+  background-color: var(--light-bg);
 }
 
 /* Doctors Grid Section */
@@ -735,10 +858,19 @@
                 <option value="3.5+ stars" {% if rating_filter == '3.5+ stars' %}selected{% endif %}>3.5+ stars</option>
               </select>
             </div>
-            <!-- Add Treatment Filter -->
+            <!-- Treatment Filter with Searchable Dropdown -->
             <div class="col-md-2">
               <label class="form-label">Treatment</label>
-              <input type="text" class="form-control" name="treatment" id="treatment-filter" value="{{ treatment_filter }}" placeholder="Treatment name">
+              <div class="searchable-dropdown">
+                <input type="text" class="form-control searchable-dropdown-input" id="treatment-search-input" placeholder="Select treatment..." readonly>
+                <input type="hidden" name="treatment" id="treatment-filter" value="{{ treatment_filter }}">
+                <div class="searchable-dropdown-menu" id="treatment-dropdown-menu">
+                  <input type="text" class="searchable-dropdown-search" id="treatment-search-box" placeholder="Search treatments...">
+                  <div class="searchable-dropdown-items" id="treatment-dropdown-items">
+                    <!-- Treatment options will be populated dynamically -->
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="col-md-1 d-flex align-items-end">
               <button type="submit" class="btn">Filter</button>
@@ -876,61 +1008,154 @@
 </div>
 
 <script>
-  // Auto-submit form when filters change
-  document.getElementById('search-filter').addEventListener('input', function() {
-    // Debounce the search to avoid too many requests
-    clearTimeout(this.searchTimeout);
-    this.searchTimeout = setTimeout(() => {
-      document.getElementById('doctor-filter-form').submit();
-    }, 500);
-  });
+document.addEventListener('DOMContentLoaded', function() {
+  // Get references to form elements
+  const treatmentFilter = document.getElementById('treatment-filter');
+  const treatmentSearchInput = document.getElementById('treatment-search-input');
+  const treatmentDropdownMenu = document.getElementById('treatment-dropdown-menu');
+  const treatmentSearchBox = document.getElementById('treatment-search-box');
+  const treatmentDropdownItems = document.getElementById('treatment-dropdown-items');
+  const doctorFilterForm = document.getElementById('doctor-filter-form');
   
-  document.getElementById('specialization-filter').addEventListener('change', function() {
-    document.getElementById('doctor-filter-form').submit();
-  });
+  // Store all treatment options for filtering
+  let allTreatmentOptions = [];
   
-  document.getElementById('experience-filter').addEventListener('change', function() {
-    document.getElementById('doctor-filter-form').submit();
-  });
+  // Load treatment options dynamically
+  if (treatmentFilter && treatmentSearchInput && treatmentDropdownMenu && treatmentSearchBox && treatmentDropdownItems) {
+    console.log('Initializing treatment dropdown');
+    
+    // Fetch all treatments (with a minimal query that will return all treatments)
+    fetch('/treatments/api/search/?type=treatment&query=a')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Treatments API response:', data);
+        if (data.success && treatmentDropdownItems) {
+          // Save all treatment options
+          allTreatmentOptions = data.results || [];
+          console.log('Loaded treatments:', allTreatmentOptions.length);
+          
+          // Populate dropdown items
+          populateTreatmentDropdown(allTreatmentOptions);
+          
+          // Set the initial value if one is selected
+          const selectedTreatment = treatmentFilter.value;
+          if (selectedTreatment) {
+            const selectedOption = allTreatmentOptions.find(treatment => treatment.name === selectedTreatment);
+            if (selectedOption) {
+              treatmentSearchInput.value = selectedOption.name;
+            }
+          }
+        } else {
+          console.log('No treatments found or API error');
+          populateTreatmentDropdown([]);
+        }
+      })
+      .catch(error => {
+        console.error('Error loading treatments:', error);
+        // Populate with a default option if there's an error
+        populateTreatmentDropdown([]);
+      });
+  } else {
+    console.log('Some treatment dropdown elements not found');
+  }
   
-  document.getElementById('rating-filter').addEventListener('change', function() {
-    document.getElementById('doctor-filter-form').submit();
-  });
+  // Populate treatment dropdown with options
+  function populateTreatmentDropdown(treatments) {
+    if (!treatmentDropdownItems) {
+      console.log('Treatment dropdown items container not found');
+      return;
+    }
+    
+    console.log('Populating dropdown with', treatments.length, 'treatments');
+    treatmentDropdownItems.innerHTML = '';
+    
+    // Add "All Treatments" option
+    const allOption = document.createElement('div');
+    allOption.className = 'searchable-dropdown-item';
+    allOption.textContent = 'All Treatments';
+    allOption.dataset.value = '';
+    allOption.addEventListener('click', function() {
+      treatmentFilter.value = '';
+      treatmentSearchInput.value = 'All Treatments';
+      treatmentDropdownMenu.classList.remove('show');
+    });
+    treatmentDropdownItems.appendChild(allOption);
+    
+    // Add treatment options
+    if (treatments && treatments.length > 0) {
+      treatments.forEach(treatment => {
+        const option = document.createElement('div');
+        option.className = 'searchable-dropdown-item';
+        option.textContent = treatment.name || 'Unnamed Treatment';
+        option.dataset.value = treatment.name || '';
+        option.addEventListener('click', function() {
+          treatmentFilter.value = treatment.name || '';
+          treatmentSearchInput.value = treatment.name || '';
+          treatmentDropdownMenu.classList.remove('show');
+        });
+        treatmentDropdownItems.appendChild(option);
+      });
+    } else {
+      // Add a "No treatments found" option
+      const noOption = document.createElement('div');
+      noOption.className = 'searchable-dropdown-item';
+      noOption.textContent = 'No treatments found';
+      noOption.dataset.value = '';
+      treatmentDropdownItems.appendChild(noOption);
+    }
+  }
   
-  // Add auto-submit for treatment filter
-  document.getElementById('treatment-filter').addEventListener('change', function() {
-    document.getElementById('doctor-filter-form').submit();
-  });
+  // Toggle dropdown visibility
+  if (treatmentSearchInput) {
+    treatmentSearchInput.addEventListener('click', function(e) {
+      e.stopPropagation();
+      console.log('Treatment search input clicked');
+      if (treatmentDropdownMenu) {
+        treatmentDropdownMenu.classList.toggle('show');
+      }
+      if (treatmentSearchBox) {
+        treatmentSearchBox.focus();
+      }
+    });
+  }
   
-  // Also submit on Enter key in treatment filter
-  document.getElementById('treatment-filter').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      document.getElementById('doctor-filter-form').submit();
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (treatmentSearchInput && treatmentDropdownMenu) {
+      if (!treatmentSearchInput.contains(e.target) && !treatmentDropdownMenu.contains(e.target)) {
+        treatmentDropdownMenu.classList.remove('show');
+      }
     }
   });
   
-  // Animate stat numbers
-  document.addEventListener('DOMContentLoaded', function() {
-    const statNumbers = document.querySelectorAll('.stat-number');
-    statNumbers.forEach(stat => {
-      const target = parseInt(stat.getAttribute('data-target'));
-      let count = 0;
-      const duration = 2000; // 2 seconds
-      const increment = target / (duration / 16); // 16ms per frame
-      
-      const updateCount = () => {
-        count += increment;
-        if (count < target) {
-          stat.innerText = Math.ceil(count);
-          setTimeout(updateCount, 16);
-        } else {
-          stat.innerText = target;
-        }
-      };
-      
-      updateCount();
+  // Filter dropdown items based on search
+  if (treatmentSearchBox) {
+    treatmentSearchBox.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      console.log('Filtering treatments by:', searchTerm);
+      if (allTreatmentOptions && allTreatmentOptions.length > 0) {
+        const filteredTreatments = allTreatmentOptions.filter(treatment => 
+          treatment.name && treatment.name.toLowerCase().includes(searchTerm)
+        );
+        populateTreatmentDropdown(filteredTreatments);
+      }
     });
-  });
+  }
+  
+  // Form submission handler
+  if (doctorFilterForm) {
+    doctorFilterForm.addEventListener('submit', function(e) {
+      console.log('Form is being submitted');
+      console.log('Treatment filter value:', treatmentFilter ? treatmentFilter.value : 'Not found');
+      // The form will submit normally, but we could add AJAX functionality here if needed
+    });
+  }
+});
 </script>
 
 {% endblock %}

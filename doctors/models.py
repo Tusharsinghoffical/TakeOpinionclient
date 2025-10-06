@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from treatments.models import Treatment
 from hospitals.models import Hospital
+from core.validators import validate_image_url, validate_youtube_url
 
 
 class Doctor(models.Model):
@@ -30,7 +31,7 @@ class Doctor(models.Model):
     languages_spoken = models.CharField(max_length=200, blank=True, help_text="Languages spoken by the doctor, separated by commas")
     
     # Profile picture
-    profile_picture = models.URLField(blank=True, help_text="URL to doctor's profile picture")
+    profile_picture = models.URLField(blank=True, help_text="URL to doctor's profile picture", validators=[validate_image_url])
 
     def __str__(self) -> str:
         return str(self.name)
@@ -65,8 +66,8 @@ class Doctor(models.Model):
 
 class DoctorMedia(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name="media_items")
-    image_url = models.URLField(blank=True)
-    video_url = models.URLField(blank=True)  # Re-adding video URL support
+    image_url = models.URLField(blank=True, validators=[validate_image_url])
+    video_url = models.URLField(blank=True, validators=[validate_youtube_url])  # Re-adding video URL support
 
     def __str__(self) -> str:
         return f"Media for {self.doctor.name}"

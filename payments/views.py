@@ -23,12 +23,69 @@ def payment_success(request):
     return redirect('accounts:admin_dashboard')
 
 
+def booking_payment(request, booking_id):
+    """Display booking payment page"""
+    booking = get_object_or_404(Booking, id=booking_id)
+    
+    # Calculate amount with service charge and tax
+    if booking.treatment:
+        # Base amount from treatment
+        base_amount = float(booking.treatment.starting_price)
+        # Add service charge (10%)
+        service_charge = base_amount * 0.10
+        # Add tax (18% on total)
+        tax = (base_amount + service_charge) * 0.18
+        # Total amount
+        amount = base_amount + service_charge + tax
+    else:
+        base_amount = 1947.00
+        service_charge = base_amount * 0.10
+        tax = (base_amount + service_charge) * 0.18
+        amount = base_amount + service_charge + tax
+    
+    context = {
+        'booking': booking,
+        'amount': round(amount, 2),
+        'base_amount': round(base_amount, 2),
+        'service_charge': round(service_charge, 2),
+        'tax': round(tax, 2),
+    }
+    
+    return render(request, 'payments/booking_payment.html', context)
+
+
+def consultation_payment(request, booking_id):
+    """Display consultation payment page"""
+    booking = get_object_or_404(Booking, id=booking_id)
+    
+    # For consultation, we use a fixed amount or treatment price
+    amount = 1947.00  # Fixed consultation amount with taxes
+    
+    # If booking has a treatment, use its price
+    if booking.treatment:
+        # Base amount from treatment
+        base_amount = float(booking.treatment.starting_price)
+        # Add service charge (10%)
+        service_charge = base_amount * 0.10
+        # Add tax (18% on total)
+        tax = (base_amount + service_charge) * 0.18
+        # Total amount
+        amount = base_amount + service_charge + tax
+    
+    context = {
+        'booking': booking,
+        'amount': round(amount, 2),
+    }
+    
+    return render(request, 'payments/consultation_payment.html', context)
+
+
 def static_payment_demo(request, booking_id):
     """Display static payment demo page"""
     booking = get_object_or_404(Booking, id=booking_id)
     
     # Calculate amount (this would normally come from the treatment pricing)
-    amount = booking.treatment.starting_price
+    amount = float(booking.treatment.starting_price) if booking.treatment else 1947.00
     
     context = {
         'booking': booking,
@@ -51,12 +108,26 @@ def process_static_payment(request, booking_id):
             # If user profile doesn't exist, leave user as None
             pass
     
+    # Calculate amount for consultation
+    amount = 1947.00  # Fixed consultation amount
+    
+    # If booking has a treatment, calculate proper amount
+    if booking.treatment:
+        # Base amount from treatment
+        base_amount = float(booking.treatment.starting_price)
+        # Add service charge (10%)
+        service_charge = base_amount * 0.10
+        # Add tax (18% on total)
+        tax = (base_amount + service_charge) * 0.18
+        # Total amount
+        amount = base_amount + service_charge + tax
+    
     # Create a payment record to simulate real payment processing
     payment = Payment(
         booking=booking,
         user=user,  # Use the authenticated user if available
-        amount=booking.treatment.starting_price,
-        currency='INR',
+        amount=round(amount, 2),  # Use calculated amount
+        currency='USD',
         status='completed'
     )
     payment.save()
@@ -65,13 +136,13 @@ def process_static_payment(request, booking_id):
     booking.status = 'confirmed'
     booking.save()
     
-    # Check if this is a consultation booking (has a doctor)
-    if booking.preferred_doctor:
+    # Check if this is a consultation booking (has a doctor and Google Meet link)
+    if booking.preferred_doctor and booking.google_meet_link:
         # Redirect to consultation confirmation page
         return redirect('payments:consultation_payment_success', payment_id=payment.pk)
     else:
-        # Redirect to regular payment success page
-        return redirect('payments:static_payment_success', payment_id=payment.pk)
+        # Redirect to booking success page
+        return redirect('payments:booking_success', payment_id=payment.pk)
 
 
 @login_required
@@ -96,7 +167,19 @@ def consultation_payment_success(request, payment_id):
         'meet_link': booking.google_meet_link
     }
     
-    return render(request, 'bookings/consultation_confirmation.html', context)
+    return render(request, 'payments/consultation_success.html', context)
+
+
+@login_required
+def booking_success(request, payment_id):
+    """Display booking payment success page"""
+    payment = get_object_or_404(Payment, id=payment_id)
+    
+    context = {
+        'payment': payment,
+    }
+    
+    return render(request, 'payments/booking_success.html', context)
 
 
 @login_required

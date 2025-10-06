@@ -85,15 +85,15 @@
 }
 
 .btn-primary-modern {
-  background: #adb5bd;
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
   color: white;
-  box-shadow: 0 4px 15px rgba(173, 181, 189, 0.3);
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
 }
 
 .btn-primary-modern:hover {
-  background: #868e96;
+  background: linear-gradient(135deg, #0b5ed7, #0d6efd);
   transform: translateY(-3px);
-  box-shadow: 0 7px 20px rgba(173, 181, 189, 0.4);
+  box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
 }
 
 .btn-outline-modern {
@@ -105,6 +105,7 @@
 .btn-outline-modern:hover {
   background: #e9ecef;
   transform: translateY(-3px);
+  border-color: #6c757d;
 }
 
 .section-title-modern {
@@ -123,7 +124,7 @@
   left: 0;
   width: 60px;
   height: 3px;
-  background: #adb5bd;
+  background: #0d6efd;
   border-radius: 3px;
 }
 
@@ -153,7 +154,7 @@
 }
 
 .carousel-indicators .active {
-  background-color: #868e96;
+  background-color: #0d6efd;
 }
 
 .treatment-grid {
@@ -180,7 +181,7 @@
 
 .treatment-item-modern i {
   font-size: 1.5rem;
-  color: #868e96;
+  color: #0d6efd;
   margin-bottom: 0.75rem;
 }
 
@@ -198,108 +199,71 @@
   transition: all 0.3s ease;
   text-decoration: none;
   color: inherit;
-  background: white;
-  border: 1px solid #e9ecef;
+  display: block;
 }
 
 .doctor-card-modern:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .doctor-card-modern img {
+  width: 100%;
   height: 200px;
   object-fit: cover;
 }
 
-.rating-modern {
-  color: #ffc107;
-}
-
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  text-align: center;
 }
 
 .stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
 }
 
 .stat-card i {
-  font-size: 2rem;
-  color: #2c5282;
-  margin-bottom: 1rem;
-}
-
-.stat-card .number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2c3e50;
+  font-size: 1.5rem;
+  color: #0d6efd;
   margin-bottom: 0.5rem;
 }
 
-.faq-modern .accordion-button {
-  font-weight: 600;
+.stat-card .number {
+  font-size: 1.5rem;
+  font-weight: 700;
   color: #2c3e50;
-  background: #f8f9fa;
-  border: none;
-  border-radius: 10px !important;
-}
-
-.faq-modern .accordion-button:not(.collapsed) {
-  color: #2c5282;
-  background: #e7f1ff;
-}
-
-.faq-modern .accordion-item {
-  border: 1px solid #e9ecef;
-  border-radius: 10px !important;
-  margin-bottom: 0.75rem;
-  overflow: hidden;
+  margin-bottom: 0.25rem;
 }
 
 .review-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
 }
 
 .review-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1rem;
   border: 1px solid #e9ecef;
 }
 
-.review-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
 .progress-modern {
-  height: 10px;
-  border-radius: 5px;
-  background-color: #e9ecef;
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .progress-bar-modern {
-  border-radius: 5px;
-  background: #2c5282;
+  height: 100%;
+  background: #0d6efd;
+  border-radius: 4px;
 }
 
 .back-btn {
@@ -308,7 +272,8 @@
   transition: all 0.2s ease;
   background: #f8f9fa;
   border: 1px solid #e9ecef;
-  color: #495057;
+  color: #2c3e50;
+  padding: 0.5rem 1rem;
 }
 
 .back-btn:hover {
@@ -316,88 +281,159 @@
   transform: translateX(-3px);
 }
 
+.success-stories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.story-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  background: white;
+  border: 1px solid #e9ecef;
+}
+
+.story-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.story-video-container {
+  position: relative;
+  height: 200px;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-video-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.story-video-container .play-button {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.story-video-container .play-button:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.story-video-container .play-button i {
+  color: #0d6efd;
+  font-size: 1.5rem;
+  margin-left: 3px;
+}
+
+.story-content {
+  padding: 1rem;
+}
+
+.story-content .patient-name {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.story-content .treatment {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.story-content .rating {
+  color: #f39c12;
+  margin-bottom: 0.5rem;
+}
+
+.story-content .testimonial {
+  font-size: 0.9rem;
+  color: #495057;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
 @media (max-width: 1200px) {
-  .doctor-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+  .treatment-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
   
-  .treatment-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 0.75rem;
+  .doctor-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   }
   
   .review-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
 }
 
 @media (max-width: 992px) {
-  .col-lg-8 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  
-  .col-lg-4 {
-    flex: 0 0 100%;
-    max-width: 100%;
+  .treatment-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
   
   .doctor-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
   
-  .treatment-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
   
   .review-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
+  
+  .section-title-modern {
+    font-size: 1.25rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .page-header {
-    padding: 1.5rem 0;
-    border-radius: 0 0 15px 15px;
+  .treatment-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .doctor-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .review-grid {
+    grid-template-columns: 1fr;
   }
   
   .page-header h1 {
     font-size: 1.75rem;
   }
   
-  .main-content {
-    padding: 0 0.5rem;
-  }
-  
-  .treatment-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 0.75rem;
-  }
-  
-  .doctor-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .stats-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  
-  .review-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .btn-modern {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
-  
-  .doctor-card-modern img {
-    height: 150px;
+  .page-header .location {
+    font-size: 1rem;
   }
   
   .section-title-modern {
@@ -503,6 +539,88 @@
           </div>
         </div>
         
+        <!-- Success Stories & Testimonials -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Success Stories & Patient Testimonials</h5>
+          </div>
+          <div class="card-body">
+            <div class="success-stories-grid">
+              <!-- Sample success story with video -->
+              <div class="story-card">
+                <div class="story-video-container">
+                  <img src="https://picsum.photos/seed/story1/600/400" alt="Patient Success Story">
+                  <div class="play-button">
+                    <i class="bi bi-play-fill"></i>
+                  </div>
+                </div>
+                <div class="story-content">
+                  <div class="patient-name">Rajesh Kumar</div>
+                  <div class="treatment">Cardiac Surgery</div>
+                  <div class="rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    (5.0)
+                  </div>
+                  <p class="testimonial">The cardiac surgery at this hospital was life-changing. The expertise and care I received exceeded my expectations.</p>
+                </div>
+              </div>
+              
+              <!-- Sample success story with image -->
+              <div class="story-card">
+                <div class="story-video-container">
+                  <img src="https://picsum.photos/seed/story2/600/400" alt="Patient Success Story">
+                </div>
+                <div class="story-content">
+                  <div class="patient-name">Priya Sharma</div>
+                  <div class="treatment">Orthopedic Surgery</div>
+                  <div class="rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                    (4.5)
+                  </div>
+                  <p class="testimonial">My joint replacement surgery was a success. I'm walking without pain after just a few weeks of recovery.</p>
+                </div>
+              </div>
+              
+              <!-- Sample success story with video -->
+              <div class="story-card">
+                <div class="story-video-container">
+                  <img src="https://picsum.photos/seed/story3/600/400" alt="Patient Success Story">
+                  <div class="play-button">
+                    <i class="bi bi-play-fill"></i>
+                  </div>
+                </div>
+                <div class="story-content">
+                  <div class="patient-name">Amit Patel</div>
+                  <div class="treatment">Neurosurgery</div>
+                  <div class="rating">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    (5.0)
+                  </div>
+                  <p class="testimonial">The expertise and care I received for my neurosurgery exceeded my expectations. Highly recommended!</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-center mt-4">
+              <a href="#" class="btn btn-outline-modern">
+                <i class="bi bi-collection-play me-2"></i>View All Success Stories
+              </a>
+            </div>
+          </div>
+        </div>
+        
         <!-- About Hospital -->
         <div class="card-modern">
           <div class="card-header">
@@ -602,22 +720,45 @@
         <!-- Doctors -->
         <div class="card-modern">
           <div class="card-header">
-            <h5 class="mb-0">Our Medical Experts</h5>
+            <h5 class="mb-0"><i class="bi bi-person-badge me-2"></i>Our Medical Experts</h5>
           </div>
           <div class="card-body">
             {% if doctors_page_obj %}
             <div class="doctor-grid">
               {% for doctor in doctors_page_obj %}
-              <a href="/doctors/{{ doctor.slug }}/" class="doctor-card-modern">
+              <a href="/doctors/{{ doctor.slug }}/" class="doctor-card-modern text-decoration-none">
                 <div class="position-relative">
                   {% if doctor.profile_picture %}
                   <img src="{{ doctor.profile_picture }}" class="w-100" alt="{{ doctor.name }}">
                   {% else %}
-                  <img src="https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="w-100" alt="{{ doctor.name }}">
+                  <div class="bg-light w-100 d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="bi bi-person-badge text-muted" style="font-size: 3rem;"></i>
+                  </div>
                   {% endif %}
                   <div class="position-absolute bottom-0 start-0 w-100 p-2" style="background: rgba(0, 0, 0, 0.7);">
                     <div class="text-white small fw-semibold">{{ doctor.name }}</div>
-                    <div class="text-white small">{{ doctor.specialization }}</div>
+                    <div class="text-white small">{{ doctor.specialization|truncatewords:3 }}</div>
+                  </div>
+                  <div class="position-absolute top-0 end-0 m-2">
+                    <div class="text-warning">
+                      {% for i in "12345" %}
+                        {% if forloop.counter <= doctor.rating|floatformat:0 %}
+                          <i class="bi bi-star-fill"></i>
+                        {% else %}
+                          <i class="bi bi-star"></i>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                <div class="p-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="small text-muted">
+                      <i class="bi bi-briefcase me-1"></i>{{ doctor.experience_years }} yrs
+                    </div>
+                    <div class="small text-muted">
+                      <i class="bi bi-people me-1"></i>{{ doctor.patients_treated|default:'1000' }}+
+                    </div>
                   </div>
                 </div>
               </a>
@@ -656,10 +797,16 @@
             {% endif %}
             
             <div class="text-center mt-3">
-              <a href="/doctors/" class="btn btn-outline-modern">View All Doctors</a>
+              <a href="/doctors/?hospital={{ hospital.id }}" class="btn btn-outline-modern">
+                <i class="bi bi-person-badge me-2"></i>View All {{ doctors_page_obj.paginator.count }} Doctors
+              </a>
             </div>
             {% else %}
-            <p class="mb-0">No doctors listed for this hospital yet.</p>
+            <div class="text-center py-4">
+              <i class="bi bi-person-x text-muted" style="font-size: 3rem;"></i>
+              <h5 class="mt-3 text-muted">No Doctors Listed</h5>
+              <p class="text-muted">No doctors are currently affiliated with this hospital.</p>
+            </div>
             {% endif %}
           </div>
         </div>
@@ -922,5 +1069,17 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Add click event for play buttons
+  document.addEventListener('DOMContentLoaded', function() {
+    const playButtons = document.querySelectorAll('.play-button');
+    playButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        alert('In a real implementation, this would open a video player modal');
+      });
+    });
+  });
+</script>
 
 {% endblock %}

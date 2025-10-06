@@ -11,10 +11,15 @@ class Payment(models.Model):
         ('refunded', 'Refunded'),
     ]
     
+    CURRENCY_CHOICES = [
+        ('USD', 'USD'),
+        ('INR', 'INR'),
+    ]
+    
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name='payments')
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='payments', null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    currency = models.CharField(max_length=3, default='INR')
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
     status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

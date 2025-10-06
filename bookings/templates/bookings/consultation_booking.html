@@ -134,6 +134,31 @@
     color: #6c757d;
   }
 
+  /* Costing Section */
+  .costing-card {
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+    background: #f8f9fa;
+  }
+
+  .costing-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .costing-item:last-child {
+    border-bottom: none;
+  }
+
+  .costing-total {
+    font-weight: 700;
+    font-size: 1.1rem;
+    background: #e9ecef;
+    border-radius: 0 0 10px 10px;
+  }
+
   @media (max-width: 768px) {
     .consultation-page {
       padding: 1rem;
@@ -153,13 +178,13 @@
 <div class="container py-5 consultation-page">
   <div class="row justify-content-center">
     <div class="col-lg-8">
-      <a href="/doctors/{{ doctor.slug }}/" class="btn btn-sm btn-outline-secondary mb-3">
+      <a href="{% url 'doctor_detail' doctor.slug %}" class="btn btn-sm btn-outline-secondary mb-3">
         <i class="bi bi-arrow-left me-1"></i>Back to Doctor Profile
       </a>
       
       <div class="card border-0 shadow-sm consultation-card">
         <div class="card-header bg-primary text-white">
-          <h4 class="mb-0">Book Consultation with Dr. {{ doctor.name }}</h4>
+          <h4 class="mb-0">Book Video Consultation with Dr. {{ doctor.name }}</h4>
         </div>
         <div class="card-body">
           <div class="row mb-4">
@@ -215,7 +240,7 @@
             </div>
             
             <div class="mb-4">
-              <h5 class="mb-3">Upload Medical Documents (Optional)</h5>
+              <h5 class="mb-3">Upload Medical Documents</h5>
               <div class="file-upload-area" id="medicalDocumentsDropArea">
                 <i class="bi bi-cloud-upload display-5 text-primary mb-2"></i>
                 <p class="mb-1">Drag & drop medical documents here or click to browse</p>
@@ -223,7 +248,7 @@
                 <input type="file" class="form-control" id="medicalDocumentsInput" name="medical_reports" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
               </div>
               <div class="file-list" id="medicalDocumentsList"></div>
-              <div class="form-text">Upload prescriptions, medical reports, or other relevant documents</div>
+              <div class="form-text">Upload prescriptions, medical reports, or other relevant documents for the doctor to review during consultation</div>
             </div>
             
             <div class="mb-4">
@@ -260,23 +285,29 @@
             
             <div class="mb-4">
               <h5 class="mb-3">Consultation Costing</h5>
-              <div class="card border-info">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between">
-                    <span>Video Consultation Fee</span>
-                    <span class="fw-bold">$50.00</span>
-                  </div>
-                  <hr>
-                  <div class="d-flex justify-content-between">
-                    <span>Total</span>
-                    <span class="fw-bold">$50.00</span>
-                  </div>
+              <div class="card costing-card">
+                <div class="costing-item">
+                  <span>Video Consultation Fee</span>
+                  <span class="fw-bold">₹1,500.00</span>
+                </div>
+                <div class="costing-item">
+                  <span>Service Charge</span>
+                  <span class="fw-bold">₹150.00</span>
+                </div>
+                <div class="costing-item">
+                  <span>Tax (18%)</span>
+                  <span class="fw-bold">₹297.00</span>
+                </div>
+                <div class="costing-item costing-total">
+                  <span>Total Amount</span>
+                  <span class="fw-bold">₹1,947.00</span>
                 </div>
               </div>
+              <div class="form-text mt-2">All prices are in INR (Indian Rupees)</div>
             </div>
             
             <div class="d-flex justify-content-between">
-              <a href="/doctors/{{ doctor.slug }}/" class="btn btn-secondary">Cancel</a>
+              <a href="{% url 'doctor_detail' doctor.slug %}" class="btn btn-secondary">Cancel</a>
               <button type="submit" class="btn btn-primary consultation-submit-btn" id="bookConsultationBtn">
                 <i class="bi bi-calendar-check me-2"></i>Proceed to Payment
               </button>

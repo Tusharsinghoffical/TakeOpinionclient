@@ -16,6 +16,7 @@ urlpatterns = [
     path("consultation/<int:doctor_id>/", views.consultation_booking, name="consultation_booking"),
     path("payment/<int:booking_id>/", views.payment_page, name="payment_page"),
     path("api/create-google-meet/", views.create_google_meet, name="create_google_meet"),
+    path("join-consultation/<int:booking_id>/", views.join_consultation, name="join_consultation"),
     # Admin dashboard URLs
     path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),
     path("admin/update-status/<int:booking_id>/<str:status>/", views.update_booking_status, name="update_booking_status"),

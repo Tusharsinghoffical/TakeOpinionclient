@@ -1,39 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 <style>
-  /* Use the same vibrant color palette as the home page */
-  :root {
-    --primary-dark: #2c3e50;
-    --primary-medium: #3498db;
-    --primary-light: #5dade2;
-    --accent: #e74c3c;
-    --success: #27ae60;
-    --warning: #f39c12;
-    --light-bg: #f8f9fa;
-    --dark-text: #2c3e50;
-    --light-text: #ffffff;
-    --border: #dee2e6;
-    --shadow: rgba(0, 0, 0, 0.1);
-    --shadow-strong: rgba(0, 0, 0, 0.15);
-    --gradient-start: #3498db;
-    --gradient-end: #2c3e50;
-    --transition-speed: 0.3s;
-  }
-
+  /* Treatment Pricing Page Styles - Matching Homepage Design */
   .pricing-page {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--dark-text);
-    line-height: 1.6;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   }
 
   /* Hero Section */
   .hero-section {
-    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-    color: var(--light-text);
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
     padding: 5rem 0;
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #e9ecef;
   }
 
   .hero-content {
@@ -43,12 +23,11 @@
   }
 
   .hero-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
-    color: var(--light-text);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    line-height: 1.2;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .hero-subtitle {
@@ -57,15 +36,34 @@
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
-    color: var(--light-text);
-    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Section Header */
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
+    color: #6c757d;
+    max-width: 700px;
+    margin: 0 auto;
   }
 
   /* Search Section */
   .search-section {
     background: white;
     padding: 3rem 0;
-    box-shadow: 0 5px 15px var(--shadow);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   }
 
   .search-tabs .nav-link {
@@ -77,18 +75,18 @@
   }
 
   .search-tabs .nav-link.active {
-    background: linear-gradient(135deg, var(--primary-medium), var(--primary-dark));
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
     color: white;
     border: none;
   }
 
   .search-tabs .nav-link:hover:not(.active) {
-    border: 2px solid var(--primary-medium);
-    color: var(--primary-medium);
+    border: 2px solid #0d6efd;
+    color: #0d6efd;
   }
 
   .search-form {
-    background: var(--light-bg);
+    background: #f8f9fa;
     border-radius: 12px;
     padding: 1.5rem;
     margin-top: 1.5rem;
@@ -99,14 +97,14 @@
     overflow-y: auto;
     margin-top: 1rem;
     border-radius: 10px;
-    box-shadow: 0 5px 15px var(--shadow);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
 
   .search-result-item {
     padding: 1rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #e9ecef;
     cursor: pointer;
-    transition: all var(--transition-speed) ease;
+    transition: all 0.3s ease;
   }
 
   .search-result-item:hover {
@@ -117,9 +115,88 @@
     border-bottom: none;
   }
 
+  /* Treatment Selection */
+  .treatment-selection-section {
+    background-color: #f8f9fa;
+    padding: 5rem 0;
+  }
+
+  .treatment-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+  }
+
+  .treatment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    border-color: #0d6efd;
+  }
+
+  .treatment-card.selected {
+    border-color: #0d6efd;
+    background: #e7f1ff;
+  }
+
+  .treatment-card h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+
+  .treatment-card .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .hospital-filter-section {
+    background: white;
+    padding: 5rem 0;
+  }
+
+  .hospital-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    margin-bottom: 1.5rem;
+  }
+
+  .hospital-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .hospital-card img {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .hospital-details {
+    padding: 1.5rem;
+  }
+
+  .hospital-details h5 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+
+  .hospital-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
   /* Key Highlights */
   .key-highlights-section {
-    background-color: var(--light-bg);
+    background-color: #f8f9fa;
     padding: 5rem 0;
   }
 
@@ -133,32 +210,28 @@
     background: white;
     border-radius: 15px;
     padding: 2rem;
-    box-shadow: 0 5px 15px var(--shadow);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
-    transition: all var(--transition-speed) ease;
-    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
   }
 
   .highlight-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px var(--shadow-strong);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
   }
 
   .highlight-icon {
     font-size: 3rem;
     margin-bottom: 1.5rem;
-    color: var(--primary-medium);
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-medium) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #0d6efd;
   }
 
   .highlight-title {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: var(--primary-dark);
+    color: #2c3e50;
     line-height: 1.3;
   }
 
@@ -173,47 +246,26 @@
     padding: 5rem 0;
   }
 
-  .section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  .section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--primary-dark);
-    margin-bottom: 1rem;
-    line-height: 1.2;
-  }
-
-  .section-subtitle {
-    font-size: 1.25rem;
-    color: #6c757d;
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.5;
-  }
-
   .pricing-faq .accordion-button {
     font-weight: 600;
-    color: var(--primary-dark);
-    background: var(--light-bg);
+    color: #2c3e50;
+    background: #f8f9fa;
     border: none;
     border-radius: 12px !important;
     padding: 1.25rem 1.5rem;
   }
 
   .pricing-faq .accordion-button:not(.collapsed) {
-    color: var(--primary-medium);
+    color: #0d6efd;
     background: #e7f1ff;
   }
 
   .pricing-faq .accordion-item {
-    border: 1px solid var(--border);
+    border: 1px solid #e9ecef;
     border-radius: 12px !important;
     margin-bottom: 1rem;
     overflow: hidden;
-    box-shadow: 0 3px 10px var(--shadow);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   }
 
   .pricing-faq .accordion-body {
@@ -222,7 +274,7 @@
 
   /* Cost Factors */
   .cost-factors-section {
-    background-color: var(--light-bg);
+    background-color: #f8f9fa;
     padding: 5rem 0;
   }
 
@@ -234,7 +286,7 @@
 
   .pricing-features li {
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #e9ecef;
     display: flex;
     align-items: center;
   }
@@ -244,7 +296,7 @@
   }
 
   .pricing-features li i {
-    color: var(--success);
+    color: #198754;
     margin-right: 1rem;
     font-size: 1.2rem;
     width: 24px;
@@ -253,13 +305,13 @@
 
   /* Savings Highlight */
   .savings-highlight {
-    background: linear-gradient(135deg, var(--success), #20c997);
+    background: linear-gradient(135deg, #198754 0%, #157347 100%);
     color: white;
     padding: 3rem;
     border-radius: 20px;
     text-align: center;
     margin: 2rem 0;
-    box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+    box-shadow: 0 10px 30px rgba(25, 135, 84, 0.3);
   }
 
   .savings-highlight .display-6 {
@@ -270,12 +322,12 @@
 
   /* CTA Section */
   .cta-section {
-    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-    color: var(--light-text);
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
     padding: 5rem 0;
     text-align: center;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
   }
 
   .cta-title {
@@ -283,7 +335,7 @@
     font-weight: 700;
     margin-bottom: 1rem;
     line-height: 1.2;
-    color: var(--light-text);
+    color: white;
   }
 
   .cta-subtitle {
@@ -293,26 +345,26 @@
     margin-left: auto;
     margin-right: auto;
     line-height: 1.5;
-    color: var(--light-text);
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .btn-primary-large {
-    background-color: var(--accent);
-    color: white;
+    background-color: white;
+    color: #0d6efd;
     border: none;
     padding: 1rem 2rem;
     font-size: 1.1rem;
     font-weight: 600;
     border-radius: 50px;
-    transition: all var(--transition-speed) ease;
+    transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-decoration: none;
     display: inline-block;
   }
 
   .btn-primary-large:hover {
-    background-color: #c0392b;
-    color: white;
+    background-color: #f8f9fa;
+    color: #0d6efd;
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   }
@@ -453,6 +505,57 @@
               </button>
             </div>
             <div class="search-results mt-3" id="hospitalResults" style="display: none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Treatment Selection Section -->
+  <section class="treatment-selection-section" aria-labelledby="treatment-selection-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="treatment-selection-heading" class="section-title">Select a Treatment</h2>
+        <p class="section-subtitle">Choose from our most popular treatments to see detailed pricing</p>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          {% for category in categories %}
+            {% if category.treatments.all %}
+              <h4 class="mb-4">{{ category.name }}</h4>
+              {% for treatment in category.treatments.all %}
+                <div class="treatment-card" data-treatment-id="{{ treatment.id }}">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h4 class="mb-1">{{ treatment.name }}</h4>
+                      <p class="mb-0 text-muted">{{ treatment.description|truncatewords:15 }}</p>
+                    </div>
+                    <div class="price">₹{{ treatment.starting_price|floatformat:0 }}</div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hospital Filter Section -->
+  <section class="hospital-filter-section" aria-labelledby="hospital-filter-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="hospital-filter-heading" class="section-title">Hospitals by Treatment</h2>
+        <p class="section-subtitle">Select a treatment above to see hospitals offering that treatment with their pricing</p>
+      </div>
+      
+      <div class="row" id="hospitalResultsContainer">
+        <div class="col-12 text-center">
+          <div class="py-5">
+            <i class="bi bi-hospital text-muted" style="font-size: 3rem;"></i>
+            <h5 class="mt-3">Select a treatment to view hospitals</h5>
+            <p class="text-muted">Choose a treatment from above to see hospitals that offer it and their pricing information</p>
           </div>
         </div>
       </div>
@@ -619,6 +722,10 @@
     const searchHospitalBtn = document.getElementById('searchHospitalBtn');
     const hospitalResults = document.getElementById('hospitalResults');
     
+    // Treatment selection
+    const treatmentCards = document.querySelectorAll('.treatment-card');
+    const hospitalResultsContainer = document.getElementById('hospitalResultsContainer');
+    
     // Treatment search function
     function searchTreatments() {
       const query = treatmentSearch.value.trim();
@@ -715,7 +822,7 @@
                   <div class="fw-semibold">${item.name}</div>
                   <div class="small text-muted">${item.category}</div>
                 </div>
-                <div class="price-range">$${item.price.toLocaleString()}</div>
+                <div class="price-range">₹${item.price.toLocaleString()}</div>
               </div>
             `;
           } else if (type === 'doctor') {
@@ -725,7 +832,7 @@
                   <div class="fw-semibold">${item.name}</div>
                   <div class="small text-muted">${item.specialty}</div>
                 </div>
-                <div class="price-range">$${item.price.toLocaleString()}</div>
+                <div class="price-range">₹${item.price.toLocaleString()}</div>
               </div>
             `;
           } else if (type === 'hospital') {
@@ -735,7 +842,7 @@
                   <div class="fw-semibold">${item.name}</div>
                   <div class="small text-muted">${item.location}</div>
                 </div>
-                <div class="price-range">$${item.price.toLocaleString()}</div>
+                <div class="price-range">₹${item.price.toLocaleString()}</div>
               </div>
             `;
           }
@@ -750,6 +857,107 @@
       }
       
       container.style.display = 'block';
+    }
+    
+    // Treatment selection functionality
+    treatmentCards.forEach(card => {
+      card.addEventListener('click', function() {
+        const treatmentId = this.getAttribute('data-treatment-id');
+        
+        // Remove selected class from all cards
+        treatmentCards.forEach(c => c.classList.remove('selected'));
+        
+        // Add selected class to clicked card
+        this.classList.add('selected');
+        
+        // Fetch hospitals for this treatment
+        fetchHospitalsForTreatment(treatmentId);
+      });
+    });
+    
+    // Fetch hospitals for a specific treatment
+    function fetchHospitalsForTreatment(treatmentId) {
+      fetch(`/treatments/api/hospitals/${treatmentId}/`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            displayHospitals(data.hospitals, data.treatment);
+          } else {
+            hospitalResultsContainer.innerHTML = `
+              <div class="col-12 text-center">
+                <div class="alert alert-danger">Error: ${data.error}</div>
+              </div>
+            `;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          hospitalResultsContainer.innerHTML = `
+            <div class="col-12 text-center">
+              <div class="alert alert-danger">Error loading hospitals</div>
+            </div>
+          `;
+        });
+    }
+    
+    // Display hospitals
+    function displayHospitals(hospitals, treatment) {
+      if (hospitals.length === 0) {
+        hospitalResultsContainer.innerHTML = `
+          <div class="col-12 text-center">
+            <div class="py-5">
+              <i class="bi bi-hospital text-muted" style="font-size: 3rem;"></i>
+              <h5 class="mt-3">No hospitals found</h5>
+              <p class="text-muted">No hospitals currently offer this treatment</p>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
+      let html = `
+        <div class="col-12 mb-4">
+          <div class="text-center">
+            <h4>Hospitals offering ${treatment.name}</h4>
+            <p class="text-muted">Starting price: ₹${treatment.starting_price.toLocaleString()}</p>
+          </div>
+        </div>
+      `;
+      
+      hospitals.forEach(hospital => {
+        html += `
+          <div class="col-lg-6 mb-4">
+            <div class="hospital-card">
+              <div class="position-relative">
+                ${hospital.profile_picture ? 
+                  `<img src="${hospital.profile_picture}" class="w-100" alt="${hospital.name}">` : 
+                  `<img src="https://picsum.photos/seed/h${hospital.id}/600/400" class="w-100" alt="${hospital.name}">`}
+                ${hospital.is_takeopinion_choice ? 
+                  `<span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">TO Choice</span>` : ''}
+              </div>
+              <div class="hospital-details">
+                <h5>${hospital.name}</h5>
+                <p class="text-muted mb-2">${hospital.city}${hospital.state ? `, ${hospital.state}` : ''}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="text-warning">
+                    ${[1,2,3,4,5].map(i => 
+                      i <= Math.floor(hospital.rating) ? 
+                        '<i class="bi bi-star-fill"></i>' : 
+                        '<i class="bi bi-star"></i>'
+                    ).join('')}
+                  </div>
+                  <div class="hospital-price">₹${hospital.price.toLocaleString()}</div>
+                </div>
+                <div class="mt-3">
+                  <a href="/hospitals/${hospital.slug}/" class="btn btn-primary w-100">View Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      hospitalResultsContainer.innerHTML = html;
     }
     
     // Event listeners

@@ -410,11 +410,8 @@ def booking_page(request: HttpRequest) -> HttpResponse:
                         description=f"Medical report uploaded for booking #{booking_id}"
                     ).save()
             
-            # Send confirmation (in a real implementation, you would send an email)
-            messages.success(request, f'Your booking request for {treatment.name} has been submitted successfully! Our team will contact you within 24 hours to confirm details. Booking ID: {booking.id}')  # type: ignore
-            
-            # Redirect to booking confirmation page instead of payment page
-            return redirect('bookings:booking_confirmation', booking_id=booking.id)  # type: ignore
+            # Redirect to payment page instead of confirmation page
+            return redirect('payments:booking_payment', booking_id=booking.id)  # type: ignore
             
         except Exception as e:
             logger.error(f"Error processing booking: {str(e)}", exc_info=True)
@@ -564,7 +561,7 @@ def consultation_booking(request, doctor_id):
             # 3. Store the meeting details in the database
             
             # Redirect to payment page
-            return redirect('payments:static_payment_demo', booking_id=booking.id)  # type: ignore
+            return redirect('payments:consultation_payment', booking_id=booking.id)  # type: ignore
             
         except Exception as e:
             logger.error(f"Error booking consultation: {str(e)}", exc_info=True)
@@ -691,4 +688,35 @@ def update_booking_status(request, booking_id, status):
     else:
         messages.error(request, 'Invalid status update.')
     
-    return redirect('admin_dashboard')
+    return redirect('bookings:admin_dashboard')
+
+
+@login_required
+def join_consultation(request, booking_id):
+    """Redirect doctor to Google Meet link for video consultation"""
+    booking = get_object_or_404(Booking, id=booking_id)
+    
+    # Check if user is authorized (doctor or admin)
+    user_profile = getattr(request.user, 'userprofile', None)
+    if not user_profile:
+        messages.error(request, 'You must be logged in to join a consultation.')
+        return redirect('accounts:login')
+    
+    # Check if user is the assigned doctor or an admin
+    is_authorized = (
+        (user_profile.user_type == 'doctor' and booking.preferred_doctor and 
+         hasattr(request.user, 'doctor') and request.user.doctor == booking.preferred_doctor) or
+        user_profile.user_type == 'admin'
+    )
+    
+    if not is_authorized:
+        messages.error(request, 'You are not authorized to join this consultation.')
+        return redirect('home')
+    
+    # Check if this is a video consultation with a Google Meet link
+    if not booking.google_meet_link:
+        messages.error(request, 'This is not a video consultation or the meeting link is not available.')
+        return redirect('home')
+    
+    # Redirect to Google Meet
+    return redirect(booking.google_meet_link)

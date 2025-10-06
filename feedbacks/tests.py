@@ -5,7 +5,7 @@ from accounts.models import UserProfile, PatientProfile
 from feedbacks.models import Feedback
 from doctors.models import Doctor
 from hospitals.models import Hospital
-from treatments.models import Treatment
+from treatments.models import Treatment, TreatmentCategory
 
 class ReviewsPageTest(TestCase):
     def setUp(self):
@@ -37,10 +37,16 @@ class ReviewsPageTest(TestCase):
             city='Test City'
         )
         
+        # Create a treatment category first
+        self.treatment_category = TreatmentCategory.objects.create(
+            name='Test Category',
+            type='medical'
+        )
+        
         self.treatment = Treatment.objects.create(
             name='Test Treatment',
             description='Test Description',
-            category_id=1  # Assuming there's a category with ID 1
+            category=self.treatment_category
         )
         
         # Create test feedback
