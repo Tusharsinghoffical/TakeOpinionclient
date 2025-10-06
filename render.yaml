@@ -2,7 +2,7 @@ services:
   - type: web
     name: takeopinion
     env: python
-    buildCommand: "./scripts/build.sh"
+    buildCommand: "./build.sh"
     startCommand: "gunicorn -c scripts/gunicorn.conf.py takeopinion.wsgi:application"
     envVars:
       - key: DJANGO_SETTINGS_MODULE
@@ -12,7 +12,7 @@ services:
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS
-        value: ".onrender.com,takeopinionclient.onrender.com"
+        value: ".onrender.com,takeopinionclientproject.onrender.com"
       - key: PYTHON_VERSION
         value: "3.11"
       - key: PORT
