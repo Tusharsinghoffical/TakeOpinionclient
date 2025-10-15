@@ -1,0 +1,858 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<style>
+  /* Treatment Home Page Styles - Matching Homepage Design */
+  .treatment-page {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .btn-primary-large {
+    background: white;
+    color: #0d6efd;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 0.5rem;
+  }
+
+  .btn-primary-large:hover {
+    background: #f8f9fa;
+    color: #0d6efd;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-secondary-large {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 0.5rem;
+  }
+
+  .btn-secondary-large:hover {
+    background: white;
+    color: #0d6efd;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Filter Section */
+  .filter-section {
+    background: white;
+    padding: 3rem 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .filter-card {
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: none;
+    overflow: hidden;
+  }
+
+  .filter-card .card-body {
+    padding: 2rem;
+  }
+
+  .filter-form .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+
+  .filter-form .form-control, .filter-form .form-select {
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .filter-form .form-control:focus, .filter-form .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .filter-form .btn {
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    background: #0d6efd;
+    color: white;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+  }
+
+  .filter-form .btn:hover {
+    background: #0b5ed7;
+    transform: translateY(-2px);
+  }
+
+  /* Section Header */
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
+    color: #6c757d;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* Multi Speciality Section */
+  .multi-speciality-section {
+    background: #f8f9fa;
+    padding: 5rem 0;
+  }
+
+  .treatment-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+
+  .treatment-tag {
+    background: white;
+    color: #0d6efd;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+  }
+
+  .treatment-tag:hover {
+    background: #0d6efd;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .treatments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .treatment-card {
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+  }
+
+  .treatment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .treatment-icon {
+    font-size: 1.5rem;
+    color: #0d6efd;
+    background: rgba(13, 110, 253, 0.1);
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .treatment-body {
+    flex: 1;
+  }
+
+  .treatment-type {
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+  }
+
+  .treatment-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .btn-view-all {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    background: #0d6efd;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .btn-view-all:hover {
+    background: #0b5ed7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  /* Tab Navigation */
+  .nav-tabs .nav-link {
+    border-radius: 10px;
+    font-weight: 600;
+    color: #6c757d;
+    margin: 0 5px;
+    border: 2px solid transparent;
+  }
+
+  .nav-tabs .nav-link.active {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border: none;
+  }
+
+  .nav-tabs .nav-link:hover:not(.active) {
+    border: 2px solid #0d6efd;
+    color: #0d6efd;
+  }
+
+  /* Custom dropdown styles */
+  .custom-select-wrapper {
+    position: relative;
+  }
+
+  .custom-select-wrapper::after {
+    content: "▼";
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+
+  .searchable-dropdown {
+    position: relative;
+  }
+
+  .searchable-dropdown-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .searchable-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+  }
+
+  .searchable-dropdown-menu.show {
+    display: block;
+  }
+
+  .searchable-dropdown-search {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    outline: none;
+  }
+
+  .searchable-dropdown-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color var(--transition-speed) ease;
+  }
+
+  .searchable-dropdown-item:hover {
+    background-color: var(--light-bg);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: 3rem 0;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+
+    .btn-primary-large,
+    .btn-secondary-large {
+      display: block;
+      margin: 0.5rem auto;
+      width: 80%;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+    }
+    
+    .treatments-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="treatment-page">
+  <!-- Hero Section -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="container hero-content">
+      <h1 id="hero-heading" class="hero-title">Find the Right Medical Treatment</h1>
+      <p class="hero-subtitle">
+        Explore our comprehensive range of medical treatments across various
+        specialities, all offered by our verified healthcare partners.
+      </p>
+      <div class="hero-buttons">
+        <a href="/doctors/" class="btn-primary-large">
+          <i class="bi bi-chat-dots me-2"></i> Connect with Experts
+        </a>
+        <a href="/doctors/" class="btn-secondary-large"> Find Doctors </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter Section -->
+  <section class="filter-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Filter Treatments</h2>
+        <p class="section-subtitle">Find the perfect treatment based on your specific needs</p>
+      </div>
+      <div class="card filter-card border-0 shadow-sm">
+        <div class="card-body">
+          <form id="treatment-filter-form" method="GET" class="filter-form">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Search Treatments</label>
+                <input type="text" class="form-control" name="search" id="search-filter" value="{{ search_filter }}" placeholder="Search by treatment name">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Hospital</label>
+                <div class="searchable-dropdown">
+                  <input type="text" class="form-control searchable-dropdown-input" id="hospital-search-input" placeholder="Select hospital..." readonly>
+                  <input type="hidden" name="hospital" id="hospital-filter" value="{{ hospital_filter }}">
+                  <div class="searchable-dropdown-menu" id="hospital-dropdown-menu">
+                    <input type="text" class="searchable-dropdown-search" id="hospital-search-box" placeholder="Search hospitals...">
+                    <div class="searchable-dropdown-items" id="hospital-dropdown-items">
+                      <!-- Hospital options will be populated dynamically -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Doctor</label>
+                <div class="searchable-dropdown">
+                  <input type="text" class="form-control searchable-dropdown-input" id="doctor-search-input" placeholder="Select doctor..." readonly>
+                  <input type="hidden" name="doctor" id="doctor-filter" value="{{ doctor_filter }}">
+                  <div class="searchable-dropdown-menu" id="doctor-dropdown-menu">
+                    <input type="text" class="searchable-dropdown-search" id="doctor-search-box" placeholder="Search doctors...">
+                    <div class="searchable-dropdown-items" id="doctor-dropdown-items">
+                      <!-- Doctor options will be populated dynamically -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn w-100">Filter</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Multi Speciality Treatments Section -->
+  <section class="multi-speciality-section" aria-labelledby="treatments-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="treatments-heading" class="section-title">Medical Treatment Categories</h2>
+        <p class="section-subtitle">
+          Explore our wide range of specialized medical treatments
+        </p>
+      </div>
+      
+      <!-- Tab Navigation -->
+      <ul class="nav nav-tabs nav-justified mb-4" id="treatmentTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#medical" type="button" data-category="medical">
+            <i class="bi bi-heart-pulse me-2"></i>Medical Treatments
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#aesthetic" type="button" data-category="aesthetic">
+            <i class="bi bi-stars me-2"></i>Aesthetic
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#wellness" type="button" data-category="wellness">
+            <i class="bi bi-flower1 me-2"></i>Wellness
+          </button>
+        </li>
+      </ul>
+
+      <!-- Loading Indicator -->
+      <div id="loadingIndicator" class="text-center d-none">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content" id="treatmentsContainer">
+        <div class="tab-pane fade show active" id="medical">
+          <div class="treatments-grid" id="medicalTreatments">
+            {% for c in categories %} {% if c.type == 'medical' %}
+            <div class="treatment-category-card">
+              <div class="card-header bg-primary text-white d-flex align-items-center">
+                <i class="bi bi-folder-fill me-2"></i>
+                <h5 class="card-title mb-0">{{ c.name }}</h5>
+              </div>
+              <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                  {% for t in c.treatments.all %}
+                  <a href="/treatments/{{ t.slug }}/" class="list-group-item list-group-item-action treatment-item">
+                    <span>{{ t.name }}</span>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                  </a>
+                  {% empty %}
+                  <div class="list-group-item text-center text-muted">
+                    <i class="bi bi-info-circle me-1"></i>No treatments available
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            {% endif %} {% endfor %}
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="aesthetic">
+          <div class="treatments-grid" id="aestheticTreatments">
+            {% for c in categories %} {% if c.type == 'aesthetic' %}
+            <div class="treatment-category-card">
+              <div class="card-header bg-info text-white d-flex align-items-center">
+                <i class="bi bi-stars me-2"></i>
+                <h5 class="card-title mb-0">{{ c.name }}</h5>
+              </div>
+              <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                  {% for t in c.treatments.all %}
+                  <a href="/treatments/{{ t.slug }}/" class="list-group-item list-group-item-action treatment-item">
+                    <span>{{ t.name }}</span>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                  </a>
+                  {% empty %}
+                  <div class="list-group-item text-center text-muted">
+                    <i class="bi bi-info-circle me-1"></i>No treatments available
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            {% endif %} {% endfor %}
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="wellness">
+          <div class="treatments-grid" id="wellnessTreatments">
+            {% for c in categories %} {% if c.type == 'wellness' %}
+            <div class="treatment-category-card">
+              <div class="card-header bg-success text-white d-flex align-items-center">
+                <i class="bi bi-flower1 me-2"></i>
+                <h5 class="card-title mb-0">{{ c.name }}</h5>
+              </div>
+              <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                  {% for t in c.treatments.all %}
+                  <a href="/treatments/{{ t.slug }}/" class="list-group-item list-group-item-action treatment-item">
+                    <span>{{ t.name }}</span>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                  </a>
+                  {% empty %}
+                  <div class="list-group-item text-center text-muted">
+                    <i class="bi bi-info-circle me-1"></i>No treatments available
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            {% endif %} {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Hospital dropdown functionality
+  const hospitalFilter = document.getElementById('hospital-filter');
+  const hospitalSearchInput = document.getElementById('hospital-search-input');
+  const hospitalDropdownMenu = document.getElementById('hospital-dropdown-menu');
+  const hospitalSearchBox = document.getElementById('hospital-search-box');
+  const hospitalDropdownItems = document.getElementById('hospital-dropdown-items');
+  
+  // Doctor dropdown functionality
+  const doctorFilter = document.getElementById('doctor-filter');
+  const doctorSearchInput = document.getElementById('doctor-search-input');
+  const doctorDropdownMenu = document.getElementById('doctor-dropdown-menu');
+  const doctorSearchBox = document.getElementById('doctor-search-box');
+  const doctorDropdownItems = document.getElementById('doctor-dropdown-items');
+  
+  // Treatment filter form
+  const treatmentFilterForm = document.getElementById('treatment-filter-form');
+  
+  // Store all options for filtering
+  let allHospitalOptions = [];
+  let allDoctorOptions = [];
+  
+  // Load hospital options dynamically
+  if (hospitalFilter && hospitalSearchInput && hospitalDropdownMenu && hospitalSearchBox && hospitalDropdownItems) {
+    fetch('/hospitals/api/search/?query=a')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && hospitalDropdownItems) {
+          // Save all hospital options
+          allHospitalOptions = data.results || [];
+          
+          // Populate dropdown items
+          populateHospitalDropdown(allHospitalOptions);
+          
+          // Set the initial value if one is selected
+          const selectedHospital = hospitalFilter.value;
+          if (selectedHospital) {
+            const selectedOption = allHospitalOptions.find(hospital => hospital.name === selectedHospital);
+            if (selectedOption) {
+              hospitalSearchInput.value = selectedOption.name;
+            }
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error loading hospitals:', error);
+      });
+  }
+  
+  // Load doctor options dynamically
+  if (doctorFilter && doctorSearchInput && doctorDropdownMenu && doctorSearchBox && doctorDropdownItems) {
+    fetch('/doctors/api/search/?query=a')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && doctorDropdownItems) {
+          // Save all doctor options
+          allDoctorOptions = data.results || [];
+          
+          // Populate dropdown items
+          populateDoctorDropdown(allDoctorOptions);
+          
+          // Set the initial value if one is selected
+          const selectedDoctor = doctorFilter.value;
+          if (selectedDoctor) {
+            const selectedOption = allDoctorOptions.find(doctor => doctor.name === selectedDoctor);
+            if (selectedOption) {
+              doctorSearchInput.value = selectedOption.name;
+            }
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error loading doctors:', error);
+      });
+  }
+  
+  // Populate hospital dropdown with options
+  function populateHospitalDropdown(hospitals) {
+    if (!hospitalDropdownItems) return;
+    
+    hospitalDropdownItems.innerHTML = '';
+    
+    // Add "All Hospitals" option
+    const allOption = document.createElement('div');
+    allOption.className = 'searchable-dropdown-item';
+    allOption.textContent = 'All Hospitals';
+    allOption.dataset.value = '';
+    allOption.addEventListener('click', function() {
+      hospitalFilter.value = '';
+      hospitalSearchInput.value = 'All Hospitals';
+      hospitalDropdownMenu.classList.remove('show');
+    });
+    hospitalDropdownItems.appendChild(allOption);
+    
+    // Add hospital options
+    if (hospitals && hospitals.length > 0) {
+      hospitals.forEach(hospital => {
+        const option = document.createElement('div');
+        option.className = 'searchable-dropdown-item';
+        option.textContent = hospital.name || 'Unnamed Hospital';
+        option.dataset.value = hospital.name || '';
+        option.addEventListener('click', function() {
+          hospitalFilter.value = hospital.name || '';
+          hospitalSearchInput.value = hospital.name || '';
+          hospitalDropdownMenu.classList.remove('show');
+        });
+        hospitalDropdownItems.appendChild(option);
+      });
+    } else {
+      // Add a "No hospitals found" option
+      const noOption = document.createElement('div');
+      noOption.className = 'searchable-dropdown-item';
+      noOption.textContent = 'No hospitals found';
+      noOption.dataset.value = '';
+      hospitalDropdownItems.appendChild(noOption);
+    }
+  }
+  
+  // Populate doctor dropdown with options
+  function populateDoctorDropdown(doctors) {
+    if (!doctorDropdownItems) return;
+    
+    doctorDropdownItems.innerHTML = '';
+    
+    // Add "All Doctors" option
+    const allOption = document.createElement('div');
+    allOption.className = 'searchable-dropdown-item';
+    allOption.textContent = 'All Doctors';
+    allOption.dataset.value = '';
+    allOption.addEventListener('click', function() {
+      doctorFilter.value = '';
+      doctorSearchInput.value = 'All Doctors';
+      doctorDropdownMenu.classList.remove('show');
+    });
+    doctorDropdownItems.appendChild(allOption);
+    
+    // Add doctor options
+    if (doctors && doctors.length > 0) {
+      doctors.forEach(doctor => {
+        const option = document.createElement('div');
+        option.className = 'searchable-dropdown-item';
+        option.textContent = doctor.name || 'Unnamed Doctor';
+        option.dataset.value = doctor.name || '';
+        option.addEventListener('click', function() {
+          doctorFilter.value = doctor.name || '';
+          doctorSearchInput.value = doctor.name || '';
+          doctorDropdownMenu.classList.remove('show');
+        });
+        doctorDropdownItems.appendChild(option);
+      });
+    } else {
+      // Add a "No doctors found" option
+      const noOption = document.createElement('div');
+      noOption.className = 'searchable-dropdown-item';
+      noOption.textContent = 'No doctors found';
+      noOption.dataset.value = '';
+      doctorDropdownItems.appendChild(noOption);
+    }
+  }
+  
+  // Toggle hospital dropdown visibility
+  if (hospitalSearchInput) {
+    hospitalSearchInput.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (hospitalDropdownMenu) {
+        hospitalDropdownMenu.classList.toggle('show');
+      }
+      if (hospitalSearchBox) {
+        hospitalSearchBox.focus();
+      }
+    });
+  }
+  
+  // Toggle doctor dropdown visibility
+  if (doctorSearchInput) {
+    doctorSearchInput.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (doctorDropdownMenu) {
+        doctorDropdownMenu.classList.toggle('show');
+      }
+      if (doctorSearchBox) {
+        doctorSearchBox.focus();
+      }
+    });
+  }
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    if (hospitalSearchInput && hospitalDropdownMenu) {
+      if (!hospitalSearchInput.contains(e.target) && !hospitalDropdownMenu.contains(e.target)) {
+        hospitalDropdownMenu.classList.remove('show');
+      }
+    }
+    if (doctorSearchInput && doctorDropdownMenu) {
+      if (!doctorSearchInput.contains(e.target) && !doctorDropdownMenu.contains(e.target)) {
+        doctorDropdownMenu.classList.remove('show');
+      }
+    }
+  });
+  
+  // Filter hospital dropdown items based on search
+  if (hospitalSearchBox) {
+    hospitalSearchBox.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      if (allHospitalOptions && allHospitalOptions.length > 0) {
+        const filteredHospitals = allHospitalOptions.filter(hospital => 
+          hospital.name && hospital.name.toLowerCase().includes(searchTerm)
+        );
+        populateHospitalDropdown(filteredHospitals);
+      }
+    });
+  }
+  
+  // Filter doctor dropdown items based on search
+  if (doctorSearchBox) {
+    doctorSearchBox.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      if (allDoctorOptions && allDoctorOptions.length > 0) {
+        const filteredDoctors = allDoctorOptions.filter(doctor => 
+          doctor.name && doctor.name.toLowerCase().includes(searchTerm)
+        );
+        populateDoctorDropdown(filteredDoctors);
+      }
+    });
+  }
+  
+  // Form submission handler
+  if (treatmentFilterForm) {
+    treatmentFilterForm.addEventListener('submit', function(e) {
+      // The form will submit normally
+    });
+  }
+  
+  // Tab navigation functionality
+  const tabButtons = document.querySelectorAll('[data-bs-toggle="tab"]');
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const category = this.getAttribute('data-category');
+      loadTreatmentsByCategory(category);
+    });
+  });
+  
+  // Load treatments by category
+  function loadTreatmentsByCategory(category) {
+    fetch(`/treatments/filter/?category=${category}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          updateTreatmentDisplay(data.categories);
+        }
+      })
+      .catch(error => {
+        console.error('Error loading treatments:', error);
+      });
+  }
+  
+  // Update treatment display
+  function updateTreatmentDisplay(categories) {
+    const container = document.querySelector('.treatments-grid');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    categories.forEach(category => {
+      category.treatments.forEach(treatment => {
+        const treatmentCard = document.createElement('a');
+        treatmentCard.href = `/treatments/${treatment.slug}/`;
+        treatmentCard.className = 'treatment-card';
+        treatmentCard.innerHTML = `
+          <div class="treatment-icon">
+            <i class="bi bi-bandaid"></i>
+          </div>
+          <div class="treatment-body">
+            <div class="treatment-type">${category.name}</div>
+            <div class="treatment-name">${treatment.name}</div>
+          </div>
+        `;
+        container.appendChild(treatmentCard);
+      });
+    });
+  }
+});
+</script>
+{% endblock %}

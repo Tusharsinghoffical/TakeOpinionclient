@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <h1>Simple Test - Hospital Media</h1>
+  
+  <h2>{{ hospital.name }}</h2>
+  
+  <div class="mb-4">
+    <h3>Debug Information</h3>
+    <p>Total Media Items: {{ hospital.media_items.all.count }}</p>
+  </div>
+  
+  <div class="row">
+    {% for media in hospital.media_items.all %}
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Media Item {{ forloop.counter }}</h5>
+          {% if media.image_url %}
+          <img src="{{ media.image_url }}" class="img-fluid" alt="Hospital Image {{ forloop.counter }}" style="height: 300px; object-fit: cover;">
+          <p class="mt-2"><strong>URL:</strong> {{ media.image_url }}</p>
+          <p><strong>Status:</strong> <span class="text-success">Image URL available</span></p>
+          {% else %}
+          <p>No image URL available</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-warning">
+        <p>No media items found for this hospital.</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  <div class="mt-4">
+    <h3>Direct Image Links</h3>
+    {% for media in hospital.media_items.all %}
+    <div class="mb-3">
+      <p><strong>Image {{ forloop.counter }}:</strong></p>
+      <p><a href="{{ media.image_url }}" target="_blank">{{ media.image_url }}</a></p>
+      <img src="{{ media.image_url }}" alt="Direct link test" style="height: 100px; object-fit: cover;" class="border">
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

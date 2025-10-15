@@ -1,0 +1,605 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .new-pricing-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    padding: 2rem 0;
+  }
+
+  .pricing-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px;
+    padding: 3rem 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .filter-section {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  .hospital-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    border: none;
+  }
+
+  .hospital-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .hospital-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .price-tag {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .success-rate-bar {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e9ecef;
+    overflow: hidden;
+  }
+
+  .success-rate-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #28a745, #20c997);
+  }
+
+  .filter-badge {
+    background-color: #0d6efd;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  .clear-filters {
+    color: #0d6efd;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .consultation-section {
+    background: linear-gradient(135deg, #6f42c1, #5a32a3);
+    color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .consultation-section h2 {
+    color: white;
+  }
+
+  .consultation-section p {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .consultation-btn {
+    background: white;
+    color: #6f42c1;
+    border: none;
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .consultation-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .booking-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .booking-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  .sort-option {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .sort-option:hover {
+    background-color: #e9ecef;
+  }
+
+  .sort-option.active {
+    background-color: #0d6efd;
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    .new-pricing-page {
+      padding: 1rem;
+    }
+    
+    .pricing-header {
+      padding: 2rem 1rem;
+    }
+    
+    .hospital-card {
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+
+<div class="container new-pricing-page">
+  <div class="pricing-header">
+    <h1 class="display-4 fw-bold mb-3">Treatment Pricing</h1>
+    <p class="lead">Find the perfect hospital for your treatment with transparent pricing and detailed information.</p>
+  </div>
+  
+  <!-- Step 1: Treatment Selection -->
+  <div class="card filter-section">
+    <div class="card-body">
+      <h3 class="mb-4">Find Treatment Pricing</h3>
+      
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="form-label fw-semibold">Select Treatment <span class="text-danger">*</span></label>
+          <select class="form-select form-control-lg" id="treatmentSelect">
+            <option value="">Choose a treatment...</option>
+            {% for category in categories %}
+              <optgroup label="{{ category.get_type_display }} - {{ category.name }}">
+                {% for treatment in category.treatments.all %}
+                  <option value="{{ treatment.id }}" data-slug="{{ treatment.slug }}">{{ treatment.name }}</option>
+                {% endfor %}
+              </optgroup>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button class="btn btn-primary btn-lg w-100" id="searchBtn">
+            <i class="bi bi-search me-2"></i>Search Hospitals
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Active Filters Display -->
+  <div class="mb-4" id="activeFilters" style="display: none;">
+    <div class="d-flex flex-wrap align-items-center">
+      <span class="me-2"><strong>Active Filters:</strong></span>
+      <div id="filterBadges"></div>
+      <span class="clear-filters ms-2" id="clearFilters">Clear all</span>
+    </div>
+  </div>
+  
+  <!-- Results Section -->
+  <div id="resultsSection" style="display: none;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 id="resultsTitle">Hospitals Offering Selected Treatment</h3>
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
+          Sort By
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item sort-option active" href="#" data-sort="price-asc">Price: Low to High</a></li>
+          <li><a class="dropdown-item sort-option" href="#" data-sort="price-desc">Price: High to Low</a></li>
+          <li><a class="dropdown-item sort-option" href="#" data-sort="rating-desc">Rating: High to Low</a></li>
+          <li><a class="dropdown-item sort-option" href="#" data-sort="success-desc">Success Rate: High to Low</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Filter Options -->
+    <div class="card filter-section mb-4">
+      <div class="card-body">
+        <h5 class="mb-3">Filter Options</h5>
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label">Price Range</label>
+            <select class="form-select" id="priceFilter">
+              <option value="">All Prices</option>
+              <option value="0-5000">Under $5,000</option>
+              <option value="5000-10000">$5,000 - $10,000</option>
+              <option value="10000-15000">$10,000 - $15,000</option>
+              <option value="15000-100000">$15,000+</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Minimum Rating</label>
+            <select class="form-select" id="ratingFilter">
+              <option value="">All Ratings</option>
+              <option value="4.5">4.5+ Stars</option>
+              <option value="4.0">4.0+ Stars</option>
+              <option value="3.5">3.5+ Stars</option>
+              <option value="3.0">3.0+ Stars</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Accreditation</label>
+            <select class="form-select" id="accreditationFilter">
+              <option value="">Any Accreditation</option>
+              <option value="JCI">JCI</option>
+              <option value="NABH">NABH</option>
+              <option value="ISO">ISO</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Search Hospital</label>
+            <input type="text" class="form-control" id="hospitalSearch" placeholder="Hospital name...">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Hospital Results -->
+    <div id="hospitalResults" class="row">
+      <!-- Hospital cards will be populated here -->
+      <div class="col-12 text-center py-5">
+        <div class="text-muted">Select a treatment to see hospital options</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Takeopinion Consultation Section -->
+  <div class="consultation-section">
+    <h2 class="mb-3">Need Expert Medical Advice?</h2>
+    <p class="mb-4">Get personalized consultation from our medical experts to help you choose the right treatment and hospital.</p>
+    <a href="/book/" class="btn consultation-btn">
+      <i class="bi bi-headset me-2"></i>Book Free Consultation
+    </a>
+  </div>
+</div>
+
+<script>
+  // Global variables
+  let currentTreatmentId = null;
+  let currentTreatmentSlug = null;
+  let currentTreatmentName = null;
+  let hospitalsData = [];
+  let filteredHospitals = [];
+  let activeFilters = {};
+  
+  // DOM elements
+  const treatmentSelect = document.getElementById('treatmentSelect');
+  const searchBtn = document.getElementById('searchBtn');
+  const resultsSection = document.getElementById('resultsSection');
+  const hospitalResults = document.getElementById('hospitalResults');
+  const activeFiltersEl = document.getElementById('activeFilters');
+  const filterBadges = document.getElementById('filterBadges');
+  const clearFilters = document.getElementById('clearFilters');
+  const priceFilter = document.getElementById('priceFilter');
+  const ratingFilter = document.getElementById('ratingFilter');
+  const accreditationFilter = document.getElementById('accreditationFilter');
+  const hospitalSearch = document.getElementById('hospitalSearch');
+  const resultsTitle = document.getElementById('resultsTitle');
+  
+  // Expose functions to global scope for inline event handlers
+  window.removeFilter = removeFilter;
+  
+  // Event listeners
+  searchBtn.addEventListener('click', searchHospitals);
+  treatmentSelect.addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    currentTreatmentId = this.value;
+    currentTreatmentSlug = selectedOption ? selectedOption.dataset.slug : null;
+    currentTreatmentName = selectedOption ? selectedOption.text : null;
+  });
+  
+  // Filter event listeners
+  priceFilter.addEventListener('change', applyFilters);
+  ratingFilter.addEventListener('change', applyFilters);
+  accreditationFilter.addEventListener('change', applyFilters);
+  hospitalSearch.addEventListener('input', applyFilters);
+  clearFilters.addEventListener('click', clearAllFilters);
+  
+  // Sort options
+  document.querySelectorAll('.sort-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Remove active class from all options
+      document.querySelectorAll('.sort-option').forEach(opt => {
+        opt.classList.remove('active');
+      });
+      
+      // Add active class to clicked option
+      this.classList.add('active');
+      
+      // Apply sorting
+      const sortType = this.dataset.sort;
+      sortHospitals(sortType);
+    });
+  });
+  
+  // Search hospitals function
+  function searchHospitals() {
+    const treatmentId = treatmentSelect.value;
+    
+    if (!treatmentId) {
+      alert('Please select a treatment first');
+      return;
+    }
+    
+    // Show loading state
+    hospitalResults.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+    resultsSection.style.display = 'block';
+    
+    // Make AJAX request to get hospitals for treatment
+    fetch(`/treatments/api/hospitals/${treatmentId}/`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Update results title
+          resultsTitle.textContent = `Hospitals Offering ${data.treatment.name}`;
+          
+          // Process hospital data
+          hospitalsData = data.hospitals.map(hospital => ({
+            ...hospital,
+            success_rate: Math.floor(Math.random() * 20) + 80 // Generate random success rate between 80-99
+          }));
+          
+          filteredHospitals = [...hospitalsData];
+          displayHospitals(filteredHospitals);
+        } else {
+          hospitalResults.innerHTML = `<div class="col-12"><div class="alert alert-danger">Error: ${data.error}</div></div>`;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        hospitalResults.innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to load hospital data. Please try again.</div></div>';
+      });
+  }
+  
+  // Display hospitals function
+  function displayHospitals(hospitals) {
+    if (hospitals.length === 0) {
+      hospitalResults.innerHTML = '<div class="col-12"><div class="alert alert-info">No hospitals found matching your criteria. Try adjusting your filters.</div></div>';
+      return;
+    }
+    
+    hospitalResults.innerHTML = '';
+    
+    hospitals.forEach(hospital => {
+      const hospitalCard = document.createElement('div');
+      hospitalCard.className = 'col-md-6 col-lg-4';
+      hospitalCard.innerHTML = `
+        <div class="card hospital-card h-100">
+          <img src="${hospital.profile_picture || 'https://picsum.photos/seed/h' + hospital.id + '/400/300'}" class="card-img-top" alt="${hospital.name}" style="height: 200px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(hospital.name)}&background=0D6EFD&color=fff&size=200'">
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0">${hospital.name}</h5>
+              ${hospital.is_takeopinion_choice ? '<span class="badge bg-warning text-dark">TO Choice</span>' : ''}
+            </div>
+            
+            <p class="card-text small text-muted mb-3">
+              <i class="bi bi-geo-alt me-1"></i>${hospital.city}, ${hospital.state}, ${hospital.country}
+            </p>
+            
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small">Rating</span>
+                <span class="fw-bold">${hospital.rating}/5.0</span>
+              </div>
+              <div class="progress" style="height: 6px;">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: ${hospital.rating * 20}%"></div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small">Success Rate</span>
+                <span class="fw-bold">${hospital.success_rate}%</span>
+              </div>
+              <div class="success-rate-bar">
+                <div class="success-rate-fill" style="width: ${hospital.success_rate}%"></div>
+              </div>
+            </div>
+            
+            <div class="d-flex flex-wrap gap-1 mb-3">
+              ${hospital.jci_accredited ? '<span class="badge bg-info">JCI</span>' : ''}
+              ${hospital.nabh_accredited ? '<span class="badge bg-success">NABH</span>' : ''}
+              ${hospital.iso_certified ? '<span class="badge bg-secondary">ISO</span>' : ''}
+            </div>
+            
+            <div class="mt-auto">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <div class="small text-muted">Starting Price</div>
+                  <div class="h5 text-primary mb-0">$${hospital.price.toLocaleString()}</div>
+                </div>
+                <span class="price-tag">$${hospital.price.toLocaleString()}</span>
+              </div>
+              
+              <div class="d-grid gap-2">
+                <a href="/hospitals/${hospital.slug}/" class="btn btn-outline-primary booking-btn">
+                  <i class="bi bi-info-circle me-1"></i>View Details
+                </a>
+                <a href="/book/new/?treatment=${currentTreatmentSlug || ''}&hospital=${hospital.id}" class="btn btn-primary booking-btn">
+                  <i class="bi bi-calendar-check me-1"></i>Book now :- take second opinion
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      hospitalResults.appendChild(hospitalCard);
+    });
+  }
+  
+  // Apply filters function
+  function applyFilters() {
+    // Update active filters
+    activeFilters = {
+      price: priceFilter.value,
+      rating: ratingFilter.value,
+      accreditation: accreditationFilter.value,
+      search: hospitalSearch.value.toLowerCase()
+    };
+    
+    // Filter hospitals
+    filteredHospitals = hospitalsData.filter(hospital => {
+      // Price filter
+      if (activeFilters.price) {
+        const [min, max] = activeFilters.price.split('-').map(Number);
+        if (hospital.price < min || hospital.price > max) {
+          return false;
+        }
+      }
+      
+      // Rating filter
+      if (activeFilters.rating && hospital.rating < parseFloat(activeFilters.rating)) {
+        return false;
+      }
+      
+      // Accreditation filter
+      if (activeFilters.accreditation) {
+        if (activeFilters.accreditation === 'JCI' && !hospital.jci_accredited) return false;
+        if (activeFilters.accreditation === 'NABH' && !hospital.nabh_accredited) return false;
+        if (activeFilters.accreditation === 'ISO' && !hospital.iso_certified) return false;
+      }
+      
+      // Search filter
+      if (activeFilters.search && 
+          !hospital.name.toLowerCase().includes(activeFilters.search) && 
+          !hospital.city.toLowerCase().includes(activeFilters.search)) {
+        return false;
+      }
+      
+      return true;
+    });
+    
+    // Update filter badges
+    updateFilterBadges();
+    
+    // Display filtered results
+    displayHospitals(filteredHospitals);
+  }
+  
+  // Update filter badges
+  function updateFilterBadges() {
+    filterBadges.innerHTML = '';
+    
+    let hasActiveFilters = false;
+    
+    if (activeFilters.price) {
+      const [min, max] = activeFilters.price.split('-').map(Number);
+      const badge = document.createElement('span');
+      badge.className = 'filter-badge';
+      badge.innerHTML = `Price: $${min.toLocaleString()} - $${max.toLocaleString()} <i class="bi bi-x ms-1" style="cursor: pointer;" onclick="removeFilter('price')"></i>`;
+      filterBadges.appendChild(badge);
+      hasActiveFilters = true;
+    }
+    
+    if (activeFilters.rating) {
+      const badge = document.createElement('span');
+      badge.className = 'filter-badge';
+      badge.innerHTML = `Rating: ${activeFilters.rating}+ <i class="bi bi-x ms-1" style="cursor: pointer;" onclick="removeFilter('rating')"></i>`;
+      filterBadges.appendChild(badge);
+      hasActiveFilters = true;
+    }
+    
+    if (activeFilters.accreditation) {
+      const badge = document.createElement('span');
+      badge.className = 'filter-badge';
+      badge.innerHTML = `Accreditation: ${activeFilters.accreditation} <i class="bi bi-x ms-1" style="cursor: pointer;" onclick="removeFilter('accreditation')"></i>`;
+      filterBadges.appendChild(badge);
+      hasActiveFilters = true;
+    }
+    
+    if (activeFilters.search) {
+      const badge = document.createElement('span');
+      badge.className = 'filter-badge';
+      badge.innerHTML = `Search: "${activeFilters.search}" <i class="bi bi-x ms-1" style="cursor: pointer;" onclick="removeFilter('search')"></i>`;
+      filterBadges.appendChild(badge);
+      hasActiveFilters = true;
+    }
+    
+    activeFiltersEl.style.display = hasActiveFilters ? 'block' : 'none';
+  }
+  
+  // Remove filter function
+  function removeFilter(filterType) {
+    switch(filterType) {
+      case 'price':
+        priceFilter.value = '';
+        break;
+      case 'rating':
+        ratingFilter.value = '';
+        break;
+      case 'accreditation':
+        accreditationFilter.value = '';
+        break;
+      case 'search':
+        hospitalSearch.value = '';
+        break;
+    }
+    
+    applyFilters();
+  }
+  
+  // Clear all filters
+  function clearAllFilters() {
+    priceFilter.value = '';
+    ratingFilter.value = '';
+    accreditationFilter.value = '';
+    hospitalSearch.value = '';
+    activeFilters = {};
+    filteredHospitals = [...hospitalsData];
+    updateFilterBadges();
+    displayHospitals(filteredHospitals);
+  }
+  
+  // Sort hospitals function
+  function sortHospitals(sortType) {
+    switch(sortType) {
+      case 'price-asc':
+        filteredHospitals.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        filteredHospitals.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating-desc':
+        filteredHospitals.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'success-desc':
+        filteredHospitals.sort((a, b) => b.success_rate - a.success_rate);
+        break;
+    }
+    
+    displayHospitals(filteredHospitals);
+  }
+</script>
+{% endblock %}

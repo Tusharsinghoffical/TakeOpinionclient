@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .contact-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
+
+  .contact-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    border: none;
+  }
+
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .contact-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .contact-form .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .contact-form .form-control, 
+  .contact-form .form-select {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+  }
+
+  .contact-form .form-control:focus, 
+  .contact-form .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .contact-form .input-group-text {
+    background-color: #e7f1ff;
+    border: 1px solid #dee2e6;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+  }
+
+  .contact-form .form-control {
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .contact-submit-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border: none;
+  }
+
+  .contact-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+  }
+
+  .contact-info-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+  }
+
+  .contact-info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .contact-icon-box {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+    font-size: 2rem;
+    margin: 0 auto 1rem;
+  }
+
+  .section-title i {
+    color: #0d6efd;
+  }
+
+  .section-title h1 {
+    color: #2c3e50;
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    .contact-page {
+      padding: 1rem;
+    }
+    
+    .contact-card {
+      margin-bottom: 1rem;
+    }
+    
+    .contact-icon-box {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<div class="container py-5 contact-page">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="section-title mb-4 text-center">
+        <i class="bi bi-envelope display-5 mb-3"></i>
+        <h1 class="h2 mb-0">Connect with TakeOpinion Experts</h1>
+      </div>
+      <p class="mb-5 lead text-center">Have questions or need assistance? Our medical travel experts are here to help you make informed decisions.</p>
+      
+      <div class="card border-0 shadow-sm contact-card">
+        <div class="card-body p-5">
+          <form class="row g-4 contact-form">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Full Name</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-person"></i>
+                </span>
+                <input class="form-control form-control-lg" placeholder="Enter your full name" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Email Address</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-envelope"></i>
+                </span>
+                <input type="email" class="form-control form-control-lg" placeholder="you@example.com" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Phone Number</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-telephone"></i>
+                </span>
+                <input type="tel" class="form-control form-control-lg" placeholder="+1 (555) 123-4567" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Subject</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-tag"></i>
+                </span>
+                <select class="form-select form-control-lg">
+                  <option selected>Select a subject</option>
+                  <option>Medical Treatment Inquiry</option>
+                  <option>Hospital Recommendation</option>
+                  <option>Doctor Consultation</option>
+                  <option>Travel Arrangements</option>
+                  <option>Post-Treatment Support</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">Your Message</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-chat-text"></i>
+                </span>
+                <textarea class="form-control form-control-lg" rows="5" placeholder="Please provide details about your inquiry..."></textarea>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="termsCheck">
+                <label class="form-check-label" for="termsCheck">
+                  I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a>
+                </label>
+              </div>
+              <button class="btn btn-primary btn-lg w-100 contact-submit-btn" type="submit">
+                <i class="bi bi-send me-2"></i>Send Message
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <div class="row g-4 mt-5">
+        <div class="col-md-4">
+          <div class="card h-100 text-center border-0 shadow-sm contact-info-card">
+            <div class="card-body p-4">
+              <div class="contact-icon-box">
+                <i class="bi bi-telephone"></i>
+              </div>
+              <h5 class="card-title">Call Us</h5>
+              <p class="mb-0">+1 (555) 123-4567</p>
+              <p class="small text-muted mb-0">Mon-Fri, 9AM-6PM</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 text-center border-0 shadow-sm contact-info-card">
+            <div class="card-body p-4">
+              <div class="contact-icon-box">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <h5 class="card-title">Email Us</h5>
+              <p class="mb-0">support@takeopinion.com</p>
+              <p class="small text-muted mb-0">We reply within 24 hours</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 text-center border-0 shadow-sm contact-info-card">
+            <div class="card-body p-4">
+              <div class="contact-icon-box">
+                <i class="bi bi-chat-dots"></i>
+              </div>
+              <h5 class="card-title">Live Chat</h5>
+              <p class="mb-0">Available 24/7</p>
+              <p class="small text-muted mb-0">Click chat icon in bottom right</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

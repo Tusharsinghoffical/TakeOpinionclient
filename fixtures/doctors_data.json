@@ -1,0 +1,96 @@
+[
+{
+  "model": "doctors.doctor",
+  "pk": 1,
+  "fields": {
+    "name": "Dr. Arjun Mehta",
+    "slug": "dr-arjun-mehta",
+    "specialization": "MBBS",
+    "key_points": "Expert in knee and hip replacement surgeries, Sports injury specialist, Patient-centered approach",
+    "about": "Dr. Arjun Mehta is a highly qualified orthopedic surgeon with extensive experience in joint replacement and sports injury treatment. With over 12 years of practice, he has successfully treated numerous patients and contributed to advancing medical knowledge in his area of expertise.",
+    "education": "MBBS, MS Orthopedics",
+    "experience_years": 12,
+    "awards": "Bharat ratana AWard",
+    "phone": "08851619647",
+    "email": "saklanisahil2@gmail.com",
+    "website": "https://www.apollohospitals.com/doctors/arjun-mehta",
+    "rating": "4.80",
+    "review_count": 120,
+    "medical_license_number": "MED123456789",
+    "languages_spoken": "English, Hindi, Marathi",
+    "profile_picture": "https://posicon2023.posi.in/images/logo_client/1892928888_Dr.%20Arjun%20Dhawale.jpg",
+    "treatments": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "hospitals": [
+      1,
+      4
+    ]
+  }
+},
+{
+  "model": "doctors.doctor",
+  "pk": 2,
+  "fields": {
+    "name": "Dr. Sara Kapoor",
+    "slug": "dr-sara-kapoor",
+    "specialization": "",
+    "key_points": "Cosmetic surgeon",
+    "about": "",
+    "education": "MCh Plastic",
+    "experience_years": 9,
+    "awards": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "rating": "0.00",
+    "review_count": 0,
+    "medical_license_number": "",
+    "languages_spoken": "",
+    "profile_picture": "https://media.licdn.com/dms/image/v2/D5603AQGmt6J79Ko7Ng/profile-displayphoto-scale_200_200/B56ZiIZdRgHMAg-/0/1754635033109?e=2147483647&v=beta&t=a4TwGaxBKUEuDYfg0LybDIUdoa8vMV-BKbFdsbXrH08",
+    "treatments": [
+      2
+    ],
+    "hospitals": [
+      1
+    ]
+  }
+},
+{
+  "model": "doctors.doctor",
+  "pk": 3,
+  "fields": {
+    "name": "Dr. Smith singh",
+    "slug": "dr-smith-test",
+    "specialization": "Orthopedic Surgeon",
+    "key_points": "Orthopedic Specialist with 15 years experience",
+    "about": "",
+    "education": "",
+    "experience_years": 12,
+    "awards": "bharat ratana",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "rating": "0.00",
+    "review_count": 0,
+    "medical_license_number": "45412",
+    "languages_spoken": "",
+    "profile_picture": "https://www.gardensspine.com/wp-content/uploads/2025/05/Chiropractor-Palm-Beach-Gardens-FL-Seth-Smith-Meet-The-Team.webp",
+    "treatments": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "hospitals": [
+      1
+    ]
+  }
+}
+]

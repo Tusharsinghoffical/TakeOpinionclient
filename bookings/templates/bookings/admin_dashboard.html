@@ -1,0 +1,650 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard - Appointment Management{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<style>
+    .admin-dashboard {
+        background-color: #f8f9fa;
+        min-height: 100vh;
+        padding: 1rem;
+    }
+    
+    /* Simplified Header */
+    .dashboard-header {
+        background: #fff;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dashboard-header h4 {
+        color: #333;
+        margin-bottom: 0.25rem;
+        font-size: 1.3rem;
+    }
+    
+    /* Simplified Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .stat-card {
+        background: #fff;
+        border-radius: 6px;
+        padding: 0.75rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        border-left: 3px solid #0d6efd;
+    }
+    
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+        font-size: 1rem;
+        color: white;
+        background: #0d6efd;
+    }
+    
+    .stat-content {
+        flex: 1;
+    }
+    
+    .stat-value {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.1rem;
+        color: #333;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+    
+    /* Status-specific colors */
+    .stat-card.today { border-left-color: #fd7e14; }
+    .stat-card.today .stat-icon { background: #fd7e14; }
+    
+    .stat-card.total { border-left-color: #0d6efd; }
+    .stat-card.total .stat-icon { background: #0d6efd; }
+    
+    .stat-card.pending { border-left-color: #ffc107; }
+    .stat-card.pending .stat-icon { background: #ffc107; }
+    
+    .stat-card.confirmed { border-left-color: #28a745; }
+    .stat-card.confirmed .stat-icon { background: #28a745; }
+    
+    .stat-card.in-progress { border-left-color: #17a2b8; }
+    .stat-card.in-progress .stat-icon { background: #17a2b8; }
+    
+    .stat-card.completed { border-left-color: #6f42c1; }
+    .stat-card.completed .stat-icon { background: #6f42c1; }
+    
+    /* Main Content */
+    .main-content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    @media (min-width: 992px) {
+        .main-content {
+            grid-template-columns: 1fr 300px;
+        }
+    }
+    
+    /* Content Cards */
+    .content-card {
+        background: #fff;
+        border-radius: 6px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background: #fff;
+        border-bottom: 1px solid #e9ecef;
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+    
+    /* Simplified Filter Buttons */
+    .filter-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+    
+    .filter-btn {
+        padding: 0.3rem 0.6rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border: 1px solid #dee2e6;
+        background: #fff;
+        color: #495057;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .filter-btn:hover {
+        background: #e9ecef;
+    }
+    
+    .filter-btn.active {
+        background: #0d6efd;
+        color: white;
+        border-color: #0d6efd;
+    }
+    
+    /* Card Body */
+    .card-body {
+        padding: 1rem;
+    }
+    
+    /* Search Form */
+    .search-form {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .search-input {
+        flex: 1;
+        padding: 0.75rem;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 0.9rem;
+    }
+    
+    .search-btn {
+        padding: 0.75rem 1.25rem;
+        background: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+    
+    .search-btn:hover {
+        background: #0b5ed7;
+    }
+    
+    /* Table */
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    .bookings-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .bookings-table th {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: #495057;
+        border-bottom: 2px solid #e9ecef;
+        font-size: 0.9rem;
+    }
+    
+    .bookings-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #e9ecef;
+        vertical-align: top;
+    }
+    
+    .bookings-table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+    
+    /* Status Badges */
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .badge-pending { background: #fff3cd; color: #856404; }
+    .badge-confirmed { background: #d4edda; color: #155724; }
+    .badge-in-progress { background: #d1ecf1; color: #0c5460; }
+    .badge-completed { background: #e2d9f3; color: #452c63; }
+    .badge-cancelled { background: #f8d7da; color: #721c24; }
+    
+    /* Action Buttons */
+    .action-btn {
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        margin-right: 0.25rem;
+        margin-bottom: 0.25rem;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-primary { background: #0d6efd; color: white; }
+    .btn-primary:hover { background: #0b5ed7; }
+    
+    .btn-success { background: #28a745; color: white; }
+    .btn-success:hover { background: #218838; }
+    
+    .btn-danger { background: #dc3545; color: white; }
+    .btn-danger:hover { background: #c82333; }
+    
+    .btn-warning { background: #ffc107; color: #212529; }
+    .btn-warning:hover { background: #e0a800; }
+    
+    .btn-info { background: #17a2b8; color: white; }
+    .btn-info:hover { background: #138496; }
+    
+    .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+    
+    /* Sidebar */
+    .sidebar-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .sidebar-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+    
+    .quick-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .quick-stat {
+        text-align: center;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 6px;
+    }
+    
+    .quick-stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0d6efd;
+        margin-bottom: 0.25rem;
+    }
+    
+    .quick-stat-label {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+    
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .page-link {
+        padding: 0.5rem 0.9rem;
+        border-radius: 6px;
+        text-decoration: none;
+        color: #0d6efd;
+        border: 1px solid #dee2e6;
+        background: #fff;
+        transition: all 0.2s ease;
+    }
+    
+    .page-link:hover {
+        background: #e9ecef;
+    }
+    
+    .page-item.active .page-link {
+        background: #0d6efd;
+        color: white;
+        border-color: #0d6efd;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .bookings-table th, .bookings-table td {
+            padding: 0.5rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .filter-buttons {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <h4><i class="bi bi-calendar-check me-2"></i>Appointment Management Dashboard</h4>
+        <p style="font-size: 0.9rem; margin: 0; color: #6c757d;">Manage and track all patient appointments and bookings</p>
+    </div>
+    
+    <!-- Statistics -->
+    <div class="stats-grid">
+        <div class="stat-card today">
+            <div class="stat-icon">
+                <i class="bi bi-calendar-event"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ today_appointments_count }}</div>
+                <div class="stat-label">Today's Appointments</div>
+            </div>
+        </div>
+        
+        <div class="stat-card total">
+            <div class="stat-icon">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ total_appointments_count }}</div>
+                <div class="stat-label">Total Appointments</div>
+            </div>
+        </div>
+        
+        <div class="stat-card pending">
+            <div class="stat-icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ pending_appointments_count }}</div>
+                <div class="stat-label">Pending</div>
+            </div>
+        </div>
+        
+        <div class="stat-card confirmed">
+            <div class="stat-icon">
+                <i class="bi bi-check-circle"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ confirmed_appointments_count }}</div>
+                <div class="stat-label">Confirmed</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="content-card">
+            <div class="card-header">
+                <h5 class="card-title">Appointment List</h5>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="today">Today</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="confirmed">Confirmed</button>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="search-form">
+                    <input type="text" class="search-input" placeholder="Search appointments...">
+                    <button class="search-btn">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Patient</th>
+                                <th>Treatment</th>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                            <tr>
+                                <td>#{{ booking.id }}</td>
+                                <td>
+                                    {% if booking.patient %}
+                                        {{ booking.patient.user.first_name }} {{ booking.patient.user.last_name }}
+                                    {% else %}
+                                        Guest
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if booking.treatment %}
+                                        {{ booking.treatment.name }}
+                                    {% else %}
+                                        General Consultation
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if booking.preferred_doctor %}
+                                        {{ booking.preferred_doctor.name }}
+                                    {% else %}
+                                        Not specified
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if booking.preferred_date %}
+                                        {{ booking.preferred_date|date:"M d, Y" }}
+                                    {% else %}
+                                        Not set
+                                    {% endif %}
+                                </td>
+                                <td>₹{{ booking.amount }}</td>
+                                <td>
+                                    <span class="status-badge badge-{{ booking.status }}">
+                                        {{ booking.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if booking.status == 'pending' %}
+                                        <button class="action-btn btn-success btn-sm" onclick="updateStatus({{ booking.id }}, 'confirmed')">
+                                            <i class="bi bi-check-lg me-1"></i> Confirm
+                                        </button>
+                                        <button class="action-btn btn-danger btn-sm" onclick="updateStatus({{ booking.id }}, 'cancelled')">
+                                            <i class="bi bi-x-lg me-1"></i> Cancel
+                                        </button>
+                                    {% elif booking.status == 'confirmed' %}
+                                        <button class="action-btn btn-info btn-sm" onclick="updateStatus({{ booking.id }}, 'in_progress')">
+                                            <i class="bi bi-arrow-repeat me-1"></i> Start
+                                        </button>
+                                    {% elif booking.status == 'in_progress' %}
+                                        <button class="action-btn btn-primary btn-sm" onclick="updateStatus({{ booking.id }}, 'completed')">
+                                            <i class="bi bi-check-all me-1"></i> Complete
+                                        </button>
+                                    {% else %}
+                                        <span class="text-muted">{{ booking.get_status_display }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center py-4">
+                                    <i class="bi bi-calendar-x text-muted" style="font-size: 2rem;"></i>
+                                    <p class="mt-2 mb-0 text-muted">No appointments found</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                        <a class="page-link" href="?page=1">&laquo; First</a>
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    {% endif %}
+                    
+                    <span class="page-link">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                    
+                    {% if page_obj.has_next %}
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div>
+            <div class="sidebar-card">
+                <h5 class="sidebar-title">Quick Stats</h5>
+                <div class="quick-stats">
+                    <div class="quick-stat">
+                        <div class="quick-stat-value">{{ completed_appointments_count }}</div>
+                        <div class="quick-stat-label">Completed</div>
+                    </div>
+                    <div class="quick-stat">
+                        <div class="quick-stat-value">{{ cancelled_appointments_count }}</div>
+                        <div class="quick-stat-label">Cancelled</div>
+                    </div>
+                </div>
+                
+                <h5 class="sidebar-title">Recent Activity</h5>
+                <ul class="list-unstyled">
+                    {% for booking in recent_bookings %}
+                    <li class="mb-2 pb-1 border-bottom">
+                        <div class="fw-bold" style="font-size: 0.9rem;">
+                            {% if booking.patient %}
+                                {{ booking.patient.user.first_name }} {{ booking.patient.user.last_name }}
+                            {% else %}
+                                Guest User
+                            {% endif %}
+                        </div>
+                        <div class="small text-muted" style="font-size: 0.8rem;">
+                            Booked {{ booking.treatment.name|default:"consultation" }}
+                        </div>
+                        <div class="small text-muted" style="font-size: 0.8rem;">
+                            {{ booking.created_at|date:"M d, Y H:i" }}
+                        </div>
+                    </li>
+                    {% empty %}
+                    <li class="text-muted" style="font-size: 0.9rem;">No recent activity</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <!-- Simplified Quick Actions -->
+            <div class="sidebar-card">
+                <h5 class="sidebar-title">Quick Actions</h5>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-speedometer2 me-1"></i> Main Dashboard
+                    </a>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="window.location.reload()">
+                        <i class="bi bi-arrow-repeat me-1"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function updateStatus(bookingId, status) {
+    if (confirm(`Are you sure you want to mark this appointment as ${status.replace('_', ' ')}?`)) {
+        fetch(`/bookings/admin/update-status/${bookingId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({status: status})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Appointment status updated successfully!');
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error updating appointment status: ' + error);
+        });
+    }
+}
+
+// Filter functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // In a real implementation, you would filter the table here
+            // For now, we'll just show an alert
+            const filter = this.getAttribute('data-filter');
+            console.log('Filtering by:', filter);
+        });
+    });
+});
+</script>
+{% endblock %}
