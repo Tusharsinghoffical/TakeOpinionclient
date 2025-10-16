@@ -26,7 +26,7 @@ This guide helps resolve common issues encountered when deploying the TakeOpinio
 **Solution**:
 1. The application uses `comprehensive_medical_data.json` which contains complete User and UserProfile data
 2. Ensure that `accounts_data.json` (which is incomplete) has been removed
-3. Verify that the import script in `scripts/import_data.py` is using `comprehensive_medical_data.json`
+3. Verify that the import process is using `comprehensive_medical_data.json` directly through Django's loaddata command
 
 **Prevention**: Always use the comprehensive data fixture that includes both User and UserProfile objects to maintain referential integrity.
 

@@ -267,7 +267,6 @@ Root path: `c:\Users\tusha\Desktop\TakeOpinionclient-main`
 │   ├── 🐚 deploy.bat
 │   ├── 🐍 deploy_to_render.py
 │   ├── 🐍 export_data.py
-│   ├── 🐍 import_data.py
 │   ├── 🐍 populate_data.py
 │   ├── 🐍 populate_doctor_data.py
 │   ├── 🐍 populate_hospital_data.py
@@ -616,7 +615,6 @@ Payment processing functionality.
 Utility scripts for various tasks.
 - `deploy_to_render.py` - Deployment preparation script
 - `export_data.py` - Data export script
-- `import_data.py` - Data import script
 - `start_server.py` - Cross-platform server startup script
 
 ### static/
@@ -647,7 +645,7 @@ Medical treatment listings and information.
 Shell script for building the application during deployment.
 - Installs dependencies
 - Runs migrations
-- Imports data
+- Loads data fixtures
 - Collects static files
 
 ### gunicorn.conf.py

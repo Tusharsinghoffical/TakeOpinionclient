@@ -87,7 +87,19 @@ else:
 echo "=== Importing data ==="
 if [ -d "fixtures" ] && [ "$(ls -A fixtures)" ]; then
     echo "Fixtures directory found with data, importing..."
-    python scripts/import_data.py
+    # Skip import script if it doesn't exist
+    if [ -f "scripts/import_data.py" ]; then
+        python scripts/import_data.py
+    else
+        echo "Import script not found, skipping data import"
+        # Load fixtures directly if they exist
+        for fixture in fixtures/*.json; do
+            if [ -f "$fixture" ]; then
+                echo "Loading fixture: $fixture"
+                python manage.py loaddata "$fixture"
+            fi
+        done
+    fi
 else
     echo "No fixtures directory found or empty, skipping data import"
 fi

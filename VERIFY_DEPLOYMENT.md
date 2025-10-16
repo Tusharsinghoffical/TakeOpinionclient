@@ -31,7 +31,7 @@
 
 ### [ ] 2. Post-Deployment Tasks
 - [ ] Run `python manage.py migrate`
-- [ ] Run `python scripts/import_data.py` (if needed)
+- [ ] Load data fixtures (if needed)
 - [ ] Create superuser (if needed)
 
 ### [ ] 3. Functionality Testing
