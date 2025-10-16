@@ -881,6 +881,41 @@ function deleteUser(id) {
     });
   }
 }
+
+// Function to update booking status
+function updateBookingStatus(bookingId, status) {
+  if (confirm(`Are you sure you want to ${status} this booking?`)) {
+    const formData = new FormData();
+    // Note: For this endpoint, status is passed in the URL, not as form data
+    
+    fetch(`/accounts/admin/api/bookings/${bookingId}/${status}/`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    })
+    .then(response => {
+      // Check if the response is OK before trying to parse as JSON
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        alert(`Booking ${status} successfully!`);
+        location.reload();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    })
+    .catch(error => {
+      console.error('Error updating booking status:', error);
+      alert('Error updating booking status: ' + error.message);
+    });
+  }
+}
 </script>
 
 <!-- Booking Management Section -->

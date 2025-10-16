@@ -765,11 +765,12 @@ def update_booking_status(request, booking_id, status):
     # Get the booking
     booking = get_object_or_404(Booking, id=booking_id)
     
-    # Update status
-    if status in ['confirmed', 'cancelled']:
+    # Validate status - accept all valid status values
+    valid_statuses = ['pending', 'confirmed', 'in_progress', 'completed', 'cancelled']
+    if status in valid_statuses:
         booking.status = status
         booking.save()
-        messages.success(request, f'Booking #{booking.id} has been {status}.')
+        messages.success(request, f'Booking #{booking.id} has been updated to {status.replace("_", " ").title()}.')
     else:
         messages.error(request, 'Invalid status update.')
     

@@ -605,15 +605,25 @@ function getCookie(name) {
 
 function updateStatus(bookingId, status) {
     if (confirm(`Are you sure you want to mark this appointment as ${status.replace('_', ' ')}?`)) {
-        fetch(`/bookings/admin/update-status/${bookingId}/`, {
+        // Create FormData object
+        const formData = new FormData();
+        
+        // Corrected URL to use the proper prefix "book" instead of "bookings"
+        fetch(`/book/admin/update-status/${bookingId}/${status}/`, {
             method: 'POST',
             headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+                // Remove Content-Type header to let browser set it with boundary for FormData
             },
-            body: JSON.stringify({status: status})
+            body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            // Check if the response is OK before trying to parse as JSON
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 alert('Appointment status updated successfully!');
@@ -623,7 +633,8 @@ function updateStatus(bookingId, status) {
             }
         })
         .catch(error => {
-            alert('Error updating appointment status: ' + error);
+            console.error('Error updating appointment status:', error);
+            alert('Error updating appointment status: ' + error.message);
         });
     }
 }
