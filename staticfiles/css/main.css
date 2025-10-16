@@ -1,20 +1,20 @@
 :root {
-  /* Medical-themed color palette with vibrant colors */
-  --medical-red: #dc3545; /* Bootstrap danger color */
-  --medical-red-dark: #bd2130; /* Darker red for hover states */
-  --medical-green: #28a745; /* Bootstrap success color */
-  --medical-green-dark: #1e7e34; /* Darker green for hover states */
-  --medical-blue: #0d6efd; /* Bootstrap primary color */
-  --medical-blue-dark: #0b5ed7; /* Darker blue for hover states */
-  --medical-blue-light: #cfe2ff; /* Light blue for backgrounds */
-  --turquoise: #20c997; /* Turquoise color */
-  --slate-blue: #6610f2; /* Slate blue color */
-  --platinum: #e9ecef; /* Platinum color */
-  --glacier: #d1ecf1; /* Glacier color */
-  --ice-blue: #f8f9fa; /* Ice blue color */
+  /* Medical-themed color palette with light colors */
+  --medical-red: #adb5bd; /* Light gray instead of medical red */
+  --medical-red-dark: #868e96; /* Darker gray for hover states */
+  --medical-green: #adb5bd; /* Light gray instead of medical green */
+  --medical-green-dark: #868e96; /* Darker gray for hover states */
+  --medical-blue: #adb5bd; /* Light gray instead of medical blue */
+  --medical-blue-dark: #868e96; /* Darker gray for hover states */
+  --medical-blue-light: #e9ecef; /* Light gray for backgrounds */
+  --turquoise: #adb5bd; /* Light gray instead of turquoise */
+  --slate-blue: #adb5bd; /* Light gray instead of slate blue */
+  --platinum: #e9ecef; /* Light gray instead of platinum */
+  --glacier: #e9ecef; /* Light gray instead of glacier */
+  --ice-blue: #f8f9fa; /* Very light gray instead of ice blue */
   --white: #ffffff; /* White for backgrounds and text */
   --light-gray: #f8f9fa; /* Light gray for subtle backgrounds */
-  --dark-gray: #212529; /* Dark gray for text */
+  --dark-gray: #495057; /* Medium gray for text instead of dark gray */
   --border-color: #dee2e6; /* Border color */
   --shadow-color: rgba(0, 0, 0, 0.1);
 }
@@ -228,7 +228,7 @@ a:hover {
 
 .navbar-brand {
   font-weight: 700;
-  color: var(--medical-blue);
+  color: var(--dark-gray);
 }
 
 .navbar-logo {
@@ -248,12 +248,12 @@ a:hover {
 
 .nav-link:hover {
   color: var(--medical-blue);
-  background-color: rgba(13, 110, 253, 0.1);
+  background-color: rgba(173, 181, 189, 0.1);
 }
 
 .nav-link.active {
   color: var(--medical-blue);
-  background-color: rgba(13, 110, 253, 0.1);
+  background-color: rgba(173, 181, 189, 0.1);
 }
 
 /* Professional Navbar Styles */
@@ -272,7 +272,7 @@ a:hover {
 .navbar-nav .nav-link:hover {
   color: var(--medical-blue);
   background-color: transparent;
-  border-bottom: 3px solid #ffc107; /* Gold accent */
+  border-bottom: 3px solid #FFD700; /* Gold accent */
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -296,7 +296,7 @@ a:hover {
 }
 
 .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2873, 80, 87, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 /* Tab Navigation */
@@ -454,7 +454,7 @@ a:hover {
 /* Footer */
 footer {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  color: #212529; /* Dark gray text */
+  color: #495057; /* Dark gray text instead of white */
   padding: 3rem 0 1.5rem;
   border-top: 1px solid #dee2e6;
   position: relative;
@@ -464,13 +464,13 @@ footer {
 }
 
 footer a {
-  color: #212529; /* Dark gray text */
+  color: #495057; /* Dark gray text instead of white */
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
 footer a.text-white {
-  color: #212529 !important; /* Dark gray text */
+  color: #495057 !important; /* Dark gray text instead of white */
 }
 
 footer a:hover {
@@ -484,7 +484,7 @@ footer a:hover {
   margin-bottom: 0.5rem;
   font-size: 0.95rem;
   transition: all 0.2s ease;
-  color: #212529 !important; /* Dark gray text */
+  color: #495057 !important; /* Dark gray text instead of white */
   position: relative;
   padding-left: 0;
 }
@@ -496,15 +496,15 @@ footer a:hover {
 .footer-links a:hover {
   padding-left: 5px;
   color: var(--medical-blue) !important;
-  color: #ffc107 !important; /* Gold accent on hover */
+  color: #FFD700 !important; /* Gold accent on hover */
 }
 
 .footer-bottom a {
-  color: #212529; /* Dark gray text */
+  color: #495057; /* Dark gray text instead of white */
 }
 
 .footer-bottom a.text-white {
-  color: #212529 !important; /* Dark gray text */
+  color: #495057 !important; /* Dark gray text instead of white */
 }
 
 .footer-bottom a:hover {
@@ -513,7 +513,7 @@ footer a:hover {
 
 .footer-copyright {
   font-size: 0.875rem;
-  color: #6c757d; /* Medium gray text */
+  color: #6c757d; /* Medium gray text instead of white */
 }
 
 .footer-bottom {
@@ -528,7 +528,7 @@ footer a:hover {
   height: 40px;
   border-radius: 50%;
   background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-  color: #212529 !important; /* Dark gray text */
+  color: #495057 !important; /* Dark gray text instead of white */
   font-size: 1.25rem;
   transition: all 0.3s ease;
   backdrop-filter: blur(5px);
@@ -545,27 +545,27 @@ footer a:hover {
 
 /* Ensure all footer text is visible */
 footer h5, footer h6 {
-  color: #212529 !important; /* Dark gray text */
-  background: linear-gradient(135deg, #212529 0%, #ffc107 100%);
+  color: #495057 !important; /* Dark gray text instead of white */
+  background: linear-gradient(135deg, #495057 0%, #FFD700 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 footer p {
-  color: #212529 !important; /* Dark gray text */
+  color: #495057 !important; /* Dark gray text instead of white */
 }
 
 footer ul {
-  color: #212529 !important; /* Dark gray text */
+  color: #495057 !important; /* Dark gray text instead of white */
 }
 
 footer li {
-  color: #212529 !important; /* Dark gray text */
+  color: #495057 !important; /* Dark gray text instead of white */
 }
 
 footer .small {
-  color: #6c757d !important; /* Medium gray text */
+  color: #6c757d !important; /* Medium gray text instead of white */
 }
 
 /* Utility classes */
@@ -737,11 +737,10 @@ footer .small {
   margin: 0.125rem 0;
   font-weight: 500;
   transition: all 0.2s ease;
-  color: var(--dark-gray);
 }
 
 .dropdown-item:hover {
-  background-color: var(--medical-blue-light);
+  background-color: var(--light-gray);
   color: var(--medical-blue);
 }
 
@@ -775,11 +774,10 @@ footer .small {
   border-radius: 0.375rem;
   padding: 0.5rem 1rem;
   margin: 0.125rem 0;
-  color: var(--dark-gray);
 }
 
 .navbar .dropdown-item:hover {
-  background-color: var(--medical-blue-light);
+  background-color: rgba(173, 181, 189, 0.1);
   color: var(--medical-blue);
   transform: translateX(3px);
 }
@@ -793,28 +791,28 @@ footer .small {
 
 /* Professional User Dropdown */
 .user-dropdown .dropdown-toggle {
-  background: linear-gradient(135deg, var(--medical-blue) 0%, #0b5ed7 100%);
-  border: 2px solid var(--medical-blue);
-  color: white;
+  background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+  border: 2px solid var(--border-color);
+  color: var(--dark-gray);
   font-weight: 600;
   padding: 0.5rem 1.25rem;
   border-radius: 8px;
   transition: all 0.3s ease;
   font-size: 1.1rem;
   backdrop-filter: blur(5px);
-  box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .user-dropdown .dropdown-toggle:hover {
-  border-color: #ffc107; /* Gold accent */
-  color: white;
-  background: linear-gradient(135deg, #0b5ed7 0%, var(--medical-blue) 100%);
+  border-color: #FFD700; /* Gold accent */
+  color: var(--medical-blue);
+  background: linear-gradient(135deg, rgba(173, 181, 189, 0.05) 0%, rgba(173, 181, 189, 0.1) 100%);
   transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(13, 110, 253, 0.4);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .user-dropdown .dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.25);
 }
 
 .user-dropdown .dropdown-menu {
@@ -833,11 +831,10 @@ footer .small {
   font-weight: 500;
   transition: all 0.2s ease;
   margin: 0.25rem 0;
-  color: var(--dark-gray);
 }
 
 .user-dropdown .dropdown-item:hover {
-  background-color: var(--medical-blue-light);
+  background-color: var(--light-gray);
   color: var(--medical-blue);
   transform: translateX(5px);
 }
@@ -858,7 +855,6 @@ footer .small {
   border: none;
   padding: 0.5rem 1rem;
   background: transparent;
-  color: var(--dark-gray);
 }
 
 .navbar .btn-outline-primary {

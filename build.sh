@@ -51,9 +51,21 @@ fi
 echo "=== Verifying Pillow installation ==="
 python -c "from PIL import Image; print('Pillow is properly installed')"
 
+# Ensure static directory exists
+echo "=== Ensuring static directory exists ==="
+mkdir -p static
+mkdir -p staticfiles
+
 # Collect static files with verbose output
 echo "=== Collecting static files ==="
 python manage.py collectstatic --no-input --verbosity=2 --clear
+
+# Debug: Show collected static files
+echo "=== Static files collected ==="
+echo "Contents of staticfiles directory:"
+ls -la staticfiles/
+echo "Contents of static/css directory:"
+ls -la static/css/
 
 # Run migrations
 echo "=== Running migrations ==="
