@@ -311,33 +311,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Navbar dropdown behavior - stay open on hover and close on outside click
+  // Navbar dropdown behavior - improved for Render deployment
   const dropdowns = document.querySelectorAll('.navbar .dropdown');
   dropdowns.forEach(dropdown => {
     const toggle = dropdown.querySelector('.dropdown-toggle');
     const menu = dropdown.querySelector('.dropdown-menu');
   
-    // Show dropdown on hover
+    // Show dropdown on hover (desktop only)
     dropdown.addEventListener('mouseenter', () => {
-      const bsDropdown = bootstrap.Dropdown.getInstance(toggle);
-      if (bsDropdown) {
-        bsDropdown.show();
-      } else {
-        new bootstrap.Dropdown(toggle).show();
+      // Only apply hover behavior on larger screens
+      if (window.innerWidth > 768) {
+        const bsDropdown = bootstrap.Dropdown.getInstance(toggle);
+        if (bsDropdown) {
+          bsDropdown.show();
+        } else {
+          new bootstrap.Dropdown(toggle).show();
+        }
       }
     });
   
-    // Hide dropdown when mouse leaves the dropdown area
+    // Hide dropdown when mouse leaves the dropdown area (desktop only)
     dropdown.addEventListener('mouseleave', () => {
-      setTimeout(() => {
-        // Check if mouse is still outside the dropdown
-        if (!dropdown.matches(':hover')) {
-          const bsDropdown = bootstrap.Dropdown.getInstance(toggle);
-          if (bsDropdown) {
-            bsDropdown.hide();
+      // Only apply hover behavior on larger screens
+      if (window.innerWidth > 768) {
+        setTimeout(() => {
+          // Check if mouse is still outside the dropdown
+          if (!dropdown.matches(':hover')) {
+            const bsDropdown = bootstrap.Dropdown.getInstance(toggle);
+            if (bsDropdown) {
+              bsDropdown.hide();
+            }
           }
+        }, 100); // Small delay to allow for smooth movement between toggle and menu
+      }
+    });
+  
+    // Handle click behavior for mobile/touch devices
+    toggle.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      const bsDropdown = bootstrap.Dropdown.getInstance(toggle);
+      if (bsDropdown) {
+        if (toggle.getAttribute('aria-expanded') === 'true') {
+          bsDropdown.hide();
+        } else {
+          bsDropdown.show();
         }
-      }, 100); // Small delay to allow for smooth movement between toggle and menu
+      } else {
+        new bootstrap.Dropdown(toggle).toggle();
+      }
     });
   
     // Close dropdown when clicking outside
@@ -350,4 +373,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+  
+  // Ensure navbar collapse works properly on mobile
+  const navbarToggler = document.querySelector('.navbar-toggler');
+  const navbarCollapse = document.querySelector('.navbar-collapse');
+  
+  if (navbarToggler && navbarCollapse) {
+    navbarToggler.addEventListener('click', function() {
+      const bsCollapse = new bootstrap.Collapse(navbarCollapse, {
+        toggle: false
+      });
+      
+      if (navbarCollapse.classList.contains('show')) {
+        bsCollapse.hide();
+      } else {
+        bsCollapse.show();
+      }
+    });
+  }
 });

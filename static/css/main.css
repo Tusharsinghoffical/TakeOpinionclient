@@ -513,21 +513,34 @@ a:hover {
 
 /* Premium Footer with Glass-morphism */
 footer {
-  background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(233, 236, 239, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(248, 249, 250, 0.95) 0%, rgba(233, 236, 239, 0.95) 100%);
   color: var(--dark-gray);
   padding: 3rem 0 1.5rem;
-  border-top: 1px solid rgba(255, 215, 0, 0.2);
+  border-top: 1px solid rgba(255, 215, 0, 0.3);
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px 20px 0 0;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--medical-blue), var(--gold));
 }
 
 footer a {
   color: var(--dark-gray);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0.25rem 0;
 }
 
 footer a.text-white {
@@ -537,17 +550,33 @@ footer a.text-white {
 footer a:hover {
   color: var(--medical-blue);
   text-decoration: none;
-  padding-left: 5px;
+  padding-left: 8px;
+}
+
+footer a::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--medical-blue));
+  transition: width 0.3s ease;
+}
+
+footer a:hover::before {
+  width: 100%;
 }
 
 .footer-links a {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   font-size: 0.95rem;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   color: var(--dark-gray) !important;
   position: relative;
   padding-left: 0;
+  padding: 0.25rem 0;
 }
 
 .footer-links a:last-child {
@@ -555,9 +584,12 @@ footer a:hover {
 }
 
 .footer-links a:hover {
-  padding-left: 5px;
+  padding-left: 8px;
   color: var(--medical-blue) !important;
-  color: var(--gold) !important;
+}
+
+.footer-links a:hover::before {
+  width: 100%;
 }
 
 .footer-bottom a {
@@ -585,8 +617,8 @@ footer a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(233, 236, 239, 0.9) 0%, rgba(222, 226, 230, 0.9) 100%);
   color: var(--dark-gray) !important;
@@ -594,15 +626,33 @@ footer a:hover {
   transition: all 0.3s ease;
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 .social-icon:hover {
   background: linear-gradient(135deg, var(--medical-blue) 0%, #0b5ed7 100%);
-  transform: translateY(-3px);
+  transform: translateY(-5px) scale(1.1);
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+  box-shadow: 0 6px 15px rgba(13, 110, 253, 0.3);
   color: white !important;
+}
+
+.social-icon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.3), transparent);
+  transform: rotate(45deg);
+  transition: all 0.5s ease;
+}
+
+.social-icon:hover::before {
+  transform: rotate(45deg) translate(20%, 20%);
 }
 
 /* Ensure all footer text is visible */
@@ -612,10 +662,24 @@ footer h5, footer h6 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-weight: 700;
+  position: relative;
+}
+
+footer h5::after, footer h6::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--medical-blue));
+  border-radius: 3px;
 }
 
 footer p {
   color: var(--dark-gray) !important;
+  line-height: 1.7;
 }
 
 footer ul {
