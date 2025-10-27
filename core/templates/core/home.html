@@ -755,27 +755,73 @@
     font-size: 0.9rem;
   }
 
-  .btn-testimonials {
-    display: block;
-    width: fit-content;
-    margin: 0 auto;
-    background: #0d6efd;
-    color: white;
-    padding: 0.75rem 2rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+  /* Enhanced Doctor Card Styles */
+  .doctor-card-wrapper {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
-  .btn-testimonials:hover {
+  .doctor-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .doctor-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .rating-stars {
+    color: #ffc107;
+    margin-bottom: 0.25rem;
+  }
+
+  .rating-count {
+    font-size: 0.85rem;
+    color: #6c757d;
+  }
+
+  .doctor-experience {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+
+  .doctor-experience i {
+    margin-right: 0.25rem;
+  }
+
+  .btn-doctor-profile {
+    display: block;
+    width: 100%;
+    background: #0d6efd;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .btn-doctor-profile:hover {
     background: #0b5ed7;
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  .btn-doctor-profile i {
+    margin-right: 0.5rem;
   }
 
   /* How It Works Section */
@@ -1266,34 +1312,48 @@
   <section class="top-section">
     <div class="container">
       <div class="section-header">
-        <h2 class="section-title">Top Doctors</h2>
+        <h2 class="section-title">Our Medical Experts</h2>
         <p class="section-subtitle">
-          Meet our highly qualified medical specialists
+          Meet our team of verified medical professionals
         </p>
       </div>
       <div class="top-grid">
         {% for doctor in top_doctors %}
-        <a href="/doctors/{{ doctor.slug }}/" class="top-card">
-          {% if doctor.profile_picture %}
-          <img src="{{ doctor.profile_picture }}" alt="{{ doctor.name }}" class="top-image">
-          {% else %}
-          <div class="top-image bg-light d-flex align-items-center justify-content-center">
-            <i class="bi bi-person-circle text-muted" style="font-size: 3rem;"></i>
-          </div>
-          {% endif %}
-          <div class="top-body">
-            <h3 class="top-name">{{ doctor.name }}</h3>
-            <div class="top-specialty">{{ doctor.specialization }}</div>
-            <div class="top-rating">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-half"></i>
-              <span class="ms-1">{{ doctor.rating }}</span>
+        <div class="top-card">
+          <div class="doctor-card-wrapper">
+            {% if doctor.profile_picture %}
+            <img src="{{ doctor.profile_picture }}" alt="{{ doctor.name }}" class="top-image">
+            {% else %}
+            <div class="top-image bg-light d-flex align-items-center justify-content-center">
+              <i class="bi bi-person-circle text-muted" style="font-size: 3rem;"></i>
+            </div>
+            {% endif %}
+            <div class="top-body">
+              <h3 class="top-name">{{ doctor.name }}</h3>
+              <div class="top-specialty">{{ doctor.specialization }}</div>
+              <div class="doctor-meta">
+                <div class="doctor-rating">
+                  <div class="rating-stars">
+                    {% for i in "12345" %}
+                      {% if forloop.counter <= doctor.rating|floatformat:"0"|add:"0" %}
+                        <i class="bi bi-star-fill text-warning"></i>
+                      {% else %}
+                        <i class="bi bi-star text-muted"></i>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <span class="rating-count">({{ doctor.review_count }} reviews)</span>
+                </div>
+                <div class="doctor-experience">
+                  <i class="bi bi-briefcase"></i> {{ doctor.experience_years }} years
+                </div>
+              </div>
+              <a href="/doctors/{{ doctor.slug }}/" class="btn-doctor-profile">
+                <i class="bi bi-person me-1"></i> View Profile
+              </a>
             </div>
           </div>
-        </a>
+        </div>
         {% endfor %}
       </div>
     </div>

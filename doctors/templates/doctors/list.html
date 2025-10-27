@@ -923,16 +923,18 @@
             <div class="doctor-meta">
               <div class="doctor-rating">
                 <div class="rating-stars">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= d.rating|floatformat:"0"|add:"0" %}
+                      <i class="bi bi-star-fill text-warning"></i>
+                    {% else %}
+                      <i class="bi bi-star text-muted"></i>
+                    {% endif %}
+                  {% endfor %}
                 </div>
                 <span class="rating-count">({{ d.review_count|default:0 }} reviews)</span>
               </div>
               <div class="doctor-experience">
-                <i class="bi bi-briefcase"></i>{{ d.experience_years }} years
+                <i class="bi bi-briefcase"></i> {{ d.experience_years }} years
               </div>
             </div>
             <div class="doctor-footer">
