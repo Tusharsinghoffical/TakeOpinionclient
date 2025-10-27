@@ -1004,6 +1004,94 @@
       width: 100%;
       max-width: 100%;
     }
+    
+    /* Success Stories & Media Gallery */
+    .success-stories-section {
+      background-color: white;
+      padding: 5rem 0;
+    }
+    
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .media-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px var(--shadow);
+      transition: all var(--transition-speed) ease;
+      border: 1px solid var(--border);
+    }
+    
+    .media-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px var(--shadow-strong);
+    }
+    
+    .media-image-container {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+    
+    .media-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition-speed) ease;
+    }
+    
+    .media-card:hover .media-image {
+      transform: scale(1.05);
+    }
+    
+    .media-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity var(--transition-speed) ease;
+    }
+    
+    .media-overlay-video {
+      background: rgba(13, 110, 253, 0.7);
+    }
+    
+    .media-image-container:hover .media-overlay {
+      opacity: 1;
+    }
+    
+    .media-overlay i {
+      color: white;
+      font-size: 3rem;
+    }
+    
+    .media-content {
+      padding: 1.5rem;
+    }
+    
+    .media-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary-dark);
+    }
+    
+    .media-description {
+      color: #6c757d;
+      margin-bottom: 0;
+      line-height: 1.5;
+    }
   }
 </style>
 
@@ -1565,6 +1653,113 @@
       <a href="{% url 'accounts:reviews_page' %}" class="btn-testimonials">
         <i class="bi bi-chat-square-text me-2"></i> View All Reviews
       </a>
+    </div>
+  </section>
+
+  <!-- Success Stories & Media Gallery Section -->
+  <section class="success-stories-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Success Stories & Media</h2>
+        <p class="section-subtitle">
+          Real patient experiences and media coverage of our medical tourism success stories
+        </p>
+      </div>
+      
+      <!-- Media Gallery -->
+      <div class="media-gallery">
+        <div class="media-grid">
+          <!-- Photo 1 -->
+          <div class="media-card">
+            <div class="media-image-container">
+              <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80" alt="Patient Recovery" class="media-image">
+              <div class="media-overlay">
+                <i class="bi bi-image"></i>
+              </div>
+            </div>
+            <div class="media-content">
+              <h3 class="media-title">Successful Knee Replacement</h3>
+              <p class="media-description">Patient from UK shares their recovery journey after knee replacement surgery in India.</p>
+            </div>
+          </div>
+          
+          <!-- Photo 2 -->
+          <div class="media-card">
+            <div class="media-image-container">
+              <img src="https://images.unsplash.com/photo-1576091160550-2173dba99ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80" alt="Medical Team" class="media-image">
+              <div class="media-overlay">
+                <i class="bi bi-image"></i>
+              </div>
+            </div>
+            <div class="media-content">
+              <h3 class="media-title">Expert Medical Team</h3>
+              <p class="media-description">Our specialists working together to provide the best care for international patients.</p>
+            </div>
+          </div>
+          
+          <!-- Video 1 -->
+          <div class="media-card">
+            <div class="media-image-container">
+              <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80" alt="Patient Testimonial" class="media-image">
+              <div class="media-overlay media-overlay-video">
+                <i class="bi bi-play-circle-fill"></i>
+              </div>
+            </div>
+            <div class="media-content">
+              <h3 class="media-title">Patient Testimonial</h3>
+              <p class="media-description">Hear from Sarah M. about her dental implant experience with our partner hospital.</p>
+            </div>
+          </div>
+          
+          <!-- Photo 3 -->
+          <div class="media-card">
+            <div class="media-image-container">
+              <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80" alt="Hospital Facilities" class="media-image">
+              <div class="media-overlay">
+                <i class="bi bi-image"></i>
+              </div>
+            </div>
+            <div class="media-content">
+              <h3 class="media-title">World-Class Facilities</h3>
+              <p class="media-description">State-of-the-art hospital facilities where our patients receive treatment.</p>
+            </div>
+          </div>
+          
+          <!-- Video 2 -->
+          <div class="media-card">
+            <div class="media-image-container">
+              <img src="https://images.unsplash.com/photo-1586773860418-d37222d8fce2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80" alt="Medical Procedure" class="media-image">
+              <div class="media-overlay media-overlay-video">
+                <i class="bi bi-play-circle-fill"></i>
+              </div>
+            </div>
+            <div class="media-content">
+              <h3 class="media-title">Advanced Procedures</h3>
+              <p class="media-description">Watch our cardiac surgery team perform a minimally invasive procedure.</p>
+            </div>
+          </div>
+          
+          <!-- Photo 4 -->
+          <div class="media-card">
+            <div class="media-image-container">
+              <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=400&q=80" alt="Patient Celebration" class="media-image">
+              <div class="media-overlay">
+                <i class="bi bi-image"></i>
+              </div>
+            </div>
+            <div class="media-content">
+              <h3 class="media-title">Recovery Celebration</h3>
+              <p class="media-description">Patients celebrating successful treatment outcomes with our medical team.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-5">
+          <a href="#" class="btn-view-all">
+            <i class="bi bi-collection-play me-2"></i> View All Media
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
