@@ -236,15 +236,15 @@ def search_entities(request: HttpRequest) -> JsonResponse:
     """
     entity_type = request.GET.get('type', '')
     query = request.GET.get('query', '')
-    
+
     if not query or len(query) < 2:
         return JsonResponse({
             'success': False,
             'error': 'Query too short'
         })
-    
+
     results = []
-    
+
     if entity_type == 'treatment':
         treatments = Treatment.objects.filter(name__icontains=query)[:10]  # type: ignore
         for treatment in treatments:
@@ -256,7 +256,7 @@ def search_entities(request: HttpRequest) -> JsonResponse:
                 'category': treatment.category.name if treatment.category else '',
                 'url': f'/treatments/{treatment.slug}/'
             })
-    
+
     elif entity_type == 'doctor':
         doctors = Doctor.objects.filter(name__icontains=query)[:10]  # type: ignore
         for doctor in doctors:
@@ -271,7 +271,7 @@ def search_entities(request: HttpRequest) -> JsonResponse:
                 'price': default_price,
                 'url': f'/doctors/{doctor.slug}/'
             })
-    
+
     elif entity_type == 'hospital':
         hospitals = Hospital.objects.filter(name__icontains=query)[:10]  # type: ignore
         for hospital in hospitals:
@@ -283,8 +283,37 @@ def search_entities(request: HttpRequest) -> JsonResponse:
                 'price': float(hospital.starting_price),
                 'url': f'/hospitals/{hospital.slug}/'
             })
-    
+
     return JsonResponse({
         'success': True,
         'results': results
     })
+
+
+def treatment_comparison(request: HttpRequest, slug: str) -> HttpResponse:
+    """Display comparison of the same treatment across different hospitals"""
+    treatment = get_object_or_404(Treatment, slug=slug)
+    
+    # Get all hospitals that offer this treatment
+    hospitals = treatment.hospitals.all().prefetch_related('doctors')
+    
+    # Get all doctors who offer this treatment
+    doctors = treatment.doctors.all().prefetch_related('hospitals')
+    
+    # Create comparison data
+    comparison_data = []
+    for hospital in hospitals:
+        # Get doctors at this hospital who offer this treatment
+        hospital_doctors = doctors.filter(hospitals=hospital)
+        
+        comparison_data.append({
+            'hospital': hospital,
+            'doctors': hospital_doctors,
+            'price': hospital.starting_price,
+        })
+    
+    context = {
+        'treatment': treatment,
+        'comparison_data': comparison_data,
+    }
+    return render(request, 'treatments/comparison.html', context)

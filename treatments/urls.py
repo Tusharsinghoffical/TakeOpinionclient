@@ -10,4 +10,5 @@ urlpatterns = [
     path("api/search/", views.search_entities, name="search_entities"),
     path("category/<slug:category_slug>/", views.treatments_home, name="treatments_by_category"),
     path("<slug:slug>/", views.treatment_detail, name="treatment_detail"),
+    path("<slug:slug>/comparison/", views.treatment_comparison, name="treatment_comparison"),
 ]
