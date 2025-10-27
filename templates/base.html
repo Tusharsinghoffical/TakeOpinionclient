@@ -452,7 +452,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li>
-                    <a class="dropdown-item" href="/"
+                    <a class="dropdown-item" href="{% url 'accounts:admin_dashboard' %}"
                       >Admin Dashboard</a
                     >
                   </li>
@@ -483,7 +483,7 @@
                   <li>
                     <a
                       class="dropdown-item"
-                      href="/"
+                      href="{% url 'accounts:patient_portal' %}"
                       >Patient Portal</a
                     >
                   </li>
@@ -515,7 +515,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li>
-                    <a class="dropdown-item" href="/"
+                    <a class="dropdown-item" href="{% url 'accounts:doctor_profile' %}"
                       >Doctor Profile</a
                     >
                   </li>

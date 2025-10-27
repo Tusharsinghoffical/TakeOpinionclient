@@ -46,8 +46,40 @@ def login_view(request):
             login(request, user)
             messages.success(request, f'Welcome back, {user.username}!')
 
-            # Redirect all users to home page after login
-            return redirect('home')
+            # Redirect based on user type
+            try:
+                user_profile = user.userprofile
+                if user_profile.user_type == 'admin':
+                    return redirect('accounts:admin_dashboard')
+                elif user_profile.user_type == 'doctor':
+                    return redirect('accounts:doctor_profile')
+                elif user_profile.user_type == 'patient':
+                    return redirect('accounts:patient_dashboard')
+                else:
+                    # Default redirect for unknown user types
+                    return redirect('home')
+            except AttributeError as e:
+                # This means the user object doesn't have a userprofile attribute
+                # Create a default profile for users without one
+                try:
+                    user_profile = UserProfile.objects.create(
+                        user=user,
+                        user_type='patient'  # Default to patient
+                    )
+                    # Also create the specific profile
+                    PatientProfile.objects.create(user_profile=user_profile)
+                    messages.info(
+                        request, 'User profile created successfully.')
+                    # Redirect to patient dashboard as default
+                    return redirect('accounts:patient_dashboard')
+                except Exception as profile_error:
+                    messages.warning(
+                        request, f'Unable to create user profile: {str(profile_error)}. Please contact support.')
+                    return redirect('home')
+            except Exception as e:
+                messages.error(
+                    request, f'An error occurred during login. Please try again. Error details: {str(e)}')
+                return redirect('home')
         else:
             messages.error(
                 request, 'Invalid username or password. Please try again.')
@@ -446,8 +478,8 @@ def doctor_profile(request):
 
 @login_required
 def patient_dashboard(request):
-    # Redirect all users to home page after login
-    return redirect('home')
+    # Redirect to the new patient portal
+    return redirect('accounts:patient_portal')
 
 
 @login_required
