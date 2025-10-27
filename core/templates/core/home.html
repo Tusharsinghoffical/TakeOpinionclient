@@ -661,98 +661,115 @@
 
   /* Testimonials Section */
   .testimonials-section {
-    background: #f8f9fa;
+    background-color: white;
     padding: 5rem 0;
   }
-
+  
   .testimonials-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    margin-bottom: 3rem;
+    margin-top: 2rem;
   }
-
+  
   .testimonial-card {
+    background: white;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    background: white;
-    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: all var(--transition-speed) ease;
+    border: 1px solid var(--border);
   }
-
+  
   .testimonial-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 15px 30px var(--shadow-strong);
   }
-
+  
+  .testimonial-video,
   .testimonial-image {
-    width: 100%;
     height: 200px;
-    object-fit: cover;
   }
-
+  
   .testimonial-badge {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: #198754;
+    background-color: var(--primary-medium);
     color: white;
     padding: 0.25rem 0.75rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
+    border-radius: 20px;
     font-weight: 600;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
-
+  
   .testimonial-content {
     padding: 1.5rem;
   }
-
+  
   .testimonial-author {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
-
-  .author-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
+  
   .author-info h4 {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--primary-dark);
   }
-
+  
   .author-info p {
     margin: 0;
     color: #6c757d;
     font-size: 0.9rem;
   }
-
+  
   .testimonial-text {
     color: #495057;
     margin-bottom: 1.5rem;
     font-style: italic;
   }
-
+  
   .testimonial-rating {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-
+  
   .rating-stars {
     color: #ffc107;
   }
-
+  
   .rating-date {
     color: #6c757d;
     font-size: 0.9rem;
+  }
+  
+  .btn-testimonials {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    background: #0d6efd;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .btn-testimonials:hover {
+    background: #0b5ed7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
   }
 
   /* Enhanced Doctor Card Styles */
@@ -1091,6 +1108,119 @@
       color: #6c757d;
       margin-bottom: 0;
       line-height: 1.5;
+    }
+    
+    /* Testimonials Section */
+    .testimonials-section {
+      background-color: white;
+      padding: 5rem 0;
+    }
+    
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .testimonial-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px var(--shadow);
+      transition: all var(--transition-speed) ease;
+      border: 1px solid var(--border);
+    }
+    
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px var(--shadow-strong);
+    }
+    
+    .testimonial-video,
+    .testimonial-image {
+      height: 200px;
+    }
+    
+    .testimonial-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: var(--primary-medium);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .testimonial-content {
+      padding: 1.5rem;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .author-info h4 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    
+    .author-info p {
+      margin: 0;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+    
+    .testimonial-text {
+      color: #495057;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+    
+    .testimonial-rating {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .rating-stars {
+      color: #ffc107;
+    }
+    
+    .rating-date {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+    
+    .btn-testimonials {
+      display: block;
+      width: fit-content;
+      margin: 0 auto;
+      background: #0d6efd;
+      color: white;
+      padding: 0.75rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-testimonials:hover {
+      background: #0b5ed7;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
     }
   }
 </style>
@@ -1537,12 +1667,12 @@
                     {{ feedback.patient.user.first_name }} {{ feedback.patient.user.last_name|first }}.
                   {% endif %}
                 </h4>
-                <p>{{ feedback.title }}</p>
+                <p>{{ feedback.title|truncatewords:6 }}</p>
               </div>
             </div>
             {% if not feedback.video_url %}
             <p class="testimonial-text">
-              "{{ feedback.comment }}"
+              "{{ feedback.comment|truncatewords:20 }}"
             </p>
             {% endif %}
             <div class="testimonial-rating">
@@ -1755,7 +1885,7 @@
         </div>
         
         <div class="text-center mt-5">
-          <a href="#" class="btn-view-all">
+          <a href="{% url 'accounts:reviews_page' %}" class="btn-view-all">
             <i class="bi bi-collection-play me-2"></i> View All Media
           </a>
         </div>
