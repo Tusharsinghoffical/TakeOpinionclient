@@ -440,6 +440,11 @@
                       <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Preferred Date:</strong> <span id="summaryDate"></span></li>
                       <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Treatment Cost:</strong> <span id="treatmentCostSummary">₹0</span></li>
                       <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Room Cost (7 nights):</strong> <span id="roomCostSummary">₹0</span></li>
+                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Selected Amenities:</strong> 
+                        <ul class="list-unstyled ms-4 mt-2" id="summaryAmenities">
+                          <!-- Amenities will be populated here -->
+                        </ul>
+                      </li>
                       <li class="border-top pt-2 mt-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Total Cost:</strong> <span id="summaryCost" class="h5 text-primary"></span></li>
                     </ul>
                   </div>
@@ -477,6 +482,7 @@
             <input type="hidden" id="selectedTreatmentId" name="treatment_id">
             <input type="hidden" id="selectedDoctorId" name="doctor_id">
             <input type="hidden" id="selectedHospitalId" name="hospital_id">
+            <input type="hidden" id="selectedAmenities" name="selected_amenities">
             <input type="hidden" id="totalAmount" name="total_amount">
           </form>
         </div>
@@ -731,7 +737,25 @@
     totalCost = treatmentCost;
     const advanceAmount = totalCost * 0.1; // 10% advance
     
-    // Update summary
+    // Get selected amenities, special requirements, and additional services
+    const selectedItems = [];
+    const amenityCheckboxes = document.querySelectorAll('input[name="amenities"]:checked');
+    const specialRequirementCheckboxes = document.querySelectorAll('input[name="special_requirements"]:checked');
+    const additionalServiceCheckboxes = document.querySelectorAll('input[name="additional_services"]:checked');
+    
+    amenityCheckboxes.forEach(checkbox => {
+      selectedItems.push(checkbox.value);
+    });
+    
+    specialRequirementCheckboxes.forEach(checkbox => {
+      selectedItems.push(checkbox.value);
+    });
+    
+    additionalServiceCheckboxes.forEach(checkbox => {
+      selectedItems.push(checkbox.value);
+    });
+    
+    // Update summary information
     document.getElementById('summaryTreatment').textContent = selectedTreatmentName;
     document.getElementById('summaryDoctor').textContent = selectedDoctorName;
     document.getElementById('summaryHospital').textContent = selectedHospitalName;
@@ -739,6 +763,68 @@
     document.getElementById('summaryDate').textContent = preferredDate.value || 'Not specified';
     document.getElementById('treatmentCostSummary').textContent = `₹${treatmentCost.toLocaleString()}`;
     document.getElementById('roomCostSummary').textContent = 'Included with hospital stay';
+    
+    // Update amenities summary
+    const amenitiesSummary = document.getElementById('summaryAmenities');
+    amenitiesSummary.innerHTML = '';
+    if (selectedItems.length > 0) {
+      selectedItems.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'mb-1';
+        switch(item) {
+          case 'private_room':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Private Patient Rooms';
+            break;
+          case 'family_accommodation':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Family Accommodation';
+            break;
+          case 'room_service':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service';
+            break;
+          case 'wifi':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi';
+            break;
+          case 'ac':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning';
+            break;
+          case 'tv':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Television';
+            break;
+          case 'wheelchair':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Wheelchair Accessibility';
+            break;
+          case 'language':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Language Interpretation';
+            break;
+          case 'dietary':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Dietary Accommodations';
+            break;
+          case 'religious':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Religious Services';
+            break;
+          case 'tourism':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Medical Tourism Assistance';
+            break;
+          case 'travel':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Travel Arrangements';
+            break;
+          case 'visa':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Visa Support';
+            break;
+          case 'post_treatment':
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Post-Treatment Care';
+            break;
+          default:
+            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>' + item;
+        }
+        amenitiesSummary.appendChild(li);
+      });
+    } else {
+      const li = document.createElement('li');
+      li.innerHTML = '<i class="bi bi-x-circle-fill text-muted me-2"></i>None selected';
+      amenitiesSummary.appendChild(li);
+    }
+    
     document.getElementById('summaryCost').textContent = `₹${totalCost.toLocaleString()}`;
     document.getElementById('advanceAmount').textContent = `₹${advanceAmount.toFixed(2)}`;
     
@@ -1003,12 +1089,54 @@
                   <div class="col-md-6">
                     <h6 class="mb-3">Patient Amenities</h6>
                     <ul class="list-unstyled">
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Private Patient Rooms</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Family Accommodation</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning</li>
-                      <li><i class="bi bi-check-circle-fill text-success me-2"></i>Television</li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="privateRoom" name="amenities" value="private_room" checked>
+                          <label class="form-check-label" for="privateRoom">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Private Patient Rooms
+                          </label>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="familyAccommodation" name="amenities" value="family_accommodation" checked>
+                          <label class="form-check-label" for="familyAccommodation">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Family Accommodation
+                          </label>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="roomService" name="amenities" value="room_service" checked>
+                          <label class="form-check-label" for="roomService">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service
+                          </label>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="wifi" name="amenities" value="wifi" checked>
+                          <label class="form-check-label" for="wifi">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi
+                          </label>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="ac" name="amenities" value="ac" checked>
+                          <label class="form-check-label" for="ac">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning
+                          </label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="tv" name="amenities" value="tv" checked>
+                          <label class="form-check-label" for="tv">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Television
+                          </label>
+                        </div>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -1017,20 +1145,76 @@
                   <div class="col-md-6">
                     <h6 class="mb-3">Special Requirements</h6>
                     <ul class="list-unstyled">
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Wheelchair Accessibility</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Language Interpretation</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Dietary Accommodations</li>
-                      <li><i class="bi bi-check-circle-fill text-success me-2"></i>Religious Services</li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="wheelchair" name="special_requirements" value="wheelchair" checked>
+                          <label class="form-check-label" for="wheelchair">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Wheelchair Accessibility
+                          </label>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="language" name="special_requirements" value="language" checked>
+                          <label class="form-check-label" for="language">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Language Interpretation
+                          </label>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="dietary" name="special_requirements" value="dietary" checked>
+                          <label class="form-check-label" for="dietary">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Dietary Accommodations
+                          </label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="religious" name="special_requirements" value="religious" checked>
+                          <label class="form-check-label" for="religious">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Religious Services
+                          </label>
+                        </div>
+                      </li>
                     </ul>
                   </div>
                   
                   <div class="col-md-6">
                     <h6 class="mb-3">Additional Services</h6>
                     <ul class="list-unstyled">
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Medical Tourism Assistance</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Travel Arrangements</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Visa Support</li>
-                      <li><i class="bi bi-check-circle-fill text-success me-2"></i>Post-Treatment Care</li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="tourism" name="additional_services" value="tourism" checked>
+                          <label class="form-check-label" for="tourism">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Medical Tourism Assistance
+                          </label>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="travel" name="additional_services" value="travel" checked>
+                          <label class="form-check-label" for="travel">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Travel Arrangements
+                          </label>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="visa" name="additional_services" value="visa" checked>
+                          <label class="form-check-label" for="visa">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Visa Support
+                          </label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="postTreatment" name="additional_services" value="post_treatment" checked>
+                          <label class="form-check-label" for="postTreatment">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>Post-Treatment Care
+                          </label>
+                        </div>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -1145,10 +1329,29 @@
     // Prevent default submission
     e.preventDefault();
     
-    // Ensure all required hidden fields are set
+    // Collect selected amenities, special requirements, and additional services
+    const selectedItems = [];
+    const amenityCheckboxes = document.querySelectorAll('input[name="amenities"]:checked');
+    const specialRequirementCheckboxes = document.querySelectorAll('input[name="special_requirements"]:checked');
+    const additionalServiceCheckboxes = document.querySelectorAll('input[name="additional_services"]:checked');
+    
+    amenityCheckboxes.forEach(checkbox => {
+      selectedItems.push(checkbox.value);
+    });
+    
+    specialRequirementCheckboxes.forEach(checkbox => {
+      selectedItems.push(checkbox.value);
+    });
+    
+    additionalServiceCheckboxes.forEach(checkbox => {
+      selectedItems.push(checkbox.value);
+    });
+    
+    // Set hidden form fields
     document.getElementById('selectedTreatmentId').value = selectedTreatmentId || '';
     document.getElementById('selectedDoctorId').value = selectedDoctorId || '';
     document.getElementById('selectedHospitalId').value = selectedHospitalId || '';
+    document.getElementById('selectedAmenities').value = JSON.stringify(selectedItems);
     document.getElementById('totalAmount').value = totalCost || 0;
     
     // Check if required fields are present
