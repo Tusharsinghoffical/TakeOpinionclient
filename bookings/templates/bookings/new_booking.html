@@ -383,14 +383,14 @@
               </div>
             </div>
             
-            <!-- Step 4: Room Selection with Pricing -->
+            <!-- Step 4: Hospital Details Display -->
             <div class="booking-step" id="step-4">
-              <h5 class="card-title mb-4">Step 4: Select Room</h5>
+              <h5 class="card-title mb-4">Step 4: Hospital Details</h5>
               
               <div class="alert alert-info mb-4">
                 <i class="bi bi-info-circle me-2"></i>
-                <strong>Room Selection</strong>
-                <p class="mb-0 mt-2">Select your preferred room type for your hospital stay. The cost includes 7 nights by default, but you can adjust this based on your treatment duration.</p>
+                <strong>Hospital Information</strong>
+                <p class="mb-0 mt-2">View the facilities and features of your selected hospital. All hospitals offer comprehensive medical care with modern amenities.</p>
               </div>
               
               <div class="mb-4">
@@ -401,13 +401,13 @@
               </div>
               
               <div class="mb-4">
-                <h6 class="mb-3">Room Options</h6>
+                <h6 class="mb-3">Hospital Features & Facilities</h6>
                 <div class="alert alert-warning mb-3">
                   <i class="bi bi-exclamation-triangle me-2"></i>
-                  <strong>Note:</strong> The room cost shown is per night. The total room cost will be calculated based on a 7-night stay, which is the average duration for most treatments.
+                  <strong>Note:</strong> The selected hospital provides comprehensive medical care with modern facilities and amenities for patients and their families.
                 </div>
-                <div id="roomOptions" class="row g-3">
-                  <!-- Room options will be populated dynamically -->
+                <div id="hospitalFeatures" class="row g-3">
+                  <!-- Hospital features will be populated dynamically -->
                   <div class="col-12 text-center py-5">
                     <div class="text-muted">Please select a hospital first</div>
                   </div>
@@ -491,13 +491,10 @@
   let selectedTreatmentId = null;
   let selectedDoctorId = null;
   let selectedHospitalId = null;
-  let selectedRoomId = null;
   let selectedTreatmentName = '';
   let selectedDoctorName = '';
   let selectedHospitalName = '';
-  let selectedRoomName = '';
   let treatmentCost = 0;
-  let roomCost = 0;
   let totalCost = 0;
   
   // DOM elements
@@ -514,7 +511,7 @@
   const treatmentSelect = document.getElementById('treatmentSelect');
   const doctorSelect = document.getElementById('doctorSelect');
   const hospitalsList = document.getElementById('hospitalsList');
-  const roomOptions = document.getElementById('roomOptions');
+  const hospitalFeatures = document.getElementById('hospitalFeatures');
   const preferredDate = document.getElementById('preferredDate');
   
   // Set minimum date to today
@@ -713,8 +710,8 @@
       getDoctorPricing(selectedDoctorId, selectedTreatmentId, selectedHospitalId);
     }
     
-    // Populate room options based on selected hospital
-    populateRoomOptions(selectedHospitalId);
+    // Populate hospital features based on selected hospital
+    populateHospitalFeatures(selectedHospitalId);
     
     // Update summary information
     document.getElementById('selectedHospitalName').textContent = selectedHospitalName;
@@ -728,24 +725,21 @@
   });
   
   nextStep4.addEventListener('click', function() {
-    if (!selectedRoomId) {
-      alert('Please select a room option');
-      return;
-    }
+    // We no longer need to validate room selection since we're showing hospital features
+    // Instead, we just need to ensure a hospital is selected (which should already be validated)
     
-    // Calculate total cost (treatment cost + 7 nights room cost)
-    const roomCostFor7Nights = roomCost * 7;
-    totalCost = treatmentCost + roomCostFor7Nights;
+    // Calculate total cost (treatment cost only, no room cost)
+    totalCost = treatmentCost;
     const advanceAmount = totalCost * 0.1; // 10% advance
     
     // Update summary
     document.getElementById('summaryTreatment').textContent = selectedTreatmentName;
     document.getElementById('summaryDoctor').textContent = selectedDoctorName;
     document.getElementById('summaryHospital').textContent = selectedHospitalName;
-    document.getElementById('summaryRoom').textContent = selectedRoomName;
+    document.getElementById('summaryRoom').textContent = 'Included with hospital stay';
     document.getElementById('summaryDate').textContent = preferredDate.value || 'Not specified';
     document.getElementById('treatmentCostSummary').textContent = `₹${treatmentCost.toLocaleString()}`;
-    document.getElementById('roomCostSummary').textContent = `₹${roomCostFor7Nights.toLocaleString()} (₹${roomCost.toLocaleString()}/night × 7 nights)`;
+    document.getElementById('roomCostSummary').textContent = 'Included with hospital stay';
     document.getElementById('summaryCost').textContent = `₹${totalCost.toLocaleString()}`;
     document.getElementById('advanceAmount').textContent = `₹${advanceAmount.toFixed(2)}`;
     
@@ -753,7 +747,7 @@
     document.getElementById('selectedTreatmentId').value = selectedTreatmentId;
     document.getElementById('selectedDoctorId').value = selectedDoctorId || '';
     document.getElementById('selectedHospitalId').value = selectedHospitalId;
-    document.getElementById('selectedRoomId').value = selectedRoomId;
+    // No need to set selectedRoomId since we're not selecting rooms
     document.getElementById('totalAmount').value = totalCost;
     
     showStep(5);
@@ -942,26 +936,27 @@
       });
   }
   
-  // Function to populate room options based on hospital
-  function populateRoomOptions(hospitalId) {
+  // Function to populate hospital features based on hospital
+  function populateHospitalFeatures(hospitalId) {
     // Show loading indicator
-    roomOptions.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+    const hospitalFeatures = document.getElementById('hospitalFeatures');
+    hospitalFeatures.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
     
     // Debug: Log the hospital ID
-    console.log('Fetching rooms for hospital ID:', hospitalId);
+    console.log('Fetching hospital features for hospital ID:', hospitalId);
     
     // Check if hospitalId is valid
     if (!hospitalId) {
-      console.error('Invalid hospital ID provided to populateRoomOptions');
-      roomOptions.innerHTML = '<div class="col-12"><div class="alert alert-warning">Please select a hospital first</div></div>';
+      console.error('Invalid hospital ID provided to populateHospitalFeatures');
+      hospitalFeatures.innerHTML = '<div class="col-12"><div class="alert alert-warning">Please select a hospital first</div></div>';
       nextStep4.disabled = true;
       return;
     }
     
-    // Make AJAX request to get room options
-    fetch(`/book/api/rooms/${hospitalId}/`)
+    // Make AJAX request to get hospital details
+    fetch(`/book/api/hospitals/${hospitalId}/`)
       .then(response => {
-        console.log('Room API response status:', response.status);
+        console.log('Hospital API response status:', response.status);
         // Check if response is OK
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -969,73 +964,91 @@
         return response.json();
       })
       .then(data => {
-        roomOptions.innerHTML = '';
+        hospitalFeatures.innerHTML = '';
         
-        if (data.success && data.rooms && data.rooms.length > 0) {
-          // Add rooms to list
-          data.rooms.forEach(room => {
-            const roomOption = document.createElement('div');
-            roomOption.className = 'col-md-6';
-            roomOption.innerHTML = `
-              <div class="card room-option h-100" data-room-id="${room.id}" data-room-name="${room.name}" data-price="${room.price_per_night}">
-                <div class="position-relative">
-                  <img src="https://picsum.photos/seed/r${room.id}/400/250" class="card-img-top" alt="${room.name}" style="height: 150px; object-fit: cover;">
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title mb-1">${room.name}</h5>
-                  <p class="card-text small text-muted mb-2">
-                    <i class="bi bi-geo-alt me-1"></i>${room.address}
-                  </p>
-                  
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                      <div class="small text-muted">Price per night</div>
-                      <div class="h5 text-primary mb-0">₹${parseFloat(room.price_per_night).toLocaleString()}</div>
-                    </div>
-                    <span class="price-tag">₹${parseFloat(room.price_per_night).toLocaleString()}/night</span>
+        if (data.success && data.hospitals && data.hospitals.length > 0) {
+          // Get the first hospital (since we're fetching by ID, there should be only one)
+          const hospital = data.hospitals[0];
+          
+          // Create hospital features display
+          const hospitalFeature = document.createElement('div');
+          hospitalFeature.className = 'col-12';
+          hospitalFeature.innerHTML = `
+            <div class="card hospital-feature h-100">
+              <div class="card-body">
+                <h5 class="card-title mb-3">${hospital.name} Features</h5>
+                
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <h6 class="mb-3">Medical Facilities</h6>
+                    <ul class="list-unstyled">
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Medical Care</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Emergency Services</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Intensive Care Unit (ICU)</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Operation Theaters</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Diagnostic Services</li>
+                      <li><i class="bi bi-check-circle-fill text-success me-2"></i>Pharmacy Services</li>
+                    </ul>
                   </div>
                   
-                  <ul class="list-unstyled small mb-0">
-                    <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service</li>
-                    <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi</li>
-                    <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning</li>
-                    <li><i class="bi bi-check-circle-fill text-success me-2"></i>Television</li>
-                  </ul>
+                  <div class="col-md-6">
+                    <h6 class="mb-3">Patient Amenities</h6>
+                    <ul class="list-unstyled">
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Private Patient Rooms</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Family Accommodation</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning</li>
+                      <li><i class="bi bi-check-circle-fill text-success me-2"></i>Television</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <h6 class="mb-3">Special Requirements</h6>
+                    <ul class="list-unstyled">
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Wheelchair Accessibility</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Language Interpretation</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Dietary Accommodations</li>
+                      <li><i class="bi bi-check-circle-fill text-success me-2"></i>Religious Services</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <h6 class="mb-3">Additional Services</h6>
+                    <ul class="list-unstyled">
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Medical Tourism Assistance</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Travel Arrangements</li>
+                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Visa Support</li>
+                      <li><i class="bi bi-check-circle-fill text-success me-2"></i>Post-Treatment Care</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <div class="alert alert-info">
+                  <i class="bi bi-info-circle me-2"></i>
+                  <strong>Accreditations:</strong> 
+                  ${hospital.jci_accredited ? '<span class="badge bg-info me-1">JCI</span>' : ''}
+                  ${hospital.nabh_accredited ? '<span class="badge bg-success me-1">NABH</span>' : ''}
+                  ${hospital.iso_certified ? '<span class="badge bg-secondary me-1">ISO</span>' : ''}
+                  ${(!hospital.jci_accredited && !hospital.nabh_accredited && !hospital.iso_certified) ? 'No specific accreditations listed' : ''}
                 </div>
               </div>
-            `;
-            roomOptions.appendChild(roomOption);
-            
-            // Add click event to select room
-            roomOption.querySelector('.room-option').addEventListener('click', function() {
-              // Remove selected class from all options
-              document.querySelectorAll('.room-option').forEach(option => {
-                option.classList.remove('selected');
-              });
-              
-              // Add selected class to clicked option
-              this.classList.add('selected');
-              
-              // Store selected room data
-              selectedRoomId = this.dataset.roomId;
-              selectedRoomName = this.dataset.roomName;
-              roomCost = parseFloat(this.dataset.price);
-              
-              // Update hidden form field immediately
-              document.getElementById('selectedRoomId').value = selectedRoomId;
-              
-              // Enable next button
-              nextStep4.disabled = false;
-            });
-          });
+            </div>
+          `;
+          hospitalFeatures.appendChild(hospitalFeature);
+          
+          // Enable next button
+          nextStep4.disabled = false;
         } else {
-          roomOptions.innerHTML = '<div class="col-12"><div class="alert alert-info">No room options available for this hospital.</div></div>';
+          hospitalFeatures.innerHTML = '<div class="col-12"><div class="alert alert-info">No hospital details available.</div></div>';
           nextStep4.disabled = true;
         }
       })
       .catch(error => {
-        console.error('Error fetching rooms:', error);
-        roomOptions.innerHTML = '<div class="col-12"><div class="alert alert-danger">Error loading room options: ' + error.message + '</div></div>';
+        console.error('Error fetching hospital features:', error);
+        hospitalFeatures.innerHTML = '<div class="col-12"><div class="alert alert-danger">Error loading hospital details: ' + error.message + '</div></div>';
         nextStep4.disabled = true;
       });
   }
