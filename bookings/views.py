@@ -209,6 +209,7 @@ def get_hospitals_by_treatment(request: HttpRequest, treatment_id: int) -> JsonR
             hospitals_data.append({
                 'id': hospital.id,
                 'name': hospital.name,
+                'slug': hospital.slug,
                 'city': hospital.city,
                 'state': hospital.state.name if hospital.state else '',
                 'country': hospital.country.name if hospital.country else '',
