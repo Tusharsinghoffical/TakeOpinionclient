@@ -154,8 +154,11 @@ def new_booking_page(request: HttpRequest) -> HttpResponse:
             
             booking.save()  # type: ignore
             
-            # Redirect to payment page
-            return redirect('payments:booking_payment', booking_id=booking.id)  # type: ignore
+            # Redirect to home page with success message
+            # Redirect to home page with success message
+            booking_id = booking.id  # type: ignore
+            messages.success(request, f'Your booking has been confirmed successfully! Booking ID: {booking_id}. Our team will contact you shortly to finalize the details.')
+            return redirect('home')
             
         except Exception as e:
             logger.error(f"Error processing booking: {str(e)}", exc_info=True)
@@ -496,7 +499,10 @@ def booking_page(request: HttpRequest) -> HttpResponse:
                     ).save()
             
             # Redirect to payment page instead of confirmation page
-            return redirect('payments:booking_payment', booking_id=booking.id)  # type: ignore
+            # Redirect to home page with success message
+            booking_id = booking.id  # type: ignore
+            messages.success(request, f'Your booking has been confirmed successfully! Booking ID: {booking_id}. Our team will contact you shortly to finalize the details.')
+            return redirect('home')
             
         except Exception as e:
             logger.error(f"Error processing booking: {str(e)}", exc_info=True)
