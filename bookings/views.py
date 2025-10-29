@@ -806,3 +806,49 @@ def join_consultation(request, booking_id):
     
     # Redirect to Google Meet
     return redirect(booking.google_meet_link)
+
+@require_http_methods(["GET"])
+def get_hospitals_by_treatment_and_doctor(request: HttpRequest, treatment_id: int, doctor_id: int) -> JsonResponse:
+    """API endpoint to get hospitals by treatment and doctor (hospitals where the doctor works and offers the treatment)"""
+    try:
+        treatment = Treatment.objects.get(id=treatment_id)  # type: ignore
+        doctor = Doctor.objects.get(id=doctor_id)  # type: ignore
+        
+        # Get hospitals that offer this treatment AND employ this doctor
+        hospitals = Hospital.objects.filter(
+            treatments=treatment,
+            doctors=doctor
+        ).order_by('name')  # type: ignore
+        
+        hospitals_data = []
+        for hospital in hospitals:
+            hospitals_data.append({
+                'id': hospital.id,
+                'name': hospital.name,
+                'city': hospital.city,
+                'state': hospital.state.name if hospital.state else '',
+                'country': hospital.country.name if hospital.country else '',
+                'rating': float(hospital.rating) if hospital.rating else 0,
+                'starting_price': float(hospital.starting_price) if hospital.starting_price else 0,
+                'is_takeopinion_choice': hospital.is_takeopinion_choice,
+                'jci_accredited': hospital.jci_accredited,
+                'nabh_accredited': hospital.nabh_accredited,
+                'iso_certified': hospital.iso_certified,
+                'slug': hospital.slug
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'hospitals': hospitals_data
+        })
+    except (Treatment.DoesNotExist, Doctor.DoesNotExist):  # type: ignore
+        return JsonResponse({
+            'success': False,
+            'error': 'Treatment or doctor not found'
+        }, status=404)
+    except Exception as e:
+        logger.error(f"Error getting hospitals by treatment and doctor: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': 'An error occurred while fetching hospitals'
+        }, status=500)

@@ -8,6 +8,7 @@ urlpatterns = [
     path("new/", views.new_booking_page, name="new_booking_page"),
     path("api/doctors/<int:treatment_id>/", views.get_doctors_by_treatment, name="get_doctors_by_treatment"),
     path("api/hospitals/<int:treatment_id>/", views.get_hospitals_by_treatment, name="get_hospitals_by_treatment"),
+    path("api/hospitals/<int:treatment_id>/<int:doctor_id>/", views.get_hospitals_by_treatment_and_doctor, name="get_hospitals_by_treatment_and_doctor"),
     path("api/rooms/<int:hospital_id>/", views.get_rooms_by_hospital, name="get_rooms_by_hospital"),
     path("api/doctor-pricing/<int:doctor_id>/<int:treatment_id>/<int:hospital_id>/", views.get_doctor_pricing, name="get_doctor_pricing"),
     path("api/treatment-pricing/<int:treatment_id>/", views.get_treatment_pricing, name="get_treatment_pricing"),
