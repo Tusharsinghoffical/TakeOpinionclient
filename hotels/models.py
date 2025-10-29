@@ -1,6 +1,7 @@
 from django.db import models
 from hospitals.models import Hospital
 from django.utils.text import slugify
+from datetime import date
 
 
 class Hotel(models.Model):
@@ -61,3 +62,50 @@ class HotelImage(models.Model):
         ordering = ['-is_primary', 'created_at']
         verbose_name = 'Hotel Image'
         verbose_name_plural = 'Hotel Images'
+
+
+class HotelBooking(models.Model):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='bookings')
+    guest_name = models.CharField(max_length=200)
+    guest_email = models.EmailField()
+    guest_phone = models.CharField(max_length=20)
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
+    number_of_guests = models.PositiveIntegerField(default=1)
+    number_of_rooms = models.PositiveIntegerField(default=1)
+    special_requests = models.TextField(blank=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    booking_status = models.CharField(
+        max_length=20,
+        choices=[
+            ('pending', 'Pending'),
+            ('confirmed', 'Confirmed'),
+            ('cancelled', 'Cancelled'),
+        ],
+        default='pending'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Booking for {self.hotel.name} by {self.guest_name}"
+
+    def get_nights_count(self):
+        """Calculate the number of nights"""
+        if self.check_in_date and self.check_out_date:
+            from django.utils.timezone import now
+            delta = self.check_out_date - self.check_in_date
+            return delta.days
+        return 0
+
+    def save(self, *args, **kwargs):
+        # Calculate total amount if not set
+        if not self.total_amount and hasattr(self, 'hotel') and self.hotel.price_per_night:
+            nights = self.get_nights_count()
+            self.total_amount = float(self.hotel.price_per_night) * nights * self.number_of_rooms
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Hotel Booking'
+        verbose_name_plural = 'Hotel Bookings'

@@ -3,11 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.db.models import Q
-from .models import Hotel, HotelImage
+from .models import Hotel, HotelImage, HotelBooking
 from hospitals.models import Hospital
 from bookings.models import Booking
 import json
 import logging
+from datetime import datetime, date
+from django.shortcuts import redirect
+from django.contrib import messages
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -129,3 +132,77 @@ def search_hotels_api(request: HttpRequest) -> JsonResponse:
         'hotels': hotel_data,
         'count': len(hotel_data)
     })
+
+
+def book_hotel(request, slug):
+    """Display hotel booking form"""
+    hotel = get_object_or_404(Hotel, slug=slug, is_active=True)
+    
+    if request.method == 'POST':
+        # Process booking form
+        guest_name = request.POST.get('guest_name')
+        guest_email = request.POST.get('guest_email')
+        guest_phone = request.POST.get('guest_phone')
+        check_in_date = request.POST.get('check_in_date')
+        check_out_date = request.POST.get('check_out_date')
+        number_of_guests = request.POST.get('number_of_guests', 1)
+        number_of_rooms = request.POST.get('number_of_rooms', 1)
+        special_requests = request.POST.get('special_requests', '')
+        
+        # Validate dates
+        try:
+            check_in = datetime.strptime(check_in_date, '%Y-%m-%d').date()
+            check_out = datetime.strptime(check_out_date, '%Y-%m-%d').date()
+            
+            if check_in >= check_out:
+                messages.error(request, 'Check-out date must be after check-in date.')
+                return render(request, 'hotels/book.html', {'hotel': hotel})
+                
+            if check_in < date.today():
+                messages.error(request, 'Check-in date cannot be in the past.')
+                return render(request, 'hotels/book.html', {'hotel': hotel})
+                
+        except ValueError:
+            messages.error(request, 'Please provide valid dates.')
+            return render(request, 'hotels/book.html', {'hotel': hotel})
+        
+        # Create booking
+        try:
+            booking = HotelBooking(
+                hotel=hotel,
+                guest_name=guest_name,
+                guest_email=guest_email,
+                guest_phone=guest_phone,
+                check_in_date=check_in,
+                check_out_date=check_out,
+                number_of_guests=int(number_of_guests),
+                number_of_rooms=int(number_of_rooms),
+                special_requests=special_requests,
+                total_amount=0.00,  # Will be calculated in save method
+                booking_status='pending'
+            )
+            booking.save()
+            
+            messages.success(request, f'Your booking at {hotel.name} has been submitted successfully! Our team will contact you shortly to confirm the reservation.')
+            return redirect('hotels:booking_confirmation', booking_id=booking.id)
+            
+        except Exception as e:
+            logger.error(f"Error creating hotel booking: {str(e)}")
+            messages.error(request, 'An error occurred while processing your booking. Please try again.')
+            return render(request, 'hotels/book.html', {'hotel': hotel})
+    
+    # GET request - show booking form
+    context = {
+        'hotel': hotel,
+    }
+    return render(request, 'hotels/book.html', context)
+
+
+def booking_confirmation(request, booking_id):
+    """Display booking confirmation"""
+    booking = get_object_or_404(HotelBooking, id=booking_id)
+    
+    context = {
+        'booking': booking,
+    }
+    return render(request, 'hotels/booking_confirmation.html', context)

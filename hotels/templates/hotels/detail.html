@@ -78,13 +78,11 @@
             <div class="card mt-4">
                 <div class="card-body">
                     <h5 class="card-title">Book This Hotel</h5>
-                    <p class="card-text">Contact the hotel directly to make a reservation.</p>
-                    <a href="tel:{{ hotel.phone }}" class="btn btn-success w-100 mb-2">
-                        <i class="fas fa-phone"></i> Call Now
+                    <p class="card-text">Book your stay directly through our secure booking system.</p>
+                    <a href="{% url 'hotels:book' hotel.slug %}" class="btn btn-success w-100 mb-2">
+                        <i class="fas fa-calendar-check"></i> Book Now
                     </a>
-                    <a href="mailto:{{ hotel.email }}" class="btn btn-outline-primary w-100">
-                        <i class="fas fa-envelope"></i> Send Email
-                    </a>
+                    <p class="card-text"><small class="text-muted">Price: ₹{{ hotel.price_per_night }}/night</small></p>
                 </div>
             </div>
         </div>
