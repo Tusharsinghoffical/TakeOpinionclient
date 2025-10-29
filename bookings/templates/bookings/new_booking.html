@@ -299,7 +299,7 @@
       
       <div class="card border-0 shadow-sm booking-card">
         <div class="card-body">
-          <form id="newBookingForm" class="booking-form" method="POST" onsubmit="console.log('Form is being submitted'); return true;">
+          <form id="newBookingForm" class="booking-form" method="POST">
             {% csrf_token %}
             
             <!-- Step 1: Treatment Selection -->
@@ -1141,6 +1141,32 @@
       });
   }
   
+  // Handle form submission
+  document.getElementById('newBookingForm').addEventListener('submit', function(e) {
+    // Prevent default submission
+    e.preventDefault();
+    
+    // Ensure all required hidden fields are set
+    document.getElementById('selectedTreatmentId').value = selectedTreatmentId || '';
+    document.getElementById('selectedDoctorId').value = selectedDoctorId || '';
+    document.getElementById('selectedHospitalId').value = selectedHospitalId || '';
+    document.getElementById('totalAmount').value = totalCost || 0;
+    
+    // Check if required fields are present
+    if (!selectedTreatmentId || !selectedHospitalId || !totalCost) {
+      alert('Please complete all required steps in the booking process.');
+      return false;
+    }
+    
+    // Check if terms are agreed to
+    if (!document.getElementById('termsCheck').checked) {
+      alert('You must agree to the Terms of Service and Privacy Policy.');
+      return false;
+    }
+    
+    // If all validations pass, submit the form
+    this.submit();
+  });
 
 </script>
 {% endblock %}
