@@ -316,6 +316,13 @@
                 </li>
                 <li class="nav-item">
                   <a
+                    class="dropdown-item {% if '/compare-treatments/' in request.path %}active{% endif %}"
+                    href="/compare-treatments/"
+                    >Comparison</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
                     class="nav-link {% if request.path|slice:':18' == '/treatments/pricing/' %}active{% endif %}"
                     href="/treatments/pricing/"
                     >Pricing</a
