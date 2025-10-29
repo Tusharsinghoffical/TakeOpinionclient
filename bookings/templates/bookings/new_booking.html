@@ -946,7 +946,7 @@
             hospitalCard.innerHTML = `
               <div class="card hospital-card h-100" data-hospital-id="${hospital.id}" data-hospital-name="${hospital.name}" data-price="${hospital.starting_price}">
                 <div class="position-relative">
-                  <img src="https://picsum.photos/seed/h${hospital.id}/400/250" class="card-img-top" alt="${hospital.name}" style="height: 200px; object-fit: cover;">
+                  <img src="${hospital.profile_picture || 'https://picsum.photos/seed/h' + hospital.id + '/400/250'}" class="card-img-top" alt="${hospital.name}" style="height: 200px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(hospital.name)}&background=0D6EFD&color=fff&size=200'">
                   ${hospital.is_takeopinion_choice ? '<span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">TO Choice</span>' : ''}
                 </div>
                 <div class="card-body">

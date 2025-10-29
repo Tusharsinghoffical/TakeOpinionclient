@@ -219,6 +219,7 @@ def get_hospitals_by_treatment(request: HttpRequest, treatment_id: int) -> JsonR
                 'jci_accredited': hospital.jci_accredited,
                 'nabh_accredited': hospital.nabh_accredited,
                 'iso_certified': hospital.iso_certified,
+                'profile_picture': hospital.profile_picture,  # Add profile picture URL
             })
         
         return JsonResponse({
@@ -837,7 +838,8 @@ def get_hospitals_by_treatment_and_doctor(request: HttpRequest, treatment_id: in
                 'jci_accredited': hospital.jci_accredited,
                 'nabh_accredited': hospital.nabh_accredited,
                 'iso_certified': hospital.iso_certified,
-                'slug': hospital.slug
+                'slug': hospital.slug,
+                'profile_picture': hospital.profile_picture,  # Add profile picture URL
             })
         
         return JsonResponse({
