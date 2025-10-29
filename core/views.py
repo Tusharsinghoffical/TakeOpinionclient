@@ -3,6 +3,8 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.db.models import Q
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import translation
+from django.conf import settings
 from treatments.models import Treatment, TreatmentCategory
 from hospitals.models import Hospital
 from bookings.models import Booking
@@ -467,3 +469,20 @@ def debug_comparison(request: HttpRequest) -> HttpResponse:
     }
     
     return JsonResponse(context)
+
+
+def set_language(request):
+    """Set the language for the user session"""
+    if request.method == 'POST':
+        language = request.POST.get('language')
+        if language and language in [lang[0] for lang in settings.LANGUAGES]:
+            # Set the language in the session
+            request.session['django_language'] = language
+            # Also set it for Django's translation system
+            translation.activate(language)
+            
+            # Redirect to the next page or home
+            next_url = request.POST.get('next', '/')
+            return redirect(next_url)
+    
+    return redirect('/')

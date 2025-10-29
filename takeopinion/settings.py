@@ -55,6 +55,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",  # Add WhiteNoise for static files
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",  # Add this for internationalization
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -75,6 +76,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "core.context_processors.translation_context",  # Add our translation context processor
             ],
         },
     },
@@ -119,11 +121,28 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+# Supported languages
+LANGUAGES = [
+    ('en', 'English'),
+    ('hi', 'Hindi'),
+    ('es', 'Spanish'),
+    ('fr', 'French'),
+]
 
+# Enable Django's translation system
 USE_I18N = True
 
+# Enable localized formatting
+USE_L10N = True
+
+TIME_ZONE = "UTC"
+
 USE_TZ = True
+
+# Path to locale directories
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 
 # Static files (CSS, JavaScript, Images)

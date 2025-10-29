@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ current_language }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TakeOpinion</title>
+    <title>{{ translations.takeopinion }}</title>
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -186,7 +186,7 @@
           >
             <img
               src="{% static 'images/logo.png' %}"
-              alt="TakeOpinion"
+              alt="{{ translations.takeopinion }}"
               height="40"
               width="160"
               class="navbar-logo"
@@ -206,7 +206,7 @@
                 <a
                   class="nav-link {% if request.path == '/' %}active{% endif %}"
                   href="/"
-                  >Home</a
+                  >{{ translations.home }}</a
                 >
               </li>
 
@@ -220,28 +220,28 @@
                     role="button"
                     data-bs-toggle="dropdown"
                   >
-                    Medical Services
+                    {{ translations.medical_services }}
                   </a>
                   <ul class="dropdown-menu">
                     <li>
                       <a
                         class="dropdown-item {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
                         href="/doctors/"
-                        >Doctors</a
+                        >{{ translations.doctors }}</a
                       >
                     </li>
                     <li>
                       <a
                         class="dropdown-item {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}"
                         href="/hospitals/"
-                        >Hospitals</a
+                        >{{ translations.hospitals }}</a
                       >
                     </li>
                     <li>
                       <a
                         class="dropdown-item {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
                         href="/treatments/"
-                        >Treatments</a
+                        >{{ translations.treatments }}</a
                       >
                     </li>
                   </ul>
@@ -255,28 +255,28 @@
                     role="button"
                     data-bs-toggle="dropdown"
                   >
-                    Medical Services
+                    {{ translations.medical_services }}
                   </a>
                   <ul class="dropdown-menu">
                     <li>
                       <a
                         class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}"
                         href="/doctors/"
-                        >Doctors</a
+                        >{{ translations.doctors }}</a
                       >
                     </li>
                     <li>
                       <a
                         class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}"
                         href="/hospitals/"
-                        >Hospitals</a
+                        >{{ translations.hospitals }}</a
                       >
                     </li>
                     <li>
                       <a
                         class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}"
                         href="/treatments/"
-                        >Treatments</a
+                        >{{ translations.treatments }}</a
                       >
                     </li>
                   </ul>
@@ -288,28 +288,28 @@
                     role="button"
                     data-bs-toggle="dropdown"
                   >
-                    Resources
+                    {{ translations.resources }}
                   </a>
                   <ul class="dropdown-menu">
                     <li>
                       <a
                         class="dropdown-item {% if '/blogs/' in request.path %}active{% endif %}"
                         href="/blogs/"
-                        >Blogs</a
+                        >{{ translations.blogs }}</a
                       >
                     </li>
                     <li>
                       <a
                         class="dropdown-item {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
                         href="{% url 'accounts:reviews_page' %}"
-                        >Reviews</a
+                        >{{ translations.reviews }}</a
                       >
                     </li>
                     <li>
                       <a
                         class="dropdown-item {% if request.path|slice:':8' == '/hotels/' %}active{% endif %}"
                         href="{% url 'hotels:list' %}"
-                        >Hotels</a
+                        >{{ translations.hotels }}</a
                       >
                     </li>
                   </ul>
@@ -333,28 +333,28 @@
                     role="button"
                     data-bs-toggle="dropdown"
                   >
-                    Medical Services
+                    {{ translations.medical_services }}
                   </a>
                   <ul class="dropdown-menu">
                     <li>
                       <a
                         class="dropdown-item {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
                         href="/doctors/"
-                        >Doctors</a
+                        >{{ translations.doctors }}</a
                       >
                     </li>
                     <li>
                       <a
                         class="dropdown-item {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}"
                         href="/hospitals/"
-                        >Hospitals</a
+                        >{{ translations.hospitals }}</a
                       >
                     </li>
                     <li>
                       <a
                         class="dropdown-item {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
                         href="/treatments/"
-                        >Treatments</a
+                        >{{ translations.treatments }}</a
                       >
                     </li>
                   </ul>
@@ -369,28 +369,28 @@
                   role="button"
                   data-bs-toggle="dropdown"
                 >
-                  Medical Services
+                  {{ translations.medical_services }}
                 </a>
                 <ul class="dropdown-menu">
                   <li>
                     <a
                       class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}"
                       href="/doctors/"
-                      >Doctors</a
+                      >{{ translations.doctors }}</a
                     >
                   </li>
                   <li>
                     <a
                       class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}"
                       href="/hospitals/"
-                      >Hospitals</a
+                      >{{ translations.hospitals }}</a
                     >
                   </li>
                   <li>
                     <a
                       class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}"
                       href="/treatments/"
-                      >Treatments</a
+                      >{{ translations.treatments }}</a
                     >
                   </li>
                   <li>
@@ -433,12 +433,31 @@
             <!-- Search Form -->
             <form class="d-flex me-3" action="/search/" method="get">
               <div class="input-group">
-                <input name="q" class="form-control border-end-0" type="search" placeholder="Search doctors, hospitals, treatments..." aria-label="Search">
+                <input name="q" class="form-control border-end-0" type="search" placeholder="{{ translations.search_doctors_hospitals_treatments }}" aria-label="Search">
                 <button class="btn btn-outline-primary border-start-0" type="submit">
                   <i class="bi bi-search"></i>
                 </button>
               </div>
             </form>
+            <!-- Language Selector -->
+            <div class="dropdown me-3">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown">
+                <i class="bi bi-globe"></i> {% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE|upper }}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                {% get_available_languages as LANGUAGES %}
+                {% for lang_code, lang_name in LANGUAGES %}
+                <li>
+                  <form action="{% url 'set_language' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                    <input name="language" type="hidden" value="{{ lang_code }}">
+                    <button class="dropdown-item" type="submit">{{ lang_name }} ({{ lang_code|upper }})</button>
+                  </form>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
             <div class="d-flex gap-2 align-items-center">
               {% if user.is_authenticated %}
               {% if user.userprofile.user_type == 'admin' %}
@@ -533,10 +552,10 @@
               {% endif %}
               {% else %}
               <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary btn-sm"
-                >Login</a
+                >{{ translations.login }}</a
               >
               <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-sm"
-                >Sign Up</a
+                >{{ translations.sign_up }}</a
               >
               {% endif %}
             </div>
@@ -595,31 +614,31 @@
           
           <!-- Quick Links -->
           <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
-            <h6 class="fw-bold mb-3 text-dark">Quick Links</h6>
+            <h6 class="fw-bold mb-3 text-dark">{{ translations.quick_links }}</h6>
             <ul class="list-unstyled footer-links">
               <li class="mb-2">
-                <a href="/" class="text-decoration-none text-muted">Home</a>
+                <a href="/" class="text-decoration-none text-muted">{{ translations.home }}</a>
               </li>
               <li class="mb-2">
                 <a
                   href="/treatments/"
                   class="text-decoration-none text-muted"
-                  >Treatments</a
+                  >{{ translations.treatments }}</a
                 >
               </li>
               <li class="mb-2">
                 <a href="/doctors/" class="text-decoration-none text-muted"
-                  >Doctors</a
+                  >{{ translations.doctors }}</a
                 >
               </li>
               <li class="mb-2">
                 <a href="/hospitals/" class="text-decoration-none text-muted"
-                  >Hospitals</a
+                  >{{ translations.hospitals }}</a
                 >
               </li>
               <li class="mb-2">
                 <a href="/treatments/pricing/" class="text-decoration-none text-muted"
-                  >Pricing</a
+                  >{{ translations.pricing }}</a
                 >
               </li>
             </ul>
@@ -627,7 +646,7 @@
           
           <!-- Patient Stories -->
           <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <h6 class="fw-bold mb-3 text-dark">Patient Stories</h6>
+            <h6 class="fw-bold mb-3 text-dark">{{ translations.patient_stories }}</h6>
             <div class="d-flex flex-column gap-3">
               <!-- Story 1 -->
               <div class="d-flex">

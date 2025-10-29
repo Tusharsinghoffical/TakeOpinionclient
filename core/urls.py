@@ -21,4 +21,5 @@ urlpatterns = [
     path("debug-stats-page/", views.debug_stats_page, name="debug_stats_page"),
     path("debug-home/", views.debug_home_page, name="debug_home_page"),
     path("test-stats/", views.test_stats_page, name="test_stats_page"),
+    path("set-language/", views.set_language, name="set_language"),  # Language switching
 ]
