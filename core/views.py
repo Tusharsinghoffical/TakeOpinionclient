@@ -240,6 +240,7 @@ def pricing_page(request: HttpRequest) -> HttpResponse:
 
 def treatment_comparison(request: HttpRequest) -> HttpResponse:
     """Display a simple treatment comparison page"""
+    print("Treatment comparison view called")
     # Get all treatments for the dropdown
     treatments = Treatment._default_manager.all().order_by('name')  # type: ignore
     
@@ -250,6 +251,8 @@ def treatment_comparison(request: HttpRequest) -> HttpResponse:
         treatment_id = request.GET.get(f'treatment{i}')
         if treatment_id:
             treatment_ids.append(treatment_id)
+    
+    print("Treatment IDs from form:", treatment_ids)
     
     compared_treatments_data = []
     
@@ -284,6 +287,8 @@ def treatment_comparison(request: HttpRequest) -> HttpResponse:
                 # Log the error for debugging
                 print(f"Error processing treatment {treatment_id}: {e}")
                 pass
+    
+    print("Compared treatments data:", compared_treatments_data)
     
     context = {
         'treatments': treatments,
@@ -442,11 +447,13 @@ def test_stats_page(request: HttpRequest) -> HttpResponse:
 
 def test_url(request: HttpRequest) -> HttpResponse:
     """Simple test view to check if URL routing is working"""
+    print("Test URL view called")
     return JsonResponse({"message": "URL routing is working!", "path": request.path})
 
 
 def debug_comparison(request: HttpRequest) -> HttpResponse:
     """Debug view to check what parameters are being received"""
+    print("Debug comparison view called")
     # Print all GET parameters for debugging
     get_params = dict(request.GET)
     print("GET parameters:", get_params)
