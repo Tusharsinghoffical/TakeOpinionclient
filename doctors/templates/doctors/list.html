@@ -376,8 +376,13 @@
 
 .doctor-image-container {
   position: relative;
-  height: 200px;
+  height: 250px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid var(--border);
 }
 
 .doctor-image {
@@ -385,10 +390,30 @@
   height: 100%;
   object-fit: cover;
   transition: transform var(--transition-speed) ease;
+  display: block;
+  background-color: #f8f9fa;
 }
 
 .doctor-card:hover .doctor-image {
   transform: scale(1.05);
+}
+
+/* Fallback for missing images */
+.doctor-image-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.doctor-image.fallback {
+  object-fit: contain;
+  background-color: #f8f9fa;
 }
 
 .doctor-badge {
@@ -905,13 +930,13 @@
             {% if d.profile_picture and d.profile_picture != '' %}
               <!-- Check if it's a full URL or relative path -->
               {% if 'http' in d.profile_picture or 'https' in d.profile_picture %}
-                <img src="{{ d.profile_picture }}" class="doctor-image" alt="{{ d.name }}" onerror="this.src='https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256';">
+                <img src="{{ d.profile_picture }}" class="doctor-image" alt="{{ d.name }}" onerror="this.src='https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256'; this.classList.add('fallback');">
               {% else %}
                 <!-- Handle relative paths -->
-                <img src="{{ d.profile_picture }}" class="doctor-image" alt="{{ d.name }}" onerror="this.src='https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256';">
+                <img src="{{ d.profile_picture }}" class="doctor-image" alt="{{ d.name }}" onerror="this.src='https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256'; this.classList.add('fallback');">
               {% endif %}
             {% else %}
-              <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="doctor-image" alt="{{ d.name }}">
+              <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="doctor-image fallback" alt="{{ d.name }}">
             {% endif %}
             {% if d.is_verified %}
             <span class="doctor-badge">Verified</span>
@@ -1167,6 +1192,27 @@ document.addEventListener('DOMContentLoaded', function() {
       // The form will submit normally, but we could add AJAX functionality here if needed
     });
   }
+});
+
+// Image loading improvements
+document.addEventListener('DOMContentLoaded', function() {
+  // Handle image loading errors
+  const doctorImages = document.querySelectorAll('.doctor-image');
+  doctorImages.forEach(img => {
+    img.addEventListener('error', function() {
+      // Add fallback class for styling
+      this.classList.add('fallback');
+      
+      // If it's not already a fallback image, set one
+      if (!this.src.includes('ui-avatars.com')) {
+        const name = this.alt || 'Doctor';
+        this.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0D6EFD&color=fff&size=256`;
+      }
+    });
+    
+    // Add loading attribute for better performance
+    img.setAttribute('loading', 'lazy');
+  });
 });
 </script>
 
