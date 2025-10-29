@@ -436,16 +436,34 @@
                       <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Treatment:</strong> <span id="summaryTreatment"></span></li>
                       <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Doctor:</strong> <span id="summaryDoctor">Not specified</span></li>
                       <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Hospital:</strong> <span id="summaryHospital"></span></li>
-                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Room Type:</strong> <span id="summaryRoom"></span></li>
                       <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Preferred Date:</strong> <span id="summaryDate"></span></li>
-                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Treatment Cost:</strong> <span id="treatmentCostSummary">₹0</span></li>
-                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Room Cost (7 nights):</strong> <span id="roomCostSummary">₹0</span></li>
-                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Selected Amenities:</strong> 
-                        <ul class="list-unstyled ms-4 mt-2" id="summaryAmenities">
+                      
+                      <!-- Cost Breakdown -->
+                      <li class="mb-2 mt-3 pt-3 border-top">
+                        <h6 class="mb-2"><i class="bi bi-receipt text-primary me-2"></i>Cost Breakdown</h6>
+                      </li>
+                      <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Treatment Cost:</strong> <span id="treatmentCostSummary">₹0</span></li>
+                      <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Doctor Consultation:</strong> <span id="doctorCostSummary">₹0</span></li>
+                      <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Hospital Stay (7 nights):</strong> <span id="hospitalStayCostSummary">Included</span></li>
+                      <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Selected Amenities:</strong> <span id="amenitiesCostSummary">₹0</span></li>
+                      
+                      <!-- TakeOpinion Price with Discount -->
+                      <li class="mb-2 mt-3 pt-3 border-top">
+                        <h6 class="mb-2"><i class="bi bi-tag-fill text-success me-2"></i>TakeOpinion Price</h6>
+                      </li>
+                      <li class="mb-2 ms-4"><i class="bi bi-dot text-success me-2"></i><strong>Original Total:</strong> <span id="originalTotalCost">₹0</span></li>
+                      <li class="mb-2 ms-4"><i class="bi bi-dot text-success me-2"></i><strong>TakeOpinion Discount:</strong> <span id="discountAmount">₹0</span> <span class="badge bg-success ms-2">SAVE 15%</span></li>
+                      <li class="border-top pt-2 mt-2 ms-4"><i class="bi bi-check-circle-fill text-success me-2"></i><strong>TakeOpinion Final Price:</strong> <span id="summaryCost" class="h5 text-success"></span></li>
+                      
+                      <!-- Selected Amenities List -->
+                      <li class="mb-2 mt-3 pt-3 border-top">
+                        <h6 class="mb-2"><i class="bi bi-list-check text-primary me-2"></i>Selected Amenities</h6>
+                      </li>
+                      <li class="mb-2 ms-4">
+                        <ul class="list-unstyled ms-2" id="summaryAmenities">
                           <!-- Amenities will be populated here -->
                         </ul>
                       </li>
-                      <li class="border-top pt-2 mt-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Total Cost:</strong> <span id="summaryCost" class="h5 text-primary"></span></li>
                     </ul>
                   </div>
                 </div>
@@ -733,10 +751,6 @@
     // We no longer need to validate room selection since we're showing hospital features
     // Instead, we just need to ensure a hospital is selected (which should already be validated)
     
-    // Calculate total cost (treatment cost only, no room cost)
-    totalCost = treatmentCost;
-    const advanceAmount = totalCost * 0.1; // 10% advance
-    
     // Get selected amenities, special requirements, and additional services
     const selectedItems = [];
     const amenityCheckboxes = document.querySelectorAll('input[name="amenities"]:checked');
@@ -755,14 +769,33 @@
       selectedItems.push(checkbox.value);
     });
     
+    // Calculate costs
+    const treatmentCostValue = treatmentCost;
+    const doctorCostValue = selectedDoctorId ? 5000 : 0; // Example: ₹5000 for doctor consultation if selected
+    const amenitiesCostValue = selectedItems.length * 1000; // Example: ₹1000 per amenity
+    const originalTotal = treatmentCostValue + doctorCostValue + amenitiesCostValue;
+    const discountPercentage = 15; // 15% discount
+    const discountAmount = originalTotal * (discountPercentage / 100);
+    totalCost = originalTotal - discountAmount;
+    const advanceAmount = totalCost * 0.1; // 10% advance
+    
     // Update summary information
     document.getElementById('summaryTreatment').textContent = selectedTreatmentName;
-    document.getElementById('summaryDoctor').textContent = selectedDoctorName;
+    document.getElementById('summaryDoctor').textContent = selectedDoctorName || 'Not specified';
     document.getElementById('summaryHospital').textContent = selectedHospitalName;
-    document.getElementById('summaryRoom').textContent = 'Included with hospital stay';
     document.getElementById('summaryDate').textContent = preferredDate.value || 'Not specified';
-    document.getElementById('treatmentCostSummary').textContent = `₹${treatmentCost.toLocaleString()}`;
-    document.getElementById('roomCostSummary').textContent = 'Included with hospital stay';
+    
+    // Update cost breakdown
+    document.getElementById('treatmentCostSummary').textContent = `₹${treatmentCostValue.toLocaleString()}`;
+    document.getElementById('doctorCostSummary').textContent = `₹${doctorCostValue.toLocaleString()}`;
+    document.getElementById('hospitalStayCostSummary').textContent = 'Included with hospital stay';
+    document.getElementById('amenitiesCostSummary').textContent = `₹${amenitiesCostValue.toLocaleString()}`;
+    
+    // Update TakeOpinion price with discount
+    document.getElementById('originalTotalCost').textContent = `₹${originalTotal.toLocaleString()}`;
+    document.getElementById('discountAmount').textContent = `-₹${discountAmount.toLocaleString()}`;
+    document.getElementById('summaryCost').textContent = `₹${totalCost.toLocaleString()}`;
+    document.getElementById('advanceAmount').textContent = `₹${advanceAmount.toFixed(2)}`;
     
     // Update amenities summary
     const amenitiesSummary = document.getElementById('summaryAmenities');
@@ -824,9 +857,6 @@
       li.innerHTML = '<i class="bi bi-x-circle-fill text-muted me-2"></i>None selected';
       amenitiesSummary.appendChild(li);
     }
-    
-    document.getElementById('summaryCost').textContent = `₹${totalCost.toLocaleString()}`;
-    document.getElementById('advanceAmount').textContent = `₹${advanceAmount.toFixed(2)}`;
     
     // Set hidden form fields
     document.getElementById('selectedTreatmentId').value = selectedTreatmentId;
