@@ -269,8 +269,8 @@
           <p class="text-muted">Recommended accommodations near {{ payment.booking.preferred_hospital.name }}</p>
         </div>
         
-        {% load hotels_tags %}
-        {% get_nearby_hotels payment.booking.preferred_hospital as nearby_hotels %}
+        {% load hospital_extras %}
+        {% get_nearby_hotels_for_hospital payment.booking.preferred_hospital.id as nearby_hotels %}
         
         {% if nearby_hotels %}
         <div class="row">
