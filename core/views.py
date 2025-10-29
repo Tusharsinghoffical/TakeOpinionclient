@@ -440,10 +440,16 @@ def test_stats_page(request: HttpRequest) -> HttpResponse:
     return render(request, "core/test_stats.html")
 
 
+def test_url(request: HttpRequest) -> HttpResponse:
+    """Simple test view to check if URL routing is working"""
+    return JsonResponse({"message": "URL routing is working!", "path": request.path})
+
+
 def debug_comparison(request: HttpRequest) -> HttpResponse:
     """Debug view to check what parameters are being received"""
     # Print all GET parameters for debugging
-    print("GET parameters:", request.GET)
+    get_params = dict(request.GET)
+    print("GET parameters:", get_params)
     
     # Get treatment IDs from query parameters for comparison
     # The form sends individual parameters, not a list
@@ -456,7 +462,7 @@ def debug_comparison(request: HttpRequest) -> HttpResponse:
     print("Treatment IDs:", treatment_ids)
     
     context = {
-        'get_params': request.GET,
+        'get_params': get_params,
         'treatment_ids': treatment_ids
     }
     
