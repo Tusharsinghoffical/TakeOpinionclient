@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.db.models import Q
 from django.views.decorators.cache import cache_page
@@ -244,56 +244,49 @@ def treatment_comparison(request: HttpRequest) -> HttpResponse:
     # Get all treatments for the dropdown
     treatments = Treatment._default_manager.all().order_by('name')  # type: ignore
     
-    # Get treatment IDs from query parameters for comparison
-    # The form sends individual parameters, not a list
-    treatment_ids = []
-    for i in range(1, 4):  # Check treatment1, treatment2, treatment3
-        treatment_id = request.GET.get(f'treatment{i}')
-        if treatment_id:
-            treatment_ids.append(treatment_id)
+    # Check if we're showing hospitals for a selected treatment
+    selected_treatment_id = request.GET.get('treatment')
+    selected_hospital_id = request.GET.get('hospital')
     
-    print("Treatment IDs from form:", treatment_ids)
+    # If a hospital is selected, redirect to the treatment detail page
+    if selected_hospital_id:
+        try:
+            hospital = Hospital._default_manager.get(id=selected_hospital_id)  # type: ignore
+            if selected_treatment_id:
+                treatment = Treatment._default_manager.get(id=selected_treatment_id)  # type: ignore
+                # Redirect to treatment detail page
+                return redirect(f'/treatments/{treatment.slug}/')
+        except (Hospital.DoesNotExist, Treatment.DoesNotExist):  # type: ignore
+            pass
     
-    compared_treatments_data = []
+    hospitals_data = []
+    selected_treatment = None
     
-    if treatment_ids:
-        # Get treatment details for comparison
-        for treatment_id in treatment_ids:
-            try:
-                treatment = Treatment._default_manager.get(id=treatment_id)  # type: ignore
-                hospitals = treatment.hospitals.all().order_by('-rating')[:3]  # type: ignore
-                
-                hospital_data = []
-                for hospital in hospitals:
-                    hospital_data.append({
-                        'id': hospital.id,
-                        'name': hospital.name,
-                        'city': hospital.city or '',
-                        'rating': float(hospital.rating) if hospital.rating else 0,
-                        'price': float(hospital.starting_price) if hospital.starting_price else 0,
-                    })
-                
-                # Calculate average price correctly
-                total_price = sum([h['price'] for h in hospital_data]) if hospital_data else 0
-                avg_price = total_price / len(hospital_data) if hospital_data else 0
-                
-                compared_treatments_data.append({
-                    'treatment': treatment,
-                    'hospitals': hospital_data,
-                    'avg_price': avg_price,
-                    'hospital_count': len(hospital_data)
+    # If a treatment is selected, get all hospitals offering that treatment
+    if selected_treatment_id:
+        try:
+            selected_treatment = Treatment._default_manager.get(id=selected_treatment_id)  # type: ignore
+            hospitals = selected_treatment.hospitals.all().order_by('-rating')  # type: ignore
+            
+            for hospital in hospitals:
+                hospitals_data.append({
+                    'id': hospital.id,
+                    'name': hospital.name,
+                    'city': hospital.city or '',
+                    'rating': float(hospital.rating) if hospital.rating else 0,
+                    'price': float(hospital.starting_price) if hospital.starting_price else 0,
                 })
-            except (Treatment.DoesNotExist, ValueError) as e:  # type: ignore
-                # Log the error for debugging
-                print(f"Error processing treatment {treatment_id}: {e}")
-                pass
+        except Treatment.DoesNotExist:  # type: ignore
+            pass
     
-    print("Compared treatments data:", compared_treatments_data)
+    print("Selected treatment:", selected_treatment)
+    print("Hospitals data:", hospitals_data)
     
     context = {
         'treatments': treatments,
-        'compared_treatments': compared_treatments_data,
-        'is_comparison': len(treatment_ids) > 0 if treatment_ids else False
+        'selected_treatment': selected_treatment,
+        'hospitals': hospitals_data,
+        'show_hospitals': bool(selected_treatment_id),
     }
     
     return render(request, "core/comparison.html", context)
