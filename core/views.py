@@ -244,12 +244,18 @@ def treatment_comparison(request: HttpRequest) -> HttpResponse:
     treatments = Treatment._default_manager.all().order_by('name')  # type: ignore
     
     # Get treatment IDs from query parameters for comparison
-    compare_treatments = request.GET.getlist('treatments')
+    # The form sends individual parameters, not a list
+    treatment_ids = []
+    for i in range(1, 4):  # Check treatment1, treatment2, treatment3
+        treatment_id = request.GET.get(f'treatment{i}')
+        if treatment_id:
+            treatment_ids.append(treatment_id)
+    
     compared_treatments_data = []
     
-    if compare_treatments:
+    if treatment_ids:
         # Get treatment details for comparison
-        for treatment_id in compare_treatments:
+        for treatment_id in treatment_ids:
             try:
                 treatment = Treatment._default_manager.get(id=treatment_id)  # type: ignore
                 hospitals = treatment.hospitals.all().order_by('-rating')[:3]  # type: ignore
@@ -270,13 +276,13 @@ def treatment_comparison(request: HttpRequest) -> HttpResponse:
                     'avg_price': sum([h['price'] for h in hospital_data]) / len(hospital_data) if hospital_data else 0,
                     'hospital_count': len(hospital_data)
                 })
-            except Treatment.DoesNotExist:  # type: ignore
+            except (Treatment.DoesNotExist, ValueError):  # type: ignore
                 pass
     
     context = {
         'treatments': treatments,
         'compared_treatments': compared_treatments_data,
-        'is_comparison': len(compare_treatments) > 0 if compare_treatments else False
+        'is_comparison': len(treatment_ids) > 0 if treatment_ids else False
     }
     
     return render(request, "core/comparison.html", context)

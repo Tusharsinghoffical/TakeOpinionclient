@@ -240,7 +240,7 @@
       <div class="form-row">
         <div class="form-group">
           <label for="treatment1" class="form-label">Select First Treatment</label>
-          <select id="treatment1" class="form-select" name="treatments">
+          <select id="treatment1" class="form-select" name="treatment1">
             <option value="">-- Select a treatment --</option>
             {% for treatment in treatments %}
             <option value="{{ treatment.id }}">{{ treatment.name }}</option>
@@ -250,7 +250,7 @@
         
         <div class="form-group">
           <label for="treatment2" class="form-label">Select Second Treatment</label>
-          <select id="treatment2" class="form-select" name="treatments">
+          <select id="treatment2" class="form-select" name="treatment2">
             <option value="">-- Select a treatment --</option>
             {% for treatment in treatments %}
             <option value="{{ treatment.id }}">{{ treatment.name }}</option>
@@ -260,7 +260,7 @@
         
         <div class="form-group">
           <label for="treatment3" class="form-label">Select Third Treatment (Optional)</label>
-          <select id="treatment3" class="form-select" name="treatments">
+          <select id="treatment3" class="form-select" name="treatment3">
             <option value="">-- Select a treatment --</option>
             {% for treatment in treatments %}
             <option value="{{ treatment.id }}">{{ treatment.name }}</option>
