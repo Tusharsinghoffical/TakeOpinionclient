@@ -106,13 +106,12 @@ def new_booking_page(request: HttpRequest) -> HttpResponse:
             treatment_id = request.POST.get('treatment_id')
             doctor_id = request.POST.get('doctor_id')
             hospital_id = request.POST.get('hospital_id')
-            room_id = request.POST.get('room_id')
             preferred_date = request.POST.get('preferred_date')
             total_amount = request.POST.get('total_amount')
             agree_terms = request.POST.get('agree_terms')
             
             # Validate required fields
-            if not all([treatment_id, hospital_id, room_id, total_amount]):
+            if not all([treatment_id, hospital_id, total_amount]):
                 messages.error(request, 'Please complete all required steps in the booking process.')
                 return render(request, "bookings/new_booking.html", context)
             
