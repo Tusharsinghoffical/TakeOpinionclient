@@ -1,0 +1,373 @@
+{% extends 'base.html' %}
+{% block title %}Treatment Comparison - TakeOpinion{% endblock %}
+
+{% block content %}
+<style>
+.comparison-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.comparison-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.comparison-title {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.comparison-subtitle {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin-bottom: 2rem;
+}
+
+.comparison-form {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 250px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #2980b9;
+}
+
+.btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.comparison-results {
+  margin-top: 2rem;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.results-title {
+  font-size: 2rem;
+  color: #2c3e50;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.comparison-table th {
+  background: #3498db;
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.comparison-table td {
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  text-align: center;
+}
+
+.comparison-table tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+.treatment-name {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.hospital-list {
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.hospital-item {
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #eee;
+}
+
+.hospital-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.hospital-name {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.hospital-location {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.hospital-rating {
+  color: #f39c12;
+  margin: 0.3rem 0;
+}
+
+.hospital-price {
+  font-weight: 700;
+  color: #27ae60;
+  font-size: 1.1rem;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-around;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  text-align: center;
+  flex: 1;
+  min-width: 200px;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #3498db;
+  margin: 0.5rem 0;
+}
+
+.stat-label {
+  color: #6c757d;
+  font-size: 1rem;
+}
+
+.instructions {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
+}
+
+.instructions i {
+  font-size: 3rem;
+  color: #3498db;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .form-group {
+    width: 100%;
+  }
+  
+  .comparison-table {
+    font-size: 0.9rem;
+  }
+  
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.75rem 0.5rem;
+  }
+}
+</style>
+
+<div class="comparison-container">
+  <div class="comparison-header">
+    <h1 class="comparison-title">Treatment Comparison</h1>
+    <p class="comparison-subtitle">Compare treatments, hospitals, and pricing to make informed healthcare decisions</p>
+  </div>
+  
+  <div class="comparison-form">
+    <form id="comparisonForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="treatment1" class="form-label">Select First Treatment</label>
+          <select id="treatment1" class="form-select" name="treatments">
+            <option value="">-- Select a treatment --</option>
+            {% for treatment in treatments %}
+            <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="treatment2" class="form-label">Select Second Treatment</label>
+          <select id="treatment2" class="form-select" name="treatments">
+            <option value="">-- Select a treatment --</option>
+            {% for treatment in treatments %}
+            <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="treatment3" class="form-label">Select Third Treatment (Optional)</label>
+          <select id="treatment3" class="form-select" name="treatments">
+            <option value="">-- Select a treatment --</option>
+            {% for treatment in treatments %}
+            <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <button type="submit" class="btn" id="compareBtn">Compare Treatments</button>
+      </div>
+    </form>
+  </div>
+  
+  {% if is_comparison %}
+  <div class="comparison-results">
+    <div class="results-header">
+      <h2 class="results-title">Comparison Results</h2>
+    </div>
+    
+    <div class="stats-row">
+      {% for item in compared_treatments %}
+      <div class="stat-card">
+        <div class="treatment-name">{{ item.treatment.name }}</div>
+        <div class="stat-value">₹{{ item.avg_price|floatformat:"0" }}</div>
+        <div class="stat-label">Average Price</div>
+        <div class="stat-value">{{ item.hospital_count }}</div>
+        <div class="stat-label">Hospitals Available</div>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Features</th>
+          {% for item in compared_treatments %}
+          <th>{{ item.treatment.name }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Hospitals</strong></td>
+          {% for item in compared_treatments %}
+          <td>
+            <div class="hospital-list">
+              {% for hospital in item.hospitals %}
+              <div class="hospital-item">
+                <div class="hospital-name">{{ hospital.name }}</div>
+                <div class="hospital-location">{{ hospital.city }}</div>
+                <div class="hospital-rating">
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= hospital.rating|floatformat:"0"|add:"0" %}
+                      <i class="bi bi-star-fill text-warning"></i>
+                    {% else %}
+                      <i class="bi bi-star text-muted"></i>
+                    {% endif %}
+                  {% endfor %}
+                  <span class="ms-1">{{ hospital.rating }}</span>
+                </div>
+                <div class="hospital-price">₹{{ hospital.price|floatformat:"0" }}</div>
+              </div>
+              {% empty %}
+              <div class="text-muted">No hospitals found</div>
+              {% endfor %}
+            </div>
+          </td>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="instructions">
+    <i class="bi bi-arrow-down-circle"></i>
+    <h3>Select Treatments to Compare</h3>
+    <p>Choose 2 or 3 treatments from the dropdowns above to see a detailed comparison of hospitals, pricing, and facilities.</p>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const comparisonForm = document.getElementById('comparisonForm');
+  const compareBtn = document.getElementById('compareBtn');
+  
+  comparisonForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get selected treatments
+    const treatment1 = document.getElementById('treatment1').value;
+    const treatment2 = document.getElementById('treatment2').value;
+    const treatment3 = document.getElementById('treatment3').value;
+    
+    // Build URL with selected treatment IDs
+    const params = new URLSearchParams();
+    
+    if (treatment1) params.append('treatments', treatment1);
+    if (treatment2) params.append('treatments', treatment2);
+    if (treatment3) params.append('treatments', treatment3);
+    
+    // Redirect to comparison page
+    if (treatment1 || treatment2 || treatment3) {
+      window.location.href = '?' + params.toString();
+    } else {
+      alert('Please select at least one treatment to compare');
+    }
+  });
+});
+</script>
+{% endblock %}

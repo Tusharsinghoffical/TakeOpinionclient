@@ -195,11 +195,91 @@ def pricing_page(request: HttpRequest) -> HttpResponse:
     # Get all treatments for the dropdown
     treatments = Treatment._default_manager.all().order_by('name')  # type: ignore
     
+    # Get treatment IDs from query parameters for comparison
+    compare_treatments = request.GET.getlist('compare')
+    compared_treatments_data = []
+    
+    if compare_treatments:
+        # Get treatment details for comparison
+        for treatment_id in compare_treatments:
+            try:
+                treatment = Treatment._default_manager.get(id=treatment_id)  # type: ignore
+                hospitals = treatment.hospitals.all().order_by('-rating')[:5]  # type: ignore
+                
+                hospital_data = []
+                for hospital in hospitals:
+                    hospital_data.append({
+                        'id': hospital.id,
+                        'name': hospital.name,
+                        'city': hospital.city or '',
+                        'state': hospital.state.name if hospital.state else '',
+                        'country': hospital.country.name if hospital.country else '',
+                        'rating': float(hospital.rating) if hospital.rating else 0,
+                        'price': float(hospital.starting_price) if hospital.starting_price else 0,
+                        'is_takeopinion_choice': hospital.is_takeopinion_choice,
+                        'jci_accredited': hospital.jci_accredited,
+                        'nabh_accredited': hospital.nabh_accredited,
+                        'iso_certified': hospital.iso_certified,
+                    })
+                
+                compared_treatments_data.append({
+                    'treatment': treatment,
+                    'hospitals': hospital_data
+                })
+            except Treatment.DoesNotExist:  # type: ignore
+                pass
+    
     context = {
         'treatments': treatments,
+        'compared_treatments': compared_treatments_data,
+        'is_comparison': len(compare_treatments) > 0 if compare_treatments else False
     }
     
     return render(request, "core/pricing.html", context)
+
+
+def treatment_comparison(request: HttpRequest) -> HttpResponse:
+    """Display a simple treatment comparison page"""
+    # Get all treatments for the dropdown
+    treatments = Treatment._default_manager.all().order_by('name')  # type: ignore
+    
+    # Get treatment IDs from query parameters for comparison
+    compare_treatments = request.GET.getlist('treatments')
+    compared_treatments_data = []
+    
+    if compare_treatments:
+        # Get treatment details for comparison
+        for treatment_id in compare_treatments:
+            try:
+                treatment = Treatment._default_manager.get(id=treatment_id)  # type: ignore
+                hospitals = treatment.hospitals.all().order_by('-rating')[:3]  # type: ignore
+                
+                hospital_data = []
+                for hospital in hospitals:
+                    hospital_data.append({
+                        'id': hospital.id,
+                        'name': hospital.name,
+                        'city': hospital.city or '',
+                        'rating': float(hospital.rating) if hospital.rating else 0,
+                        'price': float(hospital.starting_price) if hospital.starting_price else 0,
+                    })
+                
+                compared_treatments_data.append({
+                    'treatment': treatment,
+                    'hospitals': hospital_data,
+                    'avg_price': sum([h['price'] for h in hospital_data]) / len(hospital_data) if hospital_data else 0,
+                    'hospital_count': len(hospital_data)
+                })
+            except Treatment.DoesNotExist:  # type: ignore
+                pass
+    
+    context = {
+        'treatments': treatments,
+        'compared_treatments': compared_treatments_data,
+        'is_comparison': len(compare_treatments) > 0 if compare_treatments else False
+    }
+    
+    return render(request, "core/comparison.html", context)
 
 
 def get_hospitals_by_treatment(request: HttpRequest, treatment_id: int) -> JsonResponse:

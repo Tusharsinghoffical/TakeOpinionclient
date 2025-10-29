@@ -12,6 +12,7 @@ urlpatterns = [
     path("stats/", views.get_home_stats, name="home_stats"),
     path("content/", views.get_home_content, name="home_content"),
     path("pricing/", views.pricing_page, name="pricing_page"),
+    path("comparison/", views.treatment_comparison, name="treatment_comparison"),
     path("portfolio/", views.portfolio, name="portfolio"),
     path("api/hospitals-by-treatment/<int:treatment_id>/", views.get_hospitals_by_treatment, name="get_hospitals_by_treatment"),
     path("debug-stats/", views.debug_home_stats, name="debug_home_stats"),
