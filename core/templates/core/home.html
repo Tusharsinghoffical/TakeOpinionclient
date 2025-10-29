@@ -1350,13 +1350,14 @@
         </p>
       </div>
       <div class="treatment-tags">
+        <a href="javascript:void(0)" class="treatment-tag active" data-category="all">All Categories</a>
         {% for category in treatment_categories %}
-        <a href="/treatments/category/{{ category.slug }}/" class="treatment-tag">{{ category.name }}</a>
+        <a href="javascript:void(0)" class="treatment-tag" data-category="{{ category.slug }}">{{ category.name }}</a>
         {% endfor %}
       </div>
-      <div class="treatments-grid">
+      <div class="treatments-grid" id="treatmentsGrid">
         {% for treatment in top_treatments %}
-        <a href="/treatments/{{ treatment.slug }}/" class="treatment-card">
+        <a href="/treatments/{{ treatment.slug }}/" class="treatment-card" data-category="{{ treatment.category.slug }}">
           <div class="treatment-icon">
             <i class="bi bi-bandaid"></i>
           </div>
@@ -1698,6 +1699,45 @@
       </a>
     </div>
   </section>
+
+  <!-- Treatment Filtering JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all treatment tags and treatment cards
+      const treatmentTags = document.querySelectorAll('.treatment-tag');
+      const treatmentCards = document.querySelectorAll('.treatment-card');
+      
+      // Add click event to each tag
+      treatmentTags.forEach(tag => {
+        tag.addEventListener('click', function() {
+          // Remove active class from all tags
+          treatmentTags.forEach(t => t.classList.remove('active'));
+          
+          // Add active class to clicked tag
+          this.classList.add('active');
+          
+          // Get the category slug
+          const category = this.getAttribute('data-category');
+          
+          // Filter treatment cards
+          treatmentCards.forEach(card => {
+            if (category === 'all') {
+              // Show all cards
+              card.style.display = 'block';
+            } else {
+              // Show only cards matching the category
+              const cardCategory = card.getAttribute('data-category');
+              if (cardCategory === category) {
+                card.style.display = 'block';
+              } else {
+                card.style.display = 'none';
+              }
+            }
+          });
+        });
+      });
+    });
+  </script>
 
   <!-- How It Works Section -->
   <section class="how-it-works-section">
