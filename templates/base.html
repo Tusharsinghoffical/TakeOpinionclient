@@ -442,11 +442,10 @@
             <!-- Language Selector -->
             <div class="dropdown me-3">
               <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown">
-                <i class="bi bi-globe"></i> {% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE|upper }}
+                <i class="bi bi-globe"></i> {{ current_language|upper }}
               </button>
               <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                {% get_available_languages as LANGUAGES %}
-                {% for lang_code, lang_name in LANGUAGES %}
+                {% for lang_code, lang_name in available_languages %}
                 <li>
                   <form action="{% url 'set_language' %}" method="post" style="display: inline;">
                     {% csrf_token %}
