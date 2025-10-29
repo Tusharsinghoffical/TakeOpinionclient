@@ -357,9 +357,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Build URL with selected treatment IDs
     const params = new URLSearchParams();
     
-    if (treatment1) params.append('treatments', treatment1);
-    if (treatment2) params.append('treatments', treatment2);
-    if (treatment3) params.append('treatments', treatment3);
+    if (treatment1) params.append('treatment1', treatment1);
+    if (treatment2) params.append('treatment2', treatment2);
+    if (treatment3) params.append('treatment3', treatment3);
     
     // Redirect to comparison page
     if (treatment1 || treatment2 || treatment3) {

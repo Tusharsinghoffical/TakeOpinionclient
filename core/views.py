@@ -270,13 +270,19 @@ def treatment_comparison(request: HttpRequest) -> HttpResponse:
                         'price': float(hospital.starting_price) if hospital.starting_price else 0,
                     })
                 
+                # Calculate average price correctly
+                total_price = sum([h['price'] for h in hospital_data]) if hospital_data else 0
+                avg_price = total_price / len(hospital_data) if hospital_data else 0
+                
                 compared_treatments_data.append({
                     'treatment': treatment,
                     'hospitals': hospital_data,
-                    'avg_price': sum([h['price'] for h in hospital_data]) / len(hospital_data) if hospital_data else 0,
+                    'avg_price': avg_price,
                     'hospital_count': len(hospital_data)
                 })
-            except (Treatment.DoesNotExist, ValueError):  # type: ignore
+            except (Treatment.DoesNotExist, ValueError) as e:  # type: ignore
+                # Log the error for debugging
+                print(f"Error processing treatment {treatment_id}: {e}")
                 pass
     
     context = {
@@ -432,3 +438,26 @@ def debug_stats_page(request: HttpRequest) -> HttpResponse:
 def test_stats_page(request: HttpRequest) -> HttpResponse:
     """Test page for home stats"""
     return render(request, "core/test_stats.html")
+
+
+def debug_comparison(request: HttpRequest) -> HttpResponse:
+    """Debug view to check what parameters are being received"""
+    # Print all GET parameters for debugging
+    print("GET parameters:", request.GET)
+    
+    # Get treatment IDs from query parameters for comparison
+    # The form sends individual parameters, not a list
+    treatment_ids = []
+    for i in range(1, 4):  # Check treatment1, treatment2, treatment3
+        treatment_id = request.GET.get(f'treatment{i}')
+        if treatment_id:
+            treatment_ids.append(treatment_id)
+    
+    print("Treatment IDs:", treatment_ids)
+    
+    context = {
+        'get_params': request.GET,
+        'treatment_ids': treatment_ids
+    }
+    
+    return JsonResponse(context)
