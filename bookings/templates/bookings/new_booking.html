@@ -444,7 +444,7 @@
                       </li>
                       <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Treatment Cost:</strong> <span id="treatmentCostSummary">₹0</span></li>
                       <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Doctor Consultation:</strong> <span id="doctorCostSummary">₹0</span></li>
-                      <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Hospital Stay (7 nights):</strong> <span id="hospitalStayCostSummary">Included</span></li>
+                      <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Hospital Stay (7 nights):</strong> <span id="hospitalStayCostSummary">₹0</span></li>
                       <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Selected Amenities:</strong> <span id="amenitiesCostSummary">₹0</span></li>
                       
                       <!-- TakeOpinion Price with Discount -->
@@ -751,6 +751,36 @@
     // We no longer need to validate room selection since we're showing hospital features
     // Instead, we just need to ensure a hospital is selected (which should already be validated)
     
+    // Get selected room service
+    const roomServiceRadios = document.querySelectorAll('input[name="room_service"]');
+    let selectedRoomService = null;
+    let selectedRoomServiceName = '';
+    let roomCost = 0;
+    
+    roomServiceRadios.forEach(radio => {
+      if (radio.checked) {
+        selectedRoomService = radio.value;
+        selectedRoomServiceName = radio.nextElementSibling.textContent.trim();
+        // Set room costs based on room type
+        switch(selectedRoomService) {
+          case 'normal':
+            roomCost = 2500 * 7; // ₹2,500/night × 7 nights
+            break;
+          case 'standard':
+            roomCost = 4000 * 7; // ₹4,000/night × 7 nights
+            break;
+          case 'premium':
+            roomCost = 6500 * 7; // ₹6,500/night × 7 nights
+            break;
+          case 'deluxe':
+            roomCost = 9000 * 7; // ₹9,000/night × 7 nights
+            break;
+          default:
+            roomCost = 0;
+        }
+      }
+    });
+    
     // Get selected amenities, special requirements, and additional services
     const selectedItems = [];
     const amenityCheckboxes = document.querySelectorAll('input[name="amenities"]:checked');
@@ -773,7 +803,7 @@
     const treatmentCostValue = treatmentCost;
     const doctorCostValue = selectedDoctorId ? 5000 : 0; // Example: ₹5000 for doctor consultation if selected
     const amenitiesCostValue = selectedItems.length * 1000; // Example: ₹1000 per amenity
-    const originalTotal = treatmentCostValue + doctorCostValue + amenitiesCostValue;
+    const originalTotal = treatmentCostValue + doctorCostValue + amenitiesCostValue + roomCost;
     const discountPercentage = 15; // 15% discount
     const discountAmount = originalTotal * (discountPercentage / 100);
     totalCost = originalTotal - discountAmount;
@@ -788,7 +818,7 @@
     // Update cost breakdown
     document.getElementById('treatmentCostSummary').textContent = `₹${treatmentCostValue.toLocaleString()}`;
     document.getElementById('doctorCostSummary').textContent = `₹${doctorCostValue.toLocaleString()}`;
-    document.getElementById('hospitalStayCostSummary').textContent = 'Included with hospital stay';
+    document.getElementById('hospitalStayCostSummary').textContent = `₹${roomCost.toLocaleString()} (7 nights)`;
     document.getElementById('amenitiesCostSummary').textContent = `₹${amenitiesCostValue.toLocaleString()}`;
     
     // Update TakeOpinion price with discount
@@ -800,6 +830,15 @@
     // Update amenities summary
     const amenitiesSummary = document.getElementById('summaryAmenities');
     amenitiesSummary.innerHTML = '';
+    
+    // Add room service to summary
+    if (selectedRoomService) {
+      const roomLi = document.createElement('li');
+      roomLi.className = 'mb-1';
+      roomLi.innerHTML = `<i class="bi bi-check-circle-fill text-success me-2"></i>${selectedRoomServiceName} (7 nights) - ₹${roomCost.toLocaleString()}`;
+      amenitiesSummary.appendChild(roomLi);
+    }
+    
     if (selectedItems.length > 0) {
       selectedItems.forEach(item => {
         const li = document.createElement('li');
@@ -852,7 +891,7 @@
         }
         amenitiesSummary.appendChild(li);
       });
-    } else {
+    } else if (!selectedRoomService) {
       const li = document.createElement('li');
       li.innerHTML = '<i class="bi bi-x-circle-fill text-muted me-2"></i>None selected';
       amenitiesSummary.appendChild(li);
@@ -1211,37 +1250,37 @@
                   </div>
                   
                   <div class="col-md-6">
-                    <h6 class="mb-3">Additional Services</h6>
+                    <h6 class="mb-3">Room Services</h6>
                     <ul class="list-unstyled">
                       <li class="mb-2">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="tourism" name="additional_services" value="tourism" checked>
+                          <input class="form-check-input" type="radio" id="tourism" name="room_service" value="normal" checked>
                           <label class="form-check-label" for="tourism">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Medical Tourism Assistance
+                            <i class="bi bi-check-circle-fill text-success me-2"></i> Normal Room (₹2,500/night)
                           </label>
                         </div>
                       </li>
                       <li class="mb-2">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="travel" name="additional_services" value="travel" checked>
+                          <input class="form-check-input" type="radio" id="travel" name="room_service" value="standard">
                           <label class="form-check-label" for="travel">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Travel Arrangements
+                            <i class="bi bi-check-circle-fill text-success me-2"></i> Standard Room (₹4,000/night)
                           </label>
                         </div>
                       </li>
                       <li class="mb-2">
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="visa" name="additional_services" value="visa" checked>
+                          <input class="form-check-input" type="radio" id="visa" name="room_service" value="premium">
                           <label class="form-check-label" for="visa">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Visa Support
+                            <i class="bi bi-check-circle-fill text-success me-2"></i> Premium Room (₹6,500/night)
                           </label>
                         </div>
                       </li>
                       <li>
                         <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="postTreatment" name="additional_services" value="post_treatment" checked>
+                          <input class="form-check-input" type="radio" id="postTreatment" name="room_service" value="deluxe">
                           <label class="form-check-label" for="postTreatment">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Post-Treatment Care
+                            <i class="bi bi-check-circle-fill text-success me-2"></i> Deluxe Room (₹9,000/night)
                           </label>
                         </div>
                       </li>
@@ -1359,6 +1398,16 @@
     // Prevent default submission
     e.preventDefault();
     
+    // Collect selected room service
+    const roomServiceRadios = document.querySelectorAll('input[name="room_service"]');
+    let selectedRoomService = null;
+    
+    roomServiceRadios.forEach(radio => {
+      if (radio.checked) {
+        selectedRoomService = radio.value;
+      }
+    });
+    
     // Collect selected amenities, special requirements, and additional services
     const selectedItems = [];
     const amenityCheckboxes = document.querySelectorAll('input[name="amenities"]:checked');
@@ -1383,6 +1432,17 @@
     document.getElementById('selectedHospitalId').value = selectedHospitalId || '';
     document.getElementById('selectedAmenities').value = JSON.stringify(selectedItems);
     document.getElementById('totalAmount').value = totalCost || 0;
+    
+    // Add room service to form data (create hidden input if it doesn't exist)
+    let roomServiceInput = document.getElementById('roomServiceInput');
+    if (!roomServiceInput) {
+      roomServiceInput = document.createElement('input');
+      roomServiceInput.type = 'hidden';
+      roomServiceInput.id = 'roomServiceInput';
+      roomServiceInput.name = 'room_service';
+      document.getElementById('newBookingForm').appendChild(roomServiceInput);
+    }
+    roomServiceInput.value = selectedRoomService || '';
     
     // Check if required fields are present
     if (!selectedTreatmentId || !selectedHospitalId || !totalCost) {
