@@ -42,7 +42,7 @@ This platform enables patients to:
 ## Technology Stack
 
 - **Backend**: Django 5.2.6 with Django REST Framework
-- **Database**: PostgreSQL
+- **Database**: SQLite (development), PostgreSQL (production)
 - **Frontend**: Bootstrap 5 with crispy forms
 - **Deployment**: Gunicorn with Whitenoise for static files
 - **Background Tasks**: Celery with Redis
@@ -71,34 +71,67 @@ This platform enables patients to:
 1. Clone the repository:
    ```bash
    git clone https://github.com/Tusharsinghoffical/TakeOpinionclient.git
+   cd TakeOpinionclient
    ```
 
-2. Install dependencies:
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Set up the database:
+4. Set up the database:
    ```bash
    python manage.py migrate
    ```
 
-4. Load initial data (optional):
+5. Load initial data (optional):
    ```bash
    python manage.py loaddata fixtures/*.json
    ```
 
-5. Run the development server:
+6. Create a superuser account:
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+7. Run the development server:
    ```bash
    python manage.py runserver
    ```
 
+8. Access the application:
+   - Website: http://127.0.0.1:8000/
+   - Admin panel: http://127.0.0.1:8000/admin/
+
 ## Deployment
 
 The project is configured for deployment on Render with:
-- Custom build script (`build.sh`)
-- Gunicorn configuration (`gunicorn.conf.py`)
+- Custom build script ([build.sh](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\build.sh))
+- Gunicorn configuration ([gunicorn.conf.py](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\gunicorn.conf.py))
 - Proper static file handling with Whitenoise
+
+### Environment Variables
+
+For production deployment, set the following environment variables:
+- [SECRET_KEY](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\takeopinion\settings_prod.py#L15-L15): Django secret key
+- `DATABASE_URL`: PostgreSQL database connection URL
+- [DEBUG](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\takeopinion\settings_prod.py#L18-L18): Set to "False" for production
+- [ALLOWED_HOSTS](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\takeopinion\settings_prod.py#L21-L21): Comma-separated list of allowed hosts
+
+### Render Deployment
+
+1. Fork the repository to your GitHub account
+2. Connect your GitHub repository to Render
+3. Configure the environment variables as mentioned above
+4. Deploy the application
+
+The [render.yaml](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\render.yaml) file contains the deployment configuration for Render.
 
 ## Development Guidelines
 
@@ -107,13 +140,19 @@ The project is configured for deployment on Render with:
 - Maintain consistent pricing structure for room options
 - Apply 15% discount to all bookings in the cost calculation
 
-## Environment Variables
+## API Endpoints
 
-Key environment variables required for production:
-- Database connection settings
-- Payment gateway credentials (Stripe, Razorpay)
-- Email configuration
-- Secret key for Django
+- `/api/v1/entities/<entity_type>/` - Get entities (doctors, hospitals, treatments) for dropdowns
+- `/treatments/api/search/` - Search treatments
+- `/doctors/api/search/` - Search doctors
+- `/hospitals/api/search/` - Search hospitals
+
+## Testing
+
+Run tests with:
+```bash
+python manage.py test
+```
 
 ## Contributing
 
