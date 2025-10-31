@@ -66,7 +66,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Use WhiteNoise for static files with compressed storage
+# Use WhiteNoise for static files with a more permissive storage
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # WhiteNoise settings
@@ -127,3 +127,6 @@ LOGGING = {
 
 # WhiteNoise configuration for serving media files
 WHITENOISE_ALLOW_ALL_ORIGINS = True
+
+# Additional WhiteNoise settings for better compatibility
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'zip', 'gz', 'tgz', 'bz2', 'tbz', 'xz', 'br', 'woff', 'woff2']
