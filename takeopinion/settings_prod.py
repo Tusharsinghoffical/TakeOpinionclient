@@ -124,3 +124,6 @@ LOGGING = {
         },
     },
 }
+
+# WhiteNoise configuration for serving media files
+WHITENOISE_ALLOW_ALL_ORIGINS = True
