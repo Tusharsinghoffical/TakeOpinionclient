@@ -74,8 +74,11 @@ WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = True
 WHITENOISE_MANIFEST_STRICT = False
 
-# Add WhiteNoise middleware
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+# Add WhiteNoise middleware at the beginning to serve static files
+# This ensures WhiteNoise handles static files before other middleware
+MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise should be first
+] + MIDDLEWARE
 
 # Media files (user uploads)
 MEDIA_URL = '/media/'
@@ -110,6 +113,11 @@ LOGGING = {
             'propagate': False,
         },
         'django.request': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'whitenoise': {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
