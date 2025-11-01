@@ -102,6 +102,29 @@
     box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
   }
 
+  .btn-secondary-large {
+    background: linear-gradient(135deg, #6c757d, #495057);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    width: 100%;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .btn-secondary-large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+    color: white;
+    text-decoration: none;
+  }
+
   @media (max-width: 768px) {
     .confirmation-page {
       padding: 1rem;
@@ -207,9 +230,18 @@
           </div>
           
           <div class="mt-4">
-            <a href="{% url 'home' %}" class="btn-success-large">
-              <i class="bi bi-house me-2"></i>Back to Home
-            </a>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <a href="{% url 'hotels:detail' booking.hotel.slug %}" class="btn-secondary-large">
+                  <i class="bi bi-building me-2"></i>Back to Hotel
+                </a>
+              </div>
+              <div class="col-md-6 mb-3">
+                <a href="{% url 'home' %}" class="btn-success-large">
+                  <i class="bi bi-house me-2"></i>Go to Home
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

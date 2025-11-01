@@ -95,8 +95,8 @@
     <div class="col-lg-8">
       <div class="text-center mb-4">
         <i class="bi bi-building text-primary" style="font-size: 3rem;"></i>
-        <h1 class="h2 mb-2">Book Your Stay</h1>
-        <p class="text-muted">Complete your reservation at {{ hotel.name }}</p>
+        <h1 class="h2 mb-2">Book Your Stay at {{ hotel.name }}</h1>
+        <p class="text-muted">Complete your reservation to secure your accommodation</p>
       </div>
       
       {% if messages %}
@@ -129,6 +129,11 @@
           
           <form method="post">
             {% csrf_token %}
+            
+            <div class="alert alert-warning">
+              <h6 class="alert-heading"><i class="bi bi-exclamation-triangle me-2"></i>Important</h6>
+              <p class="mb-0">Please complete all required fields marked with * to submit your booking request. Our team will contact you to confirm your reservation.</p>
+            </div>
             
             <div class="row">
               <div class="col-md-6 mb-3">
@@ -186,21 +191,20 @@
             </div>
             
             <div class="alert alert-info">
-              <h6 class="alert-heading"><i class="bi bi-info-circle me-2"></i>Booking Information</h6>
-              <p class="mb-0">After submitting this form, our team will contact you to confirm your reservation and provide payment instructions.</p>
+              <h6 class="alert-heading"><i class="bi bi-info-circle me-2"></i>Booking Process</h6>
+              <p class="mb-0">After submitting this form, our team will contact you to confirm your reservation and provide payment instructions. Your booking is not confirmed until you receive confirmation from our team.</p>
             </div>
             
-            <button type="submit" class="btn-primary-large">
-              <i class="bi bi-calendar-check me-2"></i>Submit Booking Request
-            </button>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn-primary-large">
+                <i class="bi bi-calendar-check me-2"></i>Submit Booking Request
+              </button>
+              <a href="{% url 'hotels:detail' hotel.slug %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Back to Hotel Details
+              </a>
+            </div>
           </form>
         </div>
-      </div>
-      
-      <div class="text-center mt-4">
-        <a href="{% url 'hotels:detail' hotel.slug %}" class="btn btn-outline-secondary">
-          <i class="bi bi-arrow-left me-2"></i>Back to Hotel Details
-        </a>
       </div>
     </div>
   </div>

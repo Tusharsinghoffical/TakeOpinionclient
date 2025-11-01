@@ -82,13 +82,23 @@
             {% endif %}
             
             <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Book Your Stay</h5>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Book This Hotel</h5>
-                    <p class="card-text">Book your stay directly through our secure booking system.</p>
+                    <div class="alert alert-info">
+                        <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Complete Your Booking</h6>
+                        <p class="mb-0">Book your stay directly through our secure booking system. Our team will contact you to confirm your reservation.</p>
+                    </div>
+                    <p class="card-text"><strong>Price:</strong> <span class="text-success">₹{{ hotel.price_per_night }}/night</span></p>
                     <a href="{% url 'hotels:book' hotel.slug %}" class="btn btn-success w-100 mb-2">
-                        <i class="fas fa-calendar-check"></i> Book Now
+                        <i class="fas fa-calendar-check me-2"></i>Book Now
                     </a>
-                    <p class="card-text"><small class="text-muted">Price: ₹{{ hotel.price_per_night }}/night</small></p>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-shield-alt me-1"></i>Secure booking with instant confirmation
+                        </small>
+                    </div>
                 </div>
             </div>
         </div>

@@ -18,7 +18,7 @@
                 <h4 class="alert-heading">Payment Successful!</h4>
                 <p>Your payment for booking #{{ booking.id }} has been processed successfully.</p>
                 <hr>
-                <p class="mb-0">Here are some hotel suggestions near {{ hospital.name|default:"your location" }}:</p>
+                <p class="mb-0">To complete your medical travel arrangements, please select and book accommodation near {{ hospital.name|default:"your treatment location" }}:</p>
             </div>
         </div>
     </div>
@@ -45,7 +45,9 @@
                             <span class="badge bg-primary">★ {{ hotel.rating }}</span>
                             <span class="text-success">₹{{ hotel.price_per_night }}/night</span>
                         </div>
-                        <a href="{% url 'hotels:detail' hotel.slug %}" class="btn btn-outline-primary mt-2 w-100">View Details</a>
+                        <a href="{% url 'hotels:detail' hotel.slug %}" class="btn btn-success mt-2 w-100">
+                            <i class="bi bi-calendar-check me-1"></i>Book Now
+                        </a>
                     </div>
                 </div>
             </div>
@@ -61,8 +63,24 @@
     
     <div class="row mt-4">
         <div class="col-12">
-            <a href="{% url 'bookings:booking_confirmation' booking.id %}" class="btn btn-secondary">Back to Booking</a>
-            <a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+            <div class="alert alert-warning">
+                <h5><i class="bi bi-info-circle me-2"></i>Important</h5>
+                <p>To complete your medical travel arrangements, please select and book a hotel from the suggestions above. Your treatment booking is not considered fully confirmed until you have arranged accommodation.</p>
+                <a href="{% url 'hotels:list' %}" class="btn btn-primary">
+                    <i class="bi bi-search me-1"></i>Search All Hotels
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-3">
+        <div class="col-12">
+            <a href="{% url 'bookings:booking_confirmation' booking.id %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Back to Treatment Booking
+            </a>
+            <a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-outline-primary">
+                <i class="bi bi-speedometer2 me-1"></i>Go to Dashboard
+            </a>
         </div>
     </div>
 </div>
