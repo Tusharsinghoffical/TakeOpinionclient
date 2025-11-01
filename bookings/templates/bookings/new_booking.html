@@ -193,21 +193,62 @@
     box-shadow: 0 5px 15px rgba(13, 110, 253, 0.2);
   }
 
-  .room-option {
-    border-radius: 10px;
-    border: 1px solid #dee2e6;
+  .room-option-card {
+    border-radius: 15px;
+    border: 2px solid #e9ecef;
     transition: all 0.3s ease;
     cursor: pointer;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+    padding: 1.5rem;
   }
 
-  .room-option:hover {
+  .room-option-card:hover {
     border-color: #0d6efd;
-    background-color: #f8f9fa;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   }
 
-  .room-option.selected {
+  .room-option-card.selected {
     border-color: #0d6efd;
     background-color: #e7f1ff;
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.15);
+  }
+
+  .room-option-card .room-name {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+
+  .room-option-card .room-price {
+    font-weight: 700;
+    color: #0d6efd;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .room-option-card .room-description {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .room-option-card .room-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .room-option-card .room-feature {
+    background: #e9ecef;
+    color: #495057;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
   }
 
   .price-tag {
@@ -259,6 +300,10 @@
       width: 24px;
       height: 24px;
       font-size: 0.75rem;
+    }
+    
+    .room-option-card {
+      padding: 1rem;
     }
   }
 </style>
@@ -383,33 +428,152 @@
               </div>
             </div>
             
-            <!-- Step 4: Hospital Details Display -->
+            <!-- Step 4: Room Options Selection -->
             <div class="booking-step" id="step-4">
-              <h5 class="card-title mb-4">Step 4: Hospital Details</h5>
+              <h5 class="card-title mb-4">Step 4: Select Room Options</h5>
               
               <div class="alert alert-info mb-4">
                 <i class="bi bi-info-circle me-2"></i>
-                <strong>Hospital Information</strong>
-                <p class="mb-0 mt-2">View the facilities and features of your selected hospital. All hospitals offer comprehensive medical care with modern amenities.</p>
+                <strong>Room Selection</strong>
+                <p class="mb-0 mt-2">Choose your preferred accommodation during your hospital stay. All rooms include 7 nights of accommodation.</p>
               </div>
               
               <div class="mb-4">
-                <h6 class="mb-3">Selected Hospital: <span id="selectedHospitalName" class="text-primary"></span></h6>
+                <h6 class="mb-3">Selected Hospital: <span id="selectedHospitalNameStep4" class="text-primary"></span></h6>
                 <div class="alert alert-info">
-                  <i class="bi bi-info-circle me-2"></i>Estimated treatment cost: <span id="treatmentCost" class="fw-bold"></span>
+                  <i class="bi bi-info-circle me-2"></i>Estimated treatment cost: <span id="treatmentCostStep4" class="fw-bold"></span>
                 </div>
               </div>
               
               <div class="mb-4">
-                <h6 class="mb-3">Hospital Features & Facilities</h6>
-                <div class="alert alert-warning mb-3">
-                  <i class="bi bi-exclamation-triangle me-2"></i>
-                  <strong>Note:</strong> The selected hospital provides comprehensive medical care with modern facilities and amenities for patients and their families.
+                <h6 class="mb-3">Room Options</h6>
+                <div class="row g-3">
+                  <!-- Normal Room Option -->
+                  <div class="col-md-6">
+                    <div class="room-option-card" data-room-type="normal" data-room-cost="17500">
+                      <div class="room-name">Normal Room</div>
+                      <div class="room-price">₹17,500 <small class="text-muted">(₹2,500/night × 7 nights)</small></div>
+                      <div class="room-description">Basic accommodation with essential amenities for a comfortable stay.</div>
+                      <div class="room-features">
+                        <span class="room-feature">Basic Bed</span>
+                        <span class="room-feature">Shared Bathroom</span>
+                        <span class="room-feature">Basic TV</span>
+                        <span class="room-feature">Free Wi-Fi</span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="room_service" id="normalRoom" value="normal">
+                        <label class="form-check-label fw-semibold" for="normalRoom">Select Normal Room</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Standard Room Option -->
+                  <div class="col-md-6">
+                    <div class="room-option-card" data-room-type="standard" data-room-cost="28000">
+                      <div class="room-name">Standard Room</div>
+                      <div class="room-price">₹28,000 <small class="text-muted">(₹4,000/night × 7 nights)</small></div>
+                      <div class="room-description">Comfortable accommodation with additional amenities for enhanced comfort.</div>
+                      <div class="room-features">
+                        <span class="room-feature">Comfort Bed</span>
+                        <span class="room-feature">Private Bathroom</span>
+                        <span class="room-feature">TV & AC</span>
+                        <span class="room-feature">Free Wi-Fi</span>
+                        <span class="room-feature">Room Service</span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="room_service" id="standardRoom" value="standard">
+                        <label class="form-check-label fw-semibold" for="standardRoom">Select Standard Room</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Premium Room Option -->
+                  <div class="col-md-6">
+                    <div class="room-option-card" data-room-type="premium" data-room-cost="45500">
+                      <div class="room-name">Premium Room</div>
+                      <div class="room-price">₹45,500 <small class="text-muted">(₹6,500/night × 7 nights)</small></div>
+                      <div class="room-description">Premium accommodation with luxury amenities for a superior experience.</div>
+                      <div class="room-features">
+                        <span class="room-feature">Premium Bed</span>
+                        <span class="room-feature">Luxury Bathroom</span>
+                        <span class="room-feature">Smart TV</span>
+                        <span class="room-feature">AC & Mini Bar</span>
+                        <span class="room-feature">24/7 Room Service</span>
+                        <span class="room-feature">Premium Toiletries</span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="room_service" id="premiumRoom" value="premium">
+                        <label class="form-check-label fw-semibold" for="premiumRoom">Select Premium Room</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Deluxe Room Option -->
+                  <div class="col-md-6">
+                    <div class="room-option-card" data-room-type="deluxe" data-room-cost="63000">
+                      <div class="room-name">Deluxe Room</div>
+                      <div class="room-price">₹63,000 <small class="text-muted">(₹9,000/night × 7 nights)</small></div>
+                      <div class="room-description">Luxury suite with premium amenities for the ultimate comfort experience.</div>
+                      <div class="room-features">
+                        <span class="room-feature">King Size Bed</span>
+                        <span class="room-feature">Luxury Suite</span>
+                        <span class="room-feature">Premium TV & Sound</span>
+                        <span class="room-feature">AC, Mini Bar & Safe</span>
+                        <span class="room-feature">24/7 Premium Service</span>
+                        <span class="room-feature">Luxury Toiletries</span>
+                        <span class="room-feature">Sofa & Work Desk</span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="room_service" id="deluxeRoom" value="deluxe">
+                        <label class="form-check-label fw-semibold" for="deluxeRoom">Select Deluxe Room</label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div id="hospitalFeatures" class="row g-3">
-                  <!-- Hospital features will be populated dynamically -->
-                  <div class="col-12 text-center py-5">
-                    <div class="text-muted">Please select a hospital first</div>
+              </div>
+              
+              <div class="mb-4">
+                <h6 class="mb-3">Additional Amenities</h6>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="privateRoom" name="amenities" value="private_room">
+                      <label class="form-check-label" for="privateRoom">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Private Patient Rooms
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="familyAccommodation" name="amenities" value="family_accommodation">
+                      <label class="form-check-label" for="familyAccommodation">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Family Accommodation
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="wifi" name="amenities" value="wifi">
+                      <label class="form-check-label" for="wifi">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="ac" name="amenities" value="ac">
+                      <label class="form-check-label" for="ac">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="tv" name="amenities" value="tv">
+                      <label class="form-check-label" for="tv">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Television
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="roomService" name="amenities" value="room_service">
+                      <label class="form-check-label" for="roomService">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -418,7 +582,7 @@
                 <button type="button" class="btn btn-prev" id="prevStep4">
                   <i class="bi bi-arrow-left me-2"></i>Back
                 </button>
-                <button type="button" class="btn btn-next" id="nextStep4" disabled>
+                <button type="button" class="btn btn-next" id="nextStep4">
                   <i class="bi bi-arrow-right me-2"></i>Next: Confirm Booking
                 </button>
               </div>
@@ -437,6 +601,7 @@
                       <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Doctor:</strong> <span id="summaryDoctor">Not specified</span></li>
                       <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Hospital:</strong> <span id="summaryHospital"></span></li>
                       <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Preferred Date:</strong> <span id="summaryDate"></span></li>
+                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Room Type:</strong> <span id="summaryRoomType">Not selected</span></li>
                       
                       <!-- Cost Breakdown -->
                       <li class="mb-2 mt-3 pt-3 border-top">
@@ -534,7 +699,6 @@
   const treatmentSelect = document.getElementById('treatmentSelect');
   const doctorSelect = document.getElementById('doctorSelect');
   const hospitalsList = document.getElementById('hospitalsList');
-  const hospitalFeatures = document.getElementById('hospitalFeatures');
   const preferredDate = document.getElementById('preferredDate');
   
   // Set minimum date to today
@@ -644,6 +808,30 @@
       medicalDocumentsInput.files = dt.files;
       updateFileList(dt.files, medicalDocumentsList);
     }
+    
+    // Add event listeners to room option cards
+    document.querySelectorAll('.room-option-card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        // Don't trigger if clicking on form elements
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+          return;
+        }
+        
+        // Remove selected class from all cards
+        document.querySelectorAll('.room-option-card').forEach(c => {
+          c.classList.remove('selected');
+        });
+        
+        // Add selected class to clicked card
+        this.classList.add('selected');
+        
+        // Select the radio button inside this card
+        const radio = this.querySelector('input[type="radio"]');
+        if (radio) {
+          radio.checked = true;
+        }
+      });
+    });
   });
   
   // Step navigation functions
@@ -733,12 +921,9 @@
       getDoctorPricing(selectedDoctorId, selectedTreatmentId, selectedHospitalId);
     }
     
-    // Populate hospital features based on selected hospital
-    populateHospitalFeatures(selectedHospitalId);
-    
-    // Update summary information
-    document.getElementById('selectedHospitalName').textContent = selectedHospitalName;
-    document.getElementById('treatmentCost').textContent = `₹${treatmentCost.toLocaleString()}`;
+    // Update summary information for step 4
+    document.getElementById('selectedHospitalNameStep4').textContent = selectedHospitalName;
+    document.getElementById('treatmentCostStep4').textContent = `₹${treatmentCost.toLocaleString()}`;
     
     showStep(4);
   });
@@ -748,9 +933,6 @@
   });
   
   nextStep4.addEventListener('click', function() {
-    // We no longer need to validate room selection since we're showing hospital features
-    // Instead, we just need to ensure a hospital is selected (which should already be validated)
-    
     // Get selected room service
     const roomServiceRadios = document.querySelectorAll('input[name="room_service"]');
     let selectedRoomService = null;
@@ -760,20 +942,23 @@
     roomServiceRadios.forEach(radio => {
       if (radio.checked) {
         selectedRoomService = radio.value;
-        selectedRoomServiceName = radio.nextElementSibling.textContent.trim();
         // Set room costs based on room type
         switch(selectedRoomService) {
           case 'normal':
-            roomCost = 2500 * 7; // ₹2,500/night × 7 nights
+            selectedRoomServiceName = 'Normal Room';
+            roomCost = 17500; // ₹2,500/night × 7 nights
             break;
           case 'standard':
-            roomCost = 4000 * 7; // ₹4,000/night × 7 nights
+            selectedRoomServiceName = 'Standard Room';
+            roomCost = 28000; // ₹4,000/night × 7 nights
             break;
           case 'premium':
-            roomCost = 6500 * 7; // ₹6,500/night × 7 nights
+            selectedRoomServiceName = 'Premium Room';
+            roomCost = 45500; // ₹6,500/night × 7 nights
             break;
           case 'deluxe':
-            roomCost = 9000 * 7; // ₹9,000/night × 7 nights
+            selectedRoomServiceName = 'Deluxe Room';
+            roomCost = 63000; // ₹9,000/night × 7 nights
             break;
           default:
             roomCost = 0;
@@ -781,21 +966,11 @@
       }
     });
     
-    // Get selected amenities, special requirements, and additional services
+    // Get selected amenities
     const selectedItems = [];
     const amenityCheckboxes = document.querySelectorAll('input[name="amenities"]:checked');
-    const specialRequirementCheckboxes = document.querySelectorAll('input[name="special_requirements"]:checked');
-    const additionalServiceCheckboxes = document.querySelectorAll('input[name="additional_services"]:checked');
     
     amenityCheckboxes.forEach(checkbox => {
-      selectedItems.push(checkbox.value);
-    });
-    
-    specialRequirementCheckboxes.forEach(checkbox => {
-      selectedItems.push(checkbox.value);
-    });
-    
-    additionalServiceCheckboxes.forEach(checkbox => {
       selectedItems.push(checkbox.value);
     });
     
@@ -814,6 +989,7 @@
     document.getElementById('summaryDoctor').textContent = selectedDoctorName || 'Not specified';
     document.getElementById('summaryHospital').textContent = selectedHospitalName;
     document.getElementById('summaryDate').textContent = preferredDate.value || 'Not specified';
+    document.getElementById('summaryRoomType').textContent = selectedRoomServiceName || 'Not selected';
     
     // Update cost breakdown
     document.getElementById('treatmentCostSummary').textContent = `₹${treatmentCostValue.toLocaleString()}`;
@@ -862,30 +1038,6 @@
           case 'tv':
             li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Television';
             break;
-          case 'wheelchair':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Wheelchair Accessibility';
-            break;
-          case 'language':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Language Interpretation';
-            break;
-          case 'dietary':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Dietary Accommodations';
-            break;
-          case 'religious':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Religious Services';
-            break;
-          case 'tourism':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Medical Tourism Assistance';
-            break;
-          case 'travel':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Travel Arrangements';
-            break;
-          case 'visa':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Visa Support';
-            break;
-          case 'post_treatment':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Post-Treatment Care';
-            break;
           default:
             li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>' + item;
         }
@@ -901,7 +1053,6 @@
     document.getElementById('selectedTreatmentId').value = selectedTreatmentId;
     document.getElementById('selectedDoctorId').value = selectedDoctorId || '';
     document.getElementById('selectedHospitalId').value = selectedHospitalId;
-    // No need to set selectedRoomId since we're not selecting rooms
     document.getElementById('totalAmount').value = totalCost;
     
     showStep(5);
@@ -1100,221 +1251,6 @@
       });
   }
   
-  // Function to populate hospital features based on hospital
-  function populateHospitalFeatures(hospitalId) {
-    // Show loading indicator
-    const hospitalFeatures = document.getElementById('hospitalFeatures');
-    hospitalFeatures.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
-    
-    // Debug: Log the hospital ID
-    console.log('Fetching hospital features for hospital ID:', hospitalId);
-    
-    // Check if hospitalId is valid
-    if (!hospitalId) {
-      console.error('Invalid hospital ID provided to populateHospitalFeatures');
-      hospitalFeatures.innerHTML = '<div class="col-12"><div class="alert alert-warning">Please select a hospital first</div></div>';
-      nextStep4.disabled = true;
-      return;
-    }
-    
-    // Make AJAX request to get hospital details
-    fetch(`/book/api/hospitals/${hospitalId}/`)
-      .then(response => {
-        console.log('Hospital API response status:', response.status);
-        // Check if response is OK
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        hospitalFeatures.innerHTML = '';
-        
-        if (data.success && data.hospitals && data.hospitals.length > 0) {
-          // Get the first hospital (since we're fetching by ID, there should be only one)
-          const hospital = data.hospitals[0];
-          
-          // Create hospital features display
-          const hospitalFeature = document.createElement('div');
-          hospitalFeature.className = 'col-12';
-          hospitalFeature.innerHTML = `
-            <div class="card hospital-feature h-100">
-              <div class="card-body">
-                <h5 class="card-title mb-3">${hospital.name} Features</h5>
-                
-                <div class="row g-3 mb-4">
-                  <div class="col-md-6">
-                    <h6 class="mb-3">Medical Facilities</h6>
-                    <ul class="list-unstyled">
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Medical Care</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Emergency Services</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Intensive Care Unit (ICU)</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Operation Theaters</li>
-                      <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Diagnostic Services</li>
-                      <li><i class="bi bi-check-circle-fill text-success me-2"></i>Pharmacy Services</li>
-                    </ul>
-                  </div>
-                  
-                  <div class="col-md-6">
-                    <h6 class="mb-3">Patient Amenities</h6>
-                    <ul class="list-unstyled">
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="privateRoom" name="amenities" value="private_room" checked>
-                          <label class="form-check-label" for="privateRoom">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Private Patient Rooms
-                          </label>
-                        </div>
-                      </li>
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="familyAccommodation" name="amenities" value="family_accommodation" checked>
-                          <label class="form-check-label" for="familyAccommodation">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Family Accommodation
-                          </label>
-                        </div>
-                      </li>
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="roomService" name="amenities" value="room_service" checked>
-                          <label class="form-check-label" for="roomService">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service
-                          </label>
-                        </div>
-                      </li>
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="wifi" name="amenities" value="wifi" checked>
-                          <label class="form-check-label" for="wifi">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi
-                          </label>
-                        </div>
-                      </li>
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="ac" name="amenities" value="ac" checked>
-                          <label class="form-check-label" for="ac">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="tv" name="amenities" value="tv" checked>
-                          <label class="form-check-label" for="tv">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Television
-                          </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div class="row g-3 mb-4">
-                  <div class="col-md-6">
-                    <h6 class="mb-3">Special Requirements</h6>
-                    <ul class="list-unstyled">
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="wheelchair" name="special_requirements" value="wheelchair" checked>
-                          <label class="form-check-label" for="wheelchair">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Wheelchair Accessibility
-                          </label>
-                        </div>
-                      </li>
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="language" name="special_requirements" value="language" checked>
-                          <label class="form-check-label" for="language">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Language Interpretation
-                          </label>
-                        </div>
-                      </li>
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="dietary" name="special_requirements" value="dietary" checked>
-                          <label class="form-check-label" for="dietary">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Dietary Accommodations
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="religious" name="special_requirements" value="religious" checked>
-                          <label class="form-check-label" for="religious">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>Religious Services
-                          </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  
-                  <div class="col-md-6">
-                    <h6 class="mb-3">Room Services</h6>
-                    <ul class="list-unstyled">
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" id="tourism" name="room_service" value="normal" checked>
-                          <label class="form-check-label" for="tourism">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i> Normal Room (₹2,500/night)
-                          </label>
-                        </div>
-                      </li>
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" id="travel" name="room_service" value="standard">
-                          <label class="form-check-label" for="travel">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i> Standard Room (₹4,000/night)
-                          </label>
-                        </div>
-                      </li>
-                      <li class="mb-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" id="visa" name="room_service" value="premium">
-                          <label class="form-check-label" for="visa">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i> Premium Room (₹6,500/night)
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" id="postTreatment" name="room_service" value="deluxe">
-                          <label class="form-check-label" for="postTreatment">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i> Deluxe Room (₹9,000/night)
-                          </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div class="alert alert-info">
-                  <i class="bi bi-info-circle me-2"></i>
-                  <strong>Accreditations:</strong> 
-                  ${hospital.jci_accredited ? '<span class="badge bg-info me-1">JCI</span>' : ''}
-                  ${hospital.nabh_accredited ? '<span class="badge bg-success me-1">NABH</span>' : ''}
-                  ${hospital.iso_certified ? '<span class="badge bg-secondary me-1">ISO</span>' : ''}
-                  ${(!hospital.jci_accredited && !hospital.nabh_accredited && !hospital.iso_certified) ? 'No specific accreditations listed' : ''}
-                </div>
-              </div>
-            </div>
-          `;
-          hospitalFeatures.appendChild(hospitalFeature);
-          
-          // Enable next button
-          nextStep4.disabled = false;
-        } else {
-          hospitalFeatures.innerHTML = '<div class="col-12"><div class="alert alert-info">No hospital details available.</div></div>';
-          nextStep4.disabled = true;
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching hospital features:', error);
-        hospitalFeatures.innerHTML = '<div class="col-12"><div class="alert alert-danger">Error loading hospital details: ' + error.message + '</div></div>';
-        nextStep4.disabled = true;
-      });
-  }
-  
   // Function to get treatment pricing information
   function getTreatmentPricing(treatmentId) {
     // Debug: Log the treatment ID
@@ -1408,21 +1344,11 @@
       }
     });
     
-    // Collect selected amenities, special requirements, and additional services
+    // Collect selected amenities
     const selectedItems = [];
     const amenityCheckboxes = document.querySelectorAll('input[name="amenities"]:checked');
-    const specialRequirementCheckboxes = document.querySelectorAll('input[name="special_requirements"]:checked');
-    const additionalServiceCheckboxes = document.querySelectorAll('input[name="additional_services"]:checked');
     
     amenityCheckboxes.forEach(checkbox => {
-      selectedItems.push(checkbox.value);
-    });
-    
-    specialRequirementCheckboxes.forEach(checkbox => {
-      selectedItems.push(checkbox.value);
-    });
-    
-    additionalServiceCheckboxes.forEach(checkbox => {
       selectedItems.push(checkbox.value);
     });
     
