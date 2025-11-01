@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 @login_required
-def hotels_list(request: HttpRequest) -> HttpResponse:
+def hotels_list(request) -> HttpResponse:
     """Display list of hotels with filtering options"""
     # Check if user has made any booking (doctor, hospital, or treatment)
     user_bookings = Booking._default_manager.filter(patient__user=request.user)
@@ -64,7 +64,7 @@ def hotels_list(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def hotel_detail(request: HttpRequest, slug: str) -> HttpResponse:
+def hotel_detail(request, slug: str) -> HttpResponse:
     """Display detailed information about a specific hotel"""
     # Check if user has made any booking (doctor, hospital, or treatment)
     user_bookings = Booking._default_manager.filter(patient__user=request.user)
@@ -87,7 +87,7 @@ def hotel_detail(request: HttpRequest, slug: str) -> HttpResponse:
 
 
 @login_required
-def suggest_hotels_after_payment(request: HttpRequest, booking_id: int) -> HttpResponse:
+def suggest_hotels_after_payment(request, booking_id: int) -> HttpResponse:
     """Suggest hotels after a successful payment"""
     # Get the booking
     booking = get_object_or_404(Booking, id=booking_id)
