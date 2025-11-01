@@ -11,13 +11,23 @@ import logging
 from datetime import datetime, date
 from django.shortcuts import redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 # Set up logging
 logger = logging.getLogger(__name__)
 
 
+@login_required
 def hotels_list(request: HttpRequest) -> HttpResponse:
     """Display list of hotels with filtering options"""
+    # Check if user has made any booking (doctor, hospital, or treatment)
+    user_bookings = Booking._default_manager.filter(patient__user=request.user)
+    if not user_bookings.exists():
+        # Redirect to booking page if no bookings found
+        messages.info(request, 'Please make a booking for a doctor, hospital, or treatment before viewing hotels.')
+        return redirect('bookings:booking_page')
+    
     hotels = Hotel._default_manager.filter(is_active=True)
     
     # Get filter parameters
@@ -53,8 +63,16 @@ def hotels_list(request: HttpRequest) -> HttpResponse:
     return render(request, 'hotels/list.html', context)
 
 
+@login_required
 def hotel_detail(request: HttpRequest, slug: str) -> HttpResponse:
     """Display detailed information about a specific hotel"""
+    # Check if user has made any booking (doctor, hospital, or treatment)
+    user_bookings = Booking._default_manager.filter(patient__user=request.user)
+    if not user_bookings.exists():
+        # Redirect to booking page if no bookings found
+        messages.info(request, 'Please make a booking for a doctor, hospital, or treatment before viewing hotel details.')
+        return redirect('bookings:booking_page')
+    
     hotel = get_object_or_404(Hotel, slug=slug, is_active=True)
     images = hotel.images.all()
     nearby_hospitals = hotel.nearby_hospitals.all()
@@ -138,6 +156,14 @@ def book_hotel(request, slug):
     """Display hotel booking form"""
     hotel = get_object_or_404(Hotel, slug=slug, is_active=True)
     
+    # Check if user has made any booking (doctor, hospital, or treatment)
+    if hasattr(request, 'user') and request.user.is_authenticated:
+        user_bookings = Booking._default_manager.filter(patient__user=request.user)
+        if not user_bookings.exists():
+            # Redirect to booking page if no bookings found
+            messages.info(request, 'Please make a booking for a doctor, hospital, or treatment before booking a hotel.')
+            return redirect('bookings:booking_page')
+    
     if request.method == 'POST':
         # Process booking form
         guest_name = request.POST.get('guest_name')
@@ -184,7 +210,7 @@ def book_hotel(request, slug):
             booking.save()
             
             messages.success(request, f'Your booking at {hotel.name} has been submitted successfully! Our team will contact you shortly to confirm the reservation.')
-            return redirect('hotels:booking_confirmation', booking_id=booking.id)
+            return redirect('hotels:booking_confirmation', booking_id=booking.pk)
             
         except Exception as e:
             logger.error(f"Error creating hotel booking: {str(e)}")
