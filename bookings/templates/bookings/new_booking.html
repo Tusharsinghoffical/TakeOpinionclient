@@ -278,6 +278,161 @@
     color: #6c757d;
   }
 
+  .booking-summary-card {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+
+  .summary-section {
+    padding: 1rem 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .summary-section:last-child {
+    border-bottom: none;
+  }
+
+  .summary-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.75rem;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .summary-label {
+    color: #6c757d;
+  }
+
+  .summary-value {
+    font-weight: 500;
+  }
+
+  .cost-breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+    padding-left: 1rem;
+  }
+
+  .total-row {
+    border-top: 2px solid #e9ecef;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    font-weight: 600;
+  }
+
+  .discount-badge {
+    background-color: #28a745;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .final-price {
+    color: #28a745;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .receipt-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 10px 10px 0 0;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .receipt-body {
+    padding: 1.5rem;
+  }
+
+  .receipt-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .receipt-section-title {
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .receipt-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+
+  .receipt-item:hover {
+    background-color: #f8f9fa;
+  }
+
+  .receipt-label {
+    color: #6c757d;
+    font-weight: 500;
+  }
+
+  .receipt-value {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .receipt-total {
+    background-color: #e7f1ff;
+    border: 2px solid #0d6efd;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .receipt-discount {
+    color: #28a745;
+    font-weight: 600;
+  }
+
+  .receipt-amenities-list {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .receipt-amenity-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #e9ecef;
+  }
+
+  .receipt-amenity-item:last-child {
+    border-bottom: none;
+  }
+
+  .receipt-footer {
+    background-color: #f8f9fa;
+    border-radius: 0 0 10px 10px;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid #e9ecef;
+  }
+
+  .advance-payment-box {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
   @media (max-width: 768px) {
     .new-booking-page {
       padding: 1rem;
@@ -435,7 +590,7 @@
               <div class="alert alert-info mb-4">
                 <i class="bi bi-info-circle me-2"></i>
                 <strong>Room Selection</strong>
-                <p class="mb-0 mt-2">Choose your preferred accommodation during your hospital stay. All rooms include 7 nights of accommodation.</p>
+                <p class="mb-0 mt-2">Choose your preferred accommodation during your hospital stay. All rooms include 2 nights of accommodation.</p>
               </div>
               
               <div class="mb-4">
@@ -445,15 +600,43 @@
                 </div>
               </div>
               
+              <!-- Add number of nights selection -->
+              <div class="mb-4">
+                <h6 class="mb-3">Length of Stay</h6>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Number of Nights</label>
+                    <select class="form-select form-control-lg" id="numberOfNights" name="number_of_nights">
+                      <option value="1">1 Night</option>
+                      <option value="2" selected>2 Nights</option>
+                      <option value="3">3 Nights</option>
+                      <option value="4">4 Nights</option>
+                      <option value="5">5 Nights</option>
+                      <option value="6">6 Nights</option>
+                      <option value="7">7 Nights</option>
+                      <option value="8">8 Nights</option>
+                      <option value="9">9 Nights</option>
+                      <option value="10">10 Nights</option>
+                      <option value="11">11 Nights</option>
+                      <option value="12">12 Nights</option>
+                      <option value="13">13 Nights</option>
+                      <option value="14">14 Nights</option>
+                    </select>
+                    <div class="form-text">Select the duration of your hospital stay</div>
+                  </div>
+                </div>
+              </div>
+              
               <div class="mb-4">
                 <h6 class="mb-3">Room Options</h6>
                 <div class="row g-3">
                   <!-- Normal Room Option -->
                   <div class="col-md-6">
-                    <div class="room-option-card" data-room-type="normal" data-room-cost="17500">
+                    <div class="room-option-card" data-room-type="normal" data-room-cost="2500">
                       <div class="room-name">Normal Room</div>
-                      <div class="room-price">₹17,500 <small class="text-muted">(₹2,500/night × 7 nights)</small></div>
-                      <div class="room-description">Basic accommodation with essential amenities for a comfortable stay.</div>
+                      <div class="room-price">₹2,500<small class="text-muted">/for 2 nights</small></div>
+                      <div class="room-description
+                      ">Basic accommodation with essential amenities for a comfortable stay.</div>
                       <div class="room-features">
                         <span class="room-feature">Basic Bed</span>
                         <span class="room-feature">Shared Bathroom</span>
@@ -469,9 +652,9 @@
                   
                   <!-- Standard Room Option -->
                   <div class="col-md-6">
-                    <div class="room-option-card" data-room-type="standard" data-room-cost="28000">
+                    <div class="room-option-card" data-room-type="standard" data-room-cost="4000">
                       <div class="room-name">Standard Room</div>
-                      <div class="room-price">₹28,000 <small class="text-muted">(₹4,000/night × 7 nights)</small></div>
+                      <div class="room-price">₹4,000<small class="text-muted">/for 2 nights</small></div>
                       <div class="room-description">Comfortable accommodation with additional amenities for enhanced comfort.</div>
                       <div class="room-features">
                         <span class="room-feature">Comfort Bed</span>
@@ -489,9 +672,9 @@
                   
                   <!-- Premium Room Option -->
                   <div class="col-md-6">
-                    <div class="room-option-card" data-room-type="premium" data-room-cost="45500">
+                    <div class="room-option-card" data-room-type="premium" data-room-cost="6500">
                       <div class="room-name">Premium Room</div>
-                      <div class="room-price">₹45,500 <small class="text-muted">(₹6,500/night × 7 nights)</small></div>
+                      <div class="room-price">₹6,500<small class="text-muted">/for 2 nights</small></div>
                       <div class="room-description">Premium accommodation with luxury amenities for a superior experience.</div>
                       <div class="room-features">
                         <span class="room-feature">Premium Bed</span>
@@ -510,9 +693,9 @@
                   
                   <!-- Deluxe Room Option -->
                   <div class="col-md-6">
-                    <div class="room-option-card" data-room-type="deluxe" data-room-cost="63000">
+                    <div class="room-option-card" data-room-type="deluxe" data-room-cost="9000">
                       <div class="room-name">Deluxe Room</div>
-                      <div class="room-price">₹63,000 <small class="text-muted">(₹9,000/night × 7 nights)</small></div>
+                      <div class="room-price">₹9,000<small class="text-muted">/for 2 nights</small></div>
                       <div class="room-description">Luxury suite with premium amenities for the ultimate comfort experience.</div>
                       <div class="room-features">
                         <span class="room-feature">King Size Bed</span>
@@ -554,14 +737,14 @@
                         <i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi
                       </label>
                     </div>
-                  </div>
-                  <div class="col-md-6">
                     <div class="form-check mb-2">
                       <input class="form-check-input" type="checkbox" id="ac" name="amenities" value="ac">
                       <label class="form-check-label" for="ac">
                         <i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning
                       </label>
                     </div>
+                  </div>
+                  <div class="col-md-6">
                     <div class="form-check mb-2">
                       <input class="form-check-input" type="checkbox" id="tv" name="amenities" value="tv">
                       <label class="form-check-label" for="tv">
@@ -572,6 +755,18 @@
                       <input class="form-check-input" type="checkbox" id="roomService" name="amenities" value="room_service">
                       <label class="form-check-label" for="roomService">
                         <i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="wheelchair" name="amenities" value="wheelchair">
+                      <label class="form-check-label" for="wheelchair">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Wheelchair Accessibility
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="pickupDrop" name="amenities" value="pickup_drop">
+                      <label class="form-check-label" for="pickupDrop">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Pickup/Drop Facility
                       </label>
                     </div>
                   </div>
@@ -593,43 +788,121 @@
               <h5 class="card-title mb-4">Step 5: Confirm Booking</h5>
               
               <div class="mb-4">
-                <div class="card bg-light border-0">
-                  <div class="card-body">
-                    <h6 class="card-title mb-3">Booking Summary</h6>
-                    <ul class="list-unstyled mb-0">
-                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Treatment:</strong> <span id="summaryTreatment"></span></li>
-                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Doctor:</strong> <span id="summaryDoctor">Not specified</span></li>
-                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Hospital:</strong> <span id="summaryHospital"></span></li>
-                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Preferred Date:</strong> <span id="summaryDate"></span></li>
-                      <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Room Type:</strong> <span id="summaryRoomType">Not selected</span></li>
-                      
-                      <!-- Cost Breakdown -->
-                      <li class="mb-2 mt-3 pt-3 border-top">
-                        <h6 class="mb-2"><i class="bi bi-receipt text-primary me-2"></i>Cost Breakdown</h6>
-                      </li>
-                      <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Treatment Cost:</strong> <span id="treatmentCostSummary">₹0</span></li>
-                      <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Doctor Consultation:</strong> <span id="doctorCostSummary">₹0</span></li>
-                      <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Hospital Stay (7 nights):</strong> <span id="hospitalStayCostSummary">₹0</span></li>
-                      <li class="mb-2 ms-4"><i class="bi bi-dot text-primary me-2"></i><strong>Selected Amenities:</strong> <span id="amenitiesCostSummary">₹0</span></li>
-                      
-                      <!-- TakeOpinion Price with Discount -->
-                      <li class="mb-2 mt-3 pt-3 border-top">
-                        <h6 class="mb-2"><i class="bi bi-tag-fill text-success me-2"></i>TakeOpinion Price</h6>
-                      </li>
-                      <li class="mb-2 ms-4"><i class="bi bi-dot text-success me-2"></i><strong>Original Total:</strong> <span id="originalTotalCost">₹0</span></li>
-                      <li class="mb-2 ms-4"><i class="bi bi-dot text-success me-2"></i><strong>TakeOpinion Discount:</strong> <span id="discountAmount">₹0</span> <span class="badge bg-success ms-2">SAVE 15%</span></li>
-                      <li class="border-top pt-2 mt-2 ms-4"><i class="bi bi-check-circle-fill text-success me-2"></i><strong>TakeOpinion Final Price:</strong> <span id="summaryCost" class="h5 text-success"></span></li>
-                      
-                      <!-- Selected Amenities List -->
-                      <li class="mb-2 mt-3 pt-3 border-top">
-                        <h6 class="mb-2"><i class="bi bi-list-check text-primary me-2"></i>Selected Amenities</h6>
-                      </li>
-                      <li class="mb-2 ms-4">
-                        <ul class="list-unstyled ms-2" id="summaryAmenities">
-                          <!-- Amenities will be populated here -->
-                        </ul>
-                      </li>
-                    </ul>
+                <div class="card booking-summary-card">
+                  <div class="receipt-header">
+                    <h4 class="mb-0"><i class="bi bi-receipt me-2"></i>Booking Receipt</h4>
+                    <p class="mb-0 mt-2">TakeOpinion Medical Services</p>
+                  </div>
+                  <div class="receipt-body">
+                    <!-- Booking Details -->
+                    <div class="receipt-section">
+                      <h5 class="receipt-section-title">Booking Details</h5>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Treatment:</span>
+                        <span class="receipt-value" id="summaryTreatment"></span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Doctor:</span>
+                        <span class="receipt-value" id="summaryDoctor">Not specified</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Hospital:</span>
+                        <span class="receipt-value" id="summaryHospital"></span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Preferred Date:</span>
+                        <span class="receipt-value" id="summaryDate"></span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Room Type:</span>
+                        <span class="receipt-value" id="summaryRoomType">Not selected</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Length of Stay:</span>
+                        <span class="receipt-value" id="summaryNights">Not specified</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Cost Breakdown -->
+                    <div class="receipt-section">
+                      <h5 class="receipt-section-title">Cost Breakdown</h5>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Treatment Cost:</span>
+                        <span class="receipt-value" id="treatmentCostSummary">₹0</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Doctor Consultation:</span>
+                        <span class="receipt-value" id="doctorCostSummary">₹0</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Hospital Stay:</span>
+                        <span class="receipt-value" id="hospitalStayCostSummary">₹0</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Selected Amenities:</span>
+                        <span class="receipt-value" id="amenitiesCostSummary">₹0</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Original Hospital Price -->
+                    <div class="receipt-section">
+                      <h5 class="receipt-section-title">Original Hospital Price</h5>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Total without Discount:</span>
+                        <span class="receipt-value" id="originalHospitalPrice">₹0</span>
+                      </div>
+                    </div>
+                    
+                    <!-- TakeOpinion Price with Discount -->
+                    <div class="receipt-section">
+                      <h5 class="receipt-section-title">TakeOpinion Price</h5>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Original Total:</span>
+                        <span class="receipt-value" id="originalTotalCost">₹0</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">TakeOpinion Discount (15%):</span>
+                        <span class="receipt-discount" id="discountAmount">₹0</span>
+                      </div>
+                      <div class="receipt-item receipt-total">
+                        <span class="receipt-label">TakeOpinion Final Price:</span>
+                        <span class="receipt-value" id="summaryCost">₹0</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Total Amount -->
+                    <div class="receipt-section">
+                      <div class="receipt-item receipt-total">
+                        <span class="receipt-label">Total Amount:</span>
+                        <span class="receipt-value" id="totalAmountDisplay">₹0</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Selected Amenities List -->
+                    <div class="receipt-section">
+                      <h5 class="receipt-section-title">Selected Amenities</h5>
+                      <div class="receipt-amenities-list" id="summaryAmenities">
+                        <!-- Amenities will be populated here -->
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Advance Payment Box -->
+                  <div class="advance-payment-box mx-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h6 class="mb-0">Advance Payment Required</h6>
+                        <p class="mb-0 small">A small advance payment is required to confirm your booking</p>
+                      </div>
+                      <div class="text-end">
+                        <div class="h5 mb-0 text-primary" id="advanceAmount">₹0.00</div>
+                        <div class="small">10% of total</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="receipt-footer">
+                    <p class="mb-0 small">Thank you for choosing TakeOpinion. Your booking reference number will be sent to your email.</p>
                   </div>
                 </div>
               </div>
@@ -830,6 +1103,18 @@
         if (radio) {
           radio.checked = true;
         }
+        
+        // Update the room cost display based on selected nights
+        const numberOfNights = parseInt(document.getElementById('numberOfNights').value);
+        const roomCostPerNight = parseInt(this.dataset.roomCost);
+        const roomCost = roomCostPerNight * numberOfNights;
+        
+        const roomPriceElement = this.querySelector('.room-price');
+        if (roomPriceElement) {
+          // Format the total cost with commas
+          const formattedCost = roomCost.toLocaleString('en-IN');
+          roomPriceElement.innerHTML = `₹${formattedCost}<small class="text-muted">/for ${numberOfNights} night${numberOfNights > 1 ? 's' : ''}</small>`;
+        }
       });
     });
   });
@@ -937,34 +1222,38 @@
     const roomServiceRadios = document.querySelectorAll('input[name="room_service"]');
     let selectedRoomService = null;
     let selectedRoomServiceName = '';
-    let roomCost = 0;
+    let roomCostPerNight = 0;
     
     roomServiceRadios.forEach(radio => {
       if (radio.checked) {
         selectedRoomService = radio.value;
-        // Set room costs based on room type
+        // Set room costs per night based on room type
         switch(selectedRoomService) {
           case 'normal':
             selectedRoomServiceName = 'Normal Room';
-            roomCost = 17500; // ₹2,500/night × 7 nights
+            roomCostPerNight = 2500;
             break;
           case 'standard':
             selectedRoomServiceName = 'Standard Room';
-            roomCost = 28000; // ₹4,000/night × 7 nights
+            roomCostPerNight = 4000;
             break;
           case 'premium':
             selectedRoomServiceName = 'Premium Room';
-            roomCost = 45500; // ₹6,500/night × 7 nights
+            roomCostPerNight = 6500;
             break;
           case 'deluxe':
             selectedRoomServiceName = 'Deluxe Room';
-            roomCost = 63000; // ₹9,000/night × 7 nights
+            roomCostPerNight = 9000;
             break;
           default:
-            roomCost = 0;
+            roomCostPerNight = 0;
         }
       }
     });
+    
+    // Get selected number of nights
+    const numberOfNights = parseInt(document.getElementById('numberOfNights').value);
+    const roomCost = roomCostPerNight * numberOfNights;
     
     // Get selected amenities
     const selectedItems = [];
@@ -984,18 +1273,25 @@
     totalCost = originalTotal - discountAmount;
     const advanceAmount = totalCost * 0.1; // 10% advance
     
+    // Calculate original hospital price (without TakeOpinion discount)
+    const originalHospitalPrice = treatmentCostValue + roomCost;
+    
     // Update summary information
     document.getElementById('summaryTreatment').textContent = selectedTreatmentName;
     document.getElementById('summaryDoctor').textContent = selectedDoctorName || 'Not specified';
     document.getElementById('summaryHospital').textContent = selectedHospitalName;
     document.getElementById('summaryDate').textContent = preferredDate.value || 'Not specified';
     document.getElementById('summaryRoomType').textContent = selectedRoomServiceName || 'Not selected';
+    document.getElementById('summaryNights').textContent = `${numberOfNights} night${numberOfNights > 1 ? 's' : ''}`;
     
     // Update cost breakdown
     document.getElementById('treatmentCostSummary').textContent = `₹${treatmentCostValue.toLocaleString()}`;
     document.getElementById('doctorCostSummary').textContent = `₹${doctorCostValue.toLocaleString()}`;
-    document.getElementById('hospitalStayCostSummary').textContent = `₹${roomCost.toLocaleString()} (7 nights)`;
+    document.getElementById('hospitalStayCostSummary').textContent = `₹${roomCost.toLocaleString()} (${numberOfNights} night${numberOfNights > 1 ? 's' : ''})`;
     document.getElementById('amenitiesCostSummary').textContent = `₹${amenitiesCostValue.toLocaleString()}`;
+    
+    // Update original hospital price
+    document.getElementById('originalHospitalPrice').textContent = `₹${originalHospitalPrice.toLocaleString()}`;
     
     // Update TakeOpinion price with discount
     document.getElementById('originalTotalCost').textContent = `₹${originalTotal.toLocaleString()}`;
@@ -1003,50 +1299,93 @@
     document.getElementById('summaryCost').textContent = `₹${totalCost.toLocaleString()}`;
     document.getElementById('advanceAmount').textContent = `₹${advanceAmount.toFixed(2)}`;
     
+    // Update total amount
+    document.getElementById('totalAmountDisplay').textContent = `₹${totalCost.toLocaleString()}`;
+    
     // Update amenities summary
     const amenitiesSummary = document.getElementById('summaryAmenities');
     amenitiesSummary.innerHTML = '';
     
     // Add room service to summary
     if (selectedRoomService) {
-      const roomLi = document.createElement('li');
-      roomLi.className = 'mb-1';
-      roomLi.innerHTML = `<i class="bi bi-check-circle-fill text-success me-2"></i>${selectedRoomServiceName} (7 nights) - ₹${roomCost.toLocaleString()}`;
+      const roomLi = document.createElement('div');
+      roomLi.className = 'receipt-amenity-item';
+      roomLi.innerHTML = `
+        <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> ${selectedRoomServiceName} (${numberOfNights} night${numberOfNights > 1 ? 's' : ''})</span>
+        <span class="receipt-value">₹${roomCost.toLocaleString()}</span>
+      `;
       amenitiesSummary.appendChild(roomLi);
     }
     
     if (selectedItems.length > 0) {
       selectedItems.forEach(item => {
-        const li = document.createElement('li');
-        li.className = 'mb-1';
+        const div = document.createElement('div');
+        div.className = 'receipt-amenity-item';
         switch(item) {
           case 'private_room':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Private Patient Rooms';
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Private Patient Rooms</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
             break;
           case 'family_accommodation':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Family Accommodation';
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Family Accommodation</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
             break;
           case 'room_service':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service';
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> 24/7 Room Service</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
             break;
           case 'wifi':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi';
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Free Wi-Fi</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
             break;
           case 'ac':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning';
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Air Conditioning</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
             break;
           case 'tv':
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>Television';
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Television</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+            break;
+          case 'wheelchair':
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Wheelchair Accessibility</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+            break;
+          case 'pickup_drop':
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Pickup/Drop Facility</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
             break;
           default:
-            li.innerHTML = '<i class="bi bi-check-circle-fill text-success me-2"></i>' + item;
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> ${item}</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
         }
-        amenitiesSummary.appendChild(li);
+        amenitiesSummary.appendChild(div);
       });
     } else if (!selectedRoomService) {
-      const li = document.createElement('li');
-      li.innerHTML = '<i class="bi bi-x-circle-fill text-muted me-2"></i>None selected';
-      amenitiesSummary.appendChild(li);
+      const div = document.createElement('div');
+      div.className = 'receipt-amenity-item';
+      div.innerHTML = `
+        <span class="receipt-label"><i class="bi bi-x-circle-fill text-muted me-1"></i> None selected</span>
+        <span class="receipt-value">₹0</span>
+      `;
+      amenitiesSummary.appendChild(div);
     }
     
     // Set hidden form fields
@@ -1193,10 +1532,13 @@
                   
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
+                      <div class="small text-muted">Original Price</div>
+                      <div class="h5 text-muted mb-0">₹${(parseFloat(hospital.starting_price) * 1.15).toLocaleString()}</div>
+                    </div>
+                    <div>
                       <div class="small text-muted">TakeOpinion Price</div>
                       <div class="h5 text-primary mb-0">₹${parseFloat(hospital.starting_price).toLocaleString()}</div>
                     </div>
-                    <span class="price-tag">₹${parseFloat(hospital.starting_price).toLocaleString()}</span>
                   </div>
                   
                   <div class="mt-2" id="hospital-price-info-${hospital.id}"></div>
@@ -1352,6 +1694,9 @@
       selectedItems.push(checkbox.value);
     });
     
+    // Get selected number of nights
+    const numberOfNights = parseInt(document.getElementById('numberOfNights').value);
+    
     // Set hidden form fields
     document.getElementById('selectedTreatmentId').value = selectedTreatmentId || '';
     document.getElementById('selectedDoctorId').value = selectedDoctorId || '';
@@ -1370,6 +1715,17 @@
     }
     roomServiceInput.value = selectedRoomService || '';
     
+    // Add number of nights to form data (create hidden input if it doesn't exist)
+    let numberOfNightsInput = document.getElementById('numberOfNightsInput');
+    if (!numberOfNightsInput) {
+      numberOfNightsInput = document.createElement('input');
+      numberOfNightsInput.type = 'hidden';
+      numberOfNightsInput.id = 'numberOfNightsInput';
+      numberOfNightsInput.name = 'number_of_nights';
+      document.getElementById('newBookingForm').appendChild(numberOfNightsInput);
+    }
+    numberOfNightsInput.value = numberOfNights || 7;
+    
     // Check if required fields are present
     if (!selectedTreatmentId || !selectedHospitalId || !totalCost) {
       alert('Please complete all required steps in the booking process.');
@@ -1386,5 +1742,83 @@
     this.submit();
   });
 
+  // Add event listener to update room cost when number of nights changes
+  document.getElementById('numberOfNights').addEventListener('change', function() {
+    // Get selected room service
+    const roomServiceRadios = document.querySelectorAll('input[name="room_service"]:checked');
+    if (roomServiceRadios.length > 0) {
+      const selectedRoomService = roomServiceRadios[0].value;
+      let roomCostPerNight = 0;
+      
+      // Set room costs per night based on room type
+      switch(selectedRoomService) {
+        case 'normal':
+          roomCostPerNight = 2500;
+          break;
+        case 'standard':
+          roomCostPerNight = 4000;
+          break;
+        case 'premium':
+          roomCostPerNight = 6500;
+          break;
+        case 'deluxe':
+          roomCostPerNight = 9000;
+          break;
+        default:
+          roomCostPerNight = 0;
+      }
+      
+      // Get selected number of nights
+      const numberOfNights = parseInt(this.value);
+      const roomCost = roomCostPerNight * numberOfNights;
+      
+      // Update the room cost display in the selected room card
+      const selectedRoomCard = document.querySelector('.room-option-card.selected');
+      if (selectedRoomCard) {
+        const roomPriceElement = selectedRoomCard.querySelector('.room-price');
+        if (roomPriceElement) {
+          // Format the total cost with commas
+          const formattedCost = roomCost.toLocaleString('en-IN');
+          roomPriceElement.innerHTML = `₹${formattedCost}<small class="text-muted">/for ${numberOfNights} night${numberOfNights > 1 ? 's' : ''}</small>`;
+        }
+      }
+    }
+  });
+  
+  // Update the room card click event to also update the cost based on selected nights
+  document.querySelectorAll('.room-option-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      // Don't trigger if clicking on form elements
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+        return;
+      }
+      
+      // Remove selected class from all cards
+      document.querySelectorAll('.room-option-card').forEach(c => {
+        c.classList.remove('selected');
+      });
+      
+      // Add selected class to clicked card
+      this.classList.add('selected');
+      
+      // Select the radio button inside this card
+      const radio = this.querySelector('input[type="radio"]');
+      if (radio) {
+        radio.checked = true;
+      }
+      
+      // Update the room cost display based on selected nights
+      const numberOfNights = parseInt(document.getElementById('numberOfNights').value);
+      const roomCostPerNight = parseInt(this.dataset.roomCost);
+      const roomCost = roomCostPerNight * numberOfNights;
+      
+      const roomPriceElement = this.querySelector('.room-price');
+      if (roomPriceElement) {
+        // Format the total cost with commas
+        const formattedCost = roomCost.toLocaleString('en-IN');
+        roomPriceElement.innerHTML = `₹${formattedCost}<small class="text-muted">/for ${numberOfNights} night${numberOfNights > 1 ? 's' : ''}</small>`;
+      }
+    });
+  });
 </script>
 {% endblock %}
