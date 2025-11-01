@@ -2,6 +2,7 @@ from django.db import models
 from hospitals.models import Hospital
 from django.utils.text import slugify
 from datetime import date
+from django.core.exceptions import ValidationError
 
 
 class Hotel(models.Model):
@@ -50,13 +51,38 @@ class Hotel(models.Model):
 
 class HotelImage(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='hotel_images/', blank=True)
+    image = models.ImageField(upload_to='hotel_images/', blank=True, null=True)
+    image_url = models.URLField(blank=True, null=True, help_text="Enter an image URL instead of uploading a file")
     caption = models.CharField(max_length=200, blank=True)
     is_primary = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Image for {self.hotel.name}"
+        if self.image:
+            return f"Image for {self.hotel.name}"
+        elif self.image_url:
+            return f"Image URL for {self.hotel.name}"
+        else:
+            return f"Image for {self.hotel.name} (no image)"
+
+    def get_image_url(self):
+        """Return the image URL, preferring uploaded image over URL field"""
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
+        elif self.image_url:
+            return self.image_url
+        return None
+
+    def clean(self):
+        """Validate that either image or image_url is provided, but not both"""
+        if self.image and self.image_url:
+            raise ValidationError("Please provide either an uploaded image or an image URL, not both.")
+        if not self.image and not self.image_url:
+            raise ValidationError("Please provide either an uploaded image or an image URL.")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ['-is_primary', 'created_at']
@@ -93,7 +119,6 @@ class HotelBooking(models.Model):
     def get_nights_count(self):
         """Calculate the number of nights"""
         if self.check_in_date and self.check_out_date:
-            from django.utils.timezone import now
             delta = self.check_out_date - self.check_in_date
             return delta.days
         return 0
@@ -102,7 +127,7 @@ class HotelBooking(models.Model):
         # Calculate total amount if not set
         if not self.total_amount and hasattr(self, 'hotel') and self.hotel.price_per_night:
             nights = self.get_nights_count()
-            self.total_amount = float(self.hotel.price_per_night) * nights * self.number_of_rooms
+            self.total_amount = float(self.hotel.price_per_night) * float(nights) * float(self.number_of_rooms)
         super().save(*args, **kwargs)
 
     class Meta:

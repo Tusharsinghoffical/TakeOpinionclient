@@ -54,9 +54,15 @@
             {% if hotel.images.all %}
             <div id="hotelCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                    {% for image in images %}
+                    {% for image in hotel.images.all %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ hotel.name }}" style="height: 300px; object-fit: cover;">
+                        {% if image.get_image_url %}
+                        <img src="{{ image.get_image_url }}" class="d-block w-100" alt="{{ hotel.name }}" style="height: 300px; object-fit: cover;">
+                        {% else %}
+                        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
+                            <span class="text-muted">No Image Available</span>
+                        </div>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
