@@ -67,10 +67,20 @@ class HotelImage(models.Model):
 
     def get_image_url(self):
         """Return the image URL, preferring uploaded image over URL field"""
+        # Check if we have an uploaded image and it has a file associated
         if self.image and hasattr(self.image, 'url'):
-            return self.image.url
-        elif self.image_url:
+            try:
+                # This will raise ValueError if no file is associated
+                return self.image.url
+            except ValueError:
+                # No file associated with the image field
+                pass
+        
+        # Fall back to image_url field
+        if self.image_url:
             return self.image_url
+            
+        # No image available
         return None
 
     def clean(self):

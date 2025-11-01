@@ -547,8 +547,8 @@
         {% for hotel in hotels %}
         <div class="hotel-card">
           <div class="hotel-image-container">
-            {% if hotel.images.first %}
-            <img src="{{ hotel.images.first.image.url }}" class="hotel-image" alt="{{ hotel.name }}">
+            {% if hotel.images.first and hotel.images.first.get_image_url %}
+            <img src="{{ hotel.images.first.get_image_url }}" class="hotel-image" alt="{{ hotel.name }}">
             {% else %}
             <div class="hotel-image bg-light d-flex align-items-center justify-content-center h-100">
               <span class="text-muted">No Image</span>
