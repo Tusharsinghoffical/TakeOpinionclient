@@ -231,7 +231,7 @@
                 </div>
                 
                 <button type="submit" class="btn btn-primary pay-button" id="pay-button">
-                  <span id="button-text">Pay ₹{{ amount }}</span>
+                  <span id="button-text">Pay ₹{{ amount|floatformat:1 }}</span>
                   <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                 </button>
               </form>
@@ -262,19 +262,19 @@
                 </div>
                 <div class="summary-item">
                   <span>Base Amount</span>
-                  <span>₹{{ base_amount }}</span>
+                  <span>₹{{ base_amount|floatformat:1 }}</span>
                 </div>
                 <div class="summary-item">
                   <span>Service Charge</span>
-                  <span>₹{{ service_charge }}</span>
+                  <span>₹{{ service_charge|floatformat:1 }}</span>
                 </div>
                 <div class="summary-item">
                   <span>Tax (18%)</span>
-                  <span>₹{{ tax }}</span>
+                  <span>₹{{ tax|floatformat:1 }}</span>
                 </div>
                 <div class="summary-total">
                   <span>Total Amount</span>
-                  <span class="fw-bold">₹{{ amount }}</span>
+                  <span class="fw-bold">₹{{ amount|floatformat:1 }}</span>
                 </div>
               </div>
               

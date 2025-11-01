@@ -33,7 +33,7 @@ def booking_payment(request, booking_id):
         base_amount = float(booking.treatment.starting_price)
         # Add service charge (10%)
         service_charge = base_amount * 0.10
-        # Add tax (18% on total)
+        # Add tax (18% on total of base + service charge)
         tax = (base_amount + service_charge) * 0.18
         # Total amount
         amount = base_amount + service_charge + tax
@@ -43,6 +43,7 @@ def booking_payment(request, booking_id):
         tax = (base_amount + service_charge) * 0.18
         amount = base_amount + service_charge + tax
     
+    # Round all values to 2 decimal places for display
     context = {
         'booking': booking,
         'amount': round(amount, 2),
@@ -108,10 +109,7 @@ def process_static_payment(request, booking_id):
             # If user profile doesn't exist, leave user as None
             pass
     
-    # Calculate amount for consultation
-    amount = 1947.00  # Fixed consultation amount
-    
-    # If booking has a treatment, calculate proper amount
+    # Calculate amount for the booking
     if booking.treatment:
         # Base amount from treatment
         base_amount = float(booking.treatment.starting_price)
@@ -121,13 +119,16 @@ def process_static_payment(request, booking_id):
         tax = (base_amount + service_charge) * 0.18
         # Total amount
         amount = base_amount + service_charge + tax
+    else:
+        # Default amount if no treatment
+        amount = 1947.00
     
     # Create a payment record to simulate real payment processing
     payment = Payment(
         booking=booking,
         user=user,  # Use the authenticated user if available
         amount=round(amount, 2),  # Use calculated amount
-        currency='USD',
+        currency='INR',  # Changed to INR to match the UI
         status='completed'
     )
     payment.save()
