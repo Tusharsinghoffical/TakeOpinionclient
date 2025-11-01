@@ -125,15 +125,15 @@ def search(request: HttpRequest) -> HttpResponse:
     if query:
         # Search treatments
         treatment_filter = Q(name__icontains=query) | Q(description__icontains=query)  # type: ignore
-        treatment_results = Treatment._default_manager.filter(treatment_filter)  # type: ignore
+        treatment_results = Treatment._default_manager.filter(treatment_filter).prefetch_related('hospitals', 'doctors')  # type: ignore
         
         # Search hospitals
         hospital_filter = Q(name__icontains=query) | Q(city__icontains=query) | Q(state__name__icontains=query)  # type: ignore
-        hospital_results = Hospital._default_manager.filter(hospital_filter)  # type: ignore
+        hospital_results = Hospital._default_manager.filter(hospital_filter).prefetch_related('doctors', 'treatments')  # type: ignore
         
         # Search doctors
         doctor_filter = Q(name__icontains=query) | Q(specialization__icontains=query)  # type: ignore
-        doctor_results = Doctor._default_manager.filter(doctor_filter)  # type: ignore
+        doctor_results = Doctor._default_manager.filter(doctor_filter).prefetch_related('hospitals', 'treatments')  # type: ignore
         
         # Search blog posts
         from blogs.models import BlogPost
@@ -144,9 +144,9 @@ def search(request: HttpRequest) -> HttpResponse:
         enhanced_doctors = []
         for doctor in doctor_results:
             # Get related hospitals
-            related_hospitals = doctor.hospitals.all()[:3]  # type: ignore
+            related_hospitals = list(doctor.hospitals.all()[:3])  # type: ignore
             # Get related treatments
-            related_treatments = doctor.treatments.all()[:3]  # type: ignore
+            related_treatments = list(doctor.treatments.all()[:3])  # type: ignore
             
             enhanced_doctors.append({
                 'id': doctor.id,
@@ -160,9 +160,9 @@ def search(request: HttpRequest) -> HttpResponse:
         enhanced_hospitals = []
         for hospital in hospital_results:
             # Get related doctors
-            related_doctors = hospital.doctors.all()[:3]  # type: ignore
+            related_doctors = list(hospital.doctors.all()[:3])  # type: ignore
             # Get related treatments
-            related_treatments = hospital.treatments.all()[:3]  # type: ignore
+            related_treatments = list(hospital.treatments.all()[:3])  # type: ignore
             
             enhanced_hospitals.append({
                 'id': hospital.id,
@@ -178,9 +178,9 @@ def search(request: HttpRequest) -> HttpResponse:
         enhanced_treatments = []
         for treatment in treatment_results:
             # Get related hospitals
-            related_hospitals = treatment.hospitals.all()[:3]  # type: ignore
+            related_hospitals = list(treatment.hospitals.all()[:3])  # type: ignore
             # Get related doctors
-            related_doctors = treatment.doctors.all()[:3]  # type: ignore
+            related_doctors = list(treatment.doctors.all()[:3])  # type: ignore
             
             enhanced_treatments.append({
                 'id': treatment.id,
