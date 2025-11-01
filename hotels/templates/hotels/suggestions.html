@@ -30,8 +30,8 @@
         {% for hotel in hotels %}
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100">
-                {% if hotel.images.first %}
-                <img src="{{ hotel.images.first.image.url }}" class="card-img-top" alt="{{ hotel.name }}" style="height: 200px; object-fit: cover;">
+                {% if hotel.images.first and hotel.images.first.get_image_url %}
+                <img src="{{ hotel.images.first.get_image_url }}" class="card-img-top" alt="{{ hotel.name }}" style="height: 200px; object-fit: cover;">
                 {% else %}
                 <div class="bg-light" style="height: 200px; display: flex; align-items: center; justify-content: center;">
                     <span class="text-muted">No Image</span>

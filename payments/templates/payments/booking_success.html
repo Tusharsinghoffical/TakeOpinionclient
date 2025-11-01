@@ -278,8 +278,8 @@
           <div class="col-md-4 mb-4">
             <div class="hotel-card h-100">
               <div class="position-relative">
-                {% if hotel.images.first %}
-                <img src="{{ hotel.images.first.image.url }}" class="card-img-top hotel-image" alt="{{ hotel.name }}">
+                {% if hotel.images.first and hotel.images.first.get_image_url %}
+                <img src="{{ hotel.images.first.get_image_url }}" class="card-img-top hotel-image" alt="{{ hotel.name }}">
                 {% else %}
                 <div class="bg-light hotel-image d-flex align-items-center justify-content-center">
                   <span class="text-muted">No Image</span>
