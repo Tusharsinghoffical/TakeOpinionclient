@@ -135,20 +135,77 @@ def search(request: HttpRequest) -> HttpResponse:
         doctor_filter = Q(name__icontains=query) | Q(specialization__icontains=query)  # type: ignore
         doctor_results = Doctor._default_manager.filter(doctor_filter)  # type: ignore
         
+        # Search blog posts
+        from blogs.models import BlogPost
+        blog_filter = Q(title__icontains=query) | Q(content__icontains=query)  # type: ignore
+        blog_results = BlogPost._default_manager.filter(blog_filter)  # type: ignore
+        
+        # Enhance results with related entities
+        enhanced_doctors = []
+        for doctor in doctor_results:
+            # Get related hospitals
+            related_hospitals = doctor.hospitals.all()[:3]  # type: ignore
+            # Get related treatments
+            related_treatments = doctor.treatments.all()[:3]  # type: ignore
+            
+            enhanced_doctors.append({
+                'id': doctor.id,
+                'name': doctor.name,
+                'specialization': doctor.specialization,
+                'key_points': doctor.key_points,
+                'related_hospitals': related_hospitals,
+                'related_treatments': related_treatments,
+            })
+        
+        enhanced_hospitals = []
+        for hospital in hospital_results:
+            # Get related doctors
+            related_doctors = hospital.doctors.all()[:3]  # type: ignore
+            # Get related treatments
+            related_treatments = hospital.treatments.all()[:3]  # type: ignore
+            
+            enhanced_hospitals.append({
+                'id': hospital.id,
+                'name': hospital.name,
+                'about': hospital.about,
+                'city': hospital.city,
+                'state': hospital.state,
+                'country': hospital.country,
+                'related_doctors': related_doctors,
+                'related_treatments': related_treatments,
+            })
+        
+        enhanced_treatments = []
+        for treatment in treatment_results:
+            # Get related hospitals
+            related_hospitals = treatment.hospitals.all()[:3]  # type: ignore
+            # Get related doctors
+            related_doctors = treatment.doctors.all()[:3]  # type: ignore
+            
+            enhanced_treatments.append({
+                'id': treatment.id,
+                'name': treatment.name,
+                'description': treatment.description,
+                'related_hospitals': related_hospitals,
+                'related_doctors': related_doctors,
+            })
+        
         results = {
-            'treatments': treatment_results,
-            'hospitals': hospital_results,
-            'doctors': doctor_results,
+            'treatments': enhanced_treatments,
+            'hospitals': enhanced_hospitals,
+            'doctors': enhanced_doctors,
+            'blog_posts': blog_results,
         }
     else:
         results = {
-            'treatments': Treatment._default_manager.none(),  # type: ignore
-            'hospitals': Hospital._default_manager.none(),  # type: ignore
-            'doctors': Doctor._default_manager.none(),  # type: ignore
+            'treatments': [],
+            'hospitals': [],
+            'doctors': [],
+            'blog_posts': [],
         }
     
     # Calculate total results
-    total_results = sum(len(results[key]) for key in results)
+    total_results = len(results['treatments']) + len(results['hospitals']) + len(results['doctors']) + len(results['blog_posts'])
     
     context = {
         'query': query,
@@ -156,7 +213,7 @@ def search(request: HttpRequest) -> HttpResponse:
         'doctors': results['doctors'],
         'hospitals': results['hospitals'],
         'treatments': results['treatments'],
-        # blog_posts is optional and not currently implemented
+        'blog_posts': results['blog_posts'],
     }
     
     return render(request, "core/search_results.html", context)
