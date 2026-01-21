@@ -1,0 +1,1190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+/* Home Page Specific Styles */
+:root {
+  /* Enhanced color palette for better visibility */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #ddd;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+}
+
+/* Global home page styles */
+.home-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background:  #0d6efd;
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-large {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #ffffff;
+  color: #e74c3c;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary-large {
+  background-color: transparent;
+  color: var(--light-text);
+  border: 2px solid var(--light-text);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary-large:hover {
+  background-color: #ffffff;
+  color: #3498db;
+  transform: translateY(-3px);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #7f8c8d;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Core Services Section */
+.core-services-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.service-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.service-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.service-description {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+.service-link {
+  display: inline-block;
+  color: var(--primary-medium);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.5rem 1.5rem;
+  border: 2px solid var(--primary-medium);
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.service-link:hover {
+  background-color: var(--primary-medium);
+  color: white !important;
+}
+
+/* WhatsApp Section */
+.whatsapp-section {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.whatsapp-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.whatsapp-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.whatsapp-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+  background-color: #25D366;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background-color: #075E54;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-consultation {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-consultation:hover {
+  background-color: #25D369;
+  color: rgb(255, 255, 255);
+  transform: translateY(-3px);
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.testimonial-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.testimonial-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.testimonial-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--success);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.testimonial-content {
+  padding: 1.5rem;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.author-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-info h4 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--primary-dark);
+}
+
+.author-info p {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+.testimonial-text {
+  color: #555;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating-stars {
+  color: #f39c12;
+}
+
+.rating-date {
+  color: #95a5a6;
+  font-size: 0.9rem;
+}
+
+.btn-testimonials {
+  display: block;
+  margin: 3rem auto 0;
+  background-color: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-testimonials:hover {
+  background-color: var(--light-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgb(249, 248, 248);
+}
+
+/* Multi Speciality Section */
+.multi-speciality-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.treatment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.treatment-tag {
+  background-color: white;
+  color: var(--primary-medium);
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 2px solid var(--primary-medium);
+  transition: all 0.3s ease;
+}
+
+.treatment-tag:hover {
+  background-color: var(--primary-medium);
+  color: white !important;
+}
+
+.treatments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.treatment-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.treatment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.treatment-icon {
+  height: 100px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.treatment-icon i {
+  font-size: 2rem;
+  color: var(--primary-medium);
+}
+
+.treatment-body {
+  padding: 1rem;
+}
+
+.treatment-type {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin-bottom: 0.25rem;
+}
+
+.treatment-name {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.btn-view-all {
+  display: block;
+  margin: 2rem auto 0;
+  background-color: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-view-all:hover {
+  background-color: #ffffff;
+  color: #3498db;
+  transform: translateY(-3px);
+}
+
+/* Why Choose Section */
+.why-choose-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.why-choose-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.why-choose-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.why-choose-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.why-choose-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.why-choose-description {
+  color: #7f8c8d;
+}
+
+/* Top Hospitals/Doctors Section */
+.top-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.top-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.top-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.top-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.top-image {
+  height: 160px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.top-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #f1c40f;
+  color: #2c3e50;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.top-body {
+  padding: 1.5rem;
+}
+
+.top-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.top-specialty {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.top-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.top-rating i {
+  color: #f39c12;
+}
+
+.top-rating span {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* How It Works Section */
+.how-it-works-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.how-it-works-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.how-it-works-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.how-it-works-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.how-it-works-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.how-it-works-description {
+  color: #7f8c8d;
+}
+
+/* Latest Blogs Section */
+.blogs-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.blogs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.blog-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.blog-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.blog-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: var(--primary-medium);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.blog-date {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--primary-dark);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.blog-body {
+  padding: 1.5rem;
+}
+
+.blog-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--primary-dark);
+}
+
+.blog-excerpt {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons, .whatsapp-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary-large, .btn-secondary-large, .btn-whatsapp, .btn-consultation {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+.rating-stars .bi-star {
+  color: #ddd;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.rating-stars .bi-star.filled {
+  color: #ffc107;
+}
+
+.rating-stars .bi-star:hover,
+.rating-stars .bi-star:hover ~ .bi-star {
+  color: #ffc107;
+}
+</style>
+
+<div class="home-page">
+  <div class="container py-5">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-content">
+        <h1 class="hero-title">Patient Portal</h1>
+        <p class="hero-subtitle">Welcome to your personalized healthcare dashboard. Connect with doctors, hospitals, and treatments all in one place.</p>
+        <div class="hero-buttons">
+          <a href="{% url 'accounts:logout' %}" class="btn-primary-large">
+            <i class="bi bi-box-arrow-right me-2"></i> Logout
+          </a>
+          <a href="{% url 'accounts:patient_profile' %}" class="btn-secondary-large">
+            <i class="bi bi-person me-2"></i> My Profile
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Actions Section -->
+    <section class="core-services-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Quick Actions</h2>
+          <p class="section-subtitle">Access the most important features of your healthcare journey</p>
+        </div>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="bi bi-calendar-check"></i>
+            </div>
+            <h3 class="service-title">Book Appointment</h3>
+            <p class="service-description">Schedule appointments with doctors or hospitals.</p>
+            <a href="{% url 'bookings:booking_page' %}" class="service-link">Book Now</a>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="bi bi-search"></i>
+            </div>
+            <h3 class="service-title">Find Treatments</h3>
+            <p class="service-description">Explore available treatments and procedures.</p>
+            <a href="/treatments/" class="service-link">Browse Treatments</a>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="bi bi-person-check"></i>
+            </div>
+            <h3 class="service-title">Find Doctors</h3>
+            <p class="service-description">Search for doctors by specialization.</p>
+            <a href="/doctors/" class="service-link">Browse Doctors</a>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <i class="bi bi-hospital"></i>
+            </div>
+            <h3 class="service-title">Find Hospitals</h3>
+            <p class="service-description">Discover hospitals and medical centers.</p>
+            <a href="/hospitals/" class="service-link">Browse Hospitals</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Activity Section -->
+    <section class="multi-speciality-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Recent Activity</h2>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="card mb-4 border-0 shadow-sm">
+              <div class="card-header bg-white">
+                <h5 class="mb-0">Your Appointments</h5>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Doctor/Hospital</th>
+                        <th>Date & Time</th>
+                        <th>Treatment</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for appointment in upcoming_appointments %}
+                      <tr>
+                        <td>
+                          <div class="fw-semibold">
+                            {% if appointment.preferred_doctor %}
+                              Dr. {{ appointment.preferred_doctor.name }}
+                            {% elif appointment.preferred_hospital %}
+                              {{ appointment.preferred_hospital.name }}
+                            {% else %}
+                              Healthcare Provider
+                            {% endif %}
+                          </div>
+                        </td>
+                        <td>{{ appointment.preferred_date|date:"M d, Y" }} at {{ appointment.preferred_time|time:"g:i A" }}</td>
+                        <td>{{ appointment.treatment.name }}</td>
+                        <td>
+                          {% if appointment.status == 'pending' %}
+                            <span class="badge bg-warning">Pending</span>
+                          {% elif appointment.status == 'confirmed' %}
+                            <span class="badge bg-success">Confirmed</span>
+                          {% elif appointment.status == 'in_progress' %}
+                            <span class="badge bg-info">In Progress</span>
+                          {% elif appointment.status == 'completed' %}
+                            <span class="badge bg-secondary">Completed</span>
+                          {% elif appointment.status == 'cancelled' %}
+                            <span class="badge bg-danger">Cancelled</span>
+                          {% endif %}
+                        </td>
+                      </tr>
+                      {% empty %}
+                      <tr>
+                        <td colspan="4" class="text-center py-4">
+                          <i class="bi bi-calendar-x text-muted fs-1 d-block mb-2"></i>
+                          <p class="mb-0 text-muted">No upcoming appointments</p>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-white">
+                <h5 class="mb-0">Your Profile</h5>
+              </div>
+              <div class="card-body text-center">
+                <div class="mb-3">
+                  <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                    <i class="bi bi-person fs-1 text-muted"></i>
+                  </div>
+                </div>
+                <h5>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h5>
+                <p class="text-muted">Patient ID: PT-{{ user_profile.id|default:"1245" }}</p>
+                <a href="{% url 'accounts:patient_profile' %}" class="btn btn-outline-primary btn-sm">
+                  <i class="bi bi-pencil me-1"></i>Edit Profile
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Review Section -->
+    <section class="why-choose-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Leave a Review</h2>
+        </div>
+        <div class="why-choose-grid">
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-star"></i>
+            </div>
+            <h3 class="why-choose-title">Rate Your Experience</h3>
+            <p class="why-choose-description">Share your feedback about doctors, hospitals, or treatments.</p>
+            <button class="service-link" id="writeReviewBtn">Write Review</button>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-camera-video"></i>
+            </div>
+            <h3 class="why-choose-title">Video Review</h3>
+            <p class="why-choose-description">Upload a video testimonial of your experience.</p>
+            <button class="service-link" id="writeVideoReviewBtn">Upload Video</button>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-share"></i>
+            </div>
+            <h3 class="why-choose-title">Share Experience</h3>
+            <p class="why-choose-description">Help other patients by sharing your journey.</p>
+            <button class="service-link" id="shareExperienceBtn">Share Story</button>
+          </div>
+          <div class="why-choose-card">
+            <div class="why-choose-icon">
+              <i class="bi bi-question-circle"></i>
+            </div>
+            <h3 class="why-choose-title">Ask Questions</h3>
+            <p class="why-choose-description">Get answers to your healthcare questions.</p>
+            <button class="service-link" id="askQuestionBtn">Ask Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Review Submission Form (Hidden by default) -->
+<div class="container">
+  <div class="card mb-5 border-0 shadow-sm" id="reviewSubmissionSection" style="display: none;">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Leave a Review</h5>
+    </div>
+    <div class="card-body">
+      <form id="reviewForm">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">What would you like to review?</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="reviewType" id="doctorReview" value="doctor" checked>
+              <label class="form-check-label" for="doctorReview">Doctor</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="reviewType" id="hospitalReview" value="hospital">
+              <label class="form-check-label" for="hospitalReview">Hospital</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="reviewType" id="treatmentReview" value="treatment">
+              <label class="form-check-label" for="treatmentReview">Treatment</label>
+            </div>
+          </div>
+          
+          <div class="col-md-6 mb-3">
+            <label for="reviewEntity" class="form-label fw-semibold">Select Entity</label>
+            <select class="form-select" id="reviewEntity" name="entityId" required>
+              <option value="">Choose...</option>
+              <!-- Options will be populated dynamically -->
+            </select>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Rating</label>
+          <div class="rating-stars d-flex">
+            <i class="bi bi-star star fs-3 me-1" data-rating="1"></i>
+            <i class="bi bi-star star fs-3 me-1" data-rating="2"></i>
+            <i class="bi bi-star star fs-3 me-1" data-rating="3"></i>
+            <i class="bi bi-star star fs-3 me-1" data-rating="4"></i>
+            <i class="bi bi-star star fs-3 me-1" data-rating="5"></i>
+          </div>
+          <input type="hidden" id="ratingValue" name="rating" value="0" required>
+        </div>
+        
+        <div class="mb-3">
+          <label for="reviewTitle" class="form-label fw-semibold">Review Title</label>
+          <input type="text" class="form-control" id="reviewTitle" name="title" placeholder="Brief summary of your experience" required>
+        </div>
+        
+        <div class="mb-3">
+          <label for="reviewComment" class="form-label fw-semibold">Your Review</label>
+          <textarea class="form-control" id="reviewComment" name="comment" rows="4" placeholder="Share details about your experience..." required maxlength="1000" style="resize: vertical; max-height: 200px;"></textarea>
+          <div class="form-text">
+            <span id="wordCount">0</span>/200 words
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="reviewVideo" class="form-label fw-semibold">Video Review (Optional)</label>
+          <input type="file" class="form-control" id="reviewVideo" name="video" accept="video/*">
+          <div class="form-text">Upload a video review (max 100MB)</div>
+        </div>
+        
+        <div class="form-check mb-4">
+          <input class="form-check-input" type="checkbox" id="anonymousReview" name="anonymous">
+          <label class="form-check-label" for="anonymousReview">Post anonymously</label>
+        </div>
+        
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-send me-2"></i>Submit Review
+          </button>
+          <button type="button" class="btn btn-secondary" id="cancelReview">
+            <i class="bi bi-x-circle me-2"></i>Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+// Rating stars functionality
+document.querySelectorAll('.rating-stars .star').forEach(star => {
+  star.addEventListener('click', function() {
+    const rating = this.getAttribute('data-rating');
+    document.getElementById('ratingValue').value = rating;
+    
+    // Update star display
+    document.querySelectorAll('.rating-stars .star').forEach(s => {
+      if (s.getAttribute('data-rating') <= rating) {
+        s.classList.add('filled');
+      } else {
+        s.classList.remove('filled');
+      }
+    });
+  });
+});
+
+// Word count functionality for review comment
+document.getElementById('reviewComment').addEventListener('input', function() {
+  const text = this.value;
+  const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+  const wordCount = words.length;
+  
+  // Update word count display
+  document.getElementById('wordCount').textContent = wordCount;
+  
+  // Limit to 200 words
+  if (wordCount > 200) {
+    // Truncate to 200 words
+    const truncatedWords = words.slice(0, 200);
+    this.value = truncatedWords.join(' ');
+    document.getElementById('wordCount').textContent = 200;
+  }
+});
+
+// Review type selection
+document.querySelectorAll('input[name="reviewType"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    const entityType = this.value;
+    const entitySelect = document.getElementById('reviewEntity');
+    
+    // Clear existing options
+    entitySelect.innerHTML = '<option value="">Loading...</option>';
+    
+    // Fetch entities based on type
+    fetch(`/api/v1/entities/${entityType}/`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Clear and populate options
+        entitySelect.innerHTML = '<option value="">Choose...</option>';
+        if (data.length > 0) {
+          data.forEach(entity => {
+            const option = document.createElement('option');
+            option.value = entity.id;
+            option.textContent = entity.name;
+            entitySelect.appendChild(option);
+          });
+        } else {
+          entitySelect.innerHTML = '<option value="">No entities found</option>';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching entities:', error);
+        entitySelect.innerHTML = '<option value="">Error loading options</option>';
+      });
+  });
+});
+
+// Form submission
+document.getElementById('reviewForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  // Get form data
+  const formData = new FormData(this);
+  
+  // Show loading state
+  const submitButton = this.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
+  submitButton.disabled = true;
+  submitButton.textContent = 'Submitting...';
+  
+  // Submit review via AJAX
+  fetch('{% url "accounts:submit_review" %}', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    if (data.success) {
+        alert('Review submitted successfully! Your review is now visible to everyone.');
+        // Reset form
+        this.reset();
+        document.getElementById('ratingValue').value = 0;
+        document.querySelectorAll('.rating-stars .star').forEach(s => {
+            s.classList.remove('filled');
+        });
+        // Reset entity selection
+        document.getElementById('reviewEntity').innerHTML = '<option value="">Choose...</option>';
+        // Reset word count
+        document.getElementById('wordCount').textContent = '0';
+        // Trigger change event to reload default entities
+        document.querySelector('input[name="reviewType"]:checked').dispatchEvent(new Event('change'));
+        // Hide form
+        document.getElementById('reviewSubmissionSection').style.display = 'none';
+    } else {
+        alert('Error: ' + data.message);
+    }
+  })
+  .catch(error => {
+    console.error('Error submitting review:', error);
+    alert('Error submitting review. Please try again.');
+  })
+  .finally(() => {
+    // Restore button state
+    submitButton.disabled = false;
+    submitButton.textContent = originalText;
+  });
+});
+
+// Show review form
+document.querySelectorAll('#writeReviewBtn, #writeVideoReviewBtn, #shareExperienceBtn, #askQuestionBtn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('reviewSubmissionSection').style.display = 'block';
+    // Scroll to form
+    document.getElementById('reviewSubmissionSection').scrollIntoView({ behavior: 'smooth' });
+    // Trigger change event on the default selected radio button
+    document.querySelector('input[name="reviewType"]:checked').dispatchEvent(new Event('change'));
+  });
+});
+
+// Cancel review
+document.getElementById('cancelReview').addEventListener('click', function() {
+  document.getElementById('reviewSubmissionSection').style.display = 'none';
+  // Reset word count when canceling
+  document.getElementById('wordCount').textContent = '0';
+});
+
+// Initialize with doctors by default
+document.addEventListener('DOMContentLoaded', function() {
+  // Trigger change event on the default selected radio button
+  document.querySelector('input[name="reviewType"]:checked').dispatchEvent(new Event('change'));
+});
+</script>
+{% endblock %}

@@ -1,0 +1,337 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<style>
+  .portfolio-page {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    padding: 2rem 0;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.25rem;
+    color: #6c757d;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .service-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+  }
+
+  .service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .service-icon {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    font-size: 2.5rem;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .service-content {
+    padding: 2rem;
+  }
+
+  .service-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+
+  .service-description {
+    color: #495057;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-features {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-features li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .service-features li i {
+    color: #0d6efd;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  .portfolio-section {
+    background: white;
+    padding: 5rem 0;
+    border-top: 1px solid #e9ecef;
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .portfolio-item {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+  }
+
+  .portfolio-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .portfolio-image {
+    height: 200px;
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+  }
+
+  .portfolio-content {
+    padding: 1.5rem;
+  }
+
+  .portfolio-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+  }
+
+  .portfolio-category {
+    display: inline-block;
+    background: #e9ecef;
+    color: #495057;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .portfolio-description {
+    color: #495057;
+    margin-bottom: 1.5rem;
+  }
+
+  .portfolio-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .portfolio-link:hover {
+    color: #0b5ed7;
+  }
+
+  @media (max-width: 768px) {
+    .portfolio-page {
+      padding: 1rem;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+    }
+    
+    .section-subtitle {
+      font-size: 1rem;
+    }
+    
+    .services-grid,
+    .portfolio-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>
+
+<div class="portfolio-page">
+  <div class="container">
+    <div class="section-header">
+      <h1 class="section-title">My Freelance Services</h1>
+      <p class="section-subtitle">
+        Professional web development and digital solutions tailored to your business needs
+      </p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="bi bi-hospital"></i>
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Medical Website Development</h3>
+          <p class="service-description">
+            Specialized healthcare websites with patient portals, appointment booking, and medical information systems.
+          </p>
+          <ul class="service-features">
+            <li><i class="bi bi-check-circle-fill"></i> HIPAA compliant designs</li>
+            <li><i class="bi bi-check-circle-fill"></i> Patient management systems</li>
+            <li><i class="bi bi-check-circle-fill"></i> Telemedicine integration</li>
+            <li><i class="bi bi-check-circle-fill"></i> Medical directory listings</li>
+          </ul>
+          <a href="#medical-projects" class="btn-primary">View Projects</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="bi bi-bag"></i>
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Food Delivery Platform</h3>
+          <p class="service-description">
+            End-to-end food delivery solutions with restaurant management, order tracking, and payment processing.
+          </p>
+          <ul class="service-features">
+            <li><i class="bi bi-check-circle-fill"></i> Real-time order tracking</li>
+            <li><i class="bi bi-check-circle-fill"></i> Multi-restaurant management</li>
+            <li><i class="bi bi-check-circle-fill"></i> Delivery driver apps</li>
+            <li><i class="bi bi-check-circle-fill"></i> Payment gateway integration</li>
+          </ul>
+          <a href="#food-projects" class="btn-primary">View Projects</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <i class="bi bi-graph-up"></i>
+        </div>
+        <div class="service-content">
+          <h3 class="service-title">Digital Marketing Solutions</h3>
+          <p class="service-description">
+            Comprehensive digital marketing strategies to grow your online presence and attract more customers.
+          </p>
+          <ul class="service-features">
+            <li><i class="bi bi-check-circle-fill"></i> SEO optimization</li>
+            <li><i class="bi bi-check-circle-fill"></i> Social media marketing</li>
+            <li><i class="bi bi-check-circle-fill"></i> Content marketing</li>
+            <li><i class="bi bi-check-circle-fill"></i> Analytics and reporting</li>
+          </ul>
+          <a href="#marketing-projects" class="btn-primary">View Projects</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="portfolio-section">
+      <div class="section-header">
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-subtitle">
+          A showcase of my recent work across different industries
+        </p>
+      </div>
+
+      <div class="portfolio-grid">
+        <div class="portfolio-item">
+          <div class="portfolio-image">
+            <i class="bi bi-hospital"></i>
+          </div>
+          <div class="portfolio-content">
+            <span class="portfolio-category">Medical</span>
+            <h3 class="portfolio-title">TakeOpinion Medical Platform</h3>
+            <p class="portfolio-description">
+              A comprehensive medical tourism platform connecting patients with doctors and hospitals worldwide.
+            </p>
+            <a href="#" class="portfolio-link">
+              <i class="bi bi-box-arrow-up-right"></i> View Project
+            </a>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="portfolio-image">
+            <i class="bi bi-bag"></i>
+          </div>
+          <div class="portfolio-content">
+            <span class="portfolio-category">Food Delivery</span>
+            <h3 class="portfolio-title">QuickBite Delivery App</h3>
+            <p class="portfolio-description">
+              A full-featured food delivery platform with restaurant management and real-time tracking.
+            </p>
+            <a href="#" class="portfolio-link">
+              <i class="bi bi-box-arrow-up-right"></i> View Project
+            </a>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="portfolio-image">
+            <i class="bi bi-phone"></i>
+          </div>
+          <div class="portfolio-content">
+            <span class="portfolio-category">E-commerce</span>
+            <h3 class="portfolio-title">MediShop Online Pharmacy</h3>
+            <p class="portfolio-description">
+              An online pharmacy platform with prescription management and medication delivery.
+            </p>
+            <a href="#" class="portfolio-link">
+              <i class="bi bi-box-arrow-up-right"></i> View Project
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

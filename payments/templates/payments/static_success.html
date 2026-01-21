@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-5">
+        <div class="mb-4">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        </div>
+        <h1 class="display-5 fw-bold text-success">Payment Successful!</h1>
+        <p class="lead">Your payment has been processed successfully.</p>
+      </div>
+      
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">Payment Details</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="bi bi-chevron-right text-success me-2"></i><strong>Transaction ID:</strong> TXN-{{ payment.id }}{{ payment.booking.id }}{{ payment.created_at|date:"YmdHis" }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-success me-2"></i><strong>Booking:</strong> #{{ payment.booking.id }} - {{ payment.booking.treatment.name }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-success me-2"></i><strong>Date:</strong> {{ payment.created_at|date:"F d, Y" }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-success me-2"></i><strong>Status:</strong> <span class="badge bg-success">Completed</span></li>
+              </ul>
+            </div>
+            <div class="col-md-4 text-md-end">
+              <div>
+                <span class="h4 text-success fw-bold">₹{{ payment.amount }}</span>
+                <div class="small text-muted">Amount Paid</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">What's Next?</h5>
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-md-4 mb-3 mb-md-0">
+              <i class="bi bi-calendar-check display-6 text-primary mb-2"></i>
+              <h6>Booking Confirmed</h6>
+              <p class="small text-muted">Your booking is confirmed and details have been sent to your email.</p>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+              <i class="bi bi-building display-6 text-primary mb-2"></i>
+              <h6>Hospital Details</h6>
+              <p class="small text-muted">Get directions and contact information for your hospital.</p>
+            </div>
+            <div class="col-md-4">
+              <i class="bi bi-house-door display-6 text-primary mb-2"></i>
+              <h6>Accommodation</h6>
+              <p class="small text-muted">Find recommended hotels near your hospital.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="d-flex justify-content-center gap-3">
+        <a href="{% url 'hotels:suggestions' payment.booking.id %}" class="btn btn-primary btn-lg">
+          <i class="bi bi-house-door me-2"></i>Find Hotels
+        </a>
+        <a href="{% url 'bookings:booking_confirmation' payment.booking.id %}" class="btn btn-outline-primary btn-lg">
+          <i class="bi bi-receipt me-2"></i>View Booking
+        </a>
+        <a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-outline-secondary btn-lg">
+          <i class="bi bi-speedometer2 me-2"></i>Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

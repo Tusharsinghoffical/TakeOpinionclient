@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+{% block title %}Payment Successful{% endblock %}
+
+{% block content %}
+<style>
+  .success-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    padding: 2rem 0;
+  }
+
+  .success-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: none;
+    margin-bottom: 2rem;
+  }
+
+  .success-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .success-card .card-header {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .payment-summary {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .summary-item:last-child {
+    border-bottom: none;
+  }
+
+  .summary-total {
+    font-weight: 700;
+    font-size: 1.2rem;
+    background: #e9ecef;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .action-button {
+    flex: 1;
+    min-width: 150px;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .primary-button {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .primary-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+  }
+
+  .secondary-button {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #e9ecef;
+  }
+
+  .secondary-button:hover {
+    background: #e9ecef;
+    transform: translateY(-3px);
+  }
+
+  .meet-button {
+    background: linear-gradient(135deg, #34a853, #28a745);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    text-align: center;
+    display: inline-block;
+    margin: 1rem 0;
+  }
+
+  .meet-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(52, 168, 83, 0.4);
+    background: linear-gradient(135deg, #28a745, #34a853);
+    color: white;
+    text-decoration: none;
+  }
+
+  .doctor-join-button {
+    background: linear-gradient(135deg, #ea4335, #d93025);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    text-align: center;
+    display: inline-block;
+    margin: 1rem 0;
+  }
+
+  .doctor-join-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(234, 67, 53, 0.4);
+    background: linear-gradient(135deg, #d93025, #ea4335);
+    color: white;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    .success-page {
+      padding: 1rem;
+    }
+    
+    .success-card {
+      margin-bottom: 1rem;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+    
+    .action-button {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="container success-page">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-4">
+        <div class="mb-4">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        </div>
+        <h1 class="display-5 fw-bold mb-3">Payment Successful!</h1>
+        <p class="lead mb-4">Your payment has been processed successfully. Your consultation is now confirmed.</p>
+      </div>
+      
+      <div class="card border-0 shadow-sm success-card">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">Payment Confirmation</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-7 mb-4 mb-lg-0">
+              <h5 class="mb-3">Payment Details</h5>
+              <div class="payment-summary">
+                <div class="summary-item">
+                  <span>Transaction ID</span>
+                  <span class="fw-bold">#PAY-{{ payment.id }}{{ payment.created_at|date:"Ymd" }}</span>
+                </div>
+                <div class="summary-item">
+                  <span>Payment Date</span>
+                  <span>{{ payment.created_at|date:"M d, Y" }}</span>
+                </div>
+                <div class="summary-item">
+                  <span>Payment Method</span>
+                  <span>Credit Card (**** **** **** {{ payment.id|slice:":4" }})</span>
+                </div>
+                <div class="summary-item">
+                  <span>Status</span>
+                  <span class="badge bg-success">Completed</span>
+                </div>
+              </div>
+              
+              <h5 class="mt-4 mb-3">Booking Information</h5>
+              <div class="payment-summary">
+                <div class="summary-item">
+                  <span>Booking ID</span>
+                  <span class="fw-bold">#{{ payment.booking.id }}</span>
+                </div>
+                <div class="summary-item">
+                  <span>Doctor</span>
+                  <span>Dr. {{ payment.booking.preferred_doctor.name }}</span>
+                </div>
+                <div class="summary-item">
+                  <span>Specialization</span>
+                  <span>{{ payment.booking.preferred_doctor.specialization }}</span>
+                </div>
+                <div class="summary-item">
+                  <span>Consultation Date</span>
+                  <span>{{ payment.booking.preferred_date }}</span>
+                </div>
+                
+                <!-- Google Meet Link Section -->
+                {% if payment.booking.google_meet_link %}
+                <div class="summary-item">
+                  <span>Consultation Type</span>
+                  <span class="fw-bold text-success">Video Consultation</span>
+                </div>
+                <div class="text-center mt-3">
+                  <a href="{{ payment.booking.google_meet_link }}" target="_blank" class="meet-button">
+                    <i class="bi bi-camera-video me-2"></i>Join Google Meet (Patient)
+                  </a>
+                  {% if user.is_authenticated and user.userprofile.user_type == 'doctor' %}
+                  <a href="{% url 'bookings:join_consultation' payment.booking.id %}" class="doctor-join-button">
+                    <i class="bi bi-camera-video me-2"></i>Join Google Meet (Doctor)
+                  </a>
+                  {% endif %}
+                  <p class="small text-muted mt-2">
+                    Click the button above to join your video consultation with Dr. {{ payment.booking.preferred_doctor.name }}
+                  </p>
+                </div>
+                {% else %}
+                <div class="summary-item">
+                  <span>Consultation Type</span>
+                  <span class="fw-bold text-info">Phone Consultation</span>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            
+            <div class="col-lg-5">
+              <h5 class="mb-3">Payment Summary</h5>
+              <div class="payment-summary mb-4">
+                <div class="summary-item">
+                  <span>Consultation Fee</span>
+                  <span>₹1,500.00</span>
+                </div>
+                <div class="summary-item">
+                  <span>Service Charge</span>
+                  <span>₹150.00</span>
+                </div>
+                <div class="summary-item">
+                  <span>Tax (18%)</span>
+                  <span>₹297.00</span>
+                </div>
+                <div class="summary-total">
+                  <span>Total Amount Paid</span>
+                  <span class="fw-bold">₹1,947.00</span>
+                </div>
+              </div>
+              
+              <div class="alert alert-info">
+                <h6 class="alert-heading">
+                  <i class="bi bi-info-circle me-2"></i>Next Steps
+                </h6>
+                <ul class="mb-0 small">
+                  <li>You will receive a confirmation email shortly</li>
+                  <li>Check your dashboard for consultation details</li>
+                  {% if payment.booking.google_meet_link %}
+                  <li><strong>Join the video call 5-10 minutes before scheduled time using the Google Meet button</strong></li>
+                  {% else %}
+                  <li>Your doctor will call you at the scheduled time</li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="action-buttons mt-4">
+            <a href="/accounts/patient/portal/" class="action-button primary-button">
+              <i class="bi bi-speedometer2 me-2"></i>My Dashboard
+            </a>
+            <a href="/doctors/{{ payment.booking.preferred_doctor.slug }}/" class="action-button secondary-button">
+              <i class="bi bi-person me-2"></i>Doctor Profile
+            </a>
+            <a href="/bookings/admin/" class="action-button secondary-button">
+              <i class="bi bi-calendar-check me-2"></i>View All Bookings
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <p class="text-muted small">
+          Need help? <a href="{% url 'contact' %}">Contact our support team</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

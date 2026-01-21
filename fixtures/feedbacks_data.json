@@ -1,0 +1,477 @@
+[
+{
+  "model": "feedbacks.feedback",
+  "pk": 1,
+  "fields": {
+    "patient": 7,
+    "feedback_type": "hospital",
+    "doctor": null,
+    "hospital": 4,
+    "treatment": null,
+    "rating": 0,
+    "title": "Best  hospital",
+    "comment": "nice",
+    "video_url": null,
+    "is_anonymous": true,
+    "created_at": "2025-09-23T14:31:21.052Z",
+    "updated_at": "2025-09-23T14:31:21.052Z",
+    "is_approved": false
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 2,
+  "fields": {
+    "patient": 1,
+    "feedback_type": "hospital",
+    "doctor": null,
+    "hospital": 1,
+    "treatment": null,
+    "rating": 5,
+    "title": "Test Review",
+    "comment": "This is a test review",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-23T14:40:45.948Z",
+    "updated_at": "2025-09-23T14:40:45.948Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 3,
+  "fields": {
+    "patient": 7,
+    "feedback_type": "hospital",
+    "doctor": null,
+    "hospital": 4,
+    "treatment": null,
+    "rating": 0,
+    "title": "Hospital review",
+    "comment": "NIce and good",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-23T16:16:57.940Z",
+    "updated_at": "2025-09-23T16:16:57.940Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 4,
+  "fields": {
+    "patient": 1,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 5,
+    "title": "Great Doctor!",
+    "comment": "Dr. Mehta is very professional and caring.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-23T16:30:28.985Z",
+    "updated_at": "2025-09-23T16:30:28.985Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 5,
+  "fields": {
+    "patient": 7,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 0,
+    "title": "Gynoclogist",
+    "comment": "nice and good doctor",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-23T16:36:44.740Z",
+    "updated_at": "2025-09-23T16:36:44.740Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 6,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 5,
+    "title": "Excellent Doctor",
+    "comment": "Dr. Mehta is very professional and caring.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-24T16:49:35.747Z",
+    "updated_at": "2025-09-24T16:49:35.747Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 7,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 4,
+    "title": "Good Experience",
+    "comment": "Nice and good doctor",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-24T16:49:35.759Z",
+    "updated_at": "2025-09-24T16:49:35.760Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 8,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 3,
+    "title": "Average Service",
+    "comment": "The service was okay, nothing special.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-24T16:49:35.768Z",
+    "updated_at": "2025-09-24T16:49:35.768Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 9,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 5,
+    "title": "Great Hospital",
+    "comment": "NIce and good",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-24T16:49:35.782Z",
+    "updated_at": "2025-09-24T16:49:35.782Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 10,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 4,
+    "title": "Test Review",
+    "comment": "This is a test review",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-24T16:49:35.794Z",
+    "updated_at": "2025-09-24T16:49:35.794Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 11,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 5,
+    "title": "Outstanding Care",
+    "comment": "The doctor provided exceptional care and attention to my needs.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-10T22:26:02.075Z",
+    "updated_at": "2025-09-24T16:56:02.124Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 12,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 4,
+    "title": "Good Service",
+    "comment": "Satisfied with the treatment and professionalism.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-23T22:26:02.166Z",
+    "updated_at": "2025-09-24T16:56:02.187Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 13,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 3,
+    "title": "Average Experience",
+    "comment": "The service was okay, nothing special.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-15T22:26:02.205Z",
+    "updated_at": "2025-09-24T16:56:02.218Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 14,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 2,
+    "title": "Below Expectations",
+    "comment": "I was not satisfied with the care provided.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-01T22:26:02.245Z",
+    "updated_at": "2025-09-24T16:56:02.258Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 15,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 1,
+    "title": "Poor Service",
+    "comment": "The experience was disappointing overall.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-23T22:26:02.281Z",
+    "updated_at": "2025-09-24T16:56:02.295Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 16,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 5,
+    "title": "Excellent Doctor",
+    "comment": "Highly recommend this doctor for their expertise.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-10T22:26:02.313Z",
+    "updated_at": "2025-09-24T16:56:02.329Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 17,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 4,
+    "title": "Good Hospital",
+    "comment": "The facilities and staff were very helpful.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-08-28T22:26:02.339Z",
+    "updated_at": "2025-09-24T16:56:02.358Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 18,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 3,
+    "title": "Decent Treatment",
+    "comment": "The treatment was adequate but could be improved.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-17T22:26:02.375Z",
+    "updated_at": "2025-09-24T16:56:02.391Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 19,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 5,
+    "title": "Great Staff",
+    "comment": "The nursing staff was particularly attentive.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-18T22:26:02.409Z",
+    "updated_at": "2025-09-24T16:56:02.419Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 20,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 4,
+    "title": "Satisfactory Visit",
+    "comment": "My visit was fine, no major complaints.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-11T22:26:02.432Z",
+    "updated_at": "2025-09-24T16:56:02.449Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 21,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 5,
+    "title": "Wonderful Experience",
+    "comment": "Everything about my visit was perfect.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-11T22:26:02.463Z",
+    "updated_at": "2025-09-24T16:56:02.478Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 22,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 2,
+    "title": "Could Be Better",
+    "comment": "There were some issues that need addressing.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-19T22:26:02.492Z",
+    "updated_at": "2025-09-24T16:56:02.511Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 23,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 5,
+    "title": "Fantastic Care",
+    "comment": "The level of care exceeded my expectations.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-17T22:26:02.526Z",
+    "updated_at": "2025-09-24T16:56:02.539Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 24,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 3,
+    "title": "Good, Not Great",
+    "comment": "It was a decent experience but not outstanding.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-09-20T22:26:02.549Z",
+    "updated_at": "2025-09-24T16:56:02.560Z",
+    "is_approved": true
+  }
+},
+{
+  "model": "feedbacks.feedback",
+  "pk": 25,
+  "fields": {
+    "patient": 8,
+    "feedback_type": "doctor",
+    "doctor": 1,
+    "hospital": null,
+    "treatment": null,
+    "rating": 5,
+    "title": "Highly Recommend",
+    "comment": "I would definitely come back and recommend to others.",
+    "video_url": null,
+    "is_anonymous": false,
+    "created_at": "2025-08-27T22:26:02.573Z",
+    "updated_at": "2025-09-24T16:56:02.584Z",
+    "is_approved": true
+  }
+}
+]

@@ -1,0 +1,489 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ treatment.name }} Comparison - TakeOpinion{% endblock %}
+
+{% block content %}
+<style>
+/* Enhanced Comparison Page Styles */
+:root {
+  /* Enhanced vibrant color palette */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-strong: rgba(0, 0, 0, 0.15);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+  --transition-speed: 0.3s;
+}
+
+/* Global comparison page styles */
+.comparison-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: var(--light-text);
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--light-text);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--light-text);
+  line-height: 1.5;
+}
+
+/* Comparison Section */
+.comparison-section {
+  background-color: var(--light-bg);
+  padding: 4rem 0;
+}
+
+.comparison-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.comparison-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.comparison-header {
+  background: linear-gradient(135deg, var(--primary-medium) 0%, var(--primary-dark) 100%);
+  color: var(--light-text);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.comparison-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.comparison-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+/* Hospital Comparison Cards */
+.hospital-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.hospital-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.hospital-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px var(--shadow-strong);
+}
+
+.hospital-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.hospital-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.hospital-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hospital-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.hospital-location {
+  color: var(--primary-medium);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.hospital-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.rating-stars {
+  color: var(--warning);
+  margin-right: 0.5rem;
+}
+
+.rating-value {
+  font-weight: 600;
+  color: var(--dark-text);
+}
+
+.hospital-price {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.hospital-price .small {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+.doctors-list {
+  margin: 1rem 0;
+  flex-grow: 1;
+}
+
+.doctors-list h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary-dark);
+}
+
+.doctor-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: var(--light-bg);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  transition: all var(--transition-speed) ease;
+}
+
+.doctor-item:hover {
+  background-color: #e9ecef;
+}
+
+.doctor-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.75rem;
+}
+
+.doctor-info {
+  flex-grow: 1;
+}
+
+.doctor-name {
+  font-weight: 600;
+  margin-bottom: 0.1rem;
+}
+
+.doctor-specialization {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.hospital-footer {
+  margin-top: auto;
+  text-align: center;
+}
+
+.btn-book {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), #c0392b);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.btn-book:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+/* Features Section */
+.features-section {
+  padding: 4rem 0;
+  background-color: white;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.feature-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  background: var(--light-bg);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px var(--shadow);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.feature-description {
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .hospital-comparison-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .comparison-header h2 {
+    font-size: 1.75rem;
+  }
+  
+  .hospital-price {
+    font-size: 1.5rem;
+  }
+}
+</style>
+
+<div class="comparison-page">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-content">
+      <h1 class="hero-title">Compare {{ treatment.name }} Treatments</h1>
+      <p class="hero-subtitle">Find the best hospital and doctor combination for your {{ treatment.name }} treatment with price comparisons and detailed information</p>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section class="comparison-section">
+    <div class="container">
+      <div class="comparison-card">
+        <div class="comparison-header">
+          <h2>{{ treatment.name }} Treatment Comparison</h2>
+          <p>Compare prices, doctors, and facilities across different hospitals</p>
+        </div>
+        
+        {% if comparison_data %}
+        <div class="hospital-comparison-grid">
+          {% for item in comparison_data %}
+          <div class="hospital-card">
+            <div class="position-relative">
+              {% if item.hospital.profile_picture %}
+              <img src="{{ item.hospital.profile_picture }}" alt="{{ item.hospital.name }}" class="hospital-image">
+              {% else %}
+              <div class="hospital-image bg-light d-flex align-items-center justify-content-center">
+                <i class="bi bi-building text-muted" style="font-size: 3rem;"></i>
+              </div>
+              {% endif %}
+              {% if item.hospital.is_takeopinion_choice %}
+              <div class="hospital-badge">TakeOpinion Choice</div>
+              {% endif %}
+            </div>
+            
+            <div class="hospital-body">
+              <h3 class="hospital-name">{{ item.hospital.name }}</h3>
+              <div class="hospital-location">
+                <i class="bi bi-geo-alt me-1"></i> {{ item.hospital.city }}, {{ item.hospital.country.name }}
+              </div>
+              
+              <div class="hospital-rating">
+                <div class="rating-stars">
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= item.hospital.rating|floatformat:"0"|add:"0" %}
+                      <i class="bi bi-star-fill"></i>
+                    {% else %}
+                      <i class="bi bi-star"></i>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <div class="rating-value">{{ item.hospital.rating }}</div>
+              </div>
+              
+              <div class="hospital-price">
+                ${{ item.price }}
+                <div class="small">Starting Price</div>
+              </div>
+              
+              <div class="doctors-list">
+                <h4>Available Doctors</h4>
+                {% if item.doctors %}
+                  {% for doctor in item.doctors %}
+                  <div class="doctor-item">
+                    {% if doctor.profile_picture %}
+                    <img src="{{ doctor.profile_picture }}" alt="{{ doctor.name }}" class="doctor-avatar">
+                    {% else %}
+                    <div class="doctor-avatar bg-light d-flex align-items-center justify-content-center">
+                      <i class="bi bi-person text-muted"></i>
+                    </div>
+                    {% endif %}
+                    <div class="doctor-info">
+                      <div class="doctor-name">Dr. {{ doctor.name }}</div>
+                      <div class="doctor-specialization">{{ doctor.specialization }}</div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                {% else %}
+                  <p class="text-muted">No doctors available at this hospital</p>
+                {% endif %}
+              </div>
+              
+              <div class="hospital-footer">
+                <a href="/book/?treatment={{ treatment.id }}&hospital={{ item.hospital.id }}" class="btn-book">
+                  <i class="bi bi-calendar-check me-2"></i>Book Now
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center p-5">
+          <i class="bi bi-info-circle display-4 text-muted mb-3"></i>
+          <h3 class="mb-3">No Hospitals Available</h3>
+          <p class="mb-0">Currently, there are no hospitals offering this treatment. Please check back later or contact our support team.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="section-title">Why Compare Treatments with TakeOpinion</h2>
+        <p class="section-subtitle">Make informed decisions with our comprehensive comparison tools</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+          <h3 class="feature-title">Price Transparency</h3>
+          <p class="feature-description">Compare actual treatment costs across different hospitals to find the best value for your money</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <h3 class="feature-title">Expert Doctors</h3>
+          <p class="feature-description">See which qualified doctors are available at each hospital for your specific treatment</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-building"></i>
+          </div>
+          <h3 class="feature-title">Hospital Facilities</h3>
+          <p class="feature-description">Compare hospital ratings, accreditations, and facilities to choose the best environment for your care</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h3 class="feature-title">Verified Information</h3>
+          <p class="feature-description">All information is verified and regularly updated to ensure accuracy and reliability</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

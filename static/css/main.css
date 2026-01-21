@@ -1,0 +1,1014 @@
+:root {
+  /* Medical-themed color palette with light colors */
+  --medical-red: #adb5bd; /* Light gray instead of medical red */
+  --medical-red-dark: #868e96; /* Darker gray for hover states */
+  --medical-green: #adb5bd; /* Light gray instead of medical green */
+  --medical-green-dark: #868e96; /* Darker gray for hover states */
+  --medical-blue: #adb5bd; /* Light gray instead of medical blue */
+  --medical-blue-dark: #868e96; /* Darker gray for hover states */
+  --medical-blue-light: #e9ecef; /* Light gray for backgrounds */
+  --turquoise: #adb5bd; /* Light gray instead of turquoise */
+  --slate-blue: #adb5bd; /* Light gray instead of slate blue */
+  --platinum: #e9ecef; /* Light gray instead of platinum */
+  --glacier: #e9ecef; /* Light gray instead of glacier */
+  --ice-blue: #f8f9fa; /* Very light gray instead of ice blue */
+  --white: #ffffff; /* White for backgrounds and text */
+  --light-gray: #f8f9fa; /* Light gray for subtle backgrounds */
+  --dark-gray: #495057; /* Medium gray for text instead of dark gray */
+  --border-color: #dee2e6; /* Border color */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Base styles */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--dark-gray);
+  background-color: var(--white);
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--dark-gray);
+  margin-bottom: 0.5rem;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+p {
+  margin-bottom: 1rem;
+  color: var(--dark-gray);
+}
+
+/* Links */
+a {
+  color: var(--medical-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--medical-blue-dark);
+  text-decoration: underline;
+}
+
+/* Cards */
+.card {
+  border-radius: 0.75rem;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 0.125rem 0.25rem var(--shadow-color);
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px var(--shadow-color) !important;
+}
+
+.card-header {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem 0.75rem 0 0 !important;
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 0.5rem;
+  font-weight: 500;
+  padding: 0.625rem 1.125rem;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--medical-blue);
+  border-color: var(--medical-blue);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--medical-blue-dark);
+  border-color: var(--medical-blue-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.btn-outline-primary {
+  color: var(--medical-blue);
+  border-color: var(--medical-blue);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--medical-blue);
+  border-color: var(--medical-blue);
+  color: white;
+}
+
+.btn-success {
+  background-color: var(--medical-green);
+  border-color: var(--medical-green);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: var(--medical-green-dark);
+  border-color: var(--medical-green-dark);
+}
+
+.btn-danger {
+  background-color: var(--medical-red);
+  border-color: var(--medical-red);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: var(--medical-red-dark);
+  border-color: var(--medical-red-dark);
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+}
+
+/* New gradient buttons */
+.btn-gradient-turquoise {
+  background: linear-gradient(135deg, var(--turquoise) 0%, var(--slate-blue) 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+}
+
+.btn-gradient-turquoise:hover {
+  background: linear-gradient(135deg, var(--slate-blue) 0%, var(--turquoise) 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(173, 181, 189, 0.3);
+}
+
+.btn-gradient-ice {
+  background: linear-gradient(135deg, var(--ice-blue) 0%, var(--glacier) 100%);
+  border: none;
+  color: var(--dark-gray);
+  font-weight: 600;
+}
+
+.btn-gradient-ice:hover {
+  background: linear-gradient(135deg, var(--glacier) 0%, var(--ice-blue) 100%);
+  color: var(--dark-gray);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(233, 236, 239, 0.3);
+}
+
+/* Forms */
+.form-control, .form-select {
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  background-color: var(--white);
+  font-size: 1rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--medical-blue);
+  box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.25);
+}
+
+.form-control-lg, .form-select-lg {
+  padding: 0.875rem 1.125rem;
+  font-size: 1.125rem;
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--dark-gray);
+}
+
+/* Navigation */
+.navbar {
+  box-shadow: 0 2px 10px var(--shadow-color);
+  background-color: var(--white);
+  padding: 0.75rem 0;
+  position: relative;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: var(--dark-gray);
+}
+
+.navbar-logo {
+  object-fit: contain;
+  max-height: 40px;
+  width: auto;
+}
+
+.nav-link {
+  font-weight: 500;
+  color: var(--dark-gray);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  margin: 0 0.125rem;
+}
+
+.nav-link:hover {
+  color: var(--medical-blue);
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.nav-link.active {
+  color: var(--medical-blue);
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+/* Professional Navbar Styles */
+.navbar-nav .nav-link {
+  position: relative;
+  margin: 0 0.25rem;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  color: var(--dark-gray);
+  border-radius: 0;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--medical-blue);
+  background-color: transparent;
+  border-bottom: 3px solid #FFD700; /* Gold accent */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav .nav-link.active {
+  color: var(--medical-blue);
+  background-color: transparent;
+  border-bottom: 3px solid var(--medical-blue);
+}
+
+.navbar-nav .nav-item {
+  margin: 0 0.125rem;
+}
+
+.navbar-toggler {
+  border: none;
+  padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2873, 80, 87, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Tab Navigation */
+.nav-tabs .nav-link {
+  border: 1px solid transparent;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  color: var(--dark-gray);
+  font-weight: 500;
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: var(--border-color);
+  background-color: var(--light-gray);
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--medical-blue);
+  background-color: var(--white);
+  border-color: var(--border-color) var(--border-color) var(--white);
+}
+
+.nav-tabs {
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Badges */
+.badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+  border-radius: 0.5rem;
+}
+
+.badge.bg-primary {
+  background-color: var(--medical-blue) !important;
+}
+
+.badge.bg-success {
+  background-color: var(--medical-green) !important;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+}
+
+.badge.bg-danger {
+  background-color: var(--medical-red) !important;
+}
+
+.badge.bg-info {
+  background-color: #17a2b8 !important;
+}
+
+/* New colorful badges */
+.badge-turquoise {
+  background-color: var(--turquoise);
+  color: white;
+}
+
+.badge-slate-blue {
+  background-color: var(--slate-blue);
+  color: white;
+}
+
+.badge-glacier {
+  background-color: var(--glacier);
+  color: var(--dark-gray);
+}
+
+/* Alerts */
+.alert {
+  border-radius: 0.75rem;
+  border: none;
+  padding: 1rem 1.25rem;
+}
+
+.alert-primary {
+  background-color: var(--medical-blue-light);
+  color: var(--dark-gray);
+}
+
+.alert-success {
+  background-color: var(--white);
+  color: var(--dark-gray);
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: var(--dark-gray);
+}
+
+.alert-dismissible .btn-close {
+  padding: 1rem;
+}
+
+/* Tables */
+.table {
+  margin-bottom: 0;
+}
+
+.table th {
+  font-weight: 600;
+  color: var(--dark-gray);
+  border-top: none;
+  padding: 1rem;
+}
+
+.table td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(173, 181, 189, 0.05);
+}
+
+/* Section titles */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-title i {
+  color: var(--medical-blue);
+  font-size: 1.5rem;
+}
+
+.section-title h1, 
+.section-title h2, 
+.section-title h3, 
+.section-title h4, 
+.section-title h5, 
+.section-title h6 {
+  margin-bottom: 0;
+}
+
+/* Progress bars */
+.progress {
+  border-radius: 0.5rem;
+  background-color: var(--border-color);
+  height: 0.75rem;
+}
+
+.progress-bar {
+  background-color: var(--medical-blue);
+}
+
+/* Footer */
+footer {
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+  padding: 3rem 0 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+footer a {
+  color: var(--dark-gray);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+footer a:hover {
+  color: var(--medical-blue);
+  text-decoration: none;
+}
+
+.footer-links a {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  color: var(--dark-gray);
+}
+
+.footer-links a:hover {
+  color: var(--medical-blue);
+}
+
+.footer-bottom a {
+  color: var(--dark-gray);
+}
+
+.footer-bottom a:hover {
+  color: var(--medical-blue);
+}
+
+.footer-copyright {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.footer-bottom {
+  margin-top: 2rem;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--white);
+  color: var(--dark-gray);
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.social-icon:hover {
+  background-color: var(--medical-blue);
+  color: white;
+  transform: translateY(-3px);
+}
+
+footer h5, footer h6 {
+  color: var(--dark-gray);
+}
+
+footer p {
+  color: var(--dark-gray);
+}
+
+footer ul {
+  color: var(--dark-gray);
+}
+
+footer li {
+  color: var(--dark-gray);
+}
+
+footer .small {
+  color: #6c757d;
+}
+
+/* Utility classes */
+.bg-light {
+  background-color: var(--light-gray) !important;
+}
+
+.bg-turquoise {
+  background-color: var(--turquoise) !important;
+  color: white;
+}
+
+.bg-slate-blue {
+  background-color: var(--slate-blue) !important;
+  color: white;
+}
+
+.bg-platinum {
+  background-color: var(--platinum) !important;
+}
+
+.bg-glacier {
+  background-color: var(--glacier) !important;
+}
+
+.bg-ice-blue {
+  background-color: var(--ice-blue) !important;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.border-top {
+  border-top: 1px solid var(--border-color) !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem var(--shadow-color) !important;
+}
+
+.shadow {
+  box-shadow: 0 0.5rem 1rem var(--shadow-color) !important;
+}
+
+/* Object fit utility class */
+.object-fit-cover {
+  object-fit: cover;
+}
+
+/* Hero section */
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.hero .bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(248, 249, 250, 0.7); /* Light gray overlay instead of dark */
+}
+
+.hero .content {
+  position: relative;
+  z-index: 1;
+  color: var(--dark-gray); /* Dark gray text instead of white */
+  padding: 4rem 0;
+}
+
+.hero .content h1 {
+  color: var(--dark-gray); /* Dark gray text instead of white */
+}
+
+.hero .content p {
+  color: #495057; /* Dark gray text instead of white */
+}
+
+.hero-search {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50px;
+  max-width: 500px;
+  box-shadow: 0 0.5rem 1rem var(--shadow-color);
+  padding: 0.5rem;
+}
+
+.hero-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.5rem 1rem;
+}
+
+/* Stats section */
+.stats-section .stat-item .h4 {
+  color: var(--medical-blue);
+}
+
+/* Choice badge */
+.badge-choice {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+/* Input group */
+.input-group {
+  box-shadow: 0 0.125rem 0.25rem var(--shadow-color);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--white);
+}
+
+.input-group:focus-within {
+  border-color: var(--medical-blue);
+  box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.25);
+}
+
+.input-group-text {
+  background-color: var(--light-gray);
+  border: none;
+  color: var(--dark-gray);
+  padding: 0.75rem 1rem;
+}
+
+/* Accordion */
+.accordion-button {
+  font-weight: 500;
+  color: var(--dark-gray);
+  padding: 1rem 1.25rem;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+}
+
+.accordion-body {
+  padding: 1rem 1.25rem;
+}
+
+/* Dropdown */
+.dropdown-menu {
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0.5rem 1rem var(--shadow-color);
+  padding: 0.5rem;
+  background-color: var(--white);
+  margin-top: 0.25rem;
+}
+
+.dropdown-item {
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  margin: 0.125rem 0;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: var(--light-gray);
+  color: var(--medical-blue);
+}
+
+.dropdown-divider {
+  margin: 0.5rem 0;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Navbar dropdown enhancements for hover behavior */
+.navbar .dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
+}
+
+.navbar .dropdown-menu {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  margin-top: 0;
+}
+
+.navbar .dropdown:hover .dropdown-menu,
+.navbar .dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.navbar .dropdown-item {
+  transition: all 0.2s ease;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  margin: 0.125rem 0;
+}
+
+.navbar .dropdown-item:hover {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: var(--medical-blue);
+  transform: translateX(3px);
+}
+
+/* Ensure dropdown menu stays open on hover */
+.navbar .dropdown-menu:hover {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Professional User Dropdown */
+.user-dropdown .dropdown-toggle {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  color: var(--dark-gray);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.user-dropdown .dropdown-toggle:hover {
+  border-color: #0d6efd;
+  color: #0d6efd;
+  background-color: #f8f9fa;
+}
+
+.user-dropdown .dropdown-menu {
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  padding: 0.5rem;
+  min-width: 200px;
+}
+
+.user-dropdown .dropdown-item {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: 400;
+  transition: all 0.2s ease;
+  margin: 0.125rem 0;
+}
+
+.user-dropdown .dropdown-item:hover {
+  background-color: #e9ecef;
+  color: #0d6efd;
+}
+
+.user-dropdown .dropdown-divider {
+  margin: 0.5rem 0;
+}
+
+/* Search form in navbar */
+.navbar .input-group {
+  max-width: 300px;
+  box-shadow: none;
+  border: 1px solid var(--border-color);
+}
+
+.navbar .form-control {
+  border: none;
+  padding: 0.5rem 1rem;
+  background: transparent;
+}
+
+.navbar .btn-outline-primary {
+  border: none;
+  padding: 0.5rem 1rem;
+  color: var(--dark-gray);
+}
+
+.navbar .btn-outline-primary:hover {
+  background-color: transparent;
+  color: var(--medical-blue);
+}
+
+/* Search suggestions dropdown */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem var(--shadow-color);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+}
+
+.search-suggestion-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.search-suggestion-item:hover,
+.search-suggestion-item.active {
+  background-color: var(--light-gray);
+}
+
+.search-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.search-suggestion-title {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.search-suggestion-type {
+  font-size: 0.875rem;
+  color: var(--medical-blue);
+}
+
+/* Container padding for all pages */
+.container, .container-fluid {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  
+  .section-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .card-hover:hover {
+    transform: none;
+  }
+  
+  .hero {
+    min-height: 400px;
+  }
+  
+  .hero .content {
+    padding: 2rem 0;
+  }
+  
+  .navbar {
+    padding: 0.5rem 0;
+  }
+  
+  .container, .container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  /* Adjust search form for mobile */
+  .navbar .input-group {
+    max-width: none;
+    margin: 0.5rem 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .container, .container-fluid {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+/* Treatment cards */
+.treatment-card {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.treatment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.treatment-card .card-img-top {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.treatment-card .card-img-top i {
+  transition: all 0.3s ease;
+}
+
+.treatment-card:hover .card-img-top i {
+  transform: scale(1.2);
+  color: #adb5bd !important;
+}
+
+/* Treatment category cards */
+.treatment-category-card {
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.treatment-category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.treatment-category-card .card-header {
+  font-weight: 600;
+  padding: 1rem 1.25rem;
+}
+
+.treatment-category-card .card-header i {
+  font-size: 1.25rem;
+}
+
+/* Treatment items */
+.treatment-item {
+  border-radius: 0.5rem !important;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+  border: none !important;
+}
+
+.treatment-item:hover {
+  background-color: rgba(173, 181, 189, 0.1);
+  padding-left: 1.25rem !important;
+}
+
+/* Tab navigation enhancements */
+.nav-tabs .nav-link {
+  font-weight: 500;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem 0.5rem 0 0;
+  color: var(--dark-gray);
+  transition: all 0.2s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: rgba(173, 181, 189, 0.1);
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #fff;
+  color: var(--medical-blue);
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-blue-dark) 100%);
+}
+
+.bg-gradient-info {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, var(--medical-green) 0%, var(--medical-green-dark) 100%);
+}
+
+.bg-gradient-turquoise {
+  background: linear-gradient(135deg, var(--turquoise) 0%, var(--slate-blue) 100%);
+  color: white;
+}
+
+.bg-gradient-glacier {
+  background: linear-gradient(135deg, var(--glacier) 0%, var(--ice-blue) 100%);
+}
+
+/* Expert consultation banner */
+.bg-gradient {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.bg-gradient .card-body {
+  padding: 2rem;
+}

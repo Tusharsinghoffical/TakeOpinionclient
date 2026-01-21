@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Confirmation{% endblock %}
+
+{% block content %}
+<style>
+  .confirmation-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+  }
+
+  .confirmation-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: none;
+    margin-bottom: 2rem;
+  }
+
+  .confirmation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .confirmation-card .card-header {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+    padding: 1.5rem;
+  }
+
+  .booking-details {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+  }
+
+  .detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .detail-item:last-child {
+    border-bottom: none;
+  }
+
+  .next-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .step-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+  }
+
+  .step-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .step-icon {
+    font-size: 2.5rem;
+    color: #28a745;
+    margin-bottom: 1rem;
+  }
+
+  .step-title {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #2c3e50;
+  }
+
+  .btn-success-large {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    width: 100%;
+  }
+
+  .btn-success-large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+  }
+
+  .btn-secondary-large {
+    background: linear-gradient(135deg, #6c757d, #495057);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    width: 100%;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .btn-secondary-large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+    color: white;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    .confirmation-page {
+      padding: 1rem;
+    }
+    
+    .confirmation-card {
+      margin-bottom: 1rem;
+    }
+    
+    .next-steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="container py-5 confirmation-page">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-4">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        <h1 class="h2 mb-3 mt-3">Booking Request Submitted!</h1>
+        <p class="lead text-muted">Your hotel booking request has been received successfully.</p>
+      </div>
+      
+      <div class="card border-0 shadow-sm confirmation-card">
+        <div class="card-header bg-success text-white text-center">
+          <h4 class="mb-0">Booking Confirmation</h4>
+        </div>
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <h5 class="mb-3">Thank you for choosing {{ booking.hotel.name }}!</h5>
+            <p>Our team will contact you shortly to confirm your reservation and provide payment instructions.</p>
+          </div>
+          
+          <div class="booking-details mb-4">
+            <h5 class="mb-3">Booking Details</h5>
+            <div class="detail-item">
+              <span>Booking ID</span>
+              <span class="fw-bold">#{{ booking.id }}</span>
+            </div>
+            <div class="detail-item">
+              <span>Hotel</span>
+              <span class="fw-bold">{{ booking.hotel.name }}</span>
+            </div>
+            <div class="detail-item">
+              <span>Guest Name</span>
+              <span>{{ booking.guest_name }}</span>
+            </div>
+            <div class="detail-item">
+              <span>Check-in Date</span>
+              <span>{{ booking.check_in_date }}</span>
+            </div>
+            <div class="detail-item">
+              <span>Check-out Date</span>
+              <span>{{ booking.check_out_date }}</span>
+            </div>
+            <div class="detail-item">
+              <span>Duration</span>
+              <span>{{ booking.get_nights_count }} night{{ booking.get_nights_count|pluralize }}</span>
+            </div>
+            <div class="detail-item">
+              <span>Guests</span>
+              <span>{{ booking.number_of_guests }} guest{{ booking.number_of_guests|pluralize }}</span>
+            </div>
+            <div class="detail-item">
+              <span>Rooms</span>
+              <span>{{ booking.number_of_rooms }} room{{ booking.number_of_rooms|pluralize }}</span>
+            </div>
+            <div class="detail-item">
+              <span>Total Amount</span>
+              <span class="fw-bold text-success">₹{{ booking.total_amount|floatformat:0 }}</span>
+            </div>
+            <div class="detail-item">
+              <span>Booking Status</span>
+              <span class="badge bg-warning">Pending Confirmation</span>
+            </div>
+          </div>
+          
+          <div class="next-steps">
+            <div class="step-card">
+              <div class="step-icon text-center">
+                <i class="bi bi-calendar-check"></i>
+              </div>
+              <h6 class="step-title text-center">Confirmation Call</h6>
+              <p class="text-muted small text-center">Our coordinator will contact you within 24 hours to confirm your booking.</p>
+            </div>
+            
+            <div class="step-card">
+              <div class="step-icon text-center">
+                <i class="bi bi-currency-exchange"></i>
+              </div>
+              <h6 class="step-title text-center">Payment Instructions</h6>
+              <p class="text-muted small text-center">We'll provide payment options and secure payment links via email.</p>
+            </div>
+            
+            <div class="step-card">
+              <div class="step-icon text-center">
+                <i class="bi bi-building"></i>
+              </div>
+              <h6 class="step-title text-center">Hotel Confirmation</h6>
+              <p class="text-muted small text-center">Once payment is received, you'll receive a confirmation from the hotel.</p>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <a href="{% url 'hotels:detail' booking.hotel.slug %}" class="btn-secondary-large">
+                  <i class="bi bi-building me-2"></i>Back to Hotel
+                </a>
+              </div>
+              <div class="col-md-6 mb-3">
+                <a href="{% url 'home' %}" class="btn-success-large">
+                  <i class="bi bi-house me-2"></i>Go to Home
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alert alert-info d-flex align-items-center" role="alert">
+        <i class="bi bi-info-circle-fill me-2"></i>
+        <div>
+          <strong>Need Assistance?</strong> If you have any questions about your booking, please contact our support team at <a href="mailto:support@takeopinion.com">support@takeopinion.com</a> or call +91-9876543210.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

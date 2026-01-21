@@ -1,0 +1,7 @@
+{
+  "status": "commited",
+  "type": "backend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:8000/pyhon manage.py runserver",
+  "backendAuthType": "public"
+}

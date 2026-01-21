@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <div class="display-4 text-success mb-3">
+      <i class="bi bi-check-circle"></i>
+    </div>
+    <h1 class="h2 mb-3">Payment Successful!</h1>
+    <p class="mb-4">Your payment has been processed successfully. Your booking is now confirmed.</p>
+    <div class="alert alert-success d-inline-block border-0 shadow-sm">
+      <i class="bi bi-ticket-detailed me-2"></i>Payment Reference: <strong>TXN-{{ payment.id }}{{ payment.booking.id }}{{ payment.created_at|date:"YmdHis" }}</strong>
+    </div>
+  </div>
+  
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <h5 class="card-title mb-3">Payment Details</h5>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Booking:</strong> {{ booking.treatment.name }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Amount Paid:</strong> ₹{{ payment.amount }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Payment Status:</strong> 
+                  <span class="badge bg-success">Completed</span>
+                </li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Payment Date:</strong> {{ payment.created_at|date:"M d, Y" }}</li>
+              </ul>
+            </div>
+            <div class="col-md-4 text-md-end">
+              <div class="mb-3">
+                <i class="bi bi-credit-card display-6 text-primary"></i>
+              </div>
+              <div>
+                <span class="badge bg-primary">Payment Gateway</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card border-0 shadow-sm mt-4">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Next Steps</h5>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                  <div class="display-6 text-primary mb-3">
+                    <i class="bi bi-envelope"></i>
+                  </div>
+                  <h6 class="card-title">Confirmation Email</h6>
+                  <p class="card-text small mb-0">Check your email for detailed booking confirmation and next steps.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                  <div class="display-6 text-primary mb-3">
+                    <i class="bi bi-headset"></i>
+                  </div>
+                  <h6 class="card-title">Patient Coordinator</h6>
+                  <p class="card-text small mb-0">Your dedicated coordinator will contact you within 24 hours.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                  <div class="display-6 text-primary mb-3">
+                    <i class="bi bi-calendar-check"></i>
+                  </div>
+                  <h6 class="card-title">Appointment Schedule</h6>
+                  <p class="card-text small mb-0">We'll confirm your appointment dates and provide preparation guidelines.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-4 text-center">
+        <a href="/" class="btn btn-primary btn-lg">
+          <i class="bi bi-house me-2"></i>Back to Home
+        </a>
+        <a href="{% url 'contact' %}" class="btn btn-outline-primary btn-lg ms-2">
+          <i class="bi bi-headset me-2"></i>Contact Support
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

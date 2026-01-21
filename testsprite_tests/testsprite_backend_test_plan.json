@@ -1,0 +1,42 @@
+[
+  {
+    "id": "TC001",
+    "title": "user authentication flow",
+    "description": "Test the complete user authentication process including registration, login, and secure data handling for both patient and doctor accounts to ensure no errors occur and data is protected."
+  },
+  {
+    "id": "TC002",
+    "title": "appointment booking system",
+    "description": "Verify that the booking system accurately schedules appointments with the correct treatment, doctor, and time slots, including optional video consultation support."
+  },
+  {
+    "id": "TC003",
+    "title": "accommodation booking functionality",
+    "description": "Test accommodation booking to ensure correct room tiers, pricing, and availability are reflected and bookings are properly linked to hospital locations."
+  },
+  {
+    "id": "TC004",
+    "title": "payment processing with discounts",
+    "description": "Validate secure payment processing through Stripe and Razorpay gateways, ensuring the 15% platform discount is correctly applied to all bookings."
+  },
+  {
+    "id": "TC005",
+    "title": "content management operations",
+    "description": "Test content management features including creation, editing, and deletion of blogs and user feedback to ensure no data loss and proper functionality."
+  },
+  {
+    "id": "TC006",
+    "title": "search functionality accuracy",
+    "description": "Verify that the search functionality returns accurate and relevant results across treatments, doctors, hospitals, and content entities."
+  },
+  {
+    "id": "TC007",
+    "title": "platform performance under load",
+    "description": "Test the platform's ability to support concurrent users without performance degradation, ensuring stability and responsiveness."
+  },
+  {
+    "id": "TC008",
+    "title": "medical reports access control",
+    "description": "Ensure that medical reports and consultation data are accessible only to authorized users, maintaining privacy and security."
+  }
+]

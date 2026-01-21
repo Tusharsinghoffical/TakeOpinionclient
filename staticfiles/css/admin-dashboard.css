@@ -1,0 +1,302 @@
+/* Admin Dashboard Specific Styles */
+
+.admin-dashboard {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.admin-dashboard h1, .admin-dashboard h2, .admin-dashboard h3, .admin-dashboard h4, .admin-dashboard h5, .admin-dashboard h6 {
+  font-weight: 600;
+}
+
+.admin-dashboard .card {
+  border-radius: 10px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  transition: all 0.3s ease;
+}
+
+.admin-dashboard .card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.admin-dashboard .card-header {
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  font-weight: 600;
+  padding: 15px 20px;
+  border-radius: 10px 10px 0 0 !important;
+}
+
+.admin-dashboard .stat-card {
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: none;
+  height: 100%;
+}
+
+.admin-dashboard .stat-card .card-body {
+  padding: 20px;
+}
+
+.admin-dashboard .stat-card i {
+  font-size: 2.5rem;
+  opacity: 0.8;
+}
+
+.admin-dashboard .bi {
+  font-size: 1.5rem;
+}
+
+.admin-dashboard .table th {
+  border-top: none;
+  font-weight: 600;
+  color: #495057;
+  padding: 1rem;
+}
+
+.admin-dashboard .table td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.admin-dashboard .table-hover tbody tr:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.admin-dashboard .btn {
+  border-radius: 5px;
+  font-weight: 500;
+  padding: 0.375rem 0.75rem;
+}
+
+.admin-dashboard .btn-outline-primary {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.admin-dashboard .btn-outline-primary:hover {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.admin-dashboard .badge {
+  font-size: 0.75em;
+  padding: 0.5em 0.75em;
+  border-radius: 5px;
+}
+
+.admin-dashboard .user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6c757d;
+  flex-shrink: 0;
+}
+
+.admin-dashboard .dropdown-toggle::after {
+  display: none;
+}
+
+/* Quick Actions Card */
+.admin-dashboard .card-body .btn {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  justify-content: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.admin-dashboard .card-body .btn:last-child {
+  margin-bottom: 0;
+}
+
+.admin-dashboard .card-body .btn i {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+/* Content Management Cards */
+.admin-dashboard .card h6 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.admin-dashboard .card .fs-1 {
+  font-size: 2rem !important;
+}
+
+/* Welcome section */
+.admin-dashboard .welcome-section {
+  margin-bottom: 1.5rem;
+}
+
+.admin-dashboard .welcome-section h1 {
+  font-size: 1.75rem;
+}
+
+/* Stats cards adjustments */
+.admin-dashboard .stats-row {
+  margin-bottom: 1.5rem;
+}
+
+/* Tables */
+.admin-dashboard .table-responsive {
+  border-radius: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .admin-dashboard .col-md-3 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 992px) {
+  .admin-dashboard .col-lg-8,
+  .admin-dashboard .col-lg-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .admin-dashboard .col-lg-4 {
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 15px;
+  }
+  
+  .admin-dashboard .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .admin-dashboard .col-md-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .admin-dashboard .card {
+    margin-bottom: 15px;
+  }
+  
+  .admin-dashboard .stat-card {
+    margin-bottom: 15px;
+  }
+  
+  .admin-dashboard .d-flex {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  
+  .admin-dashboard .d-flex .btn {
+    margin-top: 10px;
+  }
+  
+  .admin-dashboard .welcome-section {
+    text-align: center;
+  }
+  
+  .admin-dashboard .welcome-section .d-flex {
+    align-items: center !important;
+  }
+  
+  .admin-dashboard .welcome-section .btn {
+    margin-top: 10px;
+    align-self: center;
+  }
+  
+  /* User table adjustments */
+  .admin-dashboard .table td,
+  .admin-dashboard .table th {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .admin-dashboard .user-info {
+    min-width: 120px;
+  }
+  
+  /* Quick actions */
+  .admin-dashboard .card-body .btn {
+    padding: 0.75rem;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .admin-dashboard .card-body .btn i {
+    display: none;
+  }
+  
+  /* Content management cards */
+  .admin-dashboard .card .fs-1 {
+    font-size: 1.5rem !important;
+  }
+  
+  .admin-dashboard .card h6 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-dashboard .card-header .d-flex {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  
+  .admin-dashboard .card-header .btn {
+    margin-top: 10px;
+  }
+  
+  .admin-dashboard .table-responsive {
+    font-size: 0.85rem;
+  }
+  
+  .admin-dashboard .table td,
+  .admin-dashboard .table th {
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .admin-dashboard .badge {
+    font-size: 0.65em;
+    padding: 0.4em 0.6em;
+  }
+  
+  .admin-dashboard .user-avatar {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+  }
+  
+  .admin-dashboard .fw-semibold {
+    font-size: 0.9rem;
+  }
+  
+  .admin-dashboard .small {
+    font-size: 0.75rem;
+  }
+  
+  .admin-dashboard h1,
+  .admin-dashboard h2,
+  .admin-dashboard h3 {
+    font-size: 1.5rem;
+  }
+  
+  .admin-dashboard h5 {
+    font-size: 1.1rem;
+  }
+  
+  .admin-dashboard {
+    padding: 10px;
+  }
+}

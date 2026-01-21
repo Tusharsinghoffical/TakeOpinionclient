@@ -1,0 +1,1005 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+/* Home Page Specific Styles */
+:root {
+  /* Enhanced color palette for better visibility */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #ddd;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+}
+
+/* Global home page styles */
+.home-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background: #0d6efd;
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-large {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #ffffff;
+  color: #e74c3c;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary-large {
+  background-color: transparent;
+  color: var(--light-text);
+  border: 2px solid var(--light-text);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary-large:hover {
+  background-color: #ffffff;
+  color: #3498db;
+  transform: translateY(-3px);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #7f8c8d;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Core Services Section */
+.core-services-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.service-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.service-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.service-description {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+.service-link {
+  display: inline-block;
+  color: var(--primary-medium);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.5rem 1.5rem;
+  border: 2px solid var(--primary-medium);
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.service-link:hover {
+  background-color: var(--primary-medium);
+  color: white !important;
+}
+
+/* WhatsApp Section */
+.whatsapp-section {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.whatsapp-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.whatsapp-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.whatsapp-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+  background-color: #25D366;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background-color: #075E54;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-consultation {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-consultation:hover {
+  background-color: #25D369;
+  color: rgb(255, 255, 255);
+  transform: translateY(-3px);
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.testimonial-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.testimonial-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.testimonial-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--success);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.testimonial-content {
+  padding: 1.5rem;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.author-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-info h4 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--primary-dark);
+}
+
+.author-info p {
+  margin: 0;
+  color: #7f8c8d;
+}
+
+.testimonial-text {
+  color: #555;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating-stars {
+  color: #f39c12;
+}
+
+.rating-date {
+  color: #95a5a6;
+  font-size: 0.9rem;
+}
+
+.btn-testimonials {
+  display: block;
+  margin: 3rem auto 0;
+  background-color: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-testimonials:hover {
+  background-color: var(--light-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgb(249, 248, 248);
+}
+
+/* Multi Speciality Section */
+.multi-speciality-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.treatment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.treatment-tag {
+  background-color: white;
+  color: var(--primary-medium);
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 2px solid var(--primary-medium);
+  transition: all 0.3s ease;
+}
+
+.treatment-tag:hover {
+  background-color: var(--primary-medium);
+  color: white !important;
+}
+
+.treatments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.treatment-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.treatment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.treatment-icon {
+  height: 100px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.treatment-icon i {
+  font-size: 2rem;
+  color: var(--primary-medium);
+}
+
+.treatment-body {
+  padding: 1rem;
+}
+
+.treatment-type {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin-bottom: 0.25rem;
+}
+
+.treatment-name {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.btn-view-all {
+  display: block;
+  margin: 2rem auto 0;
+  background-color: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-view-all:hover {
+  background-color: #ffffff;
+  color: #3498db;
+  transform: translateY(-3px);
+}
+
+/* Why Choose Section */
+.why-choose-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.why-choose-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.why-choose-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.why-choose-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.why-choose-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.why-choose-description {
+  color: #7f8c8d;
+}
+
+/* Top Hospitals/Doctors Section */
+.top-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.top-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.top-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.top-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.top-image {
+  height: 160px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.top-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #f1c40f;
+  color: #2c3e50;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.top-body {
+  padding: 1.5rem;
+}
+
+.top-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.top-specialty {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.top-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.top-rating i {
+  color: #f39c12;
+}
+
+.top-rating span {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* How It Works Section */
+.how-it-works-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.how-it-works-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.how-it-works-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.how-it-works-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+}
+
+.how-it-works-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.how-it-works-description {
+  color: #7f8c8d;
+}
+
+/* Latest Blogs Section */
+.blogs-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.blogs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.blog-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.blog-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.blog-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: var(--primary-medium);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.blog-date {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--primary-dark);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.blog-body {
+  padding: 1.5rem;
+}
+
+.blog-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--primary-dark);
+}
+
+.blog-excerpt {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons, .whatsapp-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary-large, .btn-secondary-large, .btn-whatsapp, .btn-consultation {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+</style>
+
+<div class="home-page">
+  <div class="container-fluid py-5">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-content">
+        <h1 class="hero-title">Doctor Profile</h1>
+        <p class="hero-subtitle">Manage your personal and professional information, and monitor your patient appointments and reviews.</p>
+        <div class="hero-buttons">
+          <a href="{% url 'accounts:logout' %}" class="btn-primary-large">
+            <i class="bi bi-box-arrow-right me-2"></i> Logout
+          </a>
+          <a href="{% url 'doctor_media_manage' %}" class="btn-secondary-large">
+            <i class="bi bi-image me-2"></i> Manage Media
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="row">
+        <!-- Profile Information -->
+        <div class="col-lg-4">
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body text-center">
+              <div class="mb-4">
+                <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
+                  <i class="bi bi-person-badge fs-1 text-muted"></i>
+                </div>
+              </div>
+              <h4 class="mb-1">Dr. {{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h4>
+              <p class="mb-3 text-muted">{{ doctor_profile.specialization|default:"Medical Specialist" }}</p>
+              <div class="d-grid gap-2">
+                <a href="{% url 'doctor_media_manage' %}" class="btn btn-outline-primary">
+                  <i class="bi bi-image me-2"></i>Manage Media
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Account Information</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Username</span>
+                <span>{{ user_profile.user.username }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Member Since</span>
+                <span>{{ user_profile.user.date_joined|date:"M d, Y" }}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Last Updated</span>
+                <span>{{ user_profile.updated_at|date:"M d, Y" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-lg-8">
+          <!-- Today's Appointments -->
+          <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Today's Appointments</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Patient</th>
+                      <th>Time</th>
+                      <th>Treatment</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for appointment in todays_appointments %}
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="bg-light rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-person text-muted"></i>
+                          </div>
+                          <div>
+                            <div class="fw-semibold">{{ appointment.patient.user.get_full_name|default:appointment.patient.user.username }}</div>
+                            <div class="small text-muted">ID: PT-{{ appointment.patient.id }}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>{{ appointment.preferred_date|date:"g:i A" }}</td>
+                      <td>{{ appointment.treatment.name }}</td>
+                      <td>
+                        {% if appointment.status == 'pending' %}
+                          <span class="badge bg-warning">Pending</span>
+                        {% elif appointment.status == 'confirmed' %}
+                          <span class="badge bg-success">Confirmed</span>
+                        {% elif appointment.status == 'in_progress' %}
+                          <span class="badge bg-info">In Progress</span>
+                        {% elif appointment.status == 'completed' %}
+                          <span class="badge bg-secondary">Completed</span>
+                        {% elif appointment.status == 'cancelled' %}
+                          <span class="badge bg-danger">Cancelled</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-outline-primary">View</button>
+                      </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                      <td colspan="5" class="text-center py-4">
+                        <i class="bi bi-calendar-x text-muted fs-1 d-block mb-2"></i>
+                        <p class="mb-0 text-muted">No appointments scheduled for today</p>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Profile Management -->
+          <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <ul class="nav nav-tabs card-header-tabs" id="profileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab">
+                    <i class="bi bi-person me-2"></i>Personal Info
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="professional-tab" data-bs-toggle="tab" data-bs-target="#professional" type="button" role="tab">
+                    <i class="bi bi-briefcase me-2"></i>Professional Info
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="public-profile-tab" data-bs-toggle="tab" data-bs-target="#public-profile" type="button" role="tab">
+                    <i class="bi bi-globe me-2"></i>Public Profile
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="tab-content" id="profileTabContent">
+                  <div class="tab-pane fade show active" id="personal" role="tabpanel">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user_profile.user.first_name }}" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user_profile.user.last_name }}" required>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user_profile.user.email }}" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phone" name="phone" value="{{ user_profile.phone }}">
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <label for="address" class="form-label">Address</label>
+                      <textarea class="form-control" id="address" name="address" rows="3">{{ user_profile.address }}</textarea>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" name="city" value="{{ user_profile.city }}">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="profile_picture" class="form-label">Profile Picture URL</label>
+                        <input type="url" class="form-control" id="profile_picture" name="profile_picture" value="{{ user_profile.profile_picture }}" placeholder="https://example.com/image.jpg">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="tab-pane fade" id="professional" role="tabpanel">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="specialization" class="form-label">Specialization</label>
+                        <input type="text" class="form-control" id="specialization" name="specialization" value="{{ doctor_profile.specialization|default:'' }}">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="license_number" class="form-label">License Number</label>
+                        <input type="text" class="form-control" id="license_number" name="license_number" value="{{ doctor_profile.license_number|default:'' }}">
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <label for="years_of_experience" class="form-label">Years of Experience</label>
+                      <input type="number" class="form-control" id="years_of_experience" name="years_of_experience" value="{{ doctor_profile.years_of_experience|default:0 }}" min="0">
+                    </div>
+                    
+                    <div class="mb-3">
+                      <label for="bio" class="form-label">Professional Bio</label>
+                      <textarea class="form-control" id="bio" name="bio" rows="4" placeholder="Tell us about your professional background, expertise, and achievements...">{{ doctor_profile.bio|default:'' }}</textarea>
+                    </div>
+                  </div>
+                  
+                  <div class="tab-pane fade" id="public-profile" role="tabpanel">
+                    <div class="mb-3">
+                      <label for="about" class="form-label">About You</label>
+                      <textarea class="form-control" id="about" name="about" rows="4">{{ doctor.about|default:'' }}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <label for="key_points" class="form-label">Key Points (Highlights)</label>
+                      <textarea class="form-control" id="key_points" name="key_points" rows="3" placeholder="Enter key highlights separated by commas">{{ doctor.key_points|default:'' }}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <label for="education" class="form-label">Education</label>
+                      <textarea class="form-control" id="education" name="education" rows="3">{{ doctor.education|default:'' }}</textarea>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="experience_years" class="form-label">Total Experience Years</label>
+                        <input type="number" class="form-control" id="experience_years" name="experience_years" value="{{ doctor.experience_years|default:0 }}" min="0">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="medical_license_number" class="form-label">Medical License Number</label>
+                        <input type="text" class="form-control" id="medical_license_number" name="medical_license_number" value="{{ doctor.medical_license_number|default:'' }}">
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="languages_spoken" class="form-label">Languages Spoken</label>
+                        <input type="text" class="form-control" id="languages_spoken" name="languages_spoken" value="{{ doctor.languages_spoken|default:'' }}" placeholder="English, Hindi, Spanish">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="website" class="form-label">Website</label>
+                        <input type="url" class="form-control" id="website" name="website" value="{{ doctor.website|default:'' }}" placeholder="https://your-website.com">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="d-flex justify-content-end mt-4">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save me-2"></i>Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+</script>
+{% endblock %}

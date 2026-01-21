@@ -1,0 +1,70 @@
+/* Medical History Specific Styles */
+.medical-history-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+.medical-history-card {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  border: none;
+}
+
+.medical-history-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.medical-history-card .card-header {
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  color: white;
+  border-radius: 15px 15px 0 0 !important;
+  border: none;
+}
+
+.medical-history-nav .nav-link {
+  font-weight: 600;
+  color: #6c757d;
+  border: none;
+}
+
+.medical-history-nav .nav-link.active {
+  color: #0d6efd;
+  border-bottom: 3px solid #0d6efd;
+  border-radius: 0;
+}
+
+.medical-history-table th {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.medical-history-table td {
+  vertical-align: middle;
+}
+
+.badge-status-active {
+  background-color: #198754;
+}
+
+.badge-status-completed {
+  background-color: #6c757d;
+}
+
+.badge-status-pending {
+  background-color: #ffc107;
+}
+
+@media (max-width: 768px) {
+  .medical-history-page {
+    padding: 1rem;
+  }
+  
+  .medical-history-card {
+    margin-bottom: 1rem;
+  }
+}

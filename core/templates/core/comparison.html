@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% block title %}Treatment Selection - TakeOpinion{% endblock %}
+
+{% block content %}
+<style>
+.comparison-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.comparison-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.comparison-title {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.comparison-subtitle {
+  font-size: 1.2rem;
+  color: #6c757d;
+  margin-bottom: 2rem;
+}
+
+.comparison-form {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 250px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #2980b9;
+}
+
+.btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.comparison-results {
+  margin-top: 2rem;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.results-title {
+  font-size: 2rem;
+  color: #2c3e50;
+}
+
+.hospital-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.hospital-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.hospital-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+}
+
+.hospital-name {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.hospital-location {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+.hospital-rating {
+  color: #f39c12;
+  margin-bottom: 1rem;
+}
+
+.hospital-price {
+  font-weight: 700;
+  color: #27ae60;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.select-hospital-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.select-hospital-btn:hover {
+  background: #219653;
+}
+
+.instructions {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
+}
+
+.instructions i {
+  font-size: 3rem;
+  color: #3498db;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .form-group {
+    width: 100%;
+  }
+  
+  .hospital-list {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<div class="comparison-container">
+  <div class="comparison-header">
+    <h1 class="comparison-title">Treatment Selection</h1>
+    <p class="comparison-subtitle">Select a treatment to see available hospitals, then choose a hospital to proceed</p>
+  </div>
+  
+  <div class="comparison-form">
+    <form id="treatmentForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="treatment" class="form-label">Select a Treatment</label>
+          <select id="treatment" class="form-select" name="treatment">
+            <option value="">-- Select a treatment --</option>
+            {% for treatment in treatments %}
+            <option value="{{ treatment.id }}" {% if selected_treatment and selected_treatment.id == treatment.id %}selected{% endif %}>{{ treatment.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <button type="submit" class="btn" id="showHospitalsBtn">Show Hospitals</button>
+      </div>
+    </form>
+  </div>
+  
+  {% if show_hospitals %}
+  <div class="comparison-results">
+    <div class="results-header">
+      <h2 class="results-title">Hospitals Offering {{ selected_treatment.name }}</h2>
+      <p>Select a hospital to proceed with this treatment</p>
+    </div>
+    
+    <div class="hospital-list">
+      {% for hospital in hospitals %}
+      <div class="hospital-card" onclick="selectHospital({{ hospital.id }})">
+        <div class="hospital-name">{{ hospital.name }}</div>
+        <div class="hospital-location">{{ hospital.city }}</div>
+        <div class="hospital-rating">
+          {% for i in "12345" %}
+            {% if forloop.counter <= hospital.rating|floatformat:"0"|add:"0" %}
+              <i class="bi bi-star-fill text-warning"></i>
+            {% else %}
+              <i class="bi bi-star text-muted"></i>
+            {% endif %}
+          {% endfor %}
+          <span class="ms-1">{{ hospital.rating }}</span>
+        </div>
+        <div class="hospital-price">₹{{ hospital.price|floatformat:"0" }}</div>
+        <button type="button" class="select-hospital-btn">Select This Hospital</button>
+        <form id="hospitalForm-{{ hospital.id }}" method="GET" style="display: none;">
+          <input type="hidden" name="treatment" value="{{ selected_treatment.id }}">
+          <input type="hidden" name="hospital" value="{{ hospital.id }}">
+        </form>
+      </div>
+      {% empty %}
+      <div class="text-center">
+        <p>No hospitals found for this treatment.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <div class="instructions">
+    <i class="bi bi-arrow-down-circle"></i>
+    <h3>Select a Treatment</h3>
+    <p>Choose a treatment from the dropdown above to see hospitals that offer it.</p>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const treatmentForm = document.getElementById('treatmentForm');
+  
+  treatmentForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get selected treatment
+    const treatment = document.getElementById('treatment').value;
+    
+    // Redirect to show hospitals for this treatment
+    if (treatment) {
+      window.location.href = '?treatment=' + treatment;
+    } else {
+      alert('Please select a treatment');
+    }
+  });
+});
+
+function selectHospital(hospitalId) {
+  // Submit the hidden form for this hospital
+  document.getElementById('hospitalForm-' + hospitalId).submit();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="section-title mb-4 text-center">
+        <i class="bi bi-shield-lock"></i>
+        <h1 class="h2 mb-0">Privacy Policy</h1>
+      </div>
+      
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <p class="text-muted mb-0">Last updated: {{ last_updated|default:"September 24, 2025" }}</p>
+          </div>
+          
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-info-circle me-2"></i>Introduction
+            </h4>
+            <p>TakeOpinion ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.</p>
+            <p class="mb-0">We respect your privacy and are committed to protecting your personal data in accordance with applicable data protection laws, including the General Data Protection Regulation (GDPR) and other relevant legislation.</p>
+          </div>
+          
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-collection me-2"></i>Information We Collect
+            </h4>
+            <p>We may collect personal information that you voluntarily provide to us when you register on the site, express an interest in obtaining information about us or our products and services, participate in activities on the site, or otherwise contact us.</p>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="card h-100 border-primary">
+                  <div class="card-body">
+                    <h5 class="card-title text-primary">Personal Information</h5>
+                    <ul class="mb-0">
+                      <li>Name</li>
+                      <li>Email address</li>
+                      <li>Phone number</li>
+                      <li>Date of birth</li>
+                      <li>Address</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100 border-success">
+                  <div class="card-body">
+                    <h5 class="card-title text-success">Medical Information</h5>
+                    <ul class="mb-0">
+                      <li>Health conditions</li>
+                      <li>Treatment preferences</li>
+                      <li>Medical history</li>
+                      <li>Prescription information</li>
+                      <li>Travel requirements</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-gear me-2"></i>How We Use Your Information
+            </h4>
+            <p>We use your information for various purposes, including:</p>
+            <div class="row">
+              <div class="col-lg-6">
+                <ul>
+                  <li>To provide and maintain our services</li>
+                  <li>To notify you about changes to our services</li>
+                  <li>To allow you to participate in interactive features</li>
+                  <li>To provide customer support</li>
+                  <li>To gather analysis or valuable information</li>
+                </ul>
+              </div>
+              <div class="col-lg-6">
+                <ul>
+                  <li>To monitor the usage of our service</li>
+                  <li>To detect, prevent, and address technical issues</li>
+                  <li>To send you updates and newsletters</li>
+                  <li>To process your bookings and payments</li>
+                  <li>To improve our website and services</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-shield-check me-2"></i>Data Security
+            </h4>
+            <p>We implement appropriate technical and organizational security measures to protect the security of your personal data. Our security measures include:</p>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="card border-info h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-lock-fill text-info fs-1 mb-3"></i>
+                    <h5 class="card-title">Encryption</h5>
+                    <p class="card-text">All data transmission is encrypted using industry-standard SSL/TLS protocols.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="card border-info h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-server text-info fs-1 mb-3"></i>
+                    <h5 class="card-title">Secure Storage</h5>
+                    <p class="card-text">Your data is stored in secure servers with restricted access controls.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="card border-info h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-person-check-fill text-info fs-1 mb-3"></i>
+                    <h5 class="card-title">Access Control</h5>
+                    <p class="card-text">Only authorized personnel have access to your personal information.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="alert alert-warning mt-3">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <strong>Important:</strong> While we strive to protect your personal information, please note that no method of transmission over the Internet or method of electronic storage is 100% secure.
+            </div>
+          </div>
+          
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-person-lines-fill me-2"></i>Your Data Protection Rights
+            </h4>
+            <p>Under applicable data protection laws, you have certain rights regarding your personal data:</p>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="card border-success h-100">
+                  <div class="card-body">
+                    <h5 class="card-title text-success">Your Rights</h5>
+                    <ul class="mb-0">
+                      <li><strong>Right to Access:</strong> Request copies of your personal data</li>
+                      <li><strong>Right to Rectification:</strong> Request correction of inaccurate data</li>
+                      <li><strong>Right to Erasure:</strong> Request deletion of your personal data</li>
+                      <li><strong>Right to Restrict Processing:</strong> Limit how we process your data</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card border-success h-100">
+                  <div class="card-body">
+                    <h5 class="card-title text-success">Additional Rights</h5>
+                    <ul class="mb-0">
+                      <li><strong>Right to Data Portability:</strong> Obtain and reuse your data</li>
+                      <li><strong>Right to Object:</strong> Object to processing of your personal data</li>
+                      <li><strong>Rights Related to Automated Decision-Making:</strong> Not to be subject to automated decisions</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="mt-3">To exercise any of these rights, please contact us using the information provided in the "Contact Us" section below.</p>
+          </div>
+          
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-arrow-repeat me-2"></i>Changes to This Privacy Policy
+            </h4>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by:</p>
+            <ul>
+              <li>Posting the new Privacy Policy on this page</li>
+              <li>Updating the "Last updated" date at the top of this page</li>
+              <li>Sending you an email notification (if we have your email address)</li>
+              <li>Notifying you through our website or application</li>
+            </ul>
+            <p class="mb-0">We encourage you to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+          </div>
+          
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-envelope me-2"></i>Contact Us
+            </h4>
+            <p>If you have any questions about this Privacy Policy, please contact us:</p>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="card border-primary h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-envelope-fill text-primary fs-1 mb-3"></i>
+                    <h5 class="card-title">Email</h5>
+                    <p class="card-text mb-0">privacy@takeopinion.com</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="card border-primary h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-telephone-fill text-primary fs-1 mb-3"></i>
+                    <h5 class="card-title">Phone</h5>
+                    <p class="card-text mb-0">+1 (555) 123-4567</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="card border-primary h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-geo-alt-fill text-primary fs-1 mb-3"></i>
+                    <h5 class="card-title">Mail</h5>
+                    <p class="card-text mb-0">TakeOpinion, 123 Medical Plaza, Health City, HC 12345</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="text-center mt-5 pt-4 border-top">
+            <p class="mb-0 text-muted">© 2025 TakeOpinion. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

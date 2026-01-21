@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="section-title mb-4">
+        <i class="bi bi-credit-card"></i>
+        <h1 class="h2 mb-0">Secure Payment</h1>
+      </div>
+      
+      <p class="mb-4">Complete your payment using our secure Razorpay payment gateway.</p>
+      
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <h5 class="card-title mb-3">Booking Summary</h5>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Treatment:</strong> {{ booking.treatment.name }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Hospital:</strong> {{ booking.preferred_hospital.name|default:"To be assigned" }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Doctor:</strong> {{ booking.preferred_doctor.name|default:"To be assigned" }}</li>
+                <li class="mb-2"><i class="bi bi-chevron-right text-primary me-2"></i><strong>Amount:</strong> <span class="h5 text-primary">₹{{ amount }}</span></li>
+              </ul>
+            </div>
+            <div class="col-md-4 text-md-end">
+              <div class="mb-3">
+                <i class="bi bi-shield-lock display-6 text-primary"></i>
+              </div>
+              <div>
+                <span class="badge bg-success">100% Secure</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card border-0 shadow-sm mt-4">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Payment Method</h5>
+          
+          <!-- Razorpay Checkout Button -->
+          <div class="text-center py-4">
+            <button id="rzp-button1" class="btn btn-primary btn-lg">
+              <i class="bi bi-credit-card me-2"></i>Pay ₹{{ amount }} with Razorpay
+            </button>
+            <p class="mt-3 text-muted small">
+              <i class="bi bi-shield-lock me-1"></i>Powered by Razorpay - India's #1 Payment Gateway
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-4 text-center">
+        <a href="{% url 'bookings:booking_page' %}" class="btn btn-outline-primary">
+          <i class="bi bi-arrow-left me-2"></i>Back to Booking
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Razorpay Checkout Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.getElementById('rzp-button1').onclick = function(e){
+  // First, create a Razorpay order on the server
+  fetch("{% url 'create_razorpay_order' %}", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: JSON.stringify({
+      'booking_id': '{{ booking.id }}',
+      'amount': '{{ amount }}'
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      alert('Failed to create payment order: ' + data.error);
+      return;
+    }
+    
+    // Initialize Razorpay checkout with the created order
+    var options = {
+      "key": data.razorpay_key, // Enter the Key ID generated from the Dashboard
+      "amount": data.amount_in_paise || data.amount * 100, // Amount in currency subunits
+      "currency": data.currency,
+      "name": "TakeOpinion",
+      "description": "Payment for {{ booking.treatment.name }}",
+      "image": "https://example.com/your_logo",
+      "order_id": data.order_id, // This is the order ID from the server
+      "handler": function (response){
+        // Verify payment on server
+        fetch("{% url 'verify_payment' %}", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: JSON.stringify({
+            'razorpay_payment_id': response.razorpay_payment_id,
+            'razorpay_order_id': response.razorpay_order_id,
+            'razorpay_signature': response.razorpay_signature
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // Redirect to success page
+            window.location.href = "{% url 'payment_success' %}?order_id=" + response.razorpay_order_id;
+          } else {
+            // Redirect to failure page
+            window.location.href = "{% url 'payment_failure' %}?order_id=" + response.razorpay_order_id;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Redirect to failure page
+          window.location.href = "{% url 'payment_failure' %}?order_id=" + response.razorpay_order_id;
+        });
+      },
+      "prefill": {
+        {% if user.is_authenticated %}
+        "name": "{{ user.get_full_name|default:user.username }}",
+        "email": "{{ user.email }}",
+        {% endif %}
+        "contact": ""
+      },
+      "notes": {
+        "booking_id": "{{ booking.id }}",
+        "treatment": "{{ booking.treatment.name }}"
+      },
+      "theme": {
+        "color": "#007bff"
+      }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function (response){
+      // Redirect to failure page
+      window.location.href = "{% url 'payment_failure' %}?order_id=" + response.error.metadata.order_id;
+    });
+    rzp1.open();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Failed to initiate payment. Please try again.');
+  });
+  
+  e.preventDefault();
+}
+</script>
+{% endblock %}

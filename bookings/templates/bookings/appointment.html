@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .appointment-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+
+  .appointment-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    border: none;
+    background: white;
+  }
+
+  .appointment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .appointment-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .appointment-form .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .appointment-form .form-control, 
+  .appointment-form .form-select {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+  }
+
+  .appointment-form .form-control:focus, 
+  .appointment-form .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .appointment-submit-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border: none;
+    width: 100%;
+  }
+
+  .appointment-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+  }
+
+  .section-title i {
+    color: #0d6efd;
+  }
+
+  .section-title h1 {
+    color: #2c3e50;
+    font-weight: 700;
+  }
+
+  .card-title {
+    color: #2c3e50;
+    font-weight: 600;
+  }
+
+  .success-message {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .success-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .appointment-page {
+      padding: 1rem;
+    }
+    
+    .appointment-card {
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+
+<div class="appointment-page">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="success-message">
+              <div class="success-icon">
+                <i class="bi bi-check-circle"></i>
+              </div>
+              <h2>Appointment Booked Successfully!</h2>
+              <p>{{ message }}</p>
+              <a href="{% url 'appointment_booking' %}" class="btn btn-light mt-3">
+                <i class="bi bi-calendar-plus me-2"></i>Book Another Appointment
+              </a>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <div class="section-title mb-4 text-center">
+          <i class="bi bi-calendar-check display-5 mb-3"></i>
+          <h1 class="h2 mb-0">Book Your Appointment</h1>
+        </div>
+        
+        <p class="mb-4 text-center lead">Schedule your medical appointment quickly and easily</p>
+        
+        <div class="card border-0 shadow-sm appointment-card">
+          <div class="card-header text-center">
+            <h5 class="mb-0">Appointment Details</h5>
+          </div>
+          <div class="card-body">
+            <form id="appointmentForm" class="appointment-form" method="POST">
+              {% csrf_token %}
+              
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Patient Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control form-control-lg" name="patient_name" required placeholder="Enter your full name">
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Phone Number <span class="text-danger">*</span></label>
+                  <input type="tel" class="form-control form-control-lg" name="phone" required placeholder="Enter your phone number">
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Email Address</label>
+                  <input type="email" class="form-control form-control-lg" name="email" placeholder="Enter your email address">
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Appointment Date <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control form-control-lg" name="appointment_date" required>
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Appointment Time <span class="text-danger">*</span></label>
+                  <select class="form-select form-control-lg" name="appointment_time" required>
+                    <option value="">Select Time</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="14:00">02:00 PM</option>
+                    <option value="15:00">03:00 PM</option>
+                    <option value="16:00">04:00 PM</option>
+                    <option value="17:00">05:00 PM</option>
+                  </select>
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Department <span class="text-danger">*</span></label>
+                  <select class="form-select form-control-lg" name="department" required>
+                    <option value="">Select Department</option>
+                    <option value="cardiology">Cardiology</option>
+                    <option value="neurology">Neurology</option>
+                    <option value="orthopedics">Orthopedics</option>
+                    <option value="pediatrics">Pediatrics</option>
+                    <option value="gynecology">Gynecology</option>
+                    <option value="dermatology">Dermatology</option>
+                    <option value="ophthalmology">Ophthalmology</option>
+                    <option value="dentistry">Dentistry</option>
+                  </select>
+                </div>
+                
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Doctor</label>
+                  <select class="form-select form-control-lg" name="doctor">
+                    <option value="">Any available doctor</option>
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}">Dr. {{ doctor.name }} ({{ doctor.specialization }})</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                
+                <div class="col-12">
+                  <label class="form-label fw-semibold">Reason for Appointment</label>
+                  <textarea class="form-control form-control-lg" name="reason" rows="3" placeholder="Briefly describe the reason for your appointment..."></textarea>
+                </div>
+                
+                <div class="col-12 mt-4">
+                  <button type="submit" class="btn btn-primary btn-lg appointment-submit-btn" id="submitAppointment">
+                    <i class="bi bi-calendar-check me-2"></i>Book Appointment
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <div class="text-center mt-4">
+          <a href="{% url 'home' %}" class="btn btn-outline-primary">
+            <i class="bi bi-house me-2"></i>Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Set minimum date to today
+  document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelector('input[name="appointment_date"]').min = today;
+    
+    // Form submission handler
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+      const submitBtn = document.getElementById('submitAppointment');
+      const originalText = submitBtn.innerHTML;
+      
+      // Show loading state
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Booking Appointment...';
+      submitBtn.disabled = true;
+    });
+  });
+</script>
+{% endblock %}

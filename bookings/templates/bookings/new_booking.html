@@ -1,0 +1,1758 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .new-booking-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
+
+  .booking-step {
+    display: none;
+  }
+
+  .booking-step.active {
+    display: block;
+  }
+
+  .step-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #e9ecef;
+    z-index: 1;
+  }
+
+  .step {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    flex: 1;
+  }
+
+  .step-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+    font-weight: bold;
+    border: 2px solid #e9ecef;
+  }
+
+  .step.active .step-circle {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+  }
+
+  .step.completed .step-circle {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+  }
+
+  .step-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+  }
+
+  .step.active .step-label {
+    color: #0d6efd;
+    font-weight: 600;
+  }
+
+  .step.completed .step-label {
+    color: #28a745;
+  }
+
+  .booking-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    border: none;
+  }
+
+  .booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .booking-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .booking-form .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .booking-form .form-control, 
+  .booking-form .form-select {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+  }
+
+  .booking-form .form-control:focus, 
+  .booking-form .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .booking-form .input-group-text {
+    background-color: #e7f1ff;
+    border: 1px solid #dee2e6;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+  }
+
+  .booking-form .form-control {
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .btn-nav {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-nav:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn-prev {
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+    color: white;
+  }
+
+  .btn-prev:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+  }
+
+  .btn-next {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border: none;
+    color: white;
+  }
+
+  .btn-next:hover {
+    background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border: none;
+    color: white;
+  }
+
+  .btn-submit:hover {
+    background: linear-gradient(135deg, #20c997, #28a745);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  }
+
+  .hospital-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .hospital-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .hospital-card.selected {
+    border: 2px solid #0d6efd;
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.2);
+  }
+
+  .room-option-card {
+    border-radius: 15px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+  }
+
+  .room-option-card:hover {
+    border-color: #0d6efd;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .room-option-card.selected {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.15);
+  }
+
+  .room-option-card .room-name {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+
+  .room-option-card .room-price {
+    font-weight: 700;
+    color: #0d6efd;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .room-option-card .room-description {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .room-option-card .room-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .room-option-card .room-feature {
+    background: #e9ecef;
+    color: #495057;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  .price-tag {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .section-title i {
+    color: #0d6efd;
+  }
+
+  .section-title h1 {
+    color: #2c3e50;
+    font-weight: 700;
+  }
+
+  .card-title {
+    color: #2c3e50;
+    font-weight: 600;
+  }
+
+  .form-text {
+    color: #6c757d;
+  }
+
+  .booking-summary-card {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+
+  .summary-section {
+    padding: 1rem 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .summary-section:last-child {
+    border-bottom: none;
+  }
+
+  .summary-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.75rem;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .summary-label {
+    color: #6c757d;
+  }
+
+  .summary-value {
+    font-weight: 500;
+  }
+
+  .cost-breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+    padding-left: 1rem;
+  }
+
+  .total-row {
+    border-top: 2px solid #e9ecef;
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    font-weight: 600;
+  }
+
+  .discount-badge {
+    background-color: #28a745;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .final-price {
+    color: #28a745;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .receipt-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 10px 10px 0 0;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .receipt-body {
+    padding: 1.5rem;
+  }
+
+  .receipt-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .receipt-section-title {
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .receipt-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+
+  .receipt-item:hover {
+    background-color: #f8f9fa;
+  }
+
+  .receipt-label {
+    color: #6c757d;
+    font-weight: 500;
+  }
+
+  .receipt-value {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .receipt-total {
+    background-color: #e7f1ff;
+    border: 2px solid #0d6efd;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .receipt-discount {
+    color: #28a745;
+    font-weight: 600;
+  }
+
+  .receipt-amenities-list {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .receipt-amenity-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #e9ecef;
+  }
+
+  .receipt-amenity-item:last-child {
+    border-bottom: none;
+  }
+
+  .receipt-footer {
+    background-color: #f8f9fa;
+    border-radius: 0 0 10px 10px;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid #e9ecef;
+  }
+
+  .advance-payment-box {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .new-booking-page {
+      padding: 1rem;
+    }
+    
+    .booking-card {
+      margin-bottom: 1rem;
+    }
+    
+    .booking-form .form-control, 
+    .booking-form .form-select {
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .step-indicator::before {
+      top: 12px;
+    }
+    
+    .step-circle {
+      width: 24px;
+      height: 24px;
+      font-size: 0.75rem;
+    }
+    
+    .room-option-card {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<div class="container py-5 new-booking-page">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="section-title mb-4 text-center">
+        <i class="bi bi-calendar-check display-5 mb-3"></i>
+        <h1 class="h2 mb-0">Medical Travel Booking</h1>
+      </div>
+      
+      <p class="mb-4 text-center lead">Complete your medical travel arrangements in simple steps</p>
+      
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step active" data-step="1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Treatment</div>
+        </div>
+        <div class="step" data-step="2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Doctor</div>
+        </div>
+        <div class="step" data-step="3">
+          <div class="step-circle">3</div>
+          <div class="step-label">Hospitals</div>
+        </div>
+        <div class="step" data-step="4">
+          <div class="step-circle">4</div>
+          <div class="step-label">Room</div>
+        </div>
+        <div class="step" data-step="5">
+          <div class="step-circle">5</div>
+          <div class="step-label">Booking</div>
+        </div>
+      </div>
+      
+      <div class="card border-0 shadow-sm booking-card">
+        <div class="card-body">
+          <form id="newBookingForm" class="booking-form" method="POST">
+            {% csrf_token %}
+            
+            <!-- Step 1: Treatment Selection -->
+            <div class="booking-step active" id="step-1">
+              <h5 class="card-title mb-4">Step 1: Select Treatment</h5>
+              
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Type of Treatment <span class="text-danger">*</span></label>
+                <select class="form-select form-control-lg" id="treatmentSelect" name="treatment" required>
+                  <option value="">Select Treatment</option>
+                  {% for treatment in treatments %}
+                  <option value="{{ treatment.id }}" {% if selected_treatment and selected_treatment.id == treatment.id %}selected{% endif %}>{{ treatment.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">Choose the medical treatment you're interested in</div>
+              </div>
+              
+              <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-next" id="nextStep1">
+                  <i class="bi bi-arrow-right me-2"></i>Next: Select Doctor (Optional)
+                </button>
+              </div>
+            </div>
+            
+            <!-- Step 2: Doctor Selection (Optional) -->
+            <div class="booking-step" id="step-2">
+              <h5 class="card-title mb-4">Step 2: Select Doctor (Optional)</h5>
+              
+              <div class="alert alert-info mb-4">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong>Doctor Selection is Optional</strong>
+                <p class="mb-0 mt-2">You can select a specific doctor for your treatment, or we can recommend the best doctor based on your selected hospital. If you're unsure, you can skip this step.</p>
+              </div>
+              
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Preferred Doctor</label>
+                <select class="form-select form-control-lg" id="doctorSelect" name="preferred_doctor">
+                  <option value="">No preference (we'll recommend)</option>
+                  <!-- Doctors will be populated dynamically based on selected treatment -->
+                </select>
+                <div class="form-text">Select a specific doctor or leave blank for our recommendation</div>
+              </div>
+              
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-prev" id="prevStep2">
+                  <i class="bi bi-arrow-left me-2"></i>Back
+                </button>
+                <button type="button" class="btn btn-next" id="nextStep2">
+                  <i class="bi bi-arrow-right me-2"></i>Next: View Hospitals
+                </button>
+              </div>
+            </div>
+            
+            <!-- Step 3: Hospital Selection with Pricing -->
+            <div class="booking-step" id="step-3">
+              <h5 class="card-title mb-4">Step 3: Select Hospital</h5>
+              
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Preferred Booking Dates</label>
+                <input type="date" class="form-control form-control-lg" id="preferredDate" name="preferred_date" min="{% now "Y-m-d" %}">
+                <div class="form-text">Select your preferred date for the treatment</div>
+              </div>
+              
+              <div class="mb-4">
+                <h6 class="mb-3">Hospitals Offering This Treatment</h6>
+                <div id="hospitalsList" class="row g-3">
+                  <!-- Hospitals will be populated dynamically -->
+                  <div class="col-12 text-center py-5">
+                    <div class="text-muted">Please select a treatment and doctor first</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-prev" id="prevStep3">
+                  <i class="bi bi-arrow-left me-2"></i>Back
+                </button>
+                <button type="button" class="btn btn-next" id="nextStep3" disabled>
+                  <i class="bi bi-arrow-right me-2"></i>Next: Select Room
+                </button>
+              </div>
+            </div>
+            
+            <!-- Step 4: Room Options Selection -->
+            <div class="booking-step" id="step-4">
+              <h5 class="card-title mb-4">Step 4: Select Room Options</h5>
+              
+              <div class="alert alert-info mb-4">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong>Room Selection</strong>
+                <p class="mb-0 mt-2">Choose your preferred accommodation during your hospital stay. All rooms include 2 days of accommodation.</p>
+              </div>
+              
+              <div class="mb-4">
+                <h6 class="mb-3">Selected Hospital: <span id="selectedHospitalNameStep4" class="text-primary"></span></h6>
+                <div class="alert alert-info">
+                  <i class="bi bi-info-circle me-2"></i>Estimated treatment cost: <span id="treatmentCostStep4" class="fw-bold"></span>
+                </div>
+              </div>
+              
+
+              
+              <div class="mb-4">
+                <h6 class="mb-3">Room Options</h6>
+                <div class="row g-3">
+                  <!-- Normal Room Option -->
+                  <div class="col-md-6">
+                    <div class="room-option-card" data-room-type="normal" data-room-cost="2500">
+                      <div class="room-name">Normal Room</div>
+                      <div class="room-price">₹2,500<small class="text-muted">/Per Days</small></div>
+                      <div class="room-description
+                      ">Basic accommodation with essential amenities for a comfortable stay.</div>
+                      <div class="room-features">
+                        <span class="room-feature">Basic Bed</span>
+                        <span class="room-feature">Shared Bathroom</span>
+                        <span class="room-feature">Basic TV</span>
+                        <span class="room-feature">Free Wi-Fi</span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="room_service" id="normalRoom" value="normal">
+                        <label class="form-check-label fw-semibold" for="normalRoom">Select Normal Room</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Standard Room Option -->
+                  <div class="col-md-6">
+                    <div class="room-option-card" data-room-type="standard" data-room-cost="4000">
+                      <div class="room-name">Standard Room</div>
+                      <div class="room-price">₹4,000<small class="text-muted">/Per Days</small></div>
+                      <div class="room-description">Comfortable accommodation with additional amenities for enhanced comfort.</div>
+                      <div class="room-features">
+                        <span class="room-feature">Comfort Bed</span>
+                        <span class="room-feature">Private Bathroom</span>
+                        <span class="room-feature">TV & AC</span>
+                        <span class="room-feature">Free Wi-Fi</span>
+                        <span class="room-feature">Room Service</span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="room_service" id="standardRoom" value="standard">
+                        <label class="form-check-label fw-semibold" for="standardRoom">Select Standard Room</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Premium Room Option -->
+                  <div class="col-md-6">
+                    <div class="room-option-card" data-room-type="premium" data-room-cost="6500">
+                      <div class="room-name">Premium Room</div>
+                      <div class="room-price">₹6,500<small class="text-muted">/Per Days</small></div>
+                      <div class="room-description">Premium accommodation with luxury amenities for a superior experience.</div>
+                      <div class="room-features">
+                        <span class="room-feature">Premium Bed</span>
+                        <span class="room-feature">Luxury Bathroom</span>
+                        <span class="room-feature">Smart TV</span>
+                        <span class="room-feature">AC & Mini Bar</span>
+                        <span class="room-feature">24/7 Room Service</span>
+                        <span class="room-feature">Premium Toiletries</span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="room_service" id="premiumRoom" value="premium">
+                        <label class="form-check-label fw-semibold" for="premiumRoom">Select Premium Room</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Deluxe Room Option -->
+                  <div class="col-md-6">
+                    <div class="room-option-card" data-room-type="deluxe" data-room-cost="9000">
+                      <div class="room-name">Deluxe Room</div>
+                      <div class="room-price">₹9,000<small class="text-muted">/Per Days</small></div>
+                      <div class="room-description">Luxury suite with premium amenities for the ultimate comfort experience.</div>
+                      <div class="room-features">
+                        <span class="room-feature">King Size Bed</span>
+                        <span class="room-feature">Luxury Suite</span>
+                        <span class="room-feature">Premium TV & Sound</span>
+                        <span class="room-feature">AC, Mini Bar & Safe</span>
+                        <span class="room-feature">24/7 Premium Service</span>
+                        <span class="room-feature">Luxury Toiletries</span>
+                        <span class="room-feature">Sofa & Work Desk</span>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="room_service" id="deluxeRoom" value="deluxe">
+                        <label class="form-check-label fw-semibold" for="deluxeRoom">Select Deluxe Room</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <h6 class="mb-3">Additional Amenities</h6>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="privateRoom" name="amenities" value="private_room">
+                      <label class="form-check-label" for="privateRoom">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Private Patient Rooms
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="familyAccommodation" name="amenities" value="family_accommodation">
+                      <label class="form-check-label" for="familyAccommodation">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Family Accommodation
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="wifi" name="amenities" value="wifi">
+                      <label class="form-check-label" for="wifi">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="ac" name="amenities" value="ac">
+                      <label class="form-check-label" for="ac">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="tv" name="amenities" value="tv">
+                      <label class="form-check-label" for="tv">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Television
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="roomService" name="amenities" value="room_service">
+                      <label class="form-check-label" for="roomService">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="wheelchair" name="amenities" value="wheelchair">
+                      <label class="form-check-label" for="wheelchair">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Wheelchair Accessibility
+                      </label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="pickupDrop" name="amenities" value="pickup_drop">
+                      <label class="form-check-label" for="pickupDrop">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>Pickup/Drop Facility
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-prev" id="prevStep4">
+                  <i class="bi bi-arrow-left me-2"></i>Back
+                </button>
+                <button type="button" class="btn btn-next" id="nextStep4">
+                  <i class="bi bi-arrow-right me-2"></i>Next: Confirm Booking
+                </button>
+              </div>
+            </div>
+            
+            <!-- Step 5: Booking Confirmation -->
+            <div class="booking-step" id="step-5">
+              <h5 class="card-title mb-4">Step 5: Confirm Booking</h5>
+              
+              <div class="mb-4">
+                <div class="card booking-summary-card">
+                  <div class="receipt-header">
+                    <h4 class="mb-0"><i class="bi bi-receipt me-2"></i>Booking Receipt</h4>
+                    <p class="mb-0 mt-2">TakeOpinion Medical Services</p>
+                  </div>
+                  <div class="receipt-body">
+                    <!-- Booking Details -->
+                    <div class="receipt-section">
+                      <h5 class="receipt-section-title">Booking Details</h5>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Treatment:</span>
+                        <span class="receipt-value" id="summaryTreatment"></span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Doctor:</span>
+                        <span class="receipt-value" id="summaryDoctor">Not specified</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Hospital:</span>
+                        <span class="receipt-value" id="summaryHospital"></span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Preferred Date:</span>
+                        <span class="receipt-value" id="summaryDate"></span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Room Type:</span>
+                        <span class="receipt-value" id="summaryRoomType">Not selected</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Length of Stay:</span>
+                        <span class="receipt-value" id="summaryNights">Not specified</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Cost Breakdown -->
+                    <div class="receipt-section">
+                      <h5 class="receipt-section-title">Cost Breakdown</h5>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Treatment Cost:</span>
+                        <span class="receipt-value" id="treatmentCostSummary">₹0</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Doctor Consultation:</span>
+                        <span class="receipt-value" id="doctorCostSummary">₹0</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Hospital Stay:</span>
+                        <span class="receipt-value" id="hospitalStayCostSummary">₹0</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Selected Amenities:</span>
+                        <span class="receipt-value" id="amenitiesCostSummary">₹0</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Original Hospital Price -->
+                    <div class="receipt-section">
+                      <h5 class="receipt-section-title">Original Hospital Price</h5>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Total without Discount:</span>
+                        <span class="receipt-value" id="originalHospitalPrice">₹0</span>
+                      </div>
+                    </div>
+                    
+                    <!-- TakeOpinion Price with Discount -->
+                    <div class="receipt-section">
+                      <h5 class="receipt-section-title">TakeOpinion Price</h5>
+                      <div class="receipt-item">
+                        <span class="receipt-label">Original Total:</span>
+                        <span class="receipt-value" id="originalTotalCost">₹0</span>
+                      </div>
+                      <div class="receipt-item">
+                        <span class="receipt-label">TakeOpinion Discount (15%):</span>
+                        <span class="receipt-discount" id="discountAmount">₹0</span>
+                      </div>
+                      <div class="receipt-item receipt-total">
+                        <span class="receipt-label">TakeOpinion Final Price:</span>
+                        <span class="receipt-value" id="summaryCost">₹0</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Total Amount -->
+                    <div class="receipt-section">
+                      <div class="receipt-item receipt-total">
+                        <span class="receipt-label">Total Amount:</span>
+                        <span class="receipt-value" id="totalAmountDisplay">₹0</span>
+                      </div>
+                    </div>
+                    
+                    <!-- Selected Amenities List -->
+                    <div class="receipt-section">
+                      <h5 class="receipt-section-title">Selected Amenities</h5>
+                      <div class="receipt-amenities-list" id="summaryAmenities">
+                        <!-- Amenities will be populated here -->
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Advance Payment Box -->
+                  <div class="advance-payment-box mx-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h6 class="mb-0">Advance Payment Required</h6>
+                        <p class="mb-0 small">A small advance payment is required to confirm your booking</p>
+                      </div>
+                      <div class="text-end">
+                        <div class="h5 mb-0 text-primary" id="advanceAmount">₹0.00</div>
+                        <div class="small">10% of total</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="receipt-footer">
+                    <p class="mb-0 small">Thank you for choosing TakeOpinion. Your booking reference number will be sent to your email.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <div class="alert alert-warning">
+                  <i class="bi bi-exclamation-triangle me-2"></i>
+                  <strong>Advance Payment Required</strong>
+                  <p class="mb-0 mt-2">A small advance payment of <span id="advanceAmount" class="fw-bold"></span> is required to confirm your booking and secure your preferred dates.</p>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="termsCheck" name="agree_terms" required>
+                  <label class="form-check-label" for="termsCheck">
+                    I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a> <span class="text-danger">*</span>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-prev" id="prevStep5">
+                  <i class="bi bi-arrow-left me-2"></i>Back
+                </button>
+                <button type="submit" class="btn btn-submit" id="submitBooking">
+                  <i class="bi bi-credit-card me-2"></i>Pay Advance & Confirm Booking
+                </button>
+              </div>
+            </div>
+            
+            <!-- Hidden fields to store selected values -->
+            <input type="hidden" id="selectedTreatmentId" name="treatment_id">
+            <input type="hidden" id="selectedDoctorId" name="doctor_id">
+            <input type="hidden" id="selectedHospitalId" name="hospital_id">
+            <input type="hidden" id="selectedAmenities" name="selected_amenities">
+            <input type="hidden" id="totalAmount" name="total_amount">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Global variables to store selections
+  let selectedTreatmentId = null;
+  let selectedDoctorId = null;
+  let selectedHospitalId = null;
+  let selectedTreatmentName = '';
+  let selectedDoctorName = '';
+  let selectedHospitalName = '';
+  let treatmentCost = 0;
+  let totalCost = 0;
+  
+  // DOM elements
+  const steps = document.querySelectorAll('.booking-step');
+  const stepIndicators = document.querySelectorAll('.step');
+  const nextStep1 = document.getElementById('nextStep1');
+  const prevStep2 = document.getElementById('prevStep2');
+  const nextStep2 = document.getElementById('nextStep2');
+  const prevStep3 = document.getElementById('prevStep3');
+  const nextStep3 = document.getElementById('nextStep3');
+  const prevStep4 = document.getElementById('prevStep4');
+  const nextStep4 = document.getElementById('nextStep4');
+  const prevStep5 = document.getElementById('prevStep5');
+  const treatmentSelect = document.getElementById('treatmentSelect');
+  const doctorSelect = document.getElementById('doctorSelect');
+  const hospitalsList = document.getElementById('hospitalsList');
+  const preferredDate = document.getElementById('preferredDate');
+  
+  // Set minimum date to today
+  document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    preferredDate.min = today;
+    
+    // Initialize selectedTreatmentId from the select element
+    selectedTreatmentId = treatmentSelect.value || null;
+    
+    // If a treatment is pre-selected, automatically proceed to step 2
+    if (selectedTreatmentId) {
+      // Get treatment name
+      const selectedOption = treatmentSelect.options[treatmentSelect.selectedIndex];
+      selectedTreatmentName = selectedOption.text;
+      
+      // Populate doctors based on selected treatment
+      populateDoctors(selectedTreatmentId);
+      
+      // Get treatment pricing information
+      getTreatmentPricing(selectedTreatmentId);
+      
+      // Show step 2
+      showStep(2);
+    }
+    
+    // Handle medical documents file input
+    const medicalDocumentsInput = document.getElementById('medicalDocumentsInput');
+    const medicalDocumentsDropArea = document.getElementById('medicalDocumentsDropArea');
+    const medicalDocumentsList = document.getElementById('medicalDocumentsList');
+    
+    // Handle file selection
+    medicalDocumentsInput.addEventListener('change', function(e) {
+      updateFileList(e.target.files, medicalDocumentsList);
+    });
+    
+    // Handle drag and drop
+    medicalDocumentsDropArea.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      medicalDocumentsDropArea.classList.add('dragover');
+    });
+    
+    medicalDocumentsDropArea.addEventListener('dragleave', function(e) {
+      medicalDocumentsDropArea.classList.remove('dragover');
+    });
+    
+    medicalDocumentsDropArea.addEventListener('drop', function(e) {
+      e.preventDefault();
+      medicalDocumentsDropArea.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        medicalDocumentsInput.files = e.dataTransfer.files;
+        updateFileList(e.dataTransfer.files, medicalDocumentsList);
+      }
+    });
+    
+    // Handle click on drop area
+    medicalDocumentsDropArea.addEventListener('click', function() {
+      medicalDocumentsInput.click();
+    });
+    
+    // Function to update file list display
+    function updateFileList(files, fileListElement) {
+      fileListElement.innerHTML = '';
+      if (files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const fileItem = document.createElement('div');
+          fileItem.className = 'file-item';
+          fileItem.innerHTML = `
+            <span class="file-name">${file.name}</span>
+            <span class="file-size text-muted small">${formatFileSize(file.size)}</span>
+            <span class="file-remove" data-index="${i}">×</span>
+          `;
+          fileListElement.appendChild(fileItem);
+        }
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.file-remove').forEach(button => {
+          button.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            removeFile(index);
+          });
+        });
+      }
+    }
+    
+    // Function to format file size
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+    
+    // Function to remove a file from the list
+    function removeFile(index) {
+      const dt = new DataTransfer();
+      const files = medicalDocumentsInput.files;
+      
+      for (let i = 0; i < files.length; i++) {
+        if (i !== index) {
+          dt.items.add(files[i]);
+        }
+      }
+      
+      medicalDocumentsInput.files = dt.files;
+      updateFileList(dt.files, medicalDocumentsList);
+    }
+    
+    // Add event listeners to room option cards
+    document.querySelectorAll('.room-option-card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        // Don't trigger if clicking on form elements
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+          return;
+        }
+        
+        // Remove selected class from all cards
+        document.querySelectorAll('.room-option-card').forEach(c => {
+          c.classList.remove('selected');
+        });
+        
+        // Add selected class to clicked card
+        this.classList.add('selected');
+        
+        // Select the radio button inside this card
+        const radio = this.querySelector('input[type="radio"]');
+        if (radio) {
+          radio.checked = true;
+        }
+        
+        // Update the room cost display (defaulting to 2 nights)
+        const numberOfNights = 2;
+        const roomCostPerNight = parseInt(this.dataset.roomCost);
+        const roomCost = roomCostPerNight * numberOfNights;
+        
+        const roomPriceElement = this.querySelector('.room-price');
+        if (roomPriceElement) {
+          // Format the total cost with commas
+          const formattedCost = roomCost.toLocaleString('en-IN');
+          roomPriceElement.innerHTML = `₹${formattedCost}<small class="text-muted">/for ${numberOfNights} day${numberOfNights > 1 ? 's' : ''}</small>`;
+        }
+      });
+    });
+  });
+  
+  // Step navigation functions
+  function showStep(stepNumber) {
+    // Hide all steps
+    steps.forEach(step => step.classList.remove('active'));
+    
+    // Show current step
+    document.getElementById(`step-${stepNumber}`).classList.add('active');
+    
+    // Update step indicators
+    stepIndicators.forEach((indicator, index) => {
+      indicator.classList.remove('active', 'completed');
+      if (index + 1 < stepNumber) {
+        indicator.classList.add('completed');
+      } else if (index + 1 === stepNumber) {
+        indicator.classList.add('active');
+      }
+    });
+  }
+  
+  // Event listeners for navigation
+  nextStep1.addEventListener('click', function() {
+    selectedTreatmentId = treatmentSelect.value;
+    if (!selectedTreatmentId) {
+      alert('Please select a treatment');
+      return;
+    }
+    
+    // Get treatment name
+    const selectedOption = treatmentSelect.options[treatmentSelect.selectedIndex];
+    selectedTreatmentName = selectedOption.text;
+    
+    // Update hidden form field
+    document.getElementById('selectedTreatmentId').value = selectedTreatmentId;
+    
+    // Populate doctors based on selected treatment
+    populateDoctors(selectedTreatmentId);
+    
+    // Get treatment pricing information
+    getTreatmentPricing(selectedTreatmentId);
+    
+    showStep(2);
+  });
+  
+  prevStep2.addEventListener('click', function() {
+    showStep(1);
+  });
+  
+  nextStep2.addEventListener('click', function() {
+    selectedDoctorId = doctorSelect.value || null;
+    
+    // Get doctor name if selected
+    if (selectedDoctorId) {
+      const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
+      selectedDoctorName = selectedOption.text;
+      
+      // Get doctor pricing information if hospital is already selected
+      if (selectedHospitalId) {
+        getDoctorPricing(selectedDoctorId, selectedTreatmentId, selectedHospitalId);
+      }
+    } else {
+      selectedDoctorName = 'Not specified';
+    }
+    
+    // Update hidden form field
+    document.getElementById('selectedDoctorId').value = selectedDoctorId || '';
+    
+    // Populate hospitals based on treatment and doctor
+    populateHospitals(selectedTreatmentId, selectedDoctorId);
+    
+    showStep(3);
+  });
+  
+  prevStep3.addEventListener('click', function() {
+    showStep(2);
+  });
+  
+  nextStep3.addEventListener('click', function() {
+    if (!selectedHospitalId) {
+      alert('Please select a hospital');
+      return;
+    }
+    
+    // Get doctor pricing information if doctor is selected
+    if (selectedDoctorId) {
+      getDoctorPricing(selectedDoctorId, selectedTreatmentId, selectedHospitalId);
+    }
+    
+    // Update summary information for step 4
+    document.getElementById('selectedHospitalNameStep4').textContent = selectedHospitalName;
+    document.getElementById('treatmentCostStep4').textContent = `₹${treatmentCost.toLocaleString()}`;
+    
+    showStep(4);
+  });
+  
+  prevStep4.addEventListener('click', function() {
+    showStep(3);
+  });
+  
+  nextStep4.addEventListener('click', function() {
+    // Get selected room service (optional)
+    const roomServiceRadios = document.querySelectorAll('input[name="room_service"]');
+    let selectedRoomService = null;
+    let selectedRoomServiceName = 'Not selected';
+    let roomCostPerNight = 0;
+    
+    roomServiceRadios.forEach(radio => {
+      if (radio.checked) {
+        selectedRoomService = radio.value;
+        // Set room costs per night based on room type
+        switch(selectedRoomService) {
+          case 'normal':
+            selectedRoomServiceName = 'Normal Room';
+            roomCostPerNight = 2500;
+            break;
+          case 'standard':
+            selectedRoomServiceName = 'Standard Room';
+            roomCostPerNight = 4000;
+            break;
+          case 'premium':
+            selectedRoomServiceName = 'Premium Room';
+            roomCostPerNight = 6500;
+            break;
+          case 'deluxe':
+            selectedRoomServiceName = 'Deluxe Room';
+            roomCostPerNight = 9000;
+            break;
+          default:
+            roomCostPerNight = 0;
+        }
+      }
+    });
+    
+    // Use default number of nights (2) if room is selected, 0 otherwise
+    const numberOfNights = selectedRoomService ? 2 : 0;
+    const roomCost = roomCostPerNight * numberOfNights;
+    
+    // Get selected amenities
+    const selectedItems = [];
+    const amenityCheckboxes = document.querySelectorAll('input[name="amenities"]:checked');
+    
+    amenityCheckboxes.forEach(checkbox => {
+      selectedItems.push(checkbox.value);
+    });
+    
+    // Calculate costs
+    const treatmentCostValue = treatmentCost;
+    const doctorCostValue = selectedDoctorId ? 5000 : 0; // Example: ₹5000 for doctor consultation if selected
+    const amenitiesCostValue = selectedItems.length * 1000; // Example: ₹1000 per amenity
+    const originalTotal = treatmentCostValue + doctorCostValue + amenitiesCostValue + roomCost;
+    const discountPercentage = 15; // 15% discount
+    const discountAmount = originalTotal * (discountPercentage / 100);
+    totalCost = originalTotal - discountAmount;
+    const advanceAmount = totalCost * 0.1; // 10% advance
+    
+    // Calculate original hospital price (without TakeOpinion discount)
+    const originalHospitalPrice = treatmentCostValue + (selectedRoomService ? roomCost : 0);
+    
+    // Update summary information
+    document.getElementById('summaryTreatment').textContent = selectedTreatmentName;
+    document.getElementById('summaryDoctor').textContent = selectedDoctorName || 'Not specified';
+    document.getElementById('summaryHospital').textContent = selectedHospitalName;
+    document.getElementById('summaryDate').textContent = preferredDate.value || 'Not specified';
+    document.getElementById('summaryRoomType').textContent = selectedRoomServiceName || 'Not selected';
+    document.getElementById('summaryNights').textContent = selectedRoomService ? '2 days' : 'Not selected';
+    
+    // Update cost breakdown
+    document.getElementById('treatmentCostSummary').textContent = `₹${treatmentCostValue.toLocaleString()}`;
+    document.getElementById('doctorCostSummary').textContent = `₹${doctorCostValue.toLocaleString()}`;
+    document.getElementById('hospitalStayCostSummary').textContent = selectedRoomService ? `₹${roomCost.toLocaleString()} (2 days)` : '₹0 (Not selected)';
+    document.getElementById('amenitiesCostSummary').textContent = `₹${amenitiesCostValue.toLocaleString()}`;
+    
+    // Update original hospital price
+    document.getElementById('originalHospitalPrice').textContent = `₹${originalHospitalPrice.toLocaleString()}`;
+    
+    // Update TakeOpinion price with discount
+    document.getElementById('originalTotalCost').textContent = `₹${originalTotal.toLocaleString()}`;
+    document.getElementById('discountAmount').textContent = `-₹${discountAmount.toLocaleString()}`;
+    document.getElementById('summaryCost').textContent = `₹${totalCost.toLocaleString()}`;
+    document.getElementById('advanceAmount').textContent = `₹${advanceAmount.toFixed(2)}`;
+    
+    // Update total amount
+    document.getElementById('totalAmountDisplay').textContent = `₹${totalCost.toLocaleString()}`;
+    
+    // Update amenities summary
+    const amenitiesSummary = document.getElementById('summaryAmenities');
+    amenitiesSummary.innerHTML = '';
+    
+    // Add room service to summary
+    if (selectedRoomService) {
+      const roomLi = document.createElement('div');
+      roomLi.className = 'receipt-amenity-item';
+      roomLi.innerHTML = `
+        <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> ${selectedRoomServiceName} (2 days)</span>
+        <span class="receipt-value">₹${roomCost.toLocaleString()}</span>
+      `;
+      amenitiesSummary.appendChild(roomLi);
+    }
+    
+    if (selectedItems.length > 0) {
+      selectedItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'receipt-amenity-item';
+        switch(item) {
+          case 'private_room':
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Private Patient Rooms</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+            break;
+          case 'family_accommodation':
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Family Accommodation</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+            break;
+          case 'room_service':
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> 24/7 Room Service</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+            break;
+          case 'wifi':
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Free Wi-Fi</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+            break;
+          case 'ac':
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Air Conditioning</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+            break;
+          case 'tv':
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Television</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+            break;
+          case 'wheelchair':
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Wheelchair Accessibility</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+            break;
+          case 'pickup_drop':
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Pickup/Drop Facility</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+            break;
+          default:
+            div.innerHTML = `
+              <span class="receipt-label"><i class="bi bi-check-circle-fill text-success me-1"></i> ${item}</span>
+              <span class="receipt-value">₹1,000</span>
+            `;
+        }
+        amenitiesSummary.appendChild(div);
+      });
+    } else if (!selectedRoomService && selectedItems.length === 0) {
+      const div = document.createElement('div');
+      div.className = 'receipt-amenity-item';
+      div.innerHTML = `
+        <span class="receipt-label"><i class="bi bi-x-circle-fill text-muted me-1"></i> No amenities selected</span>
+        <span class="receipt-value">₹0</span>
+      `;
+      amenitiesSummary.appendChild(div);
+    }
+    
+    // Set hidden form fields
+    document.getElementById('selectedTreatmentId').value = selectedTreatmentId;
+    document.getElementById('selectedDoctorId').value = selectedDoctorId || '';
+    document.getElementById('selectedHospitalId').value = selectedHospitalId;
+    document.getElementById('totalAmount').value = totalCost;
+    
+    showStep(5);
+  });
+  
+  prevStep5.addEventListener('click', function() {
+    showStep(4);
+  });
+  
+  // Function to populate doctors based on treatment
+  function populateDoctors(treatmentId) {
+    // Clear current options
+    doctorSelect.innerHTML = '<option value="">No preference (we\'ll recommend)</option>';
+    
+    // Show loading indicator
+    doctorSelect.innerHTML += '<option value="">Loading doctors...</option>';
+    doctorSelect.disabled = true;
+    
+    // Debug: Log the treatment ID
+    console.log('Fetching doctors for treatment ID:', treatmentId);
+    
+    // Check if treatmentId is valid
+    if (!treatmentId) {
+      console.error('Invalid treatment ID provided to populateDoctors');
+      doctorSelect.innerHTML = '<option value="">No preference (we\'ll recommend)</option>';
+      doctorSelect.innerHTML += '<option value="">Error: No treatment selected</option>';
+      doctorSelect.disabled = false;
+      return;
+    }
+    
+    // Make AJAX request to get doctors
+    fetch(`/book/api/doctors/${treatmentId}/`)
+      .then(response => {
+        console.log('Doctor API response status:', response.status);
+        // Check if response is OK
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Clear loading option
+        doctorSelect.innerHTML = '<option value="">No preference (we\'ll recommend)</option>';
+        doctorSelect.disabled = false;
+        
+        if (data.success) {
+          // Check if doctors array exists and has data
+          if (data.doctors && data.doctors.length > 0) {
+            // Add doctors to select
+            data.doctors.forEach(doctor => {
+              const option = document.createElement('option');
+              option.value = doctor.id;
+              option.textContent = `Dr. ${doctor.name}`;
+              doctorSelect.appendChild(option);
+            });
+          } else {
+            doctorSelect.innerHTML += '<option value="">No doctors available for this treatment</option>';
+          }
+        } else {
+          console.error('Error fetching doctors:', data.error);
+          doctorSelect.innerHTML += '<option value="">Error: ' + data.error + '</option>';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching doctors:', error);
+        doctorSelect.innerHTML = '<option value="">No preference (we\'ll recommend)</option>';
+        doctorSelect.innerHTML += '<option value="">Error loading doctors: ' + error.message + '</option>';
+        doctorSelect.disabled = false;
+      });
+  }
+  
+  // Function to populate hospitals based on treatment and doctor
+  function populateHospitals(treatmentId, doctorId) {
+    // Show loading indicator
+    hospitalsList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+    
+    // Debug: Log the parameters
+    console.log('Fetching hospitals for treatment ID:', treatmentId, 'doctor ID:', doctorId);
+    
+    // Check if treatmentId is valid
+    if (!treatmentId) {
+      console.error('Invalid treatment ID provided to populateHospitals');
+      hospitalsList.innerHTML = '<div class="col-12"><div class="alert alert-warning">Please select a treatment first</div></div>';
+      nextStep3.disabled = true;
+      return;
+    }
+    
+    // Make AJAX request to get hospitals
+    // If doctor is selected, filter hospitals by doctor; otherwise, filter by treatment only
+    let url = doctorId ? 
+      `/book/api/hospitals/${treatmentId}/${doctorId}/` : 
+      `/book/api/hospitals/${treatmentId}/`;
+    
+    fetch(url)
+      .then(response => {
+        console.log('Hospital API response status:', response.status);
+        // Check if response is OK
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        hospitalsList.innerHTML = '';
+        
+        if (data.success && data.hospitals && data.hospitals.length > 0) {
+          // Add hospitals to list
+          data.hospitals.forEach(hospital => {
+            const hospitalCard = document.createElement('div');
+            hospitalCard.className = 'col-md-6';
+            hospitalCard.innerHTML = `
+              <div class="card hospital-card h-100" data-hospital-id="${hospital.id}" data-hospital-name="${hospital.name}" data-price="${hospital.starting_price}">
+                <div class="position-relative">
+                  <img src="${hospital.profile_picture || 'https://picsum.photos/seed/h' + hospital.id + '/400/250'}" class="card-img-top" alt="${hospital.name}" style="height: 200px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(hospital.name)}&background=0D6EFD&color=fff&size=200'">
+                  ${hospital.is_takeopinion_choice ? '<span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">TO Choice</span>' : ''}
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title mb-1">${hospital.name}</h5>
+                  <p class="card-text small text-muted mb-2">
+                    <i class="bi bi-geo-alt me-1"></i>${hospital.city}${hospital.state ? ', ' + hospital.state : ''}${hospital.country ? ', ' + hospital.country : ''}
+                  </p>
+                  
+                  <div class="mb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <span class="small">Rating</span>
+                      <span class="fw-bold">${hospital.rating}/5.0</span>
+                    </div>
+                    <div class="progress" style="height: 6px;">
+                      <div class="progress-bar bg-warning" role="progressbar" style="width: ${hospital.rating * 20}%"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex flex-wrap gap-1 mb-3">
+                    ${hospital.jci_accredited ? '<span class="badge bg-info">JCI</span>' : ''}
+                    ${hospital.nabh_accredited ? '<span class="badge bg-success">NABH</span>' : ''}
+                    ${hospital.iso_certified ? '<span class="badge bg-secondary">ISO</span>' : ''}
+                  </div>
+                  
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <div class="small text-muted">Original Price</div>
+                      <div class="h5 text-muted mb-0">₹${(parseFloat(hospital.starting_price) * 1.15).toLocaleString()}</div>
+                    </div>
+                    <div>
+                      <div class="small text-muted">TakeOpinion Price</div>
+                      <div class="h5 text-primary mb-0">₹${parseFloat(hospital.starting_price).toLocaleString()}</div>
+                    </div>
+                  </div>
+                  
+                  <div class="mt-2" id="hospital-price-info-${hospital.id}"></div>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                  <div class="d-grid gap-2">
+                    <a href="/hospitals/${hospital.slug}/" class="btn btn-outline-primary btn-sm" target="_blank">
+                      <i class="bi bi-eye me-1"></i>View Hospital Profile
+                    </a>
+                  </div>
+                </div>
+              </div>
+            `;
+            hospitalsList.appendChild(hospitalCard);
+            
+            // Add click event to select hospital
+            hospitalCard.querySelector('.hospital-card').addEventListener('click', function() {
+              // Remove selected class from all cards
+              document.querySelectorAll('.hospital-card').forEach(card => {
+                card.classList.remove('selected');
+              });
+              
+              // Add selected class to clicked card
+              this.classList.add('selected');
+              
+              // Store selected hospital data
+              selectedHospitalId = this.dataset.hospitalId;
+              selectedHospitalName = this.dataset.hospitalName;
+              treatmentCost = parseFloat(this.dataset.price);
+              
+              // Update hidden form field immediately
+              document.getElementById('selectedHospitalId').value = selectedHospitalId;
+              
+              // Enable next button
+              nextStep3.disabled = false;
+              
+              // Get doctor pricing if doctor is selected
+              if (selectedDoctorId) {
+                getDoctorPricing(selectedDoctorId, selectedTreatmentId, selectedHospitalId);
+              }
+            });
+          });
+        } else {
+          hospitalsList.innerHTML = '<div class="col-12"><div class="alert alert-info">No hospitals found for this treatment. Please try another treatment or contact support.</div></div>';
+          nextStep3.disabled = true;
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching hospitals:', error);
+        hospitalsList.innerHTML = '<div class="col-12"><div class="alert alert-danger">Error loading hospitals: ' + error.message + '</div></div>';
+        nextStep3.disabled = true;
+      });
+  }
+  
+  // Function to get treatment pricing information
+  function getTreatmentPricing(treatmentId) {
+    // Debug: Log the treatment ID
+    console.log('Fetching treatment pricing for treatment ID:', treatmentId);
+    
+    // Check if treatmentId is valid
+    if (!treatmentId) {
+      console.error('Invalid treatment ID provided to getTreatmentPricing');
+      return;
+    }
+    
+    fetch(`/book/api/treatment-pricing/${treatmentId}/`)
+      .then(response => {
+        console.log('Treatment pricing API response status:', response.status);
+        // Check if response is OK
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          console.log('Treatment pricing:', data);
+          // You can display this information in the UI if needed
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching treatment pricing:', error);
+      });
+  }
+  
+  // Function to get doctor pricing information
+  function getDoctorPricing(doctorId, treatmentId, hospitalId) {
+    // Debug: Log the parameters
+    console.log('Fetching doctor pricing for doctor ID:', doctorId, 'treatment ID:', treatmentId, 'hospital ID:', hospitalId);
+    
+    // Check if all parameters are valid
+    if (!doctorId || !treatmentId || !hospitalId) {
+      console.error('Invalid parameters provided to getDoctorPricing', {doctorId, treatmentId, hospitalId});
+      return;
+    }
+    
+    fetch(`/book/api/doctor-pricing/${doctorId}/${treatmentId}/${hospitalId}/`)
+      .then(response => {
+        console.log('Doctor pricing API response status:', response.status);
+        // Check if response is OK
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          // Display pricing information
+          const priceInfoElement = document.getElementById(`hospital-price-info-${hospitalId}`);
+          if (priceInfoElement) {
+            priceInfoElement.innerHTML = `
+              <div class="alert alert-info small mb-0">
+                <i class="bi bi-info-circle me-1"></i>
+                ${data.message}
+              </div>
+            `;
+          }
+          
+          // Update the treatment cost if this is the selected hospital
+          if (selectedHospitalId == hospitalId) {
+            treatmentCost = data.price;
+            if (document.getElementById('treatmentCost')) {
+              document.getElementById('treatmentCost').textContent = `₹${treatmentCost.toLocaleString()}`;
+            }
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching doctor pricing:', error);
+      });
+  }
+  
+  // Handle form submission
+  document.getElementById('newBookingForm').addEventListener('submit', function(e) {
+    // Prevent default submission
+    e.preventDefault();
+    
+    // Collect selected room service
+    const roomServiceRadios = document.querySelectorAll('input[name="room_service"]');
+    let selectedRoomService = null;
+    
+    roomServiceRadios.forEach(radio => {
+      if (radio.checked) {
+        selectedRoomService = radio.value;
+      }
+    });
+    
+    // Collect selected amenities
+    const selectedItems = [];
+    const amenityCheckboxes = document.querySelectorAll('input[name="amenities"]:checked');
+    
+    amenityCheckboxes.forEach(checkbox => {
+      selectedItems.push(checkbox.value);
+    });
+    
+    // Use default number of nights (2)
+    const numberOfNights = 2;
+    
+    // Set hidden form fields
+    document.getElementById('selectedTreatmentId').value = selectedTreatmentId || '';
+    document.getElementById('selectedDoctorId').value = selectedDoctorId || '';
+    document.getElementById('selectedHospitalId').value = selectedHospitalId || '';
+    document.getElementById('selectedAmenities').value = JSON.stringify(selectedItems);
+    document.getElementById('totalAmount').value = totalCost || 0;
+    
+    // Add room service to form data (create hidden input if it doesn't exist)
+    let roomServiceInput = document.getElementById('roomServiceInput');
+    if (!roomServiceInput) {
+      roomServiceInput = document.createElement('input');
+      roomServiceInput.type = 'hidden';
+      roomServiceInput.id = 'roomServiceInput';
+      roomServiceInput.name = 'room_service';
+      document.getElementById('newBookingForm').appendChild(roomServiceInput);
+    }
+    roomServiceInput.value = selectedRoomService || '';
+    
+    // Add number of nights to form data (create hidden input if it doesn't exist)
+    let numberOfNightsInput = document.getElementById('numberOfNightsInput');
+    if (!numberOfNightsInput) {
+      numberOfNightsInput = document.createElement('input');
+      numberOfNightsInput.type = 'hidden';
+      numberOfNightsInput.id = 'numberOfNightsInput';
+      numberOfNightsInput.name = 'number_of_nights';
+      document.getElementById('newBookingForm').appendChild(numberOfNightsInput);
+    }
+    numberOfNightsInput.value = numberOfNights || 2;
+    
+    // Check if required fields are present
+    if (!selectedTreatmentId || !selectedHospitalId || !totalCost) {
+      alert('Please complete all required steps in the booking process.');
+      return false;
+    }
+    
+    // Check if terms are agreed to
+    if (!document.getElementById('termsCheck').checked) {
+      alert('You must agree to the Terms of Service and Privacy Policy.');
+      return false;
+    }
+    
+    // If all validations pass, submit the form
+    this.submit();
+  });
+
+  
+  
+  // Update the room card click event to also update the cost based on selected nights
+  document.querySelectorAll('.room-option-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      // Don't trigger if clicking on form elements
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+        return;
+      }
+      
+      // Remove selected class from all cards
+      document.querySelectorAll('.room-option-card').forEach(c => {
+        c.classList.remove('selected');
+      });
+      
+      // Add selected class to clicked card
+      this.classList.add('selected');
+      
+      // Select the radio button inside this card
+      const radio = this.querySelector('input[type="radio"]');
+      if (radio) {
+        radio.checked = true;
+      }
+      
+      // Update the room cost display (defaulting to 2 days)
+      const numberOfNights = 2;
+      const roomCostPerNight = parseInt(this.dataset.roomCost);
+      const roomCost = roomCostPerNight * numberOfNights;
+      
+      const roomPriceElement = this.querySelector('.room-price');
+      if (roomPriceElement) {
+        // Format the total cost with commas
+        const formattedCost = roomCost.toLocaleString('en-IN');
+        roomPriceElement.innerHTML = `₹${formattedCost}<small class="text-muted">/for ${numberOfNights} night${numberOfNights > 1 ? 's' : ''}</small>`;
+      }
+    });
+  });
+</script>
+{% endblock %}

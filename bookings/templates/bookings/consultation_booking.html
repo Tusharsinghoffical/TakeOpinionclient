@@ -1,0 +1,442 @@
+{% extends 'base.html' %}
+{% block title %}Book Consultation with Dr. {{ doctor.name }}{% endblock %}
+
+{% block content %}
+<style>
+  .consultation-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
+
+  .consultation-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: none;
+  }
+
+  .consultation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .consultation-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .consultation-form .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .consultation-form .form-control, 
+  .consultation-form .form-select {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+  }
+
+  .consultation-form .form-control:focus, 
+  .consultation-form .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .consultation-form .file-upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .consultation-form .file-upload-area:hover {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+  }
+
+  .consultation-form .file-upload-area.dragover {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+  }
+
+  .file-list {
+    margin-top: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+  }
+
+  .file-item .file-name {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-item .file-remove {
+    color: #dc3545;
+    cursor: pointer;
+    margin-left: 0.5rem;
+  }
+
+  .consultation-option {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+  }
+
+  .consultation-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  .consultation-option.active {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .consultation-submit-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border: none;
+  }
+
+  .consultation-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+  }
+
+  .form-text {
+    color: #6c757d;
+  }
+
+  /* Costing Section */
+  .costing-card {
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+    background: #f8f9fa;
+  }
+
+  .costing-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .costing-item:last-child {
+    border-bottom: none;
+  }
+
+  .costing-total {
+    font-weight: 700;
+    font-size: 1.1rem;
+    background: #e9ecef;
+    border-radius: 0 0 10px 10px;
+  }
+
+  @media (max-width: 768px) {
+    .consultation-page {
+      padding: 1rem;
+    }
+    
+    .consultation-card {
+      margin-bottom: 1rem;
+    }
+    
+    .consultation-form .form-control, 
+    .consultation-form .form-select {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+</style>
+
+<div class="container py-5 consultation-page">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <a href="{% url 'doctor_detail' doctor.slug %}" class="btn btn-sm btn-outline-secondary mb-3">
+        <i class="bi bi-arrow-left me-1"></i>Back to Doctor Profile
+      </a>
+      
+      <div class="card border-0 shadow-sm consultation-card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Book Video Consultation with Dr. {{ doctor.name }}</h4>
+        </div>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-4 mb-3 mb-md-0">
+              {% if doctor.profile_picture %}
+                <img src="{{ doctor.profile_picture }}" class="img-fluid rounded object-fit-cover" alt="{{ doctor.name }}" style="height: 200px;">
+              {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid rounded object-fit-cover" alt="{{ doctor.name }}" style="height: 200px;">
+              {% endif %}
+            </div>
+            <div class="col-md-8">
+              <h5>Dr. {{ doctor.name }}</h5>
+              <p class="mb-1">{{ doctor.specialization }}</p>
+              <div class="d-flex align-items-center mb-2">
+                <div class="text-warning me-2">
+                  {% for i in "12345" %}
+                    <i class="bi bi-star{% if forloop.counter <= doctor.rating|floatformat:0 %}-fill{% else %}-half{% endif %}"></i>
+                  {% endfor %}
+                </div>
+                <span>({{ doctor.review_count|default:0 }} reviews)</span>
+              </div>
+              <p class="mb-0">{{ doctor.key_points|default:'Highly experienced medical professional' }}</p>
+            </div>
+          </div>
+          
+          <form method="post" id="consultationForm" class="consultation-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+              <h5 class="mb-3">Video Consultation</h5>
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <div class="card border-primary h-100 consultation-option active">
+                    <div class="card-body text-center">
+                      <i class="bi bi-camera-video text-primary fs-1 mb-3"></i>
+                      <h5 class="card-title">Video Consultation</h5>
+                      <p class="card-text">Get a face-to-face consultation with the doctor via secure video call.</p>
+                      <input type="hidden" name="consultation_type" value="video" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <h5 class="mb-3">Select Treatment (Optional)</h5>
+              <select class="form-select" name="treatment_id" id="treatmentSelect">
+                <option value="">Select a treatment (optional)</option>
+                {% for treatment in treatments %}
+                <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            
+            <div class="mb-4">
+              <h5 class="mb-3">Upload Medical Documents</h5>
+              <div class="file-upload-area" id="medicalDocumentsDropArea">
+                <i class="bi bi-cloud-upload display-5 text-primary mb-2"></i>
+                <p class="mb-1">Drag & drop medical documents here or click to browse</p>
+                <p class="small text-muted mb-2">Supports multiple files (PDF, JPG, PNG, DOC, DOCX)</p>
+                <input type="file" class="form-control" id="medicalDocumentsInput" name="medical_reports" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+              </div>
+              <div class="file-list" id="medicalDocumentsList"></div>
+              <div class="form-text">Upload prescriptions, medical reports, or other relevant documents for the doctor to review during consultation</div>
+            </div>
+            
+            <div class="mb-4">
+              <h5 class="mb-3">Schedule Your Consultation</h5>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="preferredDate" class="form-label">Preferred Date</label>
+                  <input type="date" class="form-control" id="preferredDate" name="preferred_date" min="{% now "Y-m-d" %}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="preferredTime" class="form-label">Preferred Time</label>
+                  <select class="form-select" id="preferredTime" name="preferred_time" required>
+                    <option value="">Select time slot</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="14:00">02:00 PM</option>
+                    <option value="15:00">03:00 PM</option>
+                    <option value="16:00">04:00 PM</option>
+                    <option value="17:00">05:00 PM</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <h5 class="mb-3">Additional Information</h5>
+              <div class="mb-3">
+                <label for="notes" class="form-label">Notes (Optional)</label>
+                <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Any specific questions or information you'd like to share with the doctor..."></textarea>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <h5 class="mb-3">Consultation Costing</h5>
+              <div class="card costing-card">
+                <div class="costing-item">
+                  <span>Video Consultation Fee</span>
+                  <span class="fw-bold">₹1,500.00</span>
+                </div>
+                <div class="costing-item">
+                  <span>Service Charge</span>
+                  <span class="fw-bold">₹150.00</span>
+                </div>
+                <div class="costing-item">
+                  <span>Tax (18%)</span>
+                  <span class="fw-bold">₹297.00</span>
+                </div>
+                <div class="costing-item costing-total">
+                  <span>Total Amount</span>
+                  <span class="fw-bold">₹1,947.00</span>
+                </div>
+              </div>
+              <div class="form-text mt-2">All prices are in INR (Indian Rupees)</div>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'doctor_detail' doctor.slug %}" class="btn btn-secondary">Cancel</a>
+              <button type="submit" class="btn btn-primary consultation-submit-btn" id="bookConsultationBtn">
+                <i class="bi bi-calendar-check me-2"></i>Proceed to Payment
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Add active class to selected consultation option
+document.querySelectorAll('.consultation-option').forEach(option => {
+  option.addEventListener('click', function() {
+    // Remove active class from all options
+    document.querySelectorAll('.consultation-option').forEach(opt => {
+      opt.classList.remove('active');
+    });
+    
+    // Add active class to clicked option
+    this.classList.add('active');
+    
+    // Check the corresponding radio button
+    const radio = this.querySelector('input[type="radio"]');
+    if (radio) {
+      radio.checked = true;
+    }
+  });
+});
+
+// Set minimum date to today
+document.addEventListener('DOMContentLoaded', function() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('preferredDate').min = today;
+  
+  // Handle medical documents file input
+  const medicalDocumentsInput = document.getElementById('medicalDocumentsInput');
+  const medicalDocumentsDropArea = document.getElementById('medicalDocumentsDropArea');
+  const medicalDocumentsList = document.getElementById('medicalDocumentsList');
+  
+  // Handle file selection
+  medicalDocumentsInput.addEventListener('change', function(e) {
+    updateFileList(e.target.files, medicalDocumentsList);
+  });
+  
+  // Handle drag and drop
+  medicalDocumentsDropArea.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    medicalDocumentsDropArea.classList.add('dragover');
+  });
+  
+  medicalDocumentsDropArea.addEventListener('dragleave', function(e) {
+    medicalDocumentsDropArea.classList.remove('dragover');
+  });
+  
+  medicalDocumentsDropArea.addEventListener('drop', function(e) {
+    e.preventDefault();
+    medicalDocumentsDropArea.classList.remove('dragover');
+    if (e.dataTransfer.files.length) {
+      medicalDocumentsInput.files = e.dataTransfer.files;
+      updateFileList(e.dataTransfer.files, medicalDocumentsList);
+    }
+  });
+  
+  // Handle click on drop area
+  medicalDocumentsDropArea.addEventListener('click', function() {
+    medicalDocumentsInput.click();
+  });
+  
+  // Function to update file list display
+  function updateFileList(files, fileListElement) {
+    fileListElement.innerHTML = '';
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+        fileItem.innerHTML = `
+          <span class="file-name">${file.name}</span>
+          <span class="file-size text-muted small">${formatFileSize(file.size)}</span>
+          <span class="file-remove" data-index="${i}">×</span>
+        `;
+        fileListElement.appendChild(fileItem);
+      }
+      
+      // Add event listeners to remove buttons
+      document.querySelectorAll('.file-remove').forEach(button => {
+        button.addEventListener('click', function() {
+          const index = parseInt(this.getAttribute('data-index'));
+          removeFile(index);
+        });
+      });
+    }
+  }
+  
+  // Function to format file size
+  function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+  
+  // Function to remove a file from the list
+  function removeFile(index) {
+    const dt = new DataTransfer();
+    const files = medicalDocumentsInput.files;
+    
+    for (let i = 0; i < files.length; i++) {
+      if (i !== index) {
+        dt.items.add(files[i]);
+      }
+    }
+    
+    medicalDocumentsInput.files = dt.files;
+    updateFileList(dt.files, medicalDocumentsList);
+  }
+});
+
+// Form submission handler
+document.getElementById('consultationForm').addEventListener('submit', function(e) {
+  const bookBtn = document.getElementById('bookConsultationBtn');
+  const originalText = bookBtn.innerHTML;
+  
+  // Show loading state
+  bookBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Booking...';
+  bookBtn.disabled = true;
+});
+</script>
+{% endblock %}

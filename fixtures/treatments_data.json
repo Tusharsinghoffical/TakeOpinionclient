@@ -1,0 +1,257 @@
+[
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 1,
+  "fields": {
+    "name": "Orthopedics",
+    "slug": "orthopedics",
+    "type": "medical"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 2,
+  "fields": {
+    "name": "Cosmetic",
+    "slug": "cosmetic",
+    "type": "aesthetic"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 3,
+  "fields": {
+    "name": "Ayurveda",
+    "slug": "ayurveda",
+    "type": "wellness"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 4,
+  "fields": {
+    "name": "Surgery",
+    "slug": "surgery",
+    "type": "medical"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 5,
+  "fields": {
+    "name": "Test Category",
+    "slug": "test-category",
+    "type": "medical"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 6,
+  "fields": {
+    "name": "Medical Treatments",
+    "slug": "medical-treatments",
+    "type": "medical"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 7,
+  "fields": {
+    "name": "General",
+    "slug": "general",
+    "type": "medical"
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 1,
+  "fields": {
+    "name": "Knee Replacement",
+    "slug": "knee-replacement",
+    "description": "Knee replacement details.",
+    "category": 1,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "5000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 2,
+  "fields": {
+    "name": "Rhinoplasty",
+    "slug": "rhinoplasty",
+    "description": "Nose reshaping surgery.",
+    "category": 2,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "5000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 3,
+  "fields": {
+    "name": "Panchakarma",
+    "slug": "panchakarma",
+    "description": "Ayurvedic detox therapy.",
+    "category": 3,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "5000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 4,
+  "fields": {
+    "name": "AIDS",
+    "slug": "aids",
+    "description": "HIV Problems",
+    "category": 1,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "5000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 5,
+  "fields": {
+    "name": "Diabetes",
+    "slug": "diabetes",
+    "description": "Diabetes is a chronic metabolic disease where blood glucose levels are too high because the body doesn't make enough insulin or doesn't use insulin effectively. Symptoms can include increased thirst, frequent urination, and unexplained weight loss, while long-term complications can affect the heart, eyes, kidneys, and nerves. Type 1 diabetes involves the body producing little to no insulin, while Type 2 diabetes involves insulin resistance or insufficient insulin production.",
+    "category": 4,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "5000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 6,
+  "fields": {
+    "name": "Knee Replacement Test",
+    "slug": "knee-replacement-test",
+    "description": "Surgical procedure to replace damaged knee joints",
+    "category": 5,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "5000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 7,
+  "fields": {
+    "name": "AIDS Treatment",
+    "slug": "aids-treatment",
+    "description": "",
+    "category": 6,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "5000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 8,
+  "fields": {
+    "name": "Diabetes Management",
+    "slug": "diabetes-management",
+    "description": "",
+    "category": 6,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "5000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 9,
+  "fields": {
+    "name": "General Consultation",
+    "slug": "general-consultation",
+    "description": "General medical consultation",
+    "category": 1,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "50.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatmentfaq",
+  "pk": 1,
+  "fields": {
+    "treatment": 1,
+    "question": "What should I expect during this treatment?",
+    "answer": "This treatment typically involves several stages including consultation, preparation, the procedure itself, and recovery. Your medical team will guide you through each step.",
+    "order": 1
+  }
+},
+{
+  "model": "treatments.treatmentfaq",
+  "pk": 2,
+  "fields": {
+    "treatment": 1,
+    "question": "How long is the recovery period?",
+    "answer": "Recovery time varies by individual, but most patients can expect to return to normal activities within 2-3 weeks.",
+    "order": 2
+  }
+},
+{
+  "model": "treatments.treatmentfaq",
+  "pk": 3,
+  "fields": {
+    "treatment": 1,
+    "question": "What are the risks associated with this treatment?",
+    "answer": "Like any medical procedure, this treatment carries some risks. Your doctor will discuss all potential risks and benefits with you during your consultation.",
+    "order": 3
+  }
+}
+]

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 class="h3 mb-0">Upload Media for Dr. {{ doctor.name }}</h1>
+          <p class="mb-0 text-muted">Add images or videos to your profile</p>
+        </div>
+        <a href="{% url 'doctor_profile' %}" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left me-2"></i>Back to Profile
+        </a>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Media Upload</h5>
+            </div>
+            <div class="card-body">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="{{ form.image_url.id_for_label }}" class="form-label">Image URL</label>
+                  {{ form.image_url }}
+                  <div class="form-text">Enter the URL of an image you want to add to your profile.</div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="{{ form.video_url.id_for_label }}" class="form-label">Video URL (Optional)</label>
+                  {{ form.video_url }}
+                  <div class="form-text">Enter the URL of a video you want to add to your profile (e.g., YouTube, Vimeo).</div>
+                </div>
+                
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-upload me-2"></i>Upload Media
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Instructions</h5>
+            </div>
+            <div class="card-body">
+              <p>To add media to your profile:</p>
+              <ol>
+                <li>Upload your image/video to a hosting service</li>
+                <li>Copy the direct URL to the image/video file</li>
+                <li>Paste the URL in the appropriate field above</li>
+                <li>Click "Upload Media" to save</li>
+              </ol>
+              <p class="mb-0">Supported formats: JPG, PNG, GIF for images. For videos, use YouTube or Vimeo links.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

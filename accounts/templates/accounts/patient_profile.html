@@ -1,0 +1,300 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .patient-profile-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
+
+  .patient-profile-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    border: none;
+  }
+
+  .patient-profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .patient-profile-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .patient-profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .patient-profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .patient-profile-info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .patient-profile-info-item:last-child {
+    border-bottom: none;
+  }
+
+  .patient-profile-info-item .text-muted {
+    font-weight: 500;
+  }
+
+  .patient-profile-nav .nav-link {
+    font-weight: 600;
+    color: #6c757d;
+    border: none;
+  }
+
+  .patient-profile-nav .nav-link.active {
+    color: #0d6efd;
+    border-bottom: 3px solid #0d6efd;
+    border-radius: 0;
+  }
+
+  .patient-profile-form .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .patient-profile-form .form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+  }
+
+  .patient-profile-form .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .patient-profile-save-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .patient-profile-save-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  .patient-profile-dashboard-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .patient-profile-dashboard-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  .patient-profile-upload-btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .patient-profile-upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    .patient-profile-page {
+      padding: 1rem;
+    }
+    
+    .patient-profile-card {
+      margin-bottom: 1rem;
+    }
+    
+    .patient-profile-picture {
+      width: 100px;
+      height: 100px;
+    }
+  }
+</style>
+
+<div class="container py-5 patient-profile-page">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 class="h3 mb-0">Patient Profile</h1>
+          <p class="mb-0 text-muted">Manage your personal and medical information</p>
+        </div>
+        <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger">
+          <i class="bi bi-box-arrow-right me-2"></i>Logout
+        </a>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card border-0 shadow-sm mb-4 patient-profile-card">
+            <div class="card-body text-center">
+              <div class="mb-4">
+                <div class="patient-profile-picture">
+                  {% if user_profile.profile_picture %}
+                    <img src="{{ user_profile.profile_picture }}" alt="Profile Picture">
+                  {% else %}
+                    <div class="d-flex align-items-center justify-content-center h-100">
+                      <i class="bi bi-person fs-1 text-muted"></i>
+                    </div>
+                  {% endif %}
+                </div>
+                <!-- Profile Picture Upload Form -->
+                <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="hidden" name="action" value="upload_picture">
+                  <div class="mt-3">
+                    <label for="profile_picture" class="form-label">Profile Picture</label>
+                    <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*">
+                    <div class="form-text">Upload a profile picture (JPG, PNG, GIF)</div>
+                    <button type="submit" class="btn btn-sm btn-primary mt-2 patient-profile-upload-btn">Upload Picture</button>
+                  </div>
+                </form>
+              </div>
+              <h4 class="mb-1">{{ user_profile.full_name }}</h4>
+              <p class="mb-3 text-muted">Patient ID: PT-{{ user_profile.id|default:"1245" }}</p>
+              <div class="d-grid gap-2">
+                <a href="{% url 'accounts:patient_dashboard' %}" class="btn btn-primary patient-profile-dashboard-btn">
+                  <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card border-0 shadow-sm patient-profile-card">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Account Information</h5>
+            </div>
+            <div class="card-body">
+              <div class="patient-profile-info-item">
+                <span class="text-muted">Username</span>
+                <span>{{ user_profile.user.username }}</span>
+              </div>
+              <div class="patient-profile-info-item">
+                <span class="text-muted">Member Since</span>
+                <span>{{ user_profile.user.date_joined|date:"M d, Y" }}</span>
+              </div>
+              <div class="patient-profile-info-item">
+                <span class="text-muted">Last Updated</span>
+                <span>{{ user_profile.updated_at|date:"M d, Y" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-8">
+          <div class="card mb-4 border-0 shadow-sm patient-profile-card">
+            <div class="card-header bg-white">
+              <ul class="nav nav-tabs card-header-tabs patient-profile-nav" id="profileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab">
+                    <i class="bi bi-person me-2"></i>Personal Info
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="medical-tab" data-bs-toggle="tab" data-bs-target="#medical" type="button" role="tab">
+                    <i class="bi bi-heart-pulse me-2"></i>Medical Info
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <form method="POST" class="patient-profile-form">
+                {% csrf_token %}
+                <div class="tab-content" id="profileTabContent">
+                  <div class="tab-pane fade show active" id="personal" role="tabpanel">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user_profile.user.first_name }}" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user_profile.user.last_name }}" required>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user_profile.user.email }}" required>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phone" name="phone" value="{{ user_profile.phone }}">
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <label for="address" class="form-label">Address</label>
+                      <textarea class="form-control" id="address" name="address" rows="3">{{ user_profile.address }}</textarea>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" name="city" value="{{ user_profile.city }}">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="tab-pane fade" id="medical" role="tabpanel">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="blood_type" class="form-label">Blood Type</label>
+                        <input type="text" class="form-control" id="blood_type" name="blood_type" value="{{ patient_profile.blood_type|default:'' }}">
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="emergency_contact" class="form-label">Emergency Contact</label>
+                        <input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="{{ patient_profile.emergency_contact|default:'' }}">
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <label for="medical_history" class="form-label">Medical History</label>
+                      <textarea class="form-control" id="medical_history" name="medical_history" rows="4" placeholder="Describe your medical history, chronic conditions, previous surgeries, etc...">{{ patient_profile.medical_history|default:'' }}</textarea>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="d-flex justify-content-end mt-4">
+                  <button type="submit" class="btn btn-primary patient-profile-save-btn">
+                    <i class="bi bi-save me-2"></i>Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

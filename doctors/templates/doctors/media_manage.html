@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load doctor_extras %}
+{% block content %}
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 class="h3 mb-0">Manage Media for Dr. {{ doctor.name }}</h1>
+          <p class="mb-0 text-muted">View and manage your profile media</p>
+        </div>
+        <a href="{% url 'doctor_profile' %}" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left me-2"></i>Back to Profile
+        </a>
+      </div>
+      
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+      {% endif %}
+      
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Your Media Gallery</h5>
+            </div>
+            <div class="card-body">
+              {% if media_items %}
+              <div class="row g-3">
+                {% for media in media_items %}
+                <div class="col-md-6 col-lg-4">
+                  <div class="card border-0 shadow-sm">
+                    {% if media.image_url %}
+                      <img src="{{ media.image_url }}" class="card-img-top object-fit-cover" alt="Doctor media" style="height: 200px;">
+                    {% elif media.video_url %}
+                      <div class="ratio ratio-16x9">
+                        {% if 'youtube.com' in media.video_url or 'youtu.be' in media.video_url %}
+                          <iframe src="https://www.youtube.com/embed/{{ media.video_url|youtube_video_id }}" class="object-fit-cover rounded" allowfullscreen></iframe>
+                        {% elif 'vimeo.com' in media.video_url %}
+                          <iframe src="https://player.vimeo.com/video/{{ media.video_url|vimeo_video_id }}" class="object-fit-cover rounded" allowfullscreen></iframe>
+                        {% else %}
+                          <div class="d-flex flex-column justify-content-center align-items-center bg-light rounded h-100">
+                            <i class="bi bi-play-circle-fill text-primary fs-1 mb-2"></i>
+                            <span>Video Link</span>
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% else %}
+                      <div class="d-flex flex-column justify-content-center align-items-center bg-light rounded h-100" style="height: 200px;">
+                        <i class="bi bi-file-earmark-text text-muted fs-1 mb-2"></i>
+                        <span>Media File</span>
+                      </div>
+                    {% endif %}
+                    <div class="card-body">
+                      <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="media_id" value="{{ media.id }}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger w-100" onclick="return confirm('Are you sure you want to delete this media?')">
+                          <i class="bi bi-trash me-1"></i>Delete
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% else %}
+              <div class="text-center py-5">
+                <i class="bi bi-image fs-1 text-muted mb-3"></i>
+                <h5 class="mb-2">No media uploaded yet</h5>
+                <p class="mb-4">Upload images to showcase your work and expertise.</p>
+                <a href="{% url 'doctor_media_upload' doctor.id %}" class="btn btn-primary">
+                  <i class="bi bi-upload me-2"></i>Upload Media
+                </a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Add New Media</h5>
+            </div>
+            <div class="card-body">
+              <p class="mb-3">Add new images to your profile gallery.</p>
+              <a href="{% url 'doctor_media_upload' doctor.id %}" class="btn btn-primary w-100">
+                <i class="bi bi-plus-circle me-2"></i>Upload New Media
+              </a>
+            </div>
+          </div>
+          
+          <div class="card border-0 shadow-sm mt-4">
+            <div class="card-header bg-white">
+              <h5 class="mb-0">Tips</h5>
+            </div>
+            <div class="card-body">
+              <ul class="mb-0">
+                <li>Use high-quality images</li>
+                <li>Include images of your work environment</li>
+                <li>Showcase procedures or treatments</li>
+                <li>Keep images professional</li>
+                <li>For videos, use YouTube or Vimeo links</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

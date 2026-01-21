@@ -1,0 +1,212 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<style>
+  /* Live Preview Specific Styles */
+  .live-preview-page {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .preview-section {
+    background: white;
+    padding: 2rem 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .preview-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .preview-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+  
+  .preview-subtitle {
+    font-size: 1.1rem;
+    color: #6c757d;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  .data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .data-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .data-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 1rem;
+  }
+  
+  .data-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .data-item:last-child {
+    border-bottom: none;
+  }
+  
+  .data-label {
+    font-weight: 500;
+    color: #495057;
+  }
+  
+  .data-value {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .refresh-btn {
+    display: block;
+    margin: 2rem auto;
+    background: #0d6efd;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .refresh-btn:hover {
+    background: #0b5ed7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(13, 110, 253, 0.3);
+  }
+  
+  @media (max-width: 768px) {
+    .data-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .preview-title {
+      font-size: 1.75rem;
+    }
+  }
+</style>
+
+<div class="live-preview-page">
+  <section class="preview-section">
+    <div class="container">
+      <div class="preview-header">
+        <h1 class="preview-title">Live Preview Dashboard</h1>
+        <p class="preview-subtitle">
+          Real-time data visualization for TakeOpinion platform
+        </p>
+      </div>
+      
+      <button class="refresh-btn" onclick="refreshData()">
+        <i class="bi bi-arrow-repeat me-2"></i>Refresh Data
+      </button>
+      
+      <div class="data-grid">
+        <!-- Stats Section -->
+        <div class="data-card">
+          <h3 class="data-card-title">Platform Statistics</h3>
+          <div class="data-item">
+            <span class="data-label">Total Treatments:</span>
+            <span class="data-value" id="treatments-count">{{ treatments_count }}</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Total Hospitals:</span>
+            <span class="data-value" id="hospitals-count">{{ hospitals_count }}</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Total Doctors:</span>
+            <span class="data-value" id="doctors-count">{{ doctors_count }}</span>
+          </div>
+        </div>
+        
+        <!-- Featured Content Section -->
+        <div class="data-card">
+          <h3 class="data-card-title">Featured Content</h3>
+          <div class="data-item">
+            <span class="data-label">Featured Treatments:</span>
+            <span class="data-value" id="featured-treatments-count">{{ featured_treatments|length }}</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Featured Hospitals:</span>
+            <span class="data-value" id="featured-hospitals-count">{{ featured_hospitals|length }}</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Featured Doctors:</span>
+            <span class="data-value" id="featured-doctors-count">{{ featured_doctors|length }}</span>
+          </div>
+        </div>
+        
+        <!-- Categories Section -->
+        <div class="data-card">
+          <h3 class="data-card-title">Treatment Categories</h3>
+          {% for category in treatment_categories %}
+          <div class="data-item">
+            <span class="data-label">{{ category.name }}:</span>
+            <span class="data-value">{{ category.slug }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        
+        <!-- Top Doctors Section -->
+        <div class="data-card">
+          <h3 class="data-card-title">Top Rated Doctors</h3>
+          {% for doctor in top_doctors %}
+          <div class="data-item">
+            <span class="data-label">{{ doctor.name }}:</span>
+            <span class="data-value">{{ doctor.rating }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  function refreshData() {
+    // Add animation to refresh button
+    const refreshBtn = document.querySelector('.refresh-btn');
+    refreshBtn.innerHTML = '<i class="bi bi-arrow-repeat me-2"></i>Refreshing...';
+    refreshBtn.disabled = true;
+    
+    // Simulate loading
+    setTimeout(() => {
+      // In a real implementation, this would fetch new data from the server
+      // For now, we'll just show a success message
+      refreshBtn.innerHTML = '<i class="bi bi-arrow-repeat me-2"></i>Refresh Data';
+      refreshBtn.disabled = false;
+      
+      // Show success message
+      const originalText = refreshBtn.innerHTML;
+      refreshBtn.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>Data Refreshed!';
+      setTimeout(() => {
+        refreshBtn.innerHTML = originalText;
+      }, 2000);
+    }, 1000);
+  }
+  
+  // Auto-refresh data every 30 seconds
+  setInterval(() => {
+    console.log('Auto-refreshing data...');
+    // In a real implementation, this would fetch new data from the server
+  }, 30000);
+</script>
+
+{% endblock %}

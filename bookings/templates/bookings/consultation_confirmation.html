@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block title %}Consultation Booked with Dr. {{ doctor.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-5">
+        <div class="mb-4">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        </div>
+        <h1 class="display-5 fw-bold mb-3">Consultation Booked Successfully!</h1>
+        <p class="lead mb-4">Your consultation with Dr. {{ doctor.name }} has been scheduled.</p>
+      </div>
+      
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Consultation Details</h4>
+        </div>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-4 mb-3 mb-md-0">
+              {% if doctor.profile_picture %}
+                <img src="{{ doctor.profile_picture }}" class="img-fluid rounded object-fit-cover" alt="{{ doctor.name }}" style="height: 200px;">
+              {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="img-fluid rounded object-fit-cover" alt="{{ doctor.name }}" style="height: 200px;">
+              {% endif %}
+            </div>
+            <div class="col-md-8">
+              <h5>Dr. {{ doctor.name }}</h5>
+              <p class="mb-1">{{ doctor.specialization }}</p>
+              <div class="d-flex align-items-center mb-2">
+                <div class="text-warning me-2">
+                  {% for i in "12345" %}
+                    <i class="bi bi-star{% if forloop.counter <= doctor.rating|floatformat:0 %}-fill{% else %}-half{% endif %}"></i>
+                  {% endfor %}
+                </div>
+                <span>({{ doctor.review_count|default:0 }} reviews)</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <i class="bi bi-calendar-check text-primary fs-4"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Date & Time</h6>
+                  <p class="mb-0">{{ consultation_details.date }} at {{ consultation_details.time }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <i class="bi bi-{% if consultation_details.type == 'video' %}camera-video{% else %}telephone{% endif %} text-primary fs-4"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Consultation Type</h6>
+                  <p class="mb-0">
+                    {% if consultation_details.type == 'video' %}
+                      Video Consultation
+                    {% else %}
+                      Phone Consultation
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <i class="bi bi-currency-dollar text-primary fs-4"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Amount</h6>
+                  <p class="mb-0">${{ consultation_details.amount|default:'50.00' }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <i class="bi bi-info-circle text-primary fs-4"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Booking ID</h6>
+                  <p class="mb-0">#{{ consultation_details.booking_id }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {% if consultation_details.type == 'video' %}
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">Google Meet Details</h4>
+        </div>
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <i class="bi bi-google text-primary fs-1 mb-3"></i>
+            <h5>Your Google Meet Link</h5>
+            <p class="text-muted">Click the button below to join your consultation</p>
+          </div>
+          
+          <div class="d-flex justify-content-center mb-4">
+            <a href="{{ meet_link }}" target="_blank" class="btn btn-success btn-lg">
+              <i class="bi bi-camera-video me-2"></i>Join Video Consultation
+            </a>
+          </div>
+          
+          <div class="alert alert-info">
+            <h6 class="alert-heading">
+              <i class="bi bi-info-circle me-2"></i>Important Information
+            </h6>
+            <ul class="mb-0">
+              <li>Please join 5-10 minutes before your scheduled time</li>
+              <li>Ensure your camera and microphone are working properly</li>
+              <li>Find a quiet, well-lit space for the consultation</li>
+              <li>Have any medical records or questions ready</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">Phone Consultation Details</h4>
+        </div>
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <i class="bi bi-telephone text-success fs-1 mb-3"></i>
+            <h5>Phone Consultation</h5>
+            <p class="text-muted">Dr. {{ doctor.name }} will call you at your scheduled time</p>
+          </div>
+          
+          <div class="alert alert-info">
+            <h6 class="alert-heading">
+              <i class="bi bi-info-circle me-2"></i>Important Information
+            </h6>
+            <ul class="mb-0">
+              <li>Ensure your phone is available at the scheduled time</li>
+              <li>Find a quiet space for the consultation</li>
+              <li>Have any medical records or questions ready</li>
+              <li>Doctor's contact number will be sent to you via SMS</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      
+      <div class="d-flex justify-content-center gap-3">
+        <a href="{% url 'doctor_detail' doctor.slug %}" class="btn btn-primary">
+          <i class="bi bi-person me-2"></i>Back to Doctor Profile
+        </a>
+        <a href="{% url 'accounts:patient_portal' %}" class="btn btn-outline-primary">
+          <i class="bi bi-calendar me-2"></i>View All Appointments
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

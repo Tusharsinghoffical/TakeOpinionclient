@@ -1,0 +1,1219 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+/* Enhanced Doctors Page Styles - Matching Home Page Design */
+:root {
+  /* Enhanced vibrant color palette from home page */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-strong: rgba(0, 0, 0, 0.15);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+  --transition-speed: 0.3s;
+}
+
+/* Global doctors page styles */
+.doctors-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background:  #0d6efd;
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--light-text);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--light-text);
+  line-height: 1.5;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-large {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #c0392b;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary-large {
+  background-color: transparent;
+  color: var(--light-text);
+  border: 2px solid var(--light-text);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-secondary-large:hover {
+  background-color: var(--light-text);
+  color: var(--accent);
+  transform: translateY(-3px);
+}
+
+/* Stats Section */
+.stats-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuMSIvPjxyZWN0IHk9IjIiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjIiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==') center/cover;
+  opacity: 0.3;
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #0d6efd, #6f42c1, #28a745);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 15px 35px rgba(31, 38, 135, 0.25);
+}
+
+.stat-item:hover::before {
+  transform: scaleX(1);
+}
+
+.stat-number {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 50%, #28a745 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 10px rgba(13, 110, 253, 0.2);
+  position: relative;
+  display: inline-block;
+}
+
+.stat-number::after {
+  content: '+';
+  font-size: 1.5rem;
+  vertical-align: super;
+  color: #0d6efd;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: #495057;
+  font-weight: 600;
+  line-height: 1.4;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Filter Section */
+.filter-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.filter-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 2rem;
+}
+
+.filter-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.filter-form .form-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.filter-form .form-control, .filter-form .form-select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-speed) ease;
+}
+
+.filter-form .form-control:focus, .filter-form .form-select:focus {
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+  border-color: var(--primary-medium);
+}
+
+.filter-form .btn {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  background: var(--primary-medium);
+  color: white;
+  transition: all var(--transition-speed) ease;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.filter-form .btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom dropdown styles */
+.custom-select-wrapper {
+  position: relative;
+}
+
+.custom-select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.searchable-dropdown {
+  position: relative;
+}
+
+.searchable-dropdown-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: white;
+  cursor: pointer;
+  text-align: left;
+}
+
+.searchable-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.searchable-dropdown-menu.show {
+  display: block;
+}
+
+.searchable-dropdown-search {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  outline: none;
+}
+
+.searchable-dropdown-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color var(--transition-speed) ease;
+}
+
+.searchable-dropdown-item:hover {
+  background-color: var(--light-bg);
+}
+
+/* Doctors Grid Section */
+.doctors-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.doctor-card {
+  background: var(--doctor-card-bg, white);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.doctor-image-container {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid var(--border);
+}
+
+.doctor-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-speed) ease;
+  display: block;
+  background-color: #f8f9fa;
+}
+
+.doctor-card:hover .doctor-image {
+  transform: scale(1.05);
+}
+
+/* Fallback for missing images */
+.doctor-image-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.doctor-image.fallback {
+  object-fit: contain;
+  background-color: #f8f9fa;
+}
+
+.doctor-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--success);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.doctor-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.doctor-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.doctor-specialization {
+  font-size: 1rem;
+  color: var(--primary-medium);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.doctor-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.doctor-rating {
+  display: flex;
+  align-items: center;
+}
+
+.rating-stars {
+  color: var(--warning);
+  margin-right: 0.5rem;
+}
+
+.rating-count {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.doctor-experience {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.doctor-experience i {
+  margin-right: 0.25rem;
+}
+
+.doctor-footer {
+  margin-top: auto;
+  text-align: center;
+}
+
+.btn-doctor-profile {
+  width: 100%;
+  background: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-doctor-profile:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* No Doctors Section */
+.no-doctors-card {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.no-doctors-icon {
+  font-size: 4rem;
+  color: #bdc3c7;
+  margin-bottom: 1.5rem;
+}
+
+.no-doctors-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.no-doctors-text {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* WhatsApp Section */
+.whatsapp-section {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.whatsapp-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: var(--light-text);
+}
+
+.whatsapp-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+  color: var(--light-text);
+}
+
+.whatsapp-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+  background-color: #25D366;
+  color: white !important;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background-color: #075E54;
+  color: white !important;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure WhatsApp button text is always white */
+.btn-whatsapp i {
+  color: white !important;
+}
+
+/* Additional specificity for WhatsApp button text */
+.whatsapp-buttons .btn-whatsapp {
+  color: white !important;
+}
+
+.btn-consultation {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-consultation:hover {
+  background-color: #25D369;
+  color: white;
+  transform: translateY(-3px);
+}
+
+/* Why Choose Section */
+.why-choose-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.why-choose-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--border);
+}
+
+.why-choose-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.why-choose-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-medium) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.why-choose-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+  line-height: 1.3;
+}
+
+.why-choose-description {
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 2.25rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2.25rem;
+  }
+  
+  .services-grid,
+  .why-choose-grid,
+  .doctors-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2rem;
+  }
+  
+  .services-grid,
+  .why-choose-grid,
+  .doctors-grid {
+    gap: 1.25rem;
+  }
+  
+  .filter-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .btn-primary-large,
+  .btn-secondary-large {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons,
+  .whatsapp-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary-large,
+  .btn-secondary-large,
+  .btn-whatsapp,
+  .btn-consultation {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .doctors-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .filter-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .row.g-3 {
+    gap: 1rem;
+  }
+  
+  .col-md-3, .col-md-2, .col-md-1 {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 2rem 0;
+  }
+  
+  .hero-title {
+    font-size: 1.7rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .section-header {
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  
+  .filter-card {
+    padding: 1rem;
+  }
+  
+  .filter-form .form-control, .filter-form .form-select {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .filter-form .btn {
+    padding: 0.6rem 1rem;
+  }
+  
+  .doctor-image-container {
+    height: 180px;
+  }
+  
+  .doctor-name {
+    font-size: 1.2rem;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 1.75rem;
+  }
+}
+</style>
+
+<div class="doctors-page">
+  <!-- Hero Section -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="container hero-content">
+      <h1 id="hero-heading" class="hero-title">Find the Right Medical Experts</h1>
+      <p class="hero-subtitle">Connect with our verified doctors and specialists who are ready to provide you with personalized medical care and guidance.</p>
+      <div class="hero-buttons">
+        <a href="/doctors/" class="btn-primary-large">
+          <i class="bi bi-chat-dots me-2"></i> Connect with Experts
+        </a>
+        <a href="/treatments/" class="btn-secondary-large">
+          <i class="bi bi-search me-2"></i> Explore Treatments
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  
+
+  <!-- Filter Section -->
+  <section class="filter-section" aria-labelledby="filter-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="filter-heading" class="section-title">Filter Doctors</h2>
+        <p class="section-subtitle">Find the perfect doctor based on your specific needs</p>
+      </div>
+      <div class="filter-card">
+        <form id="doctor-filter-form" method="GET" class="filter-form">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">Search Doctors</label>
+              <input type="text" class="form-control" name="search" id="search-filter" value="{{ search_filter }}" placeholder="Search by name or specialization">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Specialization</label>
+              <select class="form-select" name="specialization" id="specialization-filter">
+                <option value="">All Specializations</option>
+                <option value="MBBS" {% if specialization_filter == 'MBBS' %}selected{% endif %}>MBBS</option>
+                <option value="Orthopedic Surgeon" {% if specialization_filter == 'Orthopedic Surgeon' %}selected{% endif %}>Orthopedic Surgeon</option>
+                <option value="Cardiac Surgeon" {% if specialization_filter == 'Cardiac Surgeon' %}selected{% endif %}>Cardiac Surgeon</option>
+                <option value="Neurosurgeon" {% if specialization_filter == 'Neurosurgeon' %}selected{% endif %}>Neurosurgeon</option>
+                <option value="Oncologist" {% if specialization_filter == 'Oncologist' %}selected{% endif %}>Oncologist</option>
+                <option value="Dermatologist" {% if specialization_filter == 'Dermatologist' %}selected{% endif %}>Dermatologist</option>
+                <option value="Dentist" {% if specialization_filter == 'Dentist' %}selected{% endif %}>Dentist</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Experience</label>
+              <select class="form-select" name="experience" id="experience-filter">
+                <option value="">Any Experience</option>
+                <option value="5+ years" {% if experience_filter == '5+ years' %}selected{% endif %}>5+ years</option>
+                <option value="10+ years" {% if experience_filter == '10+ years' %}selected{% endif %}>10+ years</option>
+                <option value="15+ years" {% if experience_filter == '15+ years' %}selected{% endif %}>15+ years</option>
+                <option value="20+ years" {% if experience_filter == '20+ years' %}selected{% endif %}>20+ years</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Rating</label>
+              <select class="form-select" name="rating" id="rating-filter">
+                <option value="">All Ratings</option>
+                <option value="4.5+ stars" {% if rating_filter == '4.5+ stars' %}selected{% endif %}>4.5+ stars</option>
+                <option value="4.0+ stars" {% if rating_filter == '4.0+ stars' %}selected{% endif %}>4.0+ stars</option>
+                <option value="3.5+ stars" {% if rating_filter == '3.5+ stars' %}selected{% endif %}>3.5+ stars</option>
+              </select>
+            </div>
+            <!-- Treatment Filter with Searchable Dropdown -->
+            <div class="col-md-2">
+              <label class="form-label">Treatment</label>
+              <div class="searchable-dropdown">
+                <input type="text" class="form-control searchable-dropdown-input" id="treatment-search-input" placeholder="Select treatment..." readonly>
+                <input type="hidden" name="treatment" id="treatment-filter" value="{{ treatment_filter }}">
+                <div class="searchable-dropdown-menu" id="treatment-dropdown-menu">
+                  <input type="text" class="searchable-dropdown-search" id="treatment-search-box" placeholder="Search treatments...">
+                  <div class="searchable-dropdown-items" id="treatment-dropdown-items">
+                    <!-- Treatment options will be populated dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+              <button type="submit" class="btn">Filter</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Doctors Grid Section -->
+  <section class="doctors-section" aria-labelledby="doctors-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="doctors-heading" class="section-title">Our Medical Experts</h2>
+        <p class="section-subtitle">Meet our team of verified medical professionals</p>
+      </div>
+      <div class="doctors-grid">
+        {% for d in doctors %}
+        <div class="doctor-card">
+          <div class="doctor-image-container">
+            {% if d.profile_picture and d.profile_picture != '' %}
+              <!-- Check if it's a full URL or relative path -->
+              {% if 'http' in d.profile_picture or 'https' in d.profile_picture %}
+                <img src="{{ d.profile_picture }}" class="doctor-image" alt="{{ d.name }}" onerror="this.src='https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256'; this.classList.add('fallback');">
+              {% else %}
+                <!-- Handle relative paths -->
+                <img src="{{ d.profile_picture }}" class="doctor-image" alt="{{ d.name }}" onerror="this.src='https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256'; this.classList.add('fallback');">
+              {% endif %}
+            {% else %}
+              <img src="https://ui-avatars.com/api/?name={{ d.name|urlencode }}&background=0D6EFD&color=fff&size=256" class="doctor-image fallback" alt="{{ d.name }}">
+            {% endif %}
+            {% if d.is_verified %}
+            <span class="doctor-badge">Verified</span>
+            {% endif %}
+          </div>
+          <div class="doctor-body">
+            <h3 class="doctor-name">{{ d.name }}</h3>
+            <div class="doctor-specialization">{{ d.specialization|default:'Specialist' }}</div>
+            <div class="doctor-meta">
+              <div class="doctor-rating">
+                <div class="rating-stars">
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= d.rating|floatformat:"0"|add:"0" %}
+                      <i class="bi bi-star-fill text-warning"></i>
+                    {% else %}
+                      <i class="bi bi-star text-muted"></i>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <span class="rating-count">({{ d.review_count|default:0 }} reviews)</span>
+              </div>
+              <div class="doctor-experience">
+                <i class="bi bi-briefcase"></i> {{ d.experience_years }} years
+              </div>
+            </div>
+            <div class="doctor-footer">
+              <a href="/doctors/{{ d.slug }}/" class="btn-doctor-profile">
+                <i class="bi bi-person me-1"></i> View Profile
+              </a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+          <div class="no-doctors-card">
+            <div class="no-doctors-icon">
+              <i class="bi bi-person-badge"></i>
+            </div>
+            <h3 class="no-doctors-title">No Doctors Found</h3>
+            <p class="no-doctors-text">We couldn't find any doctors matching your criteria. Try adjusting your filters or check back later.</p>
+            <a href="/doctors/" class="btn btn-primary">
+              <i class="bi bi-arrow-repeat me-2"></i> Reset Filters
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- WhatsApp Section -->
+  <section class="whatsapp-section" aria-labelledby="whatsapp-heading">
+    <div class="container">
+      <h2 id="whatsapp-heading" class="whatsapp-title">Get Personalized Medical Advice</h2>
+      <p class="whatsapp-subtitle">Connect with our medical experts directly through WhatsApp for instant guidance and support. Our team is available 24/7 to assist you.</p>
+      <div class="whatsapp-buttons">
+        <a href="https://wa.me/8851619647" class="btn-whatsapp">
+          <i class="bi bi-whatsapp me-2"></i> Chat on WhatsApp
+        </a>
+        <a href="/book/" class="btn-consultation">
+          <i class="bi bi-calendar-check me-2"></i> Schedule Consultation
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Section -->
+  <section class="why-choose-section" aria-labelledby="why-choose-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="why-choose-heading" class="section-title">Why Choose TakeOpinion Doctors</h2>
+        <p class="section-subtitle">Our commitment to providing the best medical expertise</p>
+      </div>
+      <div class="why-choose-grid">
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h3 class="why-choose-title">Verified Experts</h3>
+          <p class="why-choose-description">All our doctors are verified professionals with proven credentials and experience. We ensure authenticity through our verification process.</p>
+        </div>
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-translate"></i>
+          </div>
+          <h3 class="why-choose-title">Language Support</h3>
+          <p class="why-choose-description">Multilingual support to ensure clear communication throughout your medical journey. We break down language barriers for better care.</p>
+        </div>
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-headset"></i>
+          </div>
+          <h3 class="why-choose-title">24/7 Support</h3>
+          <p class="why-choose-description">Round-the-clock assistance for all your medical consultation needs. Our support team is always ready to help you.</p>
+        </div>
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+          <h3 class="why-choose-title">Transparent Pricing</h3>
+          <p class="why-choose-description">Clear pricing information to help you make informed decisions. No hidden costs or surprise fees.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Get references to form elements
+  const treatmentFilter = document.getElementById('treatment-filter');
+  const treatmentSearchInput = document.getElementById('treatment-search-input');
+  const treatmentDropdownMenu = document.getElementById('treatment-dropdown-menu');
+  const treatmentSearchBox = document.getElementById('treatment-search-box');
+  const treatmentDropdownItems = document.getElementById('treatment-dropdown-items');
+  const doctorFilterForm = document.getElementById('doctor-filter-form');
+  
+  // Store all treatment options for filtering
+  let allTreatmentOptions = [];
+  
+  // Load treatment options dynamically
+  if (treatmentFilter && treatmentSearchInput && treatmentDropdownMenu && treatmentSearchBox && treatmentDropdownItems) {
+    console.log('Initializing treatment dropdown');
+    
+    // Fetch all treatments (with a minimal query that will return all treatments)
+    fetch('/treatments/api/search/?type=treatment&query=a')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Treatments API response:', data);
+        if (data.success && treatmentDropdownItems) {
+          // Save all treatment options
+          allTreatmentOptions = data.results || [];
+          console.log('Loaded treatments:', allTreatmentOptions.length);
+          
+          // Populate dropdown items
+          populateTreatmentDropdown(allTreatmentOptions);
+          
+          // Set the initial value if one is selected
+          const selectedTreatment = treatmentFilter.value;
+          if (selectedTreatment) {
+            const selectedOption = allTreatmentOptions.find(treatment => treatment.name === selectedTreatment);
+            if (selectedOption) {
+              treatmentSearchInput.value = selectedOption.name;
+            }
+          }
+        } else {
+          console.log('No treatments found or API error');
+          populateTreatmentDropdown([]);
+        }
+      })
+      .catch(error => {
+        console.error('Error loading treatments:', error);
+        // Populate with a default option if there's an error
+        populateTreatmentDropdown([]);
+      });
+  } else {
+    console.log('Some treatment dropdown elements not found');
+  }
+  
+  // Populate treatment dropdown with options
+  function populateTreatmentDropdown(treatments) {
+    if (!treatmentDropdownItems) {
+      console.log('Treatment dropdown items container not found');
+      return;
+    }
+    
+    console.log('Populating dropdown with', treatments.length, 'treatments');
+    treatmentDropdownItems.innerHTML = '';
+    
+    // Add "All Treatments" option
+    const allOption = document.createElement('div');
+    allOption.className = 'searchable-dropdown-item';
+    allOption.textContent = 'All Treatments';
+    allOption.dataset.value = '';
+    allOption.addEventListener('click', function() {
+      treatmentFilter.value = '';
+      treatmentSearchInput.value = 'All Treatments';
+      treatmentDropdownMenu.classList.remove('show');
+    });
+    treatmentDropdownItems.appendChild(allOption);
+    
+    // Add treatment options
+    if (treatments && treatments.length > 0) {
+      treatments.forEach(treatment => {
+        const option = document.createElement('div');
+        option.className = 'searchable-dropdown-item';
+        option.textContent = treatment.name || 'Unnamed Treatment';
+        option.dataset.value = treatment.name || '';
+        option.addEventListener('click', function() {
+          treatmentFilter.value = treatment.name || '';
+          treatmentSearchInput.value = treatment.name || '';
+          treatmentDropdownMenu.classList.remove('show');
+        });
+        treatmentDropdownItems.appendChild(option);
+      });
+    } else {
+      // Add a "No treatments found" option
+      const noOption = document.createElement('div');
+      noOption.className = 'searchable-dropdown-item';
+      noOption.textContent = 'No treatments found';
+      noOption.dataset.value = '';
+      treatmentDropdownItems.appendChild(noOption);
+    }
+  }
+  
+  // Toggle dropdown visibility
+  if (treatmentSearchInput) {
+    treatmentSearchInput.addEventListener('click', function(e) {
+      e.stopPropagation();
+      console.log('Treatment search input clicked');
+      if (treatmentDropdownMenu) {
+        treatmentDropdownMenu.classList.toggle('show');
+      }
+      if (treatmentSearchBox) {
+        treatmentSearchBox.focus();
+      }
+    });
+  }
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (treatmentSearchInput && treatmentDropdownMenu) {
+      if (!treatmentSearchInput.contains(e.target) && !treatmentDropdownMenu.contains(e.target)) {
+        treatmentDropdownMenu.classList.remove('show');
+      }
+    }
+  });
+  
+  // Filter dropdown items based on search
+  if (treatmentSearchBox) {
+    treatmentSearchBox.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      console.log('Filtering treatments by:', searchTerm);
+      if (allTreatmentOptions && allTreatmentOptions.length > 0) {
+        const filteredTreatments = allTreatmentOptions.filter(treatment => 
+          treatment.name && treatment.name.toLowerCase().includes(searchTerm)
+        );
+        populateTreatmentDropdown(filteredTreatments);
+      }
+    });
+  }
+  
+  // Form submission handler
+  if (doctorFilterForm) {
+    doctorFilterForm.addEventListener('submit', function(e) {
+      console.log('Form is being submitted');
+      console.log('Treatment filter value:', treatmentFilter ? treatmentFilter.value : 'Not found');
+      // The form will submit normally, but we could add AJAX functionality here if needed
+    });
+  }
+});
+
+// Image loading improvements
+document.addEventListener('DOMContentLoaded', function() {
+  // Handle image loading errors
+  const doctorImages = document.querySelectorAll('.doctor-image');
+  doctorImages.forEach(img => {
+    img.addEventListener('error', function() {
+      // Add fallback class for styling
+      this.classList.add('fallback');
+      
+      // If it's not already a fallback image, set one
+      if (!this.src.includes('ui-avatars.com')) {
+        const name = this.alt || 'Doctor';
+        this.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0D6EFD&color=fff&size=256`;
+      }
+    });
+    
+    // Add loading attribute for better performance
+    img.setAttribute('loading', 'lazy');
+  });
+});
+</script>
+
+{% endblock %}

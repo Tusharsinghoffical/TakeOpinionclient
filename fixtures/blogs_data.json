@@ -1,0 +1,72 @@
+[
+{
+  "model": "blogs.blogpost",
+  "pk": 1,
+  "fields": {
+    "title": "Knee Replacement: What to Expect",
+    "slug": "knee-replacement-what-to-expect",
+    "content": "Pre-op, procedure, and recovery.",
+    "treatment": 1,
+    "doctor": 1,
+    "hospital": 1,
+    "is_medical_visa": false,
+    "published_at": "2025-09-18T14:21:20.916Z"
+  }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 2,
+  "fields": {
+    "title": "Medical Visa Guide for India",
+    "slug": "medical-visa-guide-for-india",
+    "content": "Documents, process, timelines.",
+    "treatment": null,
+    "doctor": null,
+    "hospital": null,
+    "is_medical_visa": true,
+    "published_at": "2025-09-18T14:21:20.928Z"
+  }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 3,
+  "fields": {
+    "title": "Understanding Medical Tourism",
+    "slug": "understanding-medical-tourism",
+    "content": "Medical tourism is a rapidly growing industry where patients travel to other countries to receive medical treatment. This comprehensive guide explains everything you need to know about medical tourism, including benefits, risks, and how to choose the right destination for your treatment.",
+    "treatment": null,
+    "doctor": null,
+    "hospital": null,
+    "is_medical_visa": false,
+    "published_at": "2025-09-18T16:53:52.973Z"
+  }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 4,
+  "fields": {
+    "title": "Top 5 Destinations for Cosmetic Surgery",
+    "slug": "top-5-destinations-for-cosmetic-surgery",
+    "content": "Cosmetic surgery tourism has become increasingly popular due to the significant cost savings and high-quality care available in certain countries. This article explores the top 5 destinations for cosmetic surgery, comparing costs, quality of care, and recovery facilities.",
+    "treatment": null,
+    "doctor": null,
+    "hospital": null,
+    "is_medical_visa": false,
+    "published_at": "2025-09-18T16:53:52.986Z"
+  }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 5,
+  "fields": {
+    "title": "Cure Of the Diabetes",
+    "slug": "cure-of-the-diabetes",
+    "content": "Less use of the Sugar\r\navoid the sugar",
+    "treatment": 5,
+    "doctor": 1,
+    "hospital": 1,
+    "is_medical_visa": true,
+    "published_at": "2025-09-23T10:36:23.430Z"
+  }
+}
+]

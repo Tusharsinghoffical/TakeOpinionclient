@@ -1,0 +1,995 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  /* Treatment Pricing Page Styles - Matching Homepage Design */
+  .pricing-page {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Section Header */
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
+    color: #6c757d;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* Search Section */
+  .search-section {
+    background: white;
+    padding: 3rem 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .search-tabs .nav-link {
+    border-radius: 10px;
+    font-weight: 600;
+    color: #6c757d;
+    margin: 0 5px;
+    border: 2px solid transparent;
+  }
+
+  .search-tabs .nav-link.active {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border: none;
+  }
+
+  .search-tabs .nav-link:hover:not(.active) {
+    border: 2px solid #0d6efd;
+    color: #0d6efd;
+  }
+
+  .search-form {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .search-results {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .search-result-item {
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .search-result-item:hover {
+    background-color: #e9ecef;
+  }
+
+  .search-result-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Treatment Selection */
+  .treatment-selection-section {
+    background-color: #f8f9fa;
+    padding: 5rem 0;
+  }
+
+  .treatment-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+  }
+
+  .treatment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    border-color: #0d6efd;
+  }
+
+  .treatment-card.selected {
+    border-color: #0d6efd;
+    background: #e7f1ff;
+  }
+
+  .treatment-card h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+
+  .treatment-card .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .hospital-filter-section {
+    background: white;
+    padding: 5rem 0;
+  }
+
+  .hospital-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    margin-bottom: 1.5rem;
+  }
+
+  .hospital-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .hospital-card img {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .hospital-details {
+    padding: 1.5rem;
+  }
+
+  .hospital-details h5 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+
+  .hospital-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  /* Key Highlights */
+  .key-highlights-section {
+    background-color: #f8f9fa;
+    padding: 5rem 0;
+  }
+
+  .key-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .highlight-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+  }
+
+  .highlight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .highlight-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: #0d6efd;
+  }
+
+  .highlight-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    line-height: 1.3;
+  }
+
+  .highlight-description {
+    color: #6c757d;
+    line-height: 1.6;
+  }
+
+  /* FAQ Section */
+  .faq-section {
+    background-color: white;
+    padding: 5rem 0;
+  }
+
+  .pricing-faq .accordion-button {
+    font-weight: 600;
+    color: #2c3e50;
+    background: #f8f9fa;
+    border: none;
+    border-radius: 12px !important;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .pricing-faq .accordion-button:not(.collapsed) {
+    color: #0d6efd;
+    background: #e7f1ff;
+  }
+
+  .pricing-faq .accordion-item {
+    border: 1px solid #e9ecef;
+    border-radius: 12px !important;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .pricing-faq .accordion-body {
+    padding: 1.5rem;
+  }
+
+  /* Cost Factors */
+  .cost-factors-section {
+    background-color: #f8f9fa;
+    padding: 5rem 0;
+  }
+
+  .pricing-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pricing-features li {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+  }
+
+  .pricing-features li:last-child {
+    border-bottom: none;
+  }
+
+  .pricing-features li i {
+    color: #198754;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+  }
+
+  /* Savings Highlight */
+  .savings-highlight {
+    background: linear-gradient(135deg, #198754 0%, #157347 100%);
+    color: white;
+    padding: 3rem;
+    border-radius: 20px;
+    text-align: center;
+    margin: 2rem 0;
+    box-shadow: 0 10px 30px rgba(25, 135, 84, 0.3);
+  }
+
+  .savings-highlight .display-6 {
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    padding: 5rem 0;
+    text-align: center;
+    border-top: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .cta-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    color: white;
+  }
+
+  .cta-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .btn-primary-large {
+    background-color: white;
+    color: #0d6efd;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary-large:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 992px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+    
+    .section-title {
+      font-size: 2.25rem;
+    }
+    
+    .cta-title {
+      font-size: 2.25rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: 3rem 0;
+    }
+    
+    .hero-title {
+      font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.1rem;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+    }
+    
+    .cta-title {
+      font-size: 2rem;
+    }
+    
+    .key-highlights,
+    .key-highlights-section .key-highlights {
+      grid-template-columns: 1fr;
+    }
+    
+    .savings-highlight {
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .hero-title {
+      font-size: 1.75rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+    
+    .section-title {
+      font-size: 1.75rem;
+    }
+    
+    .cta-title {
+      font-size: 1.75rem;
+    }
+    
+    .btn-primary-large {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<div class="pricing-page">
+  <!-- Hero Section -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="container hero-content">
+      <h1 id="hero-heading" class="hero-title">Treatment Pricing</h1>
+      <p class="hero-subtitle">Transparent pricing for all our medical treatments. Find the right package for your healthcare needs.</p>
+    </div>
+  </section>
+
+  <!-- Search Section -->
+  <section class="search-section" aria-labelledby="search-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="search-heading" class="section-title">Find Pricing Information</h2>
+        <p class="section-subtitle">Search for treatments, doctors, or hospitals to get detailed pricing information</p>
+      </div>
+      
+      <ul class="nav nav-tabs search-tabs mb-4" id="searchTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="treatment-tab" data-bs-toggle="tab" data-bs-target="#treatment" type="button" role="tab">Treatments</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="doctor-tab" data-bs-toggle="tab" data-bs-target="#doctor" type="button" role="tab">Doctors</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="hospital-tab" data-bs-toggle="tab" data-bs-target="#hospital" type="button" role="tab">Hospitals</button>
+        </li>
+      </ul>
+      
+      <div class="tab-content" id="searchTabContent">
+        <!-- Treatment Search -->
+        <div class="tab-pane fade show active" id="treatment" role="tabpanel">
+          <div class="search-form">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-lg" id="treatmentSearch" placeholder="Search treatments...">
+              <button class="btn btn-primary btn-lg" type="button" id="searchTreatmentBtn">
+                <i class="bi bi-search"></i> Search
+              </button>
+            </div>
+            <div class="search-results mt-3" id="treatmentResults" style="display: none;"></div>
+          </div>
+        </div>
+        
+        <!-- Doctor Search -->
+        <div class="tab-pane fade" id="doctor" role="tabpanel">
+          <div class="search-form">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-lg" id="doctorSearch" placeholder="Search doctors...">
+              <button class="btn btn-primary btn-lg" type="button" id="searchDoctorBtn">
+                <i class="bi bi-search"></i> Search
+              </button>
+            </div>
+            <div class="search-results mt-3" id="doctorResults" style="display: none;"></div>
+          </div>
+        </div>
+        
+        <!-- Hospital Search -->
+        <div class="tab-pane fade" id="hospital" role="tabpanel">
+          <div class="search-form">
+            <div class="input-group">
+              <input type="text" class="form-control form-control-lg" id="hospitalSearch" placeholder="Search hospitals...">
+              <button class="btn btn-primary btn-lg" type="button" id="searchHospitalBtn">
+                <i class="bi bi-search"></i> Search
+              </button>
+            </div>
+            <div class="search-results mt-3" id="hospitalResults" style="display: none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Treatment Selection Section -->
+  <section class="treatment-selection-section" aria-labelledby="treatment-selection-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="treatment-selection-heading" class="section-title">Select a Treatment</h2>
+        <p class="section-subtitle">Choose from our most popular treatments to see detailed pricing</p>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          {% for category in categories %}
+            {% if category.treatments.all %}
+              <h4 class="mb-4">{{ category.name }}</h4>
+              {% for treatment in category.treatments.all %}
+                <div class="treatment-card" data-treatment-id="{{ treatment.id }}">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h4 class="mb-1">{{ treatment.name }}</h4>
+                      <p class="mb-0 text-muted">{{ treatment.description|truncatewords:15 }}</p>
+                    </div>
+                    <div class="price">₹{{ treatment.starting_price|floatformat:0 }}</div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hospital Filter Section -->
+  <section class="hospital-filter-section" aria-labelledby="hospital-filter-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="hospital-filter-heading" class="section-title">Hospitals by Treatment</h2>
+        <p class="section-subtitle">Select a treatment above to see hospitals offering that treatment with their pricing</p>
+      </div>
+      
+      <div class="row" id="hospitalResultsContainer">
+        <div class="col-12 text-center">
+          <div class="py-5">
+            <i class="bi bi-hospital text-muted" style="font-size: 3rem;"></i>
+            <h5 class="mt-3">Select a treatment to view hospitals</h5>
+            <p class="text-muted">Choose a treatment from above to see hospitals that offer it and their pricing information</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Highlights -->
+  <section class="key-highlights-section" aria-labelledby="highlights-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="highlights-heading" class="section-title">Why Choose Our Pricing</h2>
+        <p class="section-subtitle">Transparent, competitive pricing with exceptional value</p>
+      </div>
+      
+      <div class="key-highlights">
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+          <h3 class="highlight-title">40-60% Savings</h3>
+          <p class="highlight-description">Patients typically save 40-60% compared to costs in developed countries</p>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <h3 class="highlight-title">95% Success Rate</h3>
+          <p class="highlight-description">Average success rate across all our partner hospitals</p>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h3 class="highlight-title">Verified Quality</h3>
+          <p class="highlight-description">JCI & NABH accredited hospitals with world-class facilities</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" aria-labelledby="faq-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="faq-heading" class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Common questions about our pricing and services</p>
+      </div>
+      
+      <div class="accordion accordion-flush pricing-faq" id="pricingFAQ">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+              What is included in the estimated costing?
+            </button>
+          </h2>
+          <div id="faq1" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              Our estimated costing includes all medical procedures, hospital stay, surgeon fees, anesthesia, medications, and standard post-operative care. Additional services like private rooms or specialized care may incur extra charges.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+              Are there any hidden fees?
+            </button>
+          </h2>
+          <div id="faq2" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              We strive for complete transparency. All standard fees are included in our estimates. However, unforeseen complications or additional tests requested by the patient may result in extra charges, which will be communicated in advance.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+              Do you offer payment plans?
+            </button>
+          </h2>
+          <div id="faq3" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              Yes, we offer flexible payment plans for most treatments. You can discuss financing options with our financial counselors who will help you find a plan that fits your budget.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+              How do hospital ratings affect pricing?
+            </button>
+          </h2>
+          <div id="faq4" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              Higher-rated hospitals with advanced facilities and renowned specialists typically have higher pricing. However, they also offer better success rates and patient satisfaction. You can compare hospitals based on ratings, pricing, and specialties.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cost Factors -->
+  <section class="cost-factors-section" aria-labelledby="factors-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="factors-heading" class="section-title">Key Cost Factors</h2>
+        <p class="section-subtitle">Understanding what influences treatment pricing</p>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="card">
+            <div class="card-body">
+              <ul class="pricing-features">
+                <li><i class="bi bi-check-circle-fill"></i> Hospital reputation and facilities</li>
+                <li><i class="bi bi-check-circle-fill"></i> Surgeon experience and expertise</li>
+                <li><i class="bi bi-check-circle-fill"></i> Procedure complexity</li>
+                <li><i class="bi bi-check-circle-fill"></i> Length of hospital stay</li>
+                <li><i class="bi bi-check-circle-fill"></i> Post-operative care requirements</li>
+                <li><i class="bi bi-check-circle-fill"></i> Geographic location</li>
+                <li><i class="bi bi-check-circle-fill"></i> Type of room selected</li>
+                <li><i class="bi bi-check-circle-fill"></i> Additional services requested</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="savings-highlight">
+        <h3 class="mb-3">Average Savings</h3>
+        <div class="display-6 text-white fw-bold mb-3">40-60%</div>
+        <p class="mb-0">Patients typically save 40-60% compared to costs in developed countries</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section" aria-labelledby="cta-heading">
+    <div class="container">
+      <h2 id="cta-heading" class="cta-title">Get a Personalized Quote</h2>
+      <p class="cta-subtitle">Receive a detailed cost estimate based on your specific medical needs and selected hospital.</p>
+      <a href="/book/" class="btn-primary-large">
+        <i class="bi bi-calculator me-2"></i>Calculate Your Cost
+      </a>
+    </div>
+  </section>
+</div>
+
+<script>
+  // Search functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    // Treatment search
+    const treatmentSearch = document.getElementById('treatmentSearch');
+    const searchTreatmentBtn = document.getElementById('searchTreatmentBtn');
+    const treatmentResults = document.getElementById('treatmentResults');
+    
+    // Doctor search
+    const doctorSearch = document.getElementById('doctorSearch');
+    const searchDoctorBtn = document.getElementById('searchDoctorBtn');
+    const doctorResults = document.getElementById('doctorResults');
+    
+    // Hospital search
+    const hospitalSearch = document.getElementById('hospitalSearch');
+    const searchHospitalBtn = document.getElementById('searchHospitalBtn');
+    const hospitalResults = document.getElementById('hospitalResults');
+    
+    // Treatment selection
+    const treatmentCards = document.querySelectorAll('.treatment-card');
+    const hospitalResultsContainer = document.getElementById('hospitalResultsContainer');
+    
+    // Treatment search function
+    function searchTreatments() {
+      const query = treatmentSearch.value.trim();
+      if (query.length < 2) {
+        treatmentResults.style.display = 'none';
+        return;
+      }
+      
+      // Make AJAX call to search treatments
+      fetch(`/treatments/api/search/?type=treatment&query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            displayResults(treatmentResults, data.results, 'treatment');
+          } else {
+            treatmentResults.innerHTML = '<div class="search-result-item">Error: ' + data.error + '</div>';
+            treatmentResults.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          treatmentResults.innerHTML = '<div class="search-result-item">Error searching treatments</div>';
+          treatmentResults.style.display = 'block';
+        });
+    }
+    
+    // Doctor search function
+    function searchDoctors() {
+      const query = doctorSearch.value.trim();
+      if (query.length < 2) {
+        doctorResults.style.display = 'none';
+        return;
+      }
+      
+      // Make AJAX call to search doctors
+      fetch(`/treatments/api/search/?type=doctor&query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            displayResults(doctorResults, data.results, 'doctor');
+          } else {
+            doctorResults.innerHTML = '<div class="search-result-item">Error: ' + data.error + '</div>';
+            doctorResults.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          doctorResults.innerHTML = '<div class="search-result-item">Error searching doctors</div>';
+          doctorResults.style.display = 'block';
+        });
+    }
+    
+    // Hospital search function
+    function searchHospitals() {
+      const query = hospitalSearch.value.trim();
+      if (query.length < 2) {
+        hospitalResults.style.display = 'none';
+        return;
+      }
+      
+      // Make AJAX call to search hospitals
+      fetch(`/treatments/api/search/?type=hospital&query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            displayResults(hospitalResults, data.results, 'hospital');
+          } else {
+            hospitalResults.innerHTML = '<div class="search-result-item">Error: ' + data.error + '</div>';
+            hospitalResults.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          hospitalResults.innerHTML = '<div class="search-result-item">Error searching hospitals</div>';
+          hospitalResults.style.display = 'block';
+        });
+    }
+    
+    // Display search results
+    function displayResults(container, results, type) {
+      container.innerHTML = '';
+      
+      if (results.length === 0) {
+        container.innerHTML = '<div class="search-result-item">No results found</div>';
+      } else {
+        results.forEach(item => {
+          const resultItem = document.createElement('div');
+          resultItem.className = 'search-result-item';
+          
+          if (type === 'treatment') {
+            resultItem.innerHTML = `
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">${item.name}</div>
+                  <div class="small text-muted">${item.category}</div>
+                </div>
+                <div class="price-range">₹${item.price.toLocaleString()}</div>
+              </div>
+            `;
+          } else if (type === 'doctor') {
+            resultItem.innerHTML = `
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">${item.name}</div>
+                  <div class="small text-muted">${item.specialty}</div>
+                </div>
+                <div class="price-range">₹${item.price.toLocaleString()}</div>
+              </div>
+            `;
+          } else if (type === 'hospital') {
+            resultItem.innerHTML = `
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">${item.name}</div>
+                  <div class="small text-muted">${item.location}</div>
+                </div>
+                <div class="price-range">₹${item.price.toLocaleString()}</div>
+              </div>
+            `;
+          }
+          
+          resultItem.addEventListener('click', function() {
+            // Navigate to the item's page
+            window.location.href = item.url;
+          });
+          
+          container.appendChild(resultItem);
+        });
+      }
+      
+      container.style.display = 'block';
+    }
+    
+    // Treatment selection functionality
+    treatmentCards.forEach(card => {
+      card.addEventListener('click', function() {
+        const treatmentId = this.getAttribute('data-treatment-id');
+        
+        // Remove selected class from all cards
+        treatmentCards.forEach(c => c.classList.remove('selected'));
+        
+        // Add selected class to clicked card
+        this.classList.add('selected');
+        
+        // Fetch hospitals for this treatment
+        fetchHospitalsForTreatment(treatmentId);
+      });
+    });
+    
+    // Fetch hospitals for a specific treatment
+    function fetchHospitalsForTreatment(treatmentId) {
+      fetch(`/treatments/api/hospitals/${treatmentId}/`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            displayHospitals(data.hospitals, data.treatment);
+          } else {
+            hospitalResultsContainer.innerHTML = `
+              <div class="col-12 text-center">
+                <div class="alert alert-danger">Error: ${data.error}</div>
+              </div>
+            `;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          hospitalResultsContainer.innerHTML = `
+            <div class="col-12 text-center">
+              <div class="alert alert-danger">Error loading hospitals</div>
+            </div>
+          `;
+        });
+    }
+    
+    // Display hospitals
+    function displayHospitals(hospitals, treatment) {
+      if (hospitals.length === 0) {
+        hospitalResultsContainer.innerHTML = `
+          <div class="col-12 text-center">
+            <div class="py-5">
+              <i class="bi bi-hospital text-muted" style="font-size: 3rem;"></i>
+              <h5 class="mt-3">No hospitals found</h5>
+              <p class="text-muted">No hospitals currently offer this treatment</p>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
+      let html = `
+        <div class="col-12 mb-4">
+          <div class="text-center">
+            <h4>Hospitals offering ${treatment.name}</h4>
+            <p class="text-muted">Starting price: ₹${treatment.starting_price.toLocaleString()}</p>
+          </div>
+        </div>
+      `;
+      
+      hospitals.forEach(hospital => {
+        html += `
+          <div class="col-lg-6 mb-4">
+            <div class="hospital-card">
+              <div class="position-relative">
+                ${hospital.profile_picture ? 
+                  `<img src="${hospital.profile_picture}" class="w-100" alt="${hospital.name}">` : 
+                  `<img src="https://picsum.photos/seed/h${hospital.id}/600/400" class="w-100" alt="${hospital.name}">`}
+                ${hospital.is_takeopinion_choice ? 
+                  `<span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">TO Choice</span>` : ''}
+              </div>
+              <div class="hospital-details">
+                <h5>${hospital.name}</h5>
+                <p class="text-muted mb-2">${hospital.city}${hospital.state ? `, ${hospital.state}` : ''}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="text-warning">
+                    ${[1,2,3,4,5].map(i => 
+                      i <= Math.floor(hospital.rating) ? 
+                        '<i class="bi bi-star-fill"></i>' : 
+                        '<i class="bi bi-star"></i>'
+                    ).join('')}
+                  </div>
+                  <div class="hospital-price">₹${hospital.price.toLocaleString()}</div>
+                </div>
+                <div class="mt-3">
+                  <a href="/hospitals/${hospital.slug}/" class="btn btn-primary w-100">View Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      hospitalResultsContainer.innerHTML = html;
+    }
+    
+    // Event listeners
+    searchTreatmentBtn.addEventListener('click', searchTreatments);
+    treatmentSearch.addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') {
+        searchTreatments();
+      }
+    });
+    
+    searchDoctorBtn.addEventListener('click', searchDoctors);
+    doctorSearch.addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') {
+        searchDoctors();
+      }
+    });
+    
+    searchHospitalBtn.addEventListener('click', searchHospitals);
+    hospitalSearch.addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') {
+        searchHospitals();
+      }
+    });
+    
+    // Close search results when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-section')) {
+        treatmentResults.style.display = 'none';
+        doctorResults.style.display = 'none';
+        hospitalResults.style.display = 'none';
+      }
+    });
+  });
+</script>
+{% endblock %}
