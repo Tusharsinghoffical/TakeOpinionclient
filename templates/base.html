@@ -481,9 +481,44 @@
                 {% endfor %}
               </ul>
             </div>
-            <!-- Authentication buttons removed -->
+            <!-- Authentication Dropdown -->
             <div class="d-flex gap-2 align-items-center">
-              <!-- Login/Signup/Logout functionality has been removed -->
+              {% if user.is_authenticated %}
+                <div class="dropdown">
+                  <button
+                    class="btn btn-outline-primary dropdown-toggle"
+                    type="button"
+                    id="userDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i class="bi bi-person-circle me-1"></i>
+                    {{ user.username }}
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    {% if user.userprofile.user_type == 'admin' %}
+                      <li><a class="dropdown-item" href="{% url 'accounts:admin_dashboard' %}"><i class="bi bi-speedometer2 me-2"></i>Admin Dashboard</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                    {% elif user.userprofile.user_type == 'doctor' %}
+                      <li><a class="dropdown-item" href="{% url 'accounts:doctor_profile' %}"><i class="bi bi-person-badge me-2"></i>My Profile</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                    {% elif user.userprofile.user_type == 'patient' %}
+                      <li><a class="dropdown-item" href="{% url 'accounts:patient_portal' %}"><i class="bi bi-speedometer2 me-2"></i>My Dashboard</a></li>
+                      <li><a class="dropdown-item" href="{% url 'accounts:patient_profile' %}"><i class="bi bi-person me-2"></i>My Profile</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                    {% endif %}
+                    <li>
+                      <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
+                      </form>
+                    </li>
+                  </ul>
+                </div>
+              {% else %}
+                <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary">Login</a>
+                <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Sign Up</a>
+              {% endif %}
             </div>
           </div>
         </div>

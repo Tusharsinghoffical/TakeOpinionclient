@@ -1437,14 +1437,114 @@ def patient_delete_review(request, review_id):
 
     if request.method == 'POST':
         try:
-            review = Feedback.objects.get(id=review_id, patient=request.user.userprofile)
+            review = Feedback.objects.get(
+                id=review_id, patient=request.user.userprofile)
             review.delete()
             messages.success(request, 'Review deleted successfully.')
         except Feedback.DoesNotExist:
-            messages.error(request, 'Review not found or you do not have permission to delete it.')
+            messages.error(
+                request, 'Review not found or you do not have permission to delete it.')
         except Exception as e:
             messages.error(request, f'Error deleting review: {str(e)}')
-        
+
         return redirect('accounts:reviews_page')
 
     return redirect('accounts:reviews_page')
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'You have been logged out successfully.')
+    return redirect('home')
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '')
+        confirm_password = request.POST.get('confirm_password', '')
+        user_type = request.POST.get('user_type', '')
+
+        # Validation
+        if not username:
+            messages.error(request, 'Username is required.')
+            return render(request, 'accounts/signup.html')
+
+        if len(username) < 3:
+            messages.error(
+                request, 'Username must be at least 3 characters long.')
+            return render(request, 'accounts/signup.html')
+
+        if not email:
+            messages.error(request, 'Email is required.')
+            return render(request, 'accounts/signup.html')
+
+        if not user_type:
+            messages.error(request, 'Please select an account type.')
+            return render(request, 'accounts/signup.html')
+
+        if user_type not in ['patient', 'doctor']:
+            messages.error(request, 'Invalid account type selected.')
+            return render(request, 'accounts/signup.html')
+
+        if not password:
+            messages.error(request, 'Password is required.')
+            return render(request, 'accounts/signup.html')
+
+        if len(password) < 6:
+            messages.error(
+                request, 'Password must be at least 6 characters long.')
+            return render(request, 'accounts/signup.html')
+
+        if password != confirm_password:
+            messages.error(request, 'Passwords do not match.')
+            return render(request, 'accounts/signup.html')
+
+        # Check if username already exists
+        if User.objects.filter(username__iexact=username).exists():
+            messages.error(
+                request, 'Username already exists. Please choose a different username.')
+            return render(request, 'accounts/signup.html')
+
+        # Check if email already exists
+        if User.objects.filter(email__iexact=email).exists():
+            messages.error(
+                request, 'Email already registered. Please use a different email or login instead.')
+            return render(request, 'accounts/signup.html')
+
+        # Create user
+        try:
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+
+            # Create user profile
+            user_profile = UserProfile.objects.create(
+                user=user,
+                user_type=user_type
+            )
+
+            # Create specific profile based on user type
+            if user_type == 'patient':
+                PatientProfile.objects.create(user_profile=user_profile)
+            elif user_type == 'doctor':
+                DoctorProfile.objects.create(user_profile=user_profile)
+
+            messages.success(
+                request, 'Account created successfully! Please log in.')
+            return redirect('accounts:login')
+
+        except Exception as e:
+            messages.error(
+                request, 'There was an error creating your account. Please try again.')
+            return render(request, 'accounts/signup.html')
+
+    return render(request, 'accounts/signup.html')
+
+
+def test_auto_login(request):
+    """Test view to verify auto-login functionality"""
+    return render(request, 'accounts/test_auto_login.html')

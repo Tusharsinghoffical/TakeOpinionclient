@@ -62,7 +62,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "core.middleware.LoginRequiredMiddleware",  # Custom middleware for login requirement
+    # Custom middleware for login requirement
+    "core.middleware.LoginRequiredMiddleware",
+    # Auto-login middleware for default patient
+    "core.middleware.AutoPatientLoginMiddleware",
 ]
 
 ROOT_URLCONF = "takeopinion.urls"
@@ -77,7 +80,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "core.context_processors.translation_context",  # Add our translation context processor
+                # Add our translation context processor
+                "core.context_processors.translation_context",
             ],
         },
     },
@@ -166,7 +170,8 @@ WHITENOISE_AUTOREFRESH = True
 WHITENOISE_MANIFEST_STRICT = False
 
 # Additional WhiteNoise settings for better compatibility
-WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'zip', 'gz', 'tgz', 'bz2', 'tbz', 'xz', 'br', 'woff', 'woff2']
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = [
+    'jpg', 'jpeg', 'png', 'gif', 'webp', 'zip', 'gz', 'tgz', 'bz2', 'tbz', 'xz', 'br', 'woff', 'woff2']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

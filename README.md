@@ -168,5 +168,5 @@ This project is proprietary and confidential. All rights reserved.
 
 ## GITHUB ADD
 git add .
-git commit -m "Update navbar logo from TakeOpinion to Mediplus logo"
+git commit -m "new update"
 git push origin main

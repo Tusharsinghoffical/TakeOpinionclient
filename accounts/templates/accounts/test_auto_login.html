@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Auto-Login Test</h4>
+        </div>
+        <div class="card-body">
+          <h5>Current User Status:</h5>
+          
+          {% if user.is_authenticated %}
+            <div class="alert alert-success">
+              <h6>✅ User is authenticated</h6>
+              <ul class="mb-0">
+                <li><strong>Username:</strong> {{ user.username }}</li>
+                <li><strong>Full Name:</strong> {{ user.get_full_name|default:"Not set" }}</li>
+                <li><strong>Email:</strong> {{ user.email|default:"Not set" }}</li>
+                {% if user.userprofile %}
+                  <li><strong>User Type:</strong> {{ user.userprofile.get_user_type_display }}</li>
+                  {% if user.userprofile.user_type == 'patient' %}
+                    <li><strong>Status:</strong> <span class="badge bg-success">AUTO-LOGGED IN AS DEFAULT PATIENT</span></li>
+                  {% endif %}
+                {% endif %}
+              </ul>
+            </div>
+            
+            <div class="mt-4">
+              <h5>Navigation Options:</h5>
+              <div class="d-grid gap-2 d-md-flex">
+                <a href="{% url 'accounts:patient_portal' %}" class="btn btn-primary">
+                  <i class="bi bi-speedometer2 me-2"></i>Patient Portal
+                </a>
+                <a href="{% url 'accounts:patient_profile' %}" class="btn btn-secondary">
+                  <i class="bi bi-person me-2"></i>My Profile
+                </a>
+                <a href="{% url 'home' %}" class="btn btn-outline-primary">
+                  <i class="bi bi-house me-2"></i>Home Page
+                </a>
+              </div>
+            </div>
+          {% else %}
+            <div class="alert alert-warning">
+              <h6>❌ User is not authenticated</h6>
+              <p>The auto-login middleware did not work as expected.</p>
+            </div>
+          {% endif %}
+          
+          <div class="mt-4">
+            <h5>System Information:</h5>
+            <ul>
+              <li><strong>Auto-Login Enabled:</strong> Yes (via middleware)</li>
+              <li><strong>Default Patient:</strong> tusharsinghkumar02</li>
+              <li><strong>Server Time:</strong> {% now "Y-m-d H:i:s" %}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
