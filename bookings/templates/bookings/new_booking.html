@@ -1079,16 +1079,14 @@
           radio.checked = true;
         }
         
-        // Update the room cost display (defaulting to 2 nights)
-        const numberOfNights = 2;
-        const roomCostPerNight = parseInt(this.dataset.roomCost);
-        const roomCost = roomCostPerNight * numberOfNights;
-        
+        // Keep the original per-day pricing display
+        // The calculation for 2 nights will be done in the summary step
         const roomPriceElement = this.querySelector('.room-price');
         if (roomPriceElement) {
-          // Format the total cost with commas
-          const formattedCost = roomCost.toLocaleString('en-IN');
-          roomPriceElement.innerHTML = `₹${formattedCost}<small class="text-muted">/for ${numberOfNights} day${numberOfNights > 1 ? 's' : ''}</small>`;
+          // Preserve the original per-day display
+          const roomCostPerNight = parseInt(this.dataset.roomCost);
+          const formattedCost = roomCostPerNight.toLocaleString('en-IN');
+          roomPriceElement.innerHTML = `₹${formattedCost}<small class="text-muted">/Per Day</small>`;
         }
       });
     });
@@ -1719,40 +1717,7 @@
 
   
   
-  // Update the room card click event to also update the cost based on selected nights
-  document.querySelectorAll('.room-option-card').forEach(card => {
-    card.addEventListener('click', function(e) {
-      // Don't trigger if clicking on form elements
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
-        return;
-      }
-      
-      // Remove selected class from all cards
-      document.querySelectorAll('.room-option-card').forEach(c => {
-        c.classList.remove('selected');
-      });
-      
-      // Add selected class to clicked card
-      this.classList.add('selected');
-      
-      // Select the radio button inside this card
-      const radio = this.querySelector('input[type="radio"]');
-      if (radio) {
-        radio.checked = true;
-      }
-      
-      // Update the room cost display (defaulting to 2 days)
-      const numberOfNights = 2;
-      const roomCostPerNight = parseInt(this.dataset.roomCost);
-      const roomCost = roomCostPerNight * numberOfNights;
-      
-      const roomPriceElement = this.querySelector('.room-price');
-      if (roomPriceElement) {
-        // Format the total cost with commas
-        const formattedCost = roomCost.toLocaleString('en-IN');
-        roomPriceElement.innerHTML = `₹${formattedCost}<small class="text-muted">/for ${numberOfNights} night${numberOfNights > 1 ? 's' : ''}</small>`;
-      }
-    });
-  });
+  // Room card click event is already handled above with the correct logic
+  // No need to duplicate the event listener
 </script>
 {% endblock %}
