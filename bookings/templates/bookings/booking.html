@@ -1,0 +1,940 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+/* Enhanced Booking Page Styles - Matching Doctor Page Design */
+:root {
+  /* Enhanced vibrant color palette from doctor page */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-strong: rgba(0, 0, 0, 0.15);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+  --transition-speed: 0.3s;
+}
+
+/* Global booking page styles */
+.booking-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--light-text);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--light-text);
+  line-height: 1.5;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-large {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #c0392b;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary-large {
+  background-color: transparent;
+  color: var(--light-text);
+  border: 2px solid var(--light-text);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-secondary-large:hover {
+  background-color: var(--light-text);
+  color: var(--accent);
+  transform: translateY(-3px);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Booking Form Section */
+.booking-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.booking-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 2rem;
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.booking-form .form-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.booking-form .form-control, 
+.booking-form .form-select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-speed) ease;
+}
+
+.booking-form .form-control:focus, 
+.booking-form .form-select:focus {
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+  border-color: var(--primary-medium);
+}
+
+.booking-form .input-group-text {
+  background-color: var(--light-bg);
+  border: 1px solid var(--border);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+}
+
+.booking-form .form-control {
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+}
+
+.booking-form .btn {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  background: var(--primary-medium);
+  color: white;
+  transition: all var(--transition-speed) ease;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.booking-form .btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, var(--accent), #c0392b);
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  width: 100%;
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.file-upload-area {
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  background-color: var(--light-bg);
+  transition: all var(--transition-speed) ease;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: var(--primary-medium);
+  background-color: #e9ecef;
+}
+
+.file-upload-area.dragover {
+  border-color: var(--primary-medium);
+  background-color: #e9ecef;
+}
+
+.file-list {
+  margin-top: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
+}
+
+.file-item .file-name {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-item .file-remove {
+  color: #868e96;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  font-size: 1.2rem;
+}
+
+/* Support Card */
+.support-card {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: var(--light-text);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: none;
+  text-align: center;
+  padding: 2rem;
+}
+
+.support-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.support-card .btn-light {
+  background: white;
+  color: #25D366;
+  border: none;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.support-card .btn-light:hover {
+  background-color: #25D369;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Why Choose Section */
+.why-choose-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.why-choose-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--border);
+}
+
+.why-choose-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.why-choose-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-medium) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.why-choose-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+  line-height: 1.3;
+}
+
+.why-choose-description {
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+/* Back Button */
+.back-btn {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  background: var(--light-bg);
+  border: 1px solid var(--border);
+  color: var(--primary-dark);
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.back-btn:hover {
+  background: #e9ecef;
+  transform: translateX(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 2.25rem;
+  }
+  
+  .why-choose-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .why-choose-grid {
+    gap: 1.25rem;
+  }
+  
+  .booking-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .btn-primary-large,
+  .btn-secondary-large {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary-large,
+  .btn-secondary-large {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .col-lg-8 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .col-lg-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-top: 2rem;
+  }
+  
+  .booking-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .row.g-3 {
+    gap: 1rem;
+  }
+  
+  .col-md-3, .col-md-2, .col-md-1 {
+    width: 100%;
+  }
+  
+  .btn-submit {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 2rem 0;
+  }
+  
+  .hero-title {
+    font-size: 1.7rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .section-header {
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  
+  .booking-card {
+    padding: 1rem;
+  }
+  
+  .booking-form .form-control, 
+  .booking-form .form-select {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .booking-form .btn {
+    padding: 0.6rem 1rem;
+  }
+  
+  .file-upload-area {
+    padding: 1.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+}
+</style>
+
+<div class="booking-page">
+  <!-- Hero Section -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="container hero-content">
+      <h1 id="hero-heading" class="hero-title">Finalize Your Medical Travel Booking</h1>
+      <p class="hero-subtitle">Complete your medical travel arrangements by providing details about your preferred treatment, doctor, and hospital. Our team will coordinate all aspects of your journey.</p>
+      <div class="hero-buttons">
+        <a href="{% url 'home' %}" class="btn-primary-large">
+          <i class="bi bi-house me-2"></i> Back to Home
+        </a>
+        <a href="/treatments/" class="btn-secondary-large">
+          <i class="bi bi-search me-2"></i> Explore Treatments
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-8">
+        <a href="{% url 'home' %}" class="back-btn">
+          <i class="bi bi-arrow-left me-1"></i> Back to Home
+        </a>
+        
+        <section class="booking-section" aria-labelledby="booking-heading">
+          <div class="section-header">
+            <h2 id="booking-heading" class="section-title">Costing</h2>
+            <p class="section-subtitle">Provide your preferences to help us find the best medical care for you</p>
+          </div>
+          <div class="booking-card">
+            <form id="bookingForm" class="row g-4 booking-form" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              
+              <div class="col-12">
+                <h3 class="section-title" style="font-size: 1.75rem;">Treatment Details</h3>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Type of Treatment <span class="text-danger">*</span></label>
+                <select class="form-select form-control-lg" id="treatmentSelect" name="treatment" required>
+                  <option value="">Select Treatment</option>
+                  {% for treatment in treatments %}
+                  <option value="{{ treatment.id }}" {% if selected_treatment and selected_treatment.id == treatment.id %}selected{% endif %}>{{ treatment.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">Choose the medical treatment you're interested in</div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Special Requirements</label>
+                <select class="form-select form-control-lg" name="special_requirements">
+                  <option selected value="none">None</option>
+                  <option value="wheelchair">Wheelchair Access</option>
+                  <option value="interpreter">Interpreter Needed</option>
+                  <option value="dietary">Dietary Restrictions</option>
+                  <option value="medical">Other Medical Conditions</option>
+                </select>
+              </div>
+              
+              <div class="col-12">
+                <h3 class="section-title" style="font-size: 1.75rem; margin-top: 2rem;">Provider Preferences</h3>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Preferred Doctor</label>
+                <select class="form-select form-control-lg" name="preferred_doctor">
+                  <option value="">No preference (we'll recommend)</option>
+                  {% for doctor in doctors %}
+                  <option value="{{ doctor.id }}" {% if selected_doctor and selected_doctor.id == doctor.id %}selected{% endif %}>Dr. {{ doctor.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">Select a specific doctor or leave blank for our recommendation</div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Preferred Hospital</label>
+                <select class="form-select form-control-lg" name="preferred_hospital">
+                  <option value="">No preference (we'll recommend)</option>
+                  {% for hospital in hospitals %}
+                  <option value="{{ hospital.id }}">{{ hospital.name }}</option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">Select a specific hospital or leave blank for our recommendation</div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Preferred Booking Dates</label>
+                <input type="date" class="form-control form-control-lg" name="preferred_date" id="preferredDate" min="{% now "Y-m-d" %}">
+                <div class="form-text">Select your preferred date for the consultation</div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Estimated Budget</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input type="text" class="form-control form-control-lg" id="totalCost" name="total_cost" value="0.00" readonly>
+                </div>
+                <div class="form-text">Automatically calculated based on your selections</div>
+              </div>
+              
+              <div class="col-12">
+                <h3 class="section-title" style="font-size: 1.75rem; margin-top: 2rem;">Medical Information</h3>
+              </div>
+              
+              <div class="col-12">
+                <label class="form-label fw-semibold">Medical History Summary</label>
+                <textarea class="form-control form-control-lg" name="medical_history" rows="3" placeholder="Briefly describe your medical history relevant to this treatment..."></textarea>
+              </div>
+              
+              <div class="col-12">
+                <label class="form-label fw-semibold">Upload Medical Reports</label>
+                <div class="file-upload-area" id="medicalReportsDropArea">
+                  <i class="bi bi-cloud-upload display-5 text-primary mb-2"></i>
+                  <p class="mb-1">Drag & drop medical reports here or click to browse</p>
+                  <p class="small text-muted mb-2">Supports multiple files (PDF, JPG, PNG, DOC, DOCX)</p>
+                  <input type="file" class="form-control" id="medicalReportsInput" name="medical_reports" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                </div>
+                <div class="file-list" id="medicalReportsList"></div>
+                <div class="form-text">Upload your medical reports, test results, or other relevant documents</div>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Travel Companions</label>
+                <select class="form-select form-control-lg" name="travel_companions">
+                  <option selected value="alone">Traveling Alone</option>
+                  <option value="spouse">With Spouse/Partner</option>
+                  <option value="family">With Family Member</option>
+                  <option value="friend">With Friend</option>
+                </select>
+              </div>
+              
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Urgency Level</label>
+                <select class="form-select form-control-lg" name="urgency">
+                  <option value="flexible">Flexible Timeline</option>
+                  <option value="soon">Within 1 Month</option>
+                  <option value="urgent">Urgent (Within 2 Weeks)</option>
+                </select>
+              </div>
+              
+              <div class="col-12 mt-4">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="termsCheck" name="agree_terms" required>
+                  <label class="form-check-label" for="termsCheck">
+                    I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a> <span class="text-danger">*</span>
+                  </label>
+                </div>
+                <button type="submit" class="btn-submit" id="submitBooking">
+                  <i class="bi bi-calendar-check me-2"></i>Submit Booking Request
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+      
+      <div class="col-lg-4">
+        <!-- Support Card -->
+        <div class="support-card mb-4">
+          <div class="card-body text-center">
+            <i class="bi bi-headset display-5 mb-3"></i>
+            <h3 class="mb-3">Need Help Finalizing Your Booking?</h3>
+            <p class="mb-4">Our medical travel coordinators can assist you with selecting the best treatment options and providers.</p>
+            <a href="{% url 'contact' %}" class="btn btn-light">
+              <i class="bi bi-telephone me-2"></i>Contact Support
+            </a>
+          </div>
+        </div>
+        
+        <!-- Why Choose Section -->
+        <section class="why-choose-section" aria-labelledby="why-choose-heading">
+          <div class="section-header">
+            <h3 id="why-choose-heading" class="section-title" style="font-size: 1.75rem;">Why Book With Us?</h3>
+          </div>
+          <div class="why-choose-grid">
+            <div class="why-choose-card">
+              <div class="why-choose-icon">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <h4 class="why-choose-title">Verified Providers</h4>
+              <p class="why-choose-description">All doctors and hospitals are thoroughly vetted</p>
+            </div>
+            <div class="why-choose-card">
+              <div class="why-choose-icon">
+                <i class="bi bi-currency-dollar"></i>
+              </div>
+              <h4 class="why-choose-title">Transparent Pricing</h4>
+              <p class="why-choose-description">No hidden costs or surprise fees</p>
+            </div>
+            <div class="why-choose-card">
+              <div class="why-choose-icon">
+                <i class="bi bi-headset"></i>
+              </div>
+              <h4 class="why-choose-title">24/7 Support</h4>
+              <p class="why-choose-description">Dedicated coordinators throughout your journey</p>
+            </div>
+            <div class="why-choose-card">
+              <div class="why-choose-icon">
+                <i class="bi bi-airplane"></i>
+              </div>
+              <h4 class="why-choose-title">Travel Assistance</h4>
+              <p class="why-choose-description">Visa, accommodation, and logistics support</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Set minimum date to today
+  document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelector('input[name="preferred_date"]').min = today;
+    
+    // Initialize cost calculation
+    let baseCost = 0;
+    let doctorCost = 0;
+    let hospitalCost = 0;
+    
+    // Get DOM elements
+    const treatmentSelect = document.getElementById('treatmentSelect');
+    const doctorSelect = document.querySelector('select[name="preferred_doctor"]');
+    const hospitalSelect = document.querySelector('select[name="preferred_hospital"]');
+    const totalCostInput = document.getElementById('totalCost');
+    
+    // Function to update total cost
+    function updateTotalCost() {
+      const total = baseCost + doctorCost + hospitalCost;
+      totalCostInput.value = total.toFixed(2);
+    }
+    
+    // If a treatment is already selected on page load, update doctors and hospitals
+    if (treatmentSelect.value) {
+      updateDoctorsAndHospitals(treatmentSelect.value);
+    }
+    
+    // Event listener for treatment selection
+    treatmentSelect.addEventListener('change', function() {
+      const treatmentId = this.value;
+      if (treatmentId) {
+        // In a real implementation, this would fetch the actual treatment cost from the server
+        // For demonstration, we'll use a mock cost based on treatment ID
+        baseCost = treatmentId * 100 + 500; // Mock calculation
+        updateTotalCost();
+        
+        // Update doctors and hospitals dropdowns to show only those related to this treatment
+        updateDoctorsAndHospitals(treatmentId);
+      } else {
+        baseCost = 0;
+        updateTotalCost();
+      }
+    });
+    
+    // Function to update doctors and hospitals dropdowns based on treatment
+    function updateDoctorsAndHospitals(treatmentId) {
+      // Fetch doctors for this treatment
+      fetch(`/book/api/doctors/${treatmentId}/`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Clear and repopulate doctors dropdown
+            doctorSelect.innerHTML = '<option value="">No preference (we\'ll recommend)</option>';
+            data.doctors.forEach(doctor => {
+              const option = document.createElement('option');
+              option.value = doctor.id;
+              option.textContent = `Dr. ${doctor.name}`;
+              doctorSelect.appendChild(option);
+            });
+          }
+        })
+        .catch(error => console.error('Error fetching doctors:', error));
+      
+      // Fetch hospitals for this treatment
+      fetch(`/book/api/hospitals/${treatmentId}/`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Clear and repopulate hospitals dropdown
+            hospitalSelect.innerHTML = '<option value="">No preference (we\'ll recommend)</option>';
+            data.hospitals.forEach(hospital => {
+              const option = document.createElement('option');
+              option.value = hospital.id;
+              option.textContent = hospital.name;
+              hospitalSelect.appendChild(option);
+            });
+          }
+        })
+        .catch(error => console.error('Error fetching hospitals:', error));
+    }
+    
+    // Event listener for doctor selection
+    doctorSelect.addEventListener('change', function() {
+      const doctorId = this.value;
+      if (doctorId) {
+        // In a real implementation, this would fetch the actual doctor cost from the server
+        // For demonstration, we'll use a mock cost based on doctor ID
+        doctorCost = doctorId * 50 + 200; // Mock calculation
+        updateTotalCost();
+      } else {
+        doctorCost = 0;
+        updateTotalCost();
+      }
+    });
+    
+    // Event listener for hospital selection
+    hospitalSelect.addEventListener('change', function() {
+      const hospitalId = this.value;
+      if (hospitalId) {
+        // In a real implementation, this would fetch the actual hospital cost from the server
+        // For demonstration, we'll use a mock cost based on hospital ID
+        hospitalCost = hospitalId * 75 + 300; // Mock calculation
+        updateTotalCost();
+      } else {
+        hospitalCost = 0;
+        updateTotalCost();
+      }
+    });
+    
+    // Handle medical reports file input
+    const medicalReportsInput = document.getElementById('medicalReportsInput');
+    const medicalReportsDropArea = document.getElementById('medicalReportsDropArea');
+    const medicalReportsList = document.getElementById('medicalReportsList');
+    
+    // Handle file selection
+    medicalReportsInput.addEventListener('change', function(e) {
+      updateFileList(e.target.files, medicalReportsList);
+    });
+    
+    // Handle drag and drop
+    medicalReportsDropArea.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      medicalReportsDropArea.classList.add('dragover');
+    });
+    
+    medicalReportsDropArea.addEventListener('dragleave', function(e) {
+      medicalReportsDropArea.classList.remove('dragover');
+    });
+    
+    medicalReportsDropArea.addEventListener('drop', function(e) {
+      e.preventDefault();
+      medicalReportsDropArea.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        medicalReportsInput.files = e.dataTransfer.files;
+        updateFileList(e.dataTransfer.files, medicalReportsList);
+      }
+    });
+    
+    // Handle click on drop area
+    medicalReportsDropArea.addEventListener('click', function() {
+      medicalReportsInput.click();
+    });
+    
+    // Function to update file list display
+    function updateFileList(files, fileListElement) {
+      fileListElement.innerHTML = '';
+      if (files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const fileItem = document.createElement('div');
+          fileItem.className = 'file-item';
+          fileItem.innerHTML = `
+            <span class="file-name">${file.name}</span>
+            <span class="file-size text-muted small">${formatFileSize(file.size)}</span>
+            <span class="file-remove" data-index="${i}">×</span>
+          `;
+          fileListElement.appendChild(fileItem);
+        }
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.file-remove').forEach(button => {
+          button.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            removeFile(index);
+          });
+        });
+      }
+    }
+    
+    // Function to format file size
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+    
+    // Function to remove a file from the list
+    function removeFile(index) {
+      const dt = new DataTransfer();
+      const files = medicalReportsInput.files;
+      
+      for (let i = 0; i < files.length; i++) {
+        if (i !== index) {
+          dt.items.add(files[i]);
+        }
+      }
+      
+      medicalReportsInput.files = dt.files;
+      updateFileList(dt.files, medicalReportsList);
+    }
+    
+    // Form submission handler
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      const submitBtn = document.getElementById('submitBooking');
+      const originalText = submitBtn.innerHTML;
+      
+      // Show loading state
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...';
+      submitBtn.disabled = true;
+      
+      // In a real implementation, this would submit the form via AJAX
+      // For now, we'll just show a success message
+      setTimeout(function() {
+        // Let the form submit normally to the server
+        // This is just for UI feedback during the submission
+      }, 500);
+    });
+  });
+</script>
+{% endblock %}

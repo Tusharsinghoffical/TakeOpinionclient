@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <div class="display-4 text-success mb-3">
+      <i class="bi bi-check-circle"></i>
+    </div>
+    <h1 class="h2 mb-3">Payment Successful!</h1>
+    <p class="mb-4">Your medical travel booking payment has been processed successfully.</p>
+    <div class="alert alert-success d-inline-block border-0 shadow-sm">
+      <i class="bi bi-ticket-detailed me-2"></i>Booking ID: <strong>#{{ booking_id|default:"70" }}</strong>
+    </div>
+  </div>
+  
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm mb-5">
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <h2 class="h4 mb-3">Booking Confirmation</h2>
+            <p class="mb-0">Thank you for choosing TakeOpinion!</p>
+            <p class="mb-0">Your booking has been confirmed and our team will contact you shortly to finalize the arrangements.</p>
+          </div>
+          
+          <div class="row g-4">
+            <div class="col-md-6">
+              <h5 class="mb-3">Booking Details</h5>
+              <ul class="list-unstyled">
+                <li class="mb-2 d-flex justify-content-between">
+                  <span class="text-muted">Booking ID</span>
+                  <strong>#{{ booking_id|default:"70" }}</strong>
+                </li>
+                <li class="mb-2 d-flex justify-content-between">
+                  <span class="text-muted">Treatment</span>
+                  <strong>{{ treatment|default:"Brain Tumor Removal" }}</strong>
+                </li>
+                <li class="mb-2 d-flex justify-content-between">
+                  <span class="text-muted">Hospital</span>
+                  <strong>{{ hospital|default:"Fortis Healthcare" }}</strong>
+                </li>
+                <li class="mb-2 d-flex justify-content-between">
+                  <span class="text-muted">Booking Date</span>
+                  <strong>To be confirmed</strong>
+                </li>
+                <li class="mb-2 d-flex justify-content-between">
+                  <span class="text-muted">Amount Paid</span>
+                  <strong>${{ amount|default:"25960.00" }}</strong>
+                </li>
+                <li class="mb-2 d-flex justify-content-between">
+                  <span class="text-muted">Payment Status</span>
+                  <strong class="text-success">Completed</strong>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="col-md-6">
+              <h5 class="mb-3">Next Steps</h5>
+              <ul class="list-unstyled">
+                <li class="mb-3">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0 text-primary me-3">
+                      <i class="bi bi-telephone-fill"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Confirmation Call</h6>
+                      <p class="mb-0 small text-muted">Our coordinator will contact you within 24 hours to confirm your booking details.</p>
+                    </div>
+                  </div>
+                </li>
+                <li class="mb-3">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0 text-primary me-3">
+                      <i class="bi bi-file-earmark-text-fill"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Documentation</h6>
+                      <p class="mb-0 small text-muted">We'll send you the necessary medical travel documents and visa requirements.</p>
+                    </div>
+                  </div>
+                </li>
+                <li class="mb-3">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0 text-primary me-3">
+                      <i class="bi bi-airplane-fill"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-1">Travel Arrangements</h6>
+                      <p class="mb-0 small text-muted">We'll help you with flight bookings, accommodation, and airport transfers.</p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section-title mb-4">
+        <i class="bi bi-building"></i>
+        <h2 class="h3 mb-0">Nearby Hotels</h2>
+        <p class="mb-0 mt-2">Recommended accommodations near {{ hospital|default:"Fortis Healthcare" }}</p>
+      </div>
+      
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="position-relative">
+              <img src="https://picsum.photos/seed/hotel1/800/480" class="card-img-top object-fit-cover" alt="The Lodhi" style="height: 180px;">
+              <div class="position-absolute top-0 end-0 m-3">
+                <span class="badge bg-warning text-dark border-0">
+                  <i class="bi bi-star-fill me-1"></i>4.80
+                </span>
+              </div>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title mb-2">The Lodhi</h5>
+              <p class="card-text small text-muted mb-3">Lodhi Road, New Delhi</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="h5 text-primary mb-0">₹15000</span>
+                  <span class="small">/night</span>
+                </div>
+                <button class="btn btn-outline-primary btn-sm">
+                  <i class="bi bi-bookmark-check me-1"></i>Select
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="position-relative">
+              <img src="https://picsum.photos/seed/hotel2/800/480" class="card-img-top object-fit-cover" alt="The Taj Mahal Palace" style="height: 180px;">
+              <div class="position-absolute top-0 end-0 m-3">
+                <span class="badge bg-warning text-dark border-0">
+                  <i class="bi bi-star-fill me-1"></i>4.80
+                </span>
+              </div>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title mb-2">The Taj Mahal Palace</h5>
+              <p class="card-text small text-muted mb-3">Apollo Bunder, Mumbai</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="h5 text-primary mb-0">₹18000</span>
+                  <span class="small">/night</span>
+                </div>
+                <button class="btn btn-outline-primary btn-sm">
+                  <i class="bi bi-bookmark-check me-1"></i>Select
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="position-relative">
+              <img src="https://picsum.photos/seed/hotel3/800/480" class="card-img-top object-fit-cover" alt="Taj Palace" style="height: 180px;">
+              <div class="position-absolute top-0 end-0 m-3">
+                <span class="badge bg-warning text-dark border-0">
+                  <i class="bi bi-star-fill me-1"></i>4.60
+                </span>
+              </div>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title mb-2">Taj Palace</h5>
+              <p class="card-text small text-muted mb-3">2, Sardar Patel Marg, New Delhi</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="h5 text-primary mb-0">₹10000</span>
+                  <span class="small">/night</span>
+                </div>
+                <button class="btn btn-outline-primary btn-sm">
+                  <i class="bi bi-bookmark-check me-1"></i>Select
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+              <div class="display-4 text-primary mb-3">
+                <i class="bi bi-building"></i>
+              </div>
+              <h5 class="card-title mb-3">View All Nearby Hotels</h5>
+              <a href="#" class="btn btn-primary">
+                <i class="bi bi-eye me-1"></i>View All
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alert alert-info mt-5 mb-4">
+        <div class="d-flex">
+          <div class="flex-shrink-0 text-primary me-3">
+            <i class="bi bi-headset"></i>
+          </div>
+          <div>
+            <h6 class="mb-1">Need Assistance?</h6>
+            <p class="mb-2">If you have any questions about your booking, please contact our support team at <a href="mailto:support@takeopinion.com" class="alert-link">support@takeopinion.com</a> or call <a href="tel:+91-9876543210" class="alert-link">+91-9876543210</a>.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-5">
+        <a href="/" class="btn btn-primary">
+          <i class="bi bi-house me-1"></i>Back to Home
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

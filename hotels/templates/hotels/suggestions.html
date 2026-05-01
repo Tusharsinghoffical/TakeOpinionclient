@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Hotel Suggestions{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'accounts:admin_dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'bookings:booking_confirmation' booking.id %}">Booking #{{ booking.id }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Hotel Suggestions</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-success">
+                <h4 class="alert-heading">Payment Successful!</h4>
+                <p>Your payment for booking #{{ booking.id }} has been processed successfully.</p>
+                <hr>
+                <p class="mb-0">To complete your medical travel arrangements, please select and book accommodation near {{ hospital.name|default:"your treatment location" }}:</p>
+            </div>
+        </div>
+    </div>
+    
+    <h2 class="mb-4">Recommended Hotels</h2>
+    
+    {% if hotels %}
+    <div class="row">
+        {% for hotel in hotels %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                {% if hotel.images.first and hotel.images.first.get_image_url %}
+                <img src="{{ hotel.images.first.get_image_url }}" class="card-img-top" alt="{{ hotel.name }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <div class="bg-light" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                    <span class="text-muted">No Image</span>
+                </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ hotel.name }}</h5>
+                    <p class="card-text">{{ hotel.address }}, {{ hotel.city }}</p>
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-primary">★ {{ hotel.rating }}</span>
+                            <span class="text-success">₹{{ hotel.price_per_night }}/night</span>
+                        </div>
+                        <a href="{% url 'hotels:detail' hotel.slug %}" class="btn btn-success mt-2 w-100">
+                            <i class="bi bi-calendar-check me-1"></i>Book Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <h4>No hotel suggestions available</h4>
+        <p>We couldn't find any hotels near {{ hospital.name|default:"your location" }}. You can <a href="{% url 'hotels:list' %}">search for hotels manually</a>.</p>
+    </div>
+    {% endif %}
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-warning">
+                <h5><i class="bi bi-info-circle me-2"></i>Important</h5>
+                <p>To complete your medical travel arrangements, please select and book a hotel from the suggestions above. Your treatment booking is not considered fully confirmed until you have arranged accommodation.</p>
+                <a href="{% url 'hotels:list' %}" class="btn btn-primary">
+                    <i class="bi bi-search me-1"></i>Search All Hotels
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-3">
+        <div class="col-12">
+            <a href="{% url 'bookings:booking_confirmation' booking.id %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Back to Treatment Booking
+            </a>
+            <a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-outline-primary">
+                <i class="bi bi-speedometer2 me-1"></i>Go to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

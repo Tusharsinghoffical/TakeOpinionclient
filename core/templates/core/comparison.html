@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Treatment Pricing - TakeOpinion{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section style="background:linear-gradient(135deg,#0d1b2a 0%,#1a3c6e 60%,#1565c0 100%);padding:3.5rem 0 2.5rem;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="d-inline-flex align-items-center gap-2 mb-3 px-3 py-1 rounded-pill" style="background:rgba(255,193,7,0.15);border:1px solid rgba(255,193,7,0.3);">
+          <i class="bi bi-currency-rupee text-warning" style="font-size:0.8rem;"></i>
+          <span style="color:#ffc107;font-size:0.78rem;font-weight:600;">Transparent Pricing — No Hidden Costs</span>
+        </div>
+        <h1 style="font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;color:#fff;margin-bottom:0.75rem;">Find Treatment Pricing</h1>
+        <p style="color:rgba(255,255,255,0.7);font-size:0.95rem;max-width:540px;line-height:1.7;">Select a treatment to compare prices across our verified hospitals and find the best option for your needs.</p>
+      </div>
+      <div class="col-lg-4 d-none d-lg-flex justify-content-end gap-3">
+        <div class="text-center px-4 py-3 rounded-3" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);">
+          <div style="font-size:1.5rem;font-weight:800;color:#ffc107;">100%</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;">Transparent</div>
+        </div>
+        <div class="text-center px-4 py-3 rounded-3" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);">
+          <div style="font-size:1.5rem;font-weight:800;color:#ffc107;">Best</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;">Price Guarantee</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+
+  <!-- Treatment Selection Card -->
+  <div class="cp-select-card mb-5">
+    <div class="cp-select-header">
+      <div class="cp-select-icon"><i class="bi bi-bandaid-fill"></i></div>
+      <div>
+        <h2 class="cp-select-title">Select a Treatment</h2>
+        <p class="cp-select-sub">Choose a treatment to see all hospitals offering it with pricing</p>
+      </div>
+    </div>
+    <form id="treatmentForm" method="GET" action="">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-8">
+          <label class="cp-label">Treatment</label>
+          <div class="cp-select-wrap">
+            <i class="bi bi-bandaid cp-select-icon-inner"></i>
+            <select id="treatment" name="treatment" class="cp-select">
+              <option value="">-- Select a treatment --</option>
+              {% for treatment in treatments %}
+              <option value="{{ treatment.id }}"
+                {% if selected_treatment and selected_treatment.id == treatment.id %}selected{% endif %}>
+                {{ treatment.name }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="cp-search-btn w-100">
+            <i class="bi bi-search me-2"></i>Show Hospitals
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Results -->
+  {% if show_hospitals %}
+  <div>
+    <!-- Results Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div>
+        <div class="d-inline-flex align-items-center gap-2 mb-1 px-3 py-1 rounded-pill" style="background:#e8f0fe;">
+          <i class="bi bi-bandaid-fill text-primary" style="font-size:0.75rem;"></i>
+          <span style="color:#1565c0;font-size:0.75rem;font-weight:700;">{{ selected_treatment.name }}</span>
+        </div>
+        <h2 class="h5 fw-bold text-dark mb-0">Hospitals Offering This Treatment</h2>
+        <p class="text-muted small mb-0">{{ hospitals|length }} hospital{{ hospitals|length|pluralize }} found — select one to proceed</p>
+      </div>
+      <a href="/compare-treatments/" class="cp-back-btn">
+        <i class="bi bi-arrow-left me-1"></i>Change Treatment
+      </a>
+    </div>
+
+    <!-- Treatment Info Banner -->
+    <div class="cp-treatment-banner mb-4">
+      <div class="row align-items-center g-3">
+        <div class="col-md-6">
+          <h3 class="cp-banner-name">{{ selected_treatment.name }}</h3>
+          {% if selected_treatment.description %}
+          <p class="cp-banner-desc">{{ selected_treatment.description|truncatechars:120 }}</p>
+          {% endif %}
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex gap-3 flex-wrap">
+            {% if selected_treatment.duration %}
+            <div class="cp-banner-stat">
+              <i class="bi bi-clock-fill text-primary me-1"></i>
+              <span>{{ selected_treatment.duration }}</span>
+            </div>
+            {% endif %}
+            {% if selected_treatment.recovery_time %}
+            <div class="cp-banner-stat">
+              <i class="bi bi-heart-fill text-danger me-1"></i>
+              <span>Recovery: {{ selected_treatment.recovery_time }}</span>
+            </div>
+            {% endif %}
+            {% if selected_treatment.starting_price %}
+            <div class="cp-banner-stat">
+              <i class="bi bi-currency-rupee text-success me-1"></i>
+              <span class="fw-bold text-success">From ₹{{ selected_treatment.starting_price|floatformat:"0" }}</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hospitals Grid -->
+    {% if hospitals %}
+    <div class="row g-4">
+      {% for hospital in hospitals %}
+      <div class="col-sm-6 col-lg-4">
+        <div class="cp-hospital-card" onclick="selectHospital({{ hospital.id }})">
+
+          {% if hospital.is_takeopinion_choice %}
+          <div class="cp-choice-badge"><i class="bi bi-award-fill me-1"></i>TakeOpinion Choice</div>
+          {% endif %}
+
+          <div class="cp-hospital-top">
+            <div class="cp-hospital-icon"><i class="bi bi-building-fill"></i></div>
+            <div class="flex-grow-1 min-w-0">
+              <h3 class="cp-hospital-name">{{ hospital.name }}</h3>
+              <p class="cp-hospital-loc"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ hospital.city }}</p>
+            </div>
+          </div>
+
+          <div class="cp-hospital-body">
+            <!-- Rating -->
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <div class="d-flex gap-1">
+                {% for i in "12345" %}
+                  {% if forloop.counter <= hospital.rating|floatformat:"0"|add:"0" %}
+                    <i class="bi bi-star-fill text-warning" style="font-size:0.7rem;"></i>
+                  {% else %}
+                    <i class="bi bi-star text-muted" style="font-size:0.7rem;"></i>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <span class="fw-bold small">{{ hospital.rating }}</span>
+            </div>
+
+            <!-- Price -->
+            <div class="cp-price-box">
+              <div class="cp-price">
+                <i class="bi bi-currency-rupee"></i>{{ hospital.price|floatformat:"0" }}
+              </div>
+              <div class="cp-price-label">Starting Price</div>
+            </div>
+
+            <!-- Accreditations -->
+            <div class="d-flex gap-1 flex-wrap mt-2">
+              {% if hospital.jci_accredited %}<span class="cp-badge cp-badge-blue">JCI</span>{% endif %}
+              {% if hospital.nabh_accredited %}<span class="cp-badge cp-badge-green">NABH</span>{% endif %}
+              {% if hospital.iso_certified %}<span class="cp-badge cp-badge-orange">ISO</span>{% endif %}
+            </div>
+          </div>
+
+          <div class="cp-hospital-footer">
+            <button type="button" class="cp-select-btn">
+              <i class="bi bi-check-circle me-2"></i>Select This Hospital
+            </button>
+          </div>
+
+          <form id="hospitalForm-{{ hospital.id }}" method="GET" style="display:none;">
+            <input type="hidden" name="treatment" value="{{ selected_treatment.id }}">
+            <input type="hidden" name="hospital" value="{{ hospital.id }}">
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="text-center py-5">
+      <div class="mb-3" style="font-size:3rem;color:#e5e7eb;"><i class="bi bi-building-x"></i></div>
+      <h3 class="h5 text-muted">No hospitals found for this treatment</h3>
+      <p class="text-muted small">Try selecting a different treatment</p>
+    </div>
+    {% endif %}
+  </div>
+
+  {% else %}
+  <!-- Empty State -->
+  <div class="cp-empty-state">
+    <div class="cp-empty-icon"><i class="bi bi-bandaid"></i></div>
+    <h3 class="cp-empty-title">Select a Treatment Above</h3>
+    <p class="cp-empty-sub">Choose a treatment from the dropdown to see all hospitals offering it with transparent pricing.</p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
+      <a href="/treatments/" class="cp-empty-btn-outline"><i class="bi bi-grid me-2"></i>Browse Treatments</a>
+      <a href="/enquiries/results/" class="cp-empty-btn-primary"><i class="bi bi-robot me-2"></i>Try AI Smart Search</a>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<style>
+/* Selection card */
+.cp-select-card { background:#fff; border:1px solid #e8eaf6; border-radius:16px; padding:2rem; box-shadow:0 4px 16px rgba(0,0,0,0.06); }
+.cp-select-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; }
+.cp-select-icon { width:48px; height:48px; background:linear-gradient(135deg,#1565c0,#0d47a1); border-radius:12px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.3rem; flex-shrink:0; }
+.cp-select-title { font-size:1.1rem; font-weight:800; color:#0d1b2a; margin:0; }
+.cp-select-sub { font-size:0.82rem; color:#718096; margin:0; }
+.cp-label { font-size:0.75rem; font-weight:700; color:#374151; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:0.4rem; }
+.cp-select-wrap { display:flex; align-items:center; background:#f3f4f6; border-radius:10px; padding:0.5rem 0.75rem; gap:0.5rem; border:1.5px solid transparent; transition:all 0.2s; }
+.cp-select-wrap:focus-within { background:#fff; border-color:#1565c0; }
+.cp-select-icon-inner { color:#9ca3af; font-size:0.85rem; flex-shrink:0; }
+.cp-select { border:none; background:transparent; outline:none; font-size:0.875rem; color:#374151; width:100%; cursor:pointer; }
+.cp-search-btn { background:linear-gradient(135deg,#1565c0,#0d47a1); color:white; border:none; border-radius:10px; padding:0.65rem 1.25rem; font-size:0.875rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.cp-search-btn:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(21,101,192,0.3); }
+/* Back btn */
+.cp-back-btn { background:#f3f4f6; color:#374151; font-size:0.82rem; font-weight:500; padding:0.4rem 0.9rem; border-radius:8px; text-decoration:none; transition:all 0.15s; white-space:nowrap; }
+.cp-back-btn:hover { background:#e8f0fe; color:#1565c0; }
+/* Treatment banner */
+.cp-treatment-banner { background:linear-gradient(135deg,#e8f0fe,#f0f4ff); border:1px solid #c5d5f5; border-radius:14px; padding:1.5rem; }
+.cp-banner-name { font-size:1.1rem; font-weight:800; color:#0d1b2a; margin-bottom:0.4rem; }
+.cp-banner-desc { font-size:0.82rem; color:#718096; margin:0; line-height:1.6; }
+.cp-banner-stat { display:flex; align-items:center; font-size:0.82rem; color:#374151; background:#fff; padding:0.4rem 0.75rem; border-radius:8px; border:1px solid #e8eaf6; }
+/* Hospital card */
+.cp-hospital-card { background:#fff; border:1px solid #e8eaf6; border-radius:16px; overflow:hidden; transition:all 0.2s; cursor:pointer; height:100%; display:flex; flex-direction:column; position:relative; }
+.cp-hospital-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.1); border-color:#1565c0; }
+.cp-choice-badge { position:absolute; top:10px; left:10px; z-index:2; background:#ffc107; color:#0d1b2a; font-size:0.65rem; font-weight:700; padding:0.2rem 0.6rem; border-radius:50px; }
+.cp-hospital-top { display:flex; align-items:flex-start; gap:0.75rem; padding:1.25rem 1.25rem 0; }
+.cp-hospital-icon { width:40px; height:40px; background:#e8f0fe; color:#1565c0; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+.cp-hospital-name { font-size:0.9rem; font-weight:800; color:#0d1b2a; margin:0 0 0.2rem; line-height:1.3; }
+.cp-hospital-loc { font-size:0.75rem; color:#718096; margin:0; }
+.cp-hospital-body { padding:1rem 1.25rem; flex:1; }
+.cp-price-box { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:0.75rem 1rem; }
+.cp-price { font-size:1.3rem; font-weight:800; color:#2e7d32; line-height:1; }
+.cp-price-label { font-size:0.68rem; color:#718096; margin-top:2px; }
+.cp-badge { font-size:0.65rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:4px; }
+.cp-badge-blue { background:#e8f0fe; color:#1565c0; }
+.cp-badge-green { background:#e8f5e9; color:#2e7d32; }
+.cp-badge-orange { background:#fff3e0; color:#e65100; }
+.cp-hospital-footer { padding:0.75rem 1.25rem; border-top:1px solid #f3f4f6; }
+.cp-select-btn { display:block; width:100%; text-align:center; background:linear-gradient(135deg,#1565c0,#0d47a1); color:white; font-size:0.82rem; font-weight:600; padding:0.55rem; border-radius:10px; border:none; cursor:pointer; transition:all 0.2s; }
+.cp-select-btn:hover { background:linear-gradient(135deg,#0d47a1,#0a3880); transform:translateY(-1px); }
+/* Empty state */
+.cp-empty-state { text-align:center; padding:4rem 2rem; background:#fff; border:1px solid #e8eaf6; border-radius:20px; }
+.cp-empty-icon { width:80px; height:80px; background:#e8f0fe; color:#1565c0; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 1.5rem; }
+.cp-empty-title { font-size:1.3rem; font-weight:800; color:#0d1b2a; margin-bottom:0.5rem; }
+.cp-empty-sub { color:#718096; font-size:0.9rem; max-width:400px; margin:0 auto; line-height:1.7; }
+.cp-empty-btn-outline { background:transparent; border:2px solid #0d1b2a; color:#0d1b2a; font-size:0.875rem; font-weight:600; padding:0.6rem 1.25rem; border-radius:50px; text-decoration:none; transition:all 0.2s; }
+.cp-empty-btn-outline:hover { background:#0d1b2a; color:white; }
+.cp-empty-btn-primary { background:linear-gradient(135deg,#1565c0,#0d47a1); color:white; font-size:0.875rem; font-weight:600; padding:0.6rem 1.25rem; border-radius:50px; text-decoration:none; transition:all 0.2s; box-shadow:0 3px 10px rgba(21,101,192,0.3); }
+.cp-empty-btn-primary:hover { transform:translateY(-2px); color:white; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('treatmentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const treatment = document.getElementById('treatment').value;
+    if (treatment) {
+      window.location.href = '?treatment=' + treatment;
+    } else {
+      alert('Please select a treatment');
+    }
+  });
+});
+
+function selectHospital(hospitalId) {
+  document.getElementById('hospitalForm-' + hospitalId).submit();
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,717 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ treatment.name }} - TakeOpinion{% endblock %}
+{% block content %}
+<style>
+/* ── Treatment Detail Page ── */
+:root {
+  --td-dark:    #0d1b2a;
+  --td-navy:    #1a3c6e;
+  --td-primary: #1565c0;
+  --td-success: #2e7d32;
+  --td-border:  #e8eaf6;
+  --td-radius:  16px;
+}
+
+/* Hero */
+.td-hero {
+  background: linear-gradient(135deg, #0d1b2a 0%, #1a3c6e 60%, #1565c0 100%);
+  padding: 3.5rem 0 2.5rem;
+}
+.td-breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.82rem; }
+.td-breadcrumb a:hover { color: #ffc107; }
+.td-breadcrumb span { color: rgba(255,255,255,0.4); margin: 0 0.4rem; font-size: 0.82rem; }
+.td-breadcrumb .current { color: rgba(255,255,255,0.85); font-size: 0.82rem; }
+.td-hero h1 { font-size: clamp(1.8rem,3.5vw,2.6rem); font-weight: 800; color: #fff; margin-bottom: 0.6rem; }
+.td-category-badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(255,193,7,0.15); border: 1px solid rgba(255,193,7,0.3);
+  color: #ffc107; font-size: 0.78rem; font-weight: 600;
+  padding: 0.3rem 0.9rem; border-radius: 50px; margin-bottom: 1rem;
+}
+.td-hero-desc { color: rgba(255,255,255,0.75); font-size: 0.95rem; line-height: 1.7; max-width: 560px; }
+.td-hero-btn-primary {
+  background: linear-gradient(135deg, #1565c0, #0d47a1);
+  color: #fff; border: none; border-radius: 10px;
+  padding: 0.7rem 1.4rem; font-size: 0.88rem; font-weight: 600;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+  transition: all 0.2s;
+}
+.td-hero-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(21,101,192,0.4); color: #fff; }
+.td-hero-btn-wa {
+  background: #25d366; color: #fff; border: none; border-radius: 10px;
+  padding: 0.7rem 1.4rem; font-size: 0.88rem; font-weight: 600;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+  transition: all 0.2s;
+}
+.td-hero-btn-wa:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37,211,102,0.4); color: #fff; }
+
+/* Hero stats */
+.td-stats-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-top: 2rem;
+}
+.td-stat {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px; padding: 1rem; text-align: center;
+}
+.td-stat-icon { font-size: 1.3rem; color: #ffc107; margin-bottom: 0.4rem; }
+.td-stat-value { font-size: 1.1rem; font-weight: 800; color: #fff; line-height: 1.2; }
+.td-stat-label { font-size: 0.68rem; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.2rem; }
+
+/* Layout */
+.td-body { background: #f4f6fb; padding: 2.5rem 0 3rem; }
+
+/* Cards */
+.td-card {
+  background: #fff; border: 1px solid var(--td-border);
+  border-radius: var(--td-radius); margin-bottom: 1.5rem;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.td-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+.td-card-header {
+  background: linear-gradient(135deg, #1565c0, #0d47a1);
+  border-radius: var(--td-radius) var(--td-radius) 0 0;
+  padding: 1rem 1.4rem; display: flex; align-items: center; gap: 0.6rem;
+}
+.td-card-header h2 { font-size: 1rem; font-weight: 700; color: #fff; margin: 0; }
+.td-card-header i { color: rgba(255,255,255,0.8); font-size: 1rem; }
+.td-card-body { padding: 1.4rem; }
+
+/* Section title */
+.td-section-title {
+  font-size: 1rem; font-weight: 700; color: var(--td-dark);
+  margin-bottom: 1rem; padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--td-border);
+}
+
+/* Procedure details */
+.td-prose { font-size: 0.92rem; color: #374151; line-height: 1.75; }
+
+/* Prep / Aftercare lists */
+.td-checklist { list-style: none; padding: 0; margin: 0; }
+.td-checklist li {
+  display: flex; align-items: flex-start; gap: 0.6rem;
+  font-size: 0.88rem; color: #374151; padding: 0.45rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.td-checklist li:last-child { border-bottom: none; }
+.td-checklist li i { color: var(--td-primary); margin-top: 2px; flex-shrink: 0; }
+
+/* Hospital cards */
+.td-hospital-card {
+  background: #fff; border: 1px solid var(--td-border); border-radius: 12px;
+  overflow: hidden; text-decoration: none; color: inherit; display: block;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.td-hospital-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.1); color: inherit; }
+.td-hospital-card-body { padding: 0.9rem 1rem; }
+.td-hospital-name { font-size: 0.88rem; font-weight: 700; color: var(--td-dark); margin-bottom: 0.2rem; }
+.td-hospital-loc { font-size: 0.75rem; color: #718096; margin-bottom: 0.5rem; }
+.td-hospital-price { font-size: 0.85rem; font-weight: 800; color: var(--td-success); }
+.td-badge-jci { background: #e8f0fe; color: #1565c0; font-size: 0.62rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 50px; }
+.td-badge-nabh { background: #e8f5e9; color: #2e7d32; font-size: 0.62rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 50px; }
+.td-badge-iso { background: #fff3e0; color: #e65100; font-size: 0.62rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 50px; }
+.td-badge-to { background: #fff8e1; color: #f57f17; font-size: 0.62rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 50px; }
+
+/* Doctor cards */
+.td-doctor-card {
+  background: #fff; border: 1px solid var(--td-border); border-radius: 12px;
+  padding: 1.2rem; text-align: center; text-decoration: none; color: inherit; display: block;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.td-doctor-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.1); color: inherit; }
+.td-doctor-card img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid var(--td-border); margin-bottom: 0.7rem; }
+.td-doctor-name { font-size: 0.85rem; font-weight: 700; color: var(--td-dark); margin-bottom: 0.2rem; }
+.td-doctor-spec { font-size: 0.75rem; color: #718096; margin-bottom: 0.4rem; }
+.td-doctor-exp { font-size: 0.72rem; color: var(--td-primary); font-weight: 600; }
+.td-stars { color: #f59e0b; font-size: 0.7rem; }
+
+/* FAQ accordion */
+.td-accordion .accordion-item { border: 1px solid var(--td-border); border-radius: 10px !important; margin-bottom: 0.5rem; overflow: hidden; }
+.td-accordion .accordion-button { font-size: 0.9rem; font-weight: 600; color: var(--td-dark); background: #f8faff; }
+.td-accordion .accordion-button:not(.collapsed) { background: #e8f0fe; color: var(--td-primary); box-shadow: none; }
+.td-accordion .accordion-button::after { filter: none; }
+.td-accordion .accordion-body { font-size: 0.88rem; color: #374151; line-height: 1.7; }
+
+/* Review cards */
+.td-review-card {
+  background: #f8faff; border: 1px solid var(--td-border); border-radius: 12px;
+  padding: 1rem; margin-bottom: 1rem;
+}
+.td-review-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, #1565c0, #0d47a1);
+  color: #fff; font-size: 0.85rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.td-review-name { font-size: 0.85rem; font-weight: 700; color: var(--td-dark); }
+.td-review-title { font-size: 0.75rem; color: #718096; }
+.td-review-comment { font-size: 0.85rem; color: #374151; line-height: 1.6; margin: 0.5rem 0 0; }
+.td-review-date { font-size: 0.72rem; color: #9ca3af; }
+
+/* Sidebar */
+.td-sidebar { position: sticky; top: 80px; }
+.td-price-card {
+  background: linear-gradient(135deg, #1565c0, #0d47a1);
+  border-radius: var(--td-radius); padding: 1.5rem; margin-bottom: 1.5rem;
+  color: #fff;
+}
+.td-price-label { font-size: 0.72rem; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem; }
+.td-price-value { font-size: 2.2rem; font-weight: 800; color: #fff; line-height: 1; }
+.td-price-sub { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-top: 0.2rem; }
+.td-quick-info { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.2rem 0; }
+.td-qi-item { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 0.7rem; text-align: center; }
+.td-qi-label { font-size: 0.65rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.04em; }
+.td-qi-value { font-size: 0.82rem; font-weight: 700; color: #fff; margin-top: 0.15rem; }
+.td-sidebar-btn-primary {
+  display: block; width: 100%; text-align: center;
+  background: #fff; color: var(--td-primary); border: none; border-radius: 10px;
+  padding: 0.7rem 1rem; font-size: 0.88rem; font-weight: 700;
+  text-decoration: none; margin-bottom: 0.6rem; transition: all 0.2s;
+}
+.td-sidebar-btn-primary:hover { background: #e8f0fe; color: var(--td-primary); transform: translateY(-1px); }
+.td-sidebar-btn-wa {
+  display: block; width: 100%; text-align: center;
+  background: #25d366; color: #fff; border: none; border-radius: 10px;
+  padding: 0.7rem 1rem; font-size: 0.88rem; font-weight: 700;
+  text-decoration: none; margin-bottom: 0.6rem; transition: all 0.2s;
+}
+.td-sidebar-btn-wa:hover { background: #1ebe5d; color: #fff; transform: translateY(-1px); }
+.td-sidebar-btn-outline {
+  display: block; width: 100%; text-align: center;
+  background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 10px; padding: 0.7rem 1rem; font-size: 0.88rem; font-weight: 600;
+  text-decoration: none; transition: all 0.2s;
+}
+.td-sidebar-btn-outline:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+/* Why Choose card */
+.td-why-card {
+  background: #fff; border: 1px solid var(--td-border); border-radius: var(--td-radius);
+  padding: 1.4rem; margin-bottom: 1.5rem;
+}
+.td-why-title { font-size: 0.9rem; font-weight: 700; color: var(--td-dark); margin-bottom: 1rem; }
+.td-why-list { list-style: none; padding: 0; margin: 0; }
+.td-why-list li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.85rem; color: #374151; padding: 0.4rem 0; }
+.td-why-list li i { color: var(--td-success); margin-top: 2px; flex-shrink: 0; }
+
+/* Pagination */
+.td-pagination .page-link { border-radius: 8px; font-size: 0.82rem; color: var(--td-primary); border-color: var(--td-border); margin: 0 2px; }
+.td-pagination .page-item.active .page-link { background: var(--td-primary); border-color: var(--td-primary); }
+
+/* View buttons */
+.td-view-btn {
+  display: inline-block; font-size: 0.78rem; font-weight: 600;
+  color: var(--td-primary); border: 1px solid var(--td-primary);
+  border-radius: 8px; padding: 0.3rem 0.75rem; text-decoration: none;
+  transition: all 0.2s; margin-top: 0.5rem;
+}
+.td-view-btn:hover { background: var(--td-primary); color: #fff; }
+
+/* Outline CTA */
+.td-outline-cta {
+  display: inline-block; font-size: 0.85rem; font-weight: 600;
+  color: var(--td-primary); border: 1.5px solid var(--td-primary);
+  border-radius: 10px; padding: 0.55rem 1.2rem; text-decoration: none;
+  transition: all 0.2s;
+}
+.td-outline-cta:hover { background: var(--td-primary); color: #fff; transform: translateY(-1px); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .td-stats-grid { grid-template-columns: repeat(2,1fr); }
+  .td-sidebar { position: static; }
+}
+@media (max-width: 480px) {
+  .td-stats-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+
+<!-- ══════════════════════════════════════════
+     HERO SECTION
+══════════════════════════════════════════ -->
+<section class="td-hero">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav class="td-breadcrumb mb-3" aria-label="breadcrumb">
+      <a href="/"><i class="bi bi-house-fill me-1"></i>Home</a>
+      <span>/</span>
+      <a href="/treatments/">Treatments</a>
+      <span>/</span>
+      <span class="current">{{ treatment.name }}</span>
+    </nav>
+
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <!-- Category badge -->
+        <div class="td-category-badge">
+          <i class="bi bi-bandaid-fill"></i>
+          {{ treatment.category.name }}
+        </div>
+
+        <!-- Title -->
+        <h1>{{ treatment.name }}</h1>
+
+        <!-- Description -->
+        <p class="td-hero-desc">{{ treatment.description }}</p>
+
+        <!-- CTA buttons -->
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <a href="/enquiries/results/?q={{ treatment.name|urlencode }}" class="td-hero-btn-primary">
+            <i class="bi bi-search"></i> Find Doctors &amp; Hospitals
+          </a>
+          <a href="https://wa.me/?text=I%20am%20interested%20in%20{{ treatment.name|urlencode }}%20treatment" target="_blank" rel="noopener" class="td-hero-btn-wa">
+            <i class="bi bi-whatsapp"></i> Get Free Quote
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero stats -->
+      <div class="col-lg-4 mt-4 mt-lg-0">
+        <div class="td-stats-grid">
+          <div class="td-stat">
+            <div class="td-stat-icon"><i class="bi bi-currency-rupee"></i></div>
+            <div class="td-stat-value">₹{{ treatment.starting_price|floatformat:0 }}</div>
+            <div class="td-stat-label">Starting Price</div>
+          </div>
+          <div class="td-stat">
+            <div class="td-stat-icon"><i class="bi bi-clock"></i></div>
+            <div class="td-stat-value">{{ treatment.duration }}</div>
+            <div class="td-stat-label">Duration</div>
+          </div>
+          <div class="td-stat">
+            <div class="td-stat-icon"><i class="bi bi-heart-pulse"></i></div>
+            <div class="td-stat-value">{{ treatment.recovery_time }}</div>
+            <div class="td-stat-label">Recovery Time</div>
+          </div>
+          <div class="td-stat">
+            <div class="td-stat-icon"><i class="bi bi-shield-plus"></i></div>
+            <div class="td-stat-value">{{ treatment.anesthesia_type }}</div>
+            <div class="td-stat-label">Anesthesia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     MAIN BODY
+══════════════════════════════════════════ -->
+<div class="td-body">
+  <div class="container">
+    <div class="row g-4">
+
+      <!-- ── MAIN CONTENT col-lg-8 ── -->
+      <div class="col-lg-8">
+
+        <!-- About Treatment -->
+        <div class="td-card">
+          <div class="td-card-header">
+            <i class="bi bi-info-circle-fill"></i>
+            <h2>About This Treatment</h2>
+          </div>
+          <div class="td-card-body">
+            <p class="td-prose">{{ treatment.procedure_details }}</p>
+          </div>
+        </div>
+
+        <!-- Preparation + Aftercare side by side -->
+        <div class="td-card">
+          <div class="td-card-header">
+            <i class="bi bi-list-check"></i>
+            <h2>Preparation &amp; Aftercare</h2>
+          </div>
+          <div class="td-card-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="td-section-title"><i class="bi bi-clipboard2-check me-2 text-primary"></i>Preparation Guidelines</div>
+                <ul class="td-checklist">
+                  {% for guideline in treatment.get_preparation_guidelines %}
+                  <li><i class="bi bi-check-circle-fill"></i>{{ guideline }}</li>
+                  {% empty %}
+                  <li><i class="bi bi-info-circle"></i>No preparation guidelines listed.</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <div class="td-section-title"><i class="bi bi-bandaid me-2 text-success"></i>Aftercare Instructions</div>
+                <ul class="td-checklist">
+                  {% for instruction in treatment.get_aftercare_instructions %}
+                  <li><i class="bi bi-check-circle-fill"></i>{{ instruction }}</li>
+                  {% empty %}
+                  <li><i class="bi bi-info-circle"></i>No aftercare instructions listed.</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hospitals Offering This Treatment -->
+        <div class="td-card" id="hospitals-offering">
+          <div class="td-card-header">
+            <i class="bi bi-building-fill-cross"></i>
+            <h2>Hospitals Offering This Treatment</h2>
+          </div>
+          <div class="td-card-body">
+            {% if hospitals_page_obj %}
+            <div class="row g-3">
+              {% for hospital in hospitals_page_obj %}
+              <div class="col-sm-6 col-xl-4">
+                <a href="/hospitals/{{ hospital.slug }}/" class="td-hospital-card">
+                  <div class="td-hospital-card-body">
+                    <div class="td-hospital-name">{{ hospital.name }}</div>
+                    <div class="td-hospital-loc">
+                      <i class="bi bi-geo-alt me-1"></i>{{ hospital.city }}{% if hospital.state %}, {{ hospital.state }}{% endif %}{% if hospital.country %}, {{ hospital.country }}{% endif %}
+                    </div>
+                    <!-- Accreditation badges -->
+                    <div class="d-flex flex-wrap gap-1 mb-2">
+                      {% if hospital.jci_accredited %}<span class="td-badge-jci">JCI</span>{% endif %}
+                      {% if hospital.nabh_accredited %}<span class="td-badge-nabh">NABH</span>{% endif %}
+                      {% if hospital.iso_certified %}<span class="td-badge-iso">ISO</span>{% endif %}
+                      {% if hospital.is_takeopinion_choice %}<span class="td-badge-to">⭐ TO Choice</span>{% endif %}
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <div class="td-stars">
+                        {% for i in "12345" %}{% if forloop.counter <= hospital.rating|floatformat:0 %}<i class="bi bi-star-fill"></i>{% else %}<i class="bi bi-star"></i>{% endif %}{% endfor %}
+                      </div>
+                      <div class="td-hospital-price">₹{{ hospital.starting_price|floatformat:0 }}</div>
+                    </div>
+                    <span class="td-view-btn">View Hospital <i class="bi bi-arrow-right"></i></span>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+
+            <!-- Hospitals pagination -->
+            {% if hospitals_page_obj.has_other_pages %}
+            <nav aria-label="Hospitals pagination" class="mt-4">
+              <ul class="pagination justify-content-center td-pagination">
+                {% if hospitals_page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?hospitals_page={{ hospitals_page_obj.previous_page_number }}#hospitals-offering" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                </li>
+                {% endif %}
+                {% for num in hospitals_page_obj.paginator.page_range %}
+                  {% if hospitals_page_obj.number == num %}
+                  <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% elif num > hospitals_page_obj.number|add:'-3' and num < hospitals_page_obj.number|add:'3' %}
+                  <li class="page-item"><a class="page-link" href="?hospitals_page={{ num }}#hospitals-offering">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if hospitals_page_obj.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?hospitals_page={{ hospitals_page_obj.next_page_number }}#hospitals-offering" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+            {% endif %}
+
+            <div class="text-center mt-3">
+              <a href="/hospitals/?treatment_id={{ treatment.id }}" class="td-outline-cta">View All Hospitals</a>
+            </div>
+            {% else %}
+            <p class="text-center text-muted py-4 mb-0">No hospitals currently offering this treatment.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Specialist Doctors -->
+        <div class="td-card" id="doctors-specializing">
+          <div class="td-card-header">
+            <i class="bi bi-person-badge-fill"></i>
+            <h2>Specialist Doctors</h2>
+          </div>
+          <div class="td-card-body">
+            {% if doctors_page_obj %}
+            <div class="row g-3">
+              {% for doctor in doctors_page_obj %}
+              <div class="col-6 col-sm-4 col-md-3">
+                <a href="/doctors/{{ doctor.slug }}/" class="td-doctor-card">
+                  {% if doctor.profile_picture %}
+                  <img src="{{ doctor.profile_picture }}" alt="{{ doctor.name }}">
+                  {% else %}
+                  <img src="https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=1565c0&color=fff&size=128" alt="{{ doctor.name }}">
+                  {% endif %}
+                  <div class="td-doctor-name">{{ doctor.name }}</div>
+                  <div class="td-doctor-spec">{{ doctor.specialization }}</div>
+                  <div class="td-stars mb-1">
+                    {% for i in "12345" %}{% if forloop.counter <= doctor.rating|floatformat:0 %}<i class="bi bi-star-fill"></i>{% else %}<i class="bi bi-star"></i>{% endif %}{% endfor %}
+                  </div>
+                  {% if doctor.experience_years %}
+                  <div class="td-doctor-exp">{{ doctor.experience_years }} yrs exp</div>
+                  {% endif %}
+                  <span class="td-view-btn mt-1">View Profile</span>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+
+            <!-- Doctors pagination -->
+            {% if doctors_page_obj.has_other_pages %}
+            <nav aria-label="Doctors pagination" class="mt-4">
+              <ul class="pagination justify-content-center td-pagination">
+                {% if doctors_page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?doctors_page={{ doctors_page_obj.previous_page_number }}#doctors-specializing" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                </li>
+                {% endif %}
+                {% for num in doctors_page_obj.paginator.page_range %}
+                  {% if doctors_page_obj.number == num %}
+                  <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% elif num > doctors_page_obj.number|add:'-3' and num < doctors_page_obj.number|add:'3' %}
+                  <li class="page-item"><a class="page-link" href="?doctors_page={{ num }}#doctors-specializing">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if doctors_page_obj.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?doctors_page={{ doctors_page_obj.next_page_number }}#doctors-specializing" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+            {% endif %}
+
+            <div class="text-center mt-3">
+              <a href="/doctors/?treatment_id={{ treatment.id }}" class="td-outline-cta">View All Doctors</a>
+            </div>
+            {% else %}
+            <p class="text-center text-muted py-4 mb-0">No doctors currently specializing in this treatment.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- FAQs -->
+        <div class="td-card">
+          <div class="td-card-header">
+            <i class="bi bi-question-circle-fill"></i>
+            <h2>Frequently Asked Questions</h2>
+          </div>
+          <div class="td-card-body">
+            {% if faqs %}
+            <div class="accordion td-accordion" id="treatmentFAQs">
+              {% for faq in faqs %}
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ faq.id }}">
+                    {{ faq.question }}
+                  </button>
+                </h3>
+                <div id="faq{{ faq.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#treatmentFAQs">
+                  <div class="accordion-body">{{ faq.answer }}</div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-center text-muted py-4 mb-0">No FAQs available for this treatment yet.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Patient Reviews -->
+        <div class="td-card" id="patient-reviews">
+          <div class="td-card-header">
+            <i class="bi bi-star-fill"></i>
+            <h2>Patient Reviews</h2>
+          </div>
+          <div class="td-card-body">
+            {% if feedbacks_page_obj %}
+            {% for feedback in feedbacks_page_obj %}
+            <div class="td-review-card">
+              <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="td-review-avatar">
+                  {% if feedback.patient.user.first_name %}{{ feedback.patient.user.first_name|slice:":1" }}{{ feedback.patient.user.last_name|slice:":1" }}{% else %}P{% endif %}
+                </div>
+                <div class="flex-grow-1">
+                  <div class="d-flex align-items-center justify-content-between flex-wrap gap-1">
+                    <div>
+                      <div class="td-review-name">
+                        {% if feedback.is_anonymous %}Anonymous Patient{% else %}{{ feedback.patient.user.first_name }} {{ feedback.patient.user.last_name }}{% endif %}
+                      </div>
+                      <div class="td-review-title">{{ feedback.title }}</div>
+                    </div>
+                    <div class="td-stars">
+                      {% for i in "12345" %}{% if forloop.counter <= feedback.rating %}<i class="bi bi-star-fill"></i>{% else %}<i class="bi bi-star"></i>{% endif %}{% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="td-review-comment">{{ feedback.comment }}</p>
+              <div class="td-review-date">{{ feedback.created_at|date:"M d, Y" }}</div>
+            </div>
+            {% endfor %}
+
+            <!-- Feedbacks pagination -->
+            {% if feedbacks_page_obj.has_other_pages %}
+            <nav aria-label="Reviews pagination" class="mt-3">
+              <ul class="pagination justify-content-center td-pagination">
+                {% if feedbacks_page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?feedbacks_page={{ feedbacks_page_obj.previous_page_number }}#patient-reviews" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                </li>
+                {% endif %}
+                {% for num in feedbacks_page_obj.paginator.page_range %}
+                  {% if feedbacks_page_obj.number == num %}
+                  <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% elif num > feedbacks_page_obj.number|add:'-3' and num < feedbacks_page_obj.number|add:'3' %}
+                  <li class="page-item"><a class="page-link" href="?feedbacks_page={{ num }}#patient-reviews">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if feedbacks_page_obj.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?feedbacks_page={{ feedbacks_page_obj.next_page_number }}#patient-reviews" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+            {% endif %}
+
+            <div class="text-center mt-3">
+              <a href="{% url 'accounts:reviews_page' %}?treatment={{ treatment.id }}" class="td-outline-cta">View All Reviews</a>
+            </div>
+            {% else %}
+            <p class="text-center text-muted py-4 mb-0">No reviews yet. Be the first to share your experience!</p>
+            {% endif %}
+          </div>
+        </div>
+
+      </div><!-- /col-lg-8 -->
+
+      <!-- ── SIDEBAR col-lg-4 ── -->
+      <div class="col-lg-4">
+        <div class="td-sidebar">
+
+          <!-- Price card -->
+          <div class="td-price-card">
+            <div class="td-price-label">Starting Price</div>
+            <div class="td-price-value">₹{{ treatment.starting_price|floatformat:0 }}</div>
+            <div class="td-price-sub">Indicative cost — final price varies by hospital</div>
+
+            <!-- Quick info grid -->
+            <div class="td-quick-info">
+              <div class="td-qi-item">
+                <div class="td-qi-label">Duration</div>
+                <div class="td-qi-value">{{ treatment.duration }}</div>
+              </div>
+              <div class="td-qi-item">
+                <div class="td-qi-label">Recovery</div>
+                <div class="td-qi-value">{{ treatment.recovery_time }}</div>
+              </div>
+              <div class="td-qi-item">
+                <div class="td-qi-label">Anesthesia</div>
+                <div class="td-qi-value">{{ treatment.anesthesia_type }}</div>
+              </div>
+              <div class="td-qi-item">
+                <div class="td-qi-label">Reviews</div>
+                <div class="td-qi-value">{{ treatment.review_count }}+</div>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <a href="/enquiries/results/?q={{ treatment.name|urlencode }}" class="td-sidebar-btn-primary">
+              <i class="bi bi-search me-2"></i>Find Doctors &amp; Hospitals
+            </a>
+            <a href="https://wa.me/?text=I%20am%20interested%20in%20{{ treatment.name|urlencode }}%20treatment" target="_blank" rel="noopener" class="td-sidebar-btn-wa">
+              <i class="bi bi-whatsapp me-2"></i>Get Free Quote
+            </a>
+            <a href="/book/" class="td-sidebar-btn-outline">
+              <i class="bi bi-calendar-check me-2"></i>Book Consultation
+            </a>
+          </div>
+
+          <!-- Finalize Treatment -->
+          {% if hospitals_page_obj %}
+          <div class="mb-4" style="background:linear-gradient(135deg,#0d1b2a,#1a3c6e);border-radius:16px;overflow:hidden;">
+            <!-- Header -->
+            <div style="padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.1);">
+              <div style="display:flex;align-items:center;gap:0.6rem;">
+                <div style="width:32px;height:32px;background:rgba(255,193,7,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <i class="bi bi-check2-circle" style="color:#ffc107;font-size:1rem;"></i>
+                </div>
+                <div>
+                  <div style="font-size:0.9rem;font-weight:800;color:#ffffff;">Finalize Treatment</div>
+                  <div style="font-size:0.7rem;color:rgba(255,255,255,0.55);">Select a hospital to book</div>
+                </div>
+              </div>
+            </div>
+            <!-- Hospital Options -->
+            <div style="padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.5rem;" id="finalize-hospital-list">
+              {% for hospital in hospitals_page_obj %}
+              <label class="finalize-hospital-option" style="display:flex;align-items:center;gap:0.75rem;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.65rem 0.85rem;cursor:pointer;transition:all 0.15s;">
+                <input type="radio" name="finalize_hospital" value="{{ hospital.id }}" style="accent-color:#ffc107;flex-shrink:0;width:16px;height:16px;">
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:0.8rem;font-weight:700;color:#ffffff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ hospital.name }}</div>
+                  <div style="font-size:0.68rem;color:rgba(255,255,255,0.5);">
+                    {% if hospital.jci_accredited %}<span style="background:rgba(21,101,192,0.3);color:#90caf9;font-size:0.6rem;padding:0.1rem 0.35rem;border-radius:3px;margin-right:3px;">JCI</span>{% endif %}
+                    {% if hospital.nabh_accredited %}<span style="background:rgba(46,125,50,0.3);color:#a5d6a7;font-size:0.6rem;padding:0.1rem 0.35rem;border-radius:3px;margin-right:3px;">NABH</span>{% endif %}
+                  </div>
+                </div>
+                <div style="text-align:right;flex-shrink:0;">
+                  <div style="font-size:0.82rem;font-weight:800;color:#ffc107;">₹{{ hospital.starting_price|floatformat:"0" }}</div>
+                  <div style="font-size:0.62rem;color:rgba(255,255,255,0.4);">onwards</div>
+                </div>
+              </label>
+              {% endfor %}
+            </div>
+            <!-- Book Button -->
+            <div style="padding:0.75rem 1rem 1rem;">
+              <button onclick="finalizeBooking({{ treatment.id }})"
+                style="width:100%;background:linear-gradient(135deg,#ffc107,#ff9800);color:#0d1b2a;border:none;border-radius:10px;padding:0.75rem;font-size:0.875rem;font-weight:800;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;"
+                onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(255,193,7,0.4)'"
+                onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <i class="bi bi-calendar-check-fill"></i> Book This Treatment
+              </button>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Why Choose TakeOpinion -->
+          <div class="td-why-card">
+            <div class="td-why-title"><i class="bi bi-patch-check-fill text-primary me-2"></i>Why Choose TakeOpinion?</div>
+            <ul class="td-why-list">
+              <li><i class="bi bi-check-circle-fill"></i>Verified hospitals &amp; doctors across India</li>
+              <li><i class="bi bi-check-circle-fill"></i>Transparent pricing — no hidden charges</li>
+              <li><i class="bi bi-check-circle-fill"></i>Free second opinion from top specialists</li>
+              <li><i class="bi bi-check-circle-fill"></i>End-to-end travel &amp; stay assistance</li>
+              <li><i class="bi bi-check-circle-fill"></i>24/7 patient support &amp; follow-up care</li>
+            </ul>
+          </div>
+
+<script>
+// Highlight selected hospital option
+document.querySelectorAll('.finalize-hospital-option').forEach(function(label) {
+  label.addEventListener('click', function() {
+    document.querySelectorAll('.finalize-hospital-option').forEach(function(l) {
+      l.style.borderColor = 'rgba(255,255,255,0.1)';
+      l.style.background = 'rgba(255,255,255,0.07)';
+    });
+    this.style.borderColor = '#ffc107';
+    this.style.background = 'rgba(255,193,7,0.12)';
+  });
+});
+
+function finalizeBooking(treatmentId) {
+  var selected = document.querySelector('input[name="finalize_hospital"]:checked');
+  if (!selected) {
+    alert('Please select a hospital first.');
+    return;
+  }
+  var hospitalId = selected.value;
+  window.location.href = '/book/new/?treatment_id=' + treatmentId + '&hospital_id=' + hospitalId;
+}
+</script>
+
+        </div><!-- /td-sidebar -->
+      </div><!-- /col-lg-4 -->
+
+    </div><!-- /row -->
+  </div><!-- /container -->
+</div><!-- /td-body -->
+
+{% endblock %}

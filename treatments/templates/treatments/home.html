@@ -1,0 +1,244 @@
+﻿{% extends "base.html" %}
+{% load static %}
+{% block title %}Treatments - TakeOpinion{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section style="background:linear-gradient(135deg,#0d1b2a 0%,#1a3c6e 60%,#1565c0 100%);padding:3.5rem 0 2.5rem;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <div class="d-inline-flex align-items-center gap-2 mb-3 px-3 py-1 rounded-pill" style="background:rgba(255,193,7,0.15);border:1px solid rgba(255,193,7,0.3);">
+          <i class="bi bi-bandaid-fill text-warning" style="font-size:0.8rem;"></i>
+          <span style="color:#ffc107;font-size:0.78rem;font-weight:600;">{{ treatments|length }}+ Treatments Available</span>
+        </div>
+        <h1 style="font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;color:#fff;margin-bottom:0.75rem;">Find the Right Treatment</h1>
+        <p style="color:rgba(255,255,255,0.7);font-size:0.95rem;max-width:500px;line-height:1.7;">Explore our comprehensive range of medical treatments across various specialities, offered by our verified healthcare partners.</p>
+      </div>
+      <div class="col-lg-5 d-none d-lg-flex justify-content-end gap-3 mt-3 mt-lg-0">
+        <div class="text-center px-4 py-3 rounded-3" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);">
+          <div style="font-size:1.5rem;font-weight:800;color:#ffc107;">{{ treatments|length }}+</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;">Treatments</div>
+        </div>
+        <div class="text-center px-4 py-3 rounded-3" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);">
+          <div style="font-size:1.5rem;font-weight:800;color:#ffc107;">{{ categories|length }}+</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;">Specialities</div>
+        </div>
+        <div class="text-center px-4 py-3 rounded-3" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);">
+          <div style="font-size:1.5rem;font-weight:800;color:#ffc107;">24/7</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;">Support</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+  <div class="row g-4">
+
+    <!-- Sidebar Filters -->
+    <div class="col-lg-3">
+      <div class="card border-0 shadow-sm sticky-top" style="border-radius:16px;top:80px;">
+        <div class="card-header border-0 rounded-top-3 py-3 px-4" style="background:linear-gradient(135deg,#1565c0,#0d47a1);">
+          <h2 class="h6 mb-0 text-white fw-bold"><i class="bi bi-funnel-fill me-2"></i>Filter Treatments</h2>
+        </div>
+        <div class="card-body p-4">
+          <form method="GET" action="">
+
+            <!-- Search -->
+            <div class="mb-4">
+              <label class="dl-filter-label">Search</label>
+              <div class="dl-search-wrap">
+                <i class="bi bi-search dl-search-icon"></i>
+                <input type="text" name="search" class="dl-search-input"
+                       placeholder="Treatment name"
+                       value="{{ search_filter }}">
+              </div>
+            </div>
+
+            <!-- Hospital -->
+            <div class="mb-4">
+              <label class="dl-filter-label">Hospital</label>
+              <div class="dl-search-wrap">
+                <i class="bi bi-building dl-search-icon text-success"></i>
+                <input type="text" name="hospital" class="dl-search-input"
+                       placeholder="Hospital name"
+                       value="{{ hospital_filter }}">
+              </div>
+            </div>
+
+            <!-- Doctor -->
+            <div class="mb-4">
+              <label class="dl-filter-label">Doctor</label>
+              <div class="dl-search-wrap">
+                <i class="bi bi-person-badge dl-search-icon text-primary"></i>
+                <input type="text" name="doctor" class="dl-search-input"
+                       placeholder="Doctor name"
+                       value="{{ doctor_filter }}">
+              </div>
+            </div>
+
+            <button type="submit" class="dl-filter-btn w-100 mb-2">
+              <i class="bi bi-search me-2"></i>Apply Filters
+            </button>
+            <a href="/treatments/" class="dl-clear-btn w-100 d-block text-center">
+              <i class="bi bi-x-circle me-1"></i>Clear Filters
+            </a>
+
+          </form>
+        </div>
+
+        <!-- Category Quick Links -->
+        <div class="px-4 pb-4">
+          <div class="dl-filter-label mb-2">Jump to Category</div>
+          {% for cat in categories %}
+          <a href="#cat-{{ cat.slug }}" class="tl-cat-jump">
+            <i class="bi bi-chevron-right me-1"></i>{{ cat.name }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Treatments Content -->
+    <div class="col-lg-9">
+
+      <!-- Category Type Tabs -->
+      <div class="d-flex gap-2 mb-4 flex-wrap">
+        <button class="tl-type-btn active" onclick="filterType('all',this)">All</button>
+        <button class="tl-type-btn" onclick="filterType('medical',this)">
+          <i class="bi bi-heart-pulse me-1"></i>Medical
+        </button>
+        <button class="tl-type-btn" onclick="filterType('aesthetic',this)">
+          <i class="bi bi-stars me-1"></i>Aesthetic
+        </button>
+        <button class="tl-type-btn" onclick="filterType('wellness',this)">
+          <i class="bi bi-leaf me-1"></i>Wellness
+        </button>
+      </div>
+
+      <!-- Results count -->
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+          <h2 class="h5 fw-bold text-dark mb-0">Treatment Categories</h2>
+          <p class="text-muted small mb-0">{{ treatments|length }} treatment{{ treatments|length|pluralize }} across {{ categories|length }} specialities</p>
+        </div>
+      </div>
+
+      <!-- Categories with Treatments -->
+      {% for category in categories %}
+      {% with cat_treatments=category.treatments.all %}
+      {% if cat_treatments %}
+      <div class="tl-category-block" id="cat-{{ category.slug }}" data-type="{{ category.type }}">
+
+        <!-- Category Header -->
+        <div class="tl-cat-header">
+          <div class="tl-cat-icon">
+            {% if category.type == 'medical' %}<i class="bi bi-heart-pulse-fill"></i>
+            {% elif category.type == 'aesthetic' %}<i class="bi bi-stars"></i>
+            {% else %}<i class="bi bi-leaf-fill"></i>{% endif %}
+          </div>
+          <div>
+            <h3 class="tl-cat-name">{{ category.name }}</h3>
+            <span class="tl-cat-count">{{ cat_treatments|length }} treatment{{ cat_treatments|length|pluralize }}</span>
+          </div>
+          <span class="tl-cat-type-badge tl-type-{{ category.type }}">{{ category.get_type_display }}</span>
+        </div>
+
+        <!-- Treatments Grid -->
+        <div class="row g-3 mb-2">
+          {% for treatment in cat_treatments %}
+          <div class="col-sm-6 col-xl-4">
+            <a href="/treatments/{{ treatment.slug }}/" class="tl-treatment-card">
+              <div class="d-flex align-items-start gap-3">
+                <div class="tl-treatment-icon">
+                  <i class="bi bi-bandaid-fill"></i>
+                </div>
+                <div class="flex-grow-1 min-w-0">
+                  <div class="tl-treatment-name">{{ treatment.name }}</div>
+                  {% if treatment.duration %}
+                  <div class="tl-treatment-meta"><i class="bi bi-clock me-1"></i>{{ treatment.duration }}</div>
+                  {% endif %}
+                </div>
+                <div class="text-end flex-shrink-0">
+                  <div class="tl-treatment-price"><i class="bi bi-currency-rupee"></i>{{ treatment.starting_price|floatformat:"0" }}</div>
+                  <div class="tl-treatment-price-label">onwards</div>
+                </div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+
+      </div>
+      {% endif %}
+      {% endwith %}
+      {% endfor %}
+
+      {% if not categories %}
+      <div class="text-center py-5">
+        <div class="mb-3" style="font-size:3rem;color:#e5e7eb;"><i class="bi bi-bandaid"></i></div>
+        <h3 class="h5 text-muted">No treatments found</h3>
+        <p class="text-muted small">Try adjusting your filters or <a href="/treatments/">clear all filters</a></p>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* Shared filter styles */
+.dl-filter-label { font-size:0.75rem; font-weight:700; color:#374151; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:0.4rem; }
+.dl-search-wrap { display:flex; align-items:center; background:#f3f4f6; border-radius:10px; padding:0.45rem 0.75rem; gap:0.4rem; border:1.5px solid transparent; transition:all 0.2s; }
+.dl-search-wrap:focus-within { background:#fff; border-color:#1565c0; }
+.dl-search-icon { color:#9ca3af; font-size:0.8rem; flex-shrink:0; }
+.dl-search-input { border:none; background:transparent; outline:none; font-size:0.85rem; color:#374151; width:100%; }
+.dl-search-input::placeholder { color:#9ca3af; }
+.dl-filter-btn { background:linear-gradient(135deg,#1565c0,#0d47a1); color:white; border:none; border-radius:10px; padding:0.6rem 1rem; font-size:0.875rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.dl-filter-btn:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(21,101,192,0.3); }
+.dl-clear-btn { color:#6b7280; font-size:0.82rem; text-decoration:none; padding:0.4rem; border-radius:8px; transition:all 0.2s; }
+.dl-clear-btn:hover { background:#f3f4f6; color:#374151; }
+/* Category jump links */
+.tl-cat-jump { display:block; font-size:0.78rem; color:#718096; text-decoration:none; padding:0.25rem 0; transition:all 0.15s; }
+.tl-cat-jump:hover { color:#1565c0; padding-left:4px; }
+/* Type tabs */
+.tl-type-btn { background:#f3f4f6; border:1px solid #e5e7eb; color:#374151; font-size:0.8rem; font-weight:500; padding:0.4rem 1rem; border-radius:50px; cursor:pointer; transition:all 0.2s; }
+.tl-type-btn.active, .tl-type-btn:hover { background:#1565c0; color:white; border-color:#1565c0; }
+/* Category block */
+.tl-category-block { background:#fff; border:1px solid #e8eaf6; border-radius:16px; padding:1.5rem; margin-bottom:1.5rem; transition:all 0.2s; }
+.tl-category-block:hover { box-shadow:0 4px 16px rgba(0,0,0,0.06); }
+.tl-cat-header { display:flex; align-items:center; gap:0.75rem; margin-bottom:1.25rem; }
+.tl-cat-icon { width:40px; height:40px; background:#e8f0fe; color:#1565c0; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+.tl-cat-name { font-size:1rem; font-weight:800; color:#0d1b2a; margin:0; }
+.tl-cat-count { font-size:0.72rem; color:#718096; }
+.tl-cat-type-badge { margin-left:auto; font-size:0.65rem; font-weight:700; padding:0.2rem 0.6rem; border-radius:50px; flex-shrink:0; }
+.tl-type-medical { background:#e8f0fe; color:#1565c0; }
+.tl-type-aesthetic { background:#fce4ec; color:#c62828; }
+.tl-type-wellness { background:#e8f5e9; color:#2e7d32; }
+/* Treatment card */
+.tl-treatment-card { display:block; background:#f8faff; border:1px solid #e8eaf6; border-radius:12px; padding:0.9rem 1rem; text-decoration:none; transition:all 0.2s; }
+.tl-treatment-card:hover { background:#fff; border-color:#1565c0; box-shadow:0 4px 14px rgba(21,101,192,0.1); transform:translateY(-2px); }
+.tl-treatment-icon { width:36px; height:36px; background:#e8f0fe; color:#1565c0; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:0.9rem; flex-shrink:0; }
+.tl-treatment-name { font-size:0.82rem; font-weight:700; color:#0d1b2a; margin-bottom:0.15rem; }
+.tl-treatment-meta { font-size:0.7rem; color:#718096; }
+.tl-treatment-price { font-size:0.85rem; font-weight:800; color:#2e7d32; }
+.tl-treatment-price-label { font-size:0.62rem; color:#718096; }
+</style>
+
+<script>
+function filterType(type, btn) {
+  document.querySelectorAll('.tl-type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tl-category-block').forEach(block => {
+    if (type === 'all' || block.dataset.type === type) {
+      block.style.display = '';
+    } else {
+      block.style.display = 'none';
+    }
+  });
+}
+</script>
+
+{% endblock %}

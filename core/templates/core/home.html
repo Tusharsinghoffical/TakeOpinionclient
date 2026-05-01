@@ -1,0 +1,555 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block title %}TakeOpinion - Medical Tourism Platform{% endblock %}
+
+{% block content %}
+<div class="home-page">
+
+<!-- 
+     HERO SECTION
+ -->
+<section class="hp-hero">
+  <div class="hp-hero-bg"></div>
+  <div class="container position-relative">
+    <div class="row align-items-center min-vh-60 py-5">
+      <div class="col-lg-7">
+        <div class="hp-badge mb-3">
+          <i class="bi bi-shield-check-fill me-2"></i>Trusted by 50,000+ Patients Worldwide
+        </div>
+        <h1 class="hp-hero-title">Find the Right Treatment,<br><span class="hp-hero-accent">Doctor &amp; Hospital</span></h1>
+        <p class="hp-hero-sub">Compare top destinations, hospitals, and experts with TakeOpinion. Make informed decisions for your medical travel needs.</p>
+        <div class="d-flex gap-3 flex-wrap mt-4">
+          <a href="/enquiries/results/" class="hp-btn-primary"><i class="bi bi-search me-2"></i>Smart Search</a>
+          <a href="/treatments/" class="hp-btn-outline"><i class="bi bi-bandaid me-2"></i>Explore Treatments</a>
+        </div>
+        <div class="hp-hero-stats mt-5">
+          <div class="hp-hero-stat"><span class="hp-hero-stat-num">{{ doctors_count }}+</span><span class="hp-hero-stat-label">Doctors</span></div>
+          <div class="hp-hero-stat-divider"></div>
+          <div class="hp-hero-stat"><span class="hp-hero-stat-num">{{ hospitals_count }}+</span><span class="hp-hero-stat-label">Hospitals</span></div>
+          <div class="hp-hero-stat-divider"></div>
+          <div class="hp-hero-stat"><span class="hp-hero-stat-num">{{ treatments_count }}+</span><span class="hp-hero-stat-label">Treatments</span></div>
+          <div class="hp-hero-stat-divider"></div>
+          <div class="hp-hero-stat"><span class="hp-hero-stat-num">24/7</span><span class="hp-hero-stat-label">Support</span></div>
+        </div>
+      </div>
+      <div class="col-lg-5 d-none d-lg-block">
+        <div class="hp-hero-card-wrap">
+          <div class="hp-hero-card">
+            <div class="hp-hero-card-icon"><i class="bi bi-heart-pulse-fill"></i></div>
+            <div>
+              <div class="hp-hero-card-title">AI Smart Search</div>
+              <div class="hp-hero-card-sub">Upload report, get instant results</div>
+            </div>
+          </div>
+          <div class="hp-hero-card hp-hero-card-2">
+            <div class="hp-hero-card-icon hp-icon-green"><i class="bi bi-person-check-fill"></i></div>
+            <div>
+              <div class="hp-hero-card-title">Verified Doctors</div>
+              <div class="hp-hero-card-sub">All specialists are verified</div>
+            </div>
+          </div>
+          <div class="hp-hero-card hp-hero-card-3">
+            <div class="hp-hero-card-icon hp-icon-orange"><i class="bi bi-currency-rupee"></i></div>
+            <div>
+              <div class="hp-hero-card-title">Best Price Guarantee</div>
+              <div class="hp-hero-card-sub">Transparent pricing always</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 
+     CORE SERVICES
+ -->
+<section class="hp-section bg-white">
+  <div class="container">
+    <div class="hp-section-header">
+      <div class="hp-section-tag">Our Services</div>
+      <h2 class="hp-section-title">Comprehensive Medical Solutions</h2>
+      <p class="hp-section-sub">Everything you need for your medical journey in one place</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <a href="/hospitals/" class="hp-service-card">
+          <div class="hp-service-icon" style="background:#e8f4fd;color:#1565c0;"><i class="bi bi-building-fill"></i></div>
+          <h3 class="hp-service-title">Hospitals</h3>
+          <p class="hp-service-desc">Top-rated hospitals with world-class facilities and international accreditation.</p>
+          <span class="hp-service-link">Explore Hospitals <i class="bi bi-arrow-right"></i></span>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <a href="/treatments/" class="hp-service-card">
+          <div class="hp-service-icon" style="background:#e8f5e9;color:#2e7d32;"><i class="bi bi-bandaid-fill"></i></div>
+          <h3 class="hp-service-title">Treatments</h3>
+          <p class="hp-service-desc">Wide range of specialized treatments with proven success rates and affordability.</p>
+          <span class="hp-service-link">Explore Treatments <i class="bi bi-arrow-right"></i></span>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <a href="/doctors/" class="hp-service-card">
+          <div class="hp-service-icon" style="background:#fce4ec;color:#c62828;"><i class="bi bi-person-badge-fill"></i></div>
+          <h3 class="hp-service-title">Doctors</h3>
+          <p class="hp-service-desc">Connect with highly qualified specialists and medical experts worldwide.</p>
+          <span class="hp-service-link">Explore Doctors <i class="bi bi-arrow-right"></i></span>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <a href="/enquiries/results/" class="hp-service-card hp-service-card-featured">
+          <div class="hp-service-icon" style="background:rgba(255,255,255,0.2);color:#fff;"><i class="bi bi-robot"></i></div>
+          <h3 class="hp-service-title" style="color:#fff;">AI Smart Search</h3>
+          <p class="hp-service-desc" style="color:rgba(255,255,255,0.8);">Upload your medical report and get instant personalized recommendations.</p>
+          <span class="hp-service-link" style="color:#ffc107;">Try Now <i class="bi bi-arrow-right"></i></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 
+     TOP DOCTORS
+ -->
+<section class="hp-section" style="background:#f8faff;">
+  <div class="container">
+    <div class="hp-section-header">
+      <div class="hp-section-tag">Medical Experts</div>
+      <h2 class="hp-section-title">Our Top Doctors</h2>
+      <p class="hp-section-sub">Meet our team of verified medical professionals</p>
+    </div>
+    <div class="row g-4">
+      {% for doctor in top_doctors %}
+      <div class="col-sm-6 col-lg-3">
+        <div class="hp-doctor-card">
+          <div class="hp-doctor-img-wrap">
+            <img src="{% if doctor.profile_picture %}{{ doctor.profile_picture }}{% else %}https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=1565c0&color=fff&size=120{% endif %}"
+                 alt="{{ doctor.name }}" class="hp-doctor-img"
+                 onerror="this.src='https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=1565c0&color=fff&size=120'">
+            <div class="hp-doctor-badge">
+              <i class="bi bi-patch-check-fill"></i>
+            </div>
+          </div>
+          <div class="hp-doctor-body">
+            <h3 class="hp-doctor-name">{{ doctor.name }}</h3>
+            <p class="hp-doctor-spec">{{ doctor.specialization|default:"Specialist" }}</p>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div class="hp-doctor-rating">
+                <i class="bi bi-star-fill text-warning"></i>
+                <span>{{ doctor.rating|default:"N/A" }}</span>
+              </div>
+              <span class="hp-doctor-exp">{{ doctor.experience_years }} yrs exp</span>
+            </div>
+            {% if doctor.slug %}
+            <a href="/doctors/{{ doctor.slug }}/" class="hp-doctor-btn">View Profile</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="/doctors/" class="hp-btn-outline-dark">View All Doctors <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- 
+     TOP HOSPITALS
+ -->
+<section class="hp-section bg-white">
+  <div class="container">
+    <div class="hp-section-header">
+      <div class="hp-section-tag">Medical Facilities</div>
+      <h2 class="hp-section-title">Top Hospitals</h2>
+      <p class="hp-section-sub">World-class medical facilities with international accreditations</p>
+    </div>
+    <div class="row g-4">
+      {% for hospital in top_hospitals %}
+      <div class="col-sm-6 col-lg-3">
+        <div class="hp-hospital-card">
+          {% if hospital.is_takeopinion_choice %}
+          <div class="hp-hospital-choice-badge"><i class="bi bi-award-fill me-1"></i>TakeOpinion Choice</div>
+          {% endif %}
+          {% if hospital.profile_picture %}
+          <img src="{{ hospital.profile_picture }}" alt="{{ hospital.name }}" class="hp-hospital-img"
+               onerror="this.style.display='none'">
+          {% else %}
+          <div class="hp-hospital-img-placeholder"><i class="bi bi-building-fill"></i></div>
+          {% endif %}
+          <div class="hp-hospital-body">
+            <h3 class="hp-hospital-name">{{ hospital.name }}</h3>
+            <p class="hp-hospital-loc"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ hospital.city|default:"India" }}{% if hospital.country %}, {{ hospital.country }}{% endif %}</p>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div class="hp-doctor-rating">
+                <i class="bi bi-star-fill text-warning"></i>
+                <span>{{ hospital.rating|default:"N/A" }}</span>
+              </div>
+              <div class="d-flex gap-1">
+                {% if hospital.jci_accredited %}<span class="hp-accred-badge">JCI</span>{% endif %}
+                {% if hospital.nabh_accredited %}<span class="hp-accred-badge hp-accred-green">NABH</span>{% endif %}
+              </div>
+            </div>
+            {% if hospital.slug %}
+            <a href="/hospitals/{{ hospital.slug }}/" class="hp-doctor-btn">View Hospital</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="/hospitals/" class="hp-btn-outline-dark">View All Hospitals <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+</section>
+
+
+<!-- 
+     TREATMENTS
+ -->
+<section class="hp-section" style="background:#f8faff;">
+  <div class="container">
+    <div class="hp-section-header">
+      <div class="hp-section-tag">Treatments</div>
+      <h2 class="hp-section-title">Popular Treatments</h2>
+      <p class="hp-section-sub">Explore our wide range of specialized medical treatments</p>
+    </div>
+    <!-- Category Filter -->
+    <div class="hp-cat-filter mb-4">
+      <button class="hp-cat-btn active" onclick="filterTreatments('all', this)">All</button>
+      {% for cat in treatment_categories %}
+      <button class="hp-cat-btn" onclick="filterTreatments('{{ cat.slug }}', this)">{{ cat.name }}</button>
+      {% endfor %}
+    </div>
+    <div class="row g-3" id="treatments-grid">
+      {% for treatment in top_treatments %}
+      <div class="col-sm-6 col-lg-4 treatment-item" data-cat="{{ treatment.category.slug }}">
+        <a href="/treatments/{{ treatment.slug }}/" class="hp-treatment-card">
+          <div class="d-flex align-items-center gap-3">
+            <div class="hp-treatment-icon"><i class="bi bi-bandaid-fill"></i></div>
+            <div class="flex-grow-1 min-w-0">
+              <h3 class="hp-treatment-name">{{ treatment.name }}</h3>
+              <p class="hp-treatment-cat">{{ treatment.category.name }}</p>
+            </div>
+            <div class="text-end flex-shrink-0">
+              <div class="hp-treatment-price"><i class="bi bi-currency-rupee"></i>{{ treatment.starting_price|floatformat:"0" }}</div>
+              <div class="hp-treatment-price-label">onwards</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="/treatments/" class="hp-btn-outline-dark">View All Treatments <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- 
+     PATIENT REVIEWS
+ -->
+<section class="hp-section bg-white">
+  <div class="container">
+    <div class="hp-section-header">
+      <div class="hp-section-tag">Testimonials</div>
+      <h2 class="hp-section-title">Patient Stories</h2>
+      <p class="hp-section-sub">Hear from patients who chose TakeOpinion for their medical journey</p>
+    </div>
+    <div class="row g-4">
+      {% for feedback in recent_feedback %}
+      <div class="col-md-6 col-lg-4">
+        <div class="hp-review-card">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="hp-review-avatar">{{ feedback.patient.user.first_name|first|upper }}{{ feedback.patient.user.last_name|first|upper }}</div>
+            <div>
+              <div class="hp-review-name">{{ feedback.patient.user.first_name }} {{ feedback.patient.user.last_name|first }}.</div>
+              <div class="d-flex gap-1">
+                {% for i in "12345" %}
+                  {% if forloop.counter <= feedback.rating %}
+                    <i class="bi bi-star-fill text-warning" style="font-size:0.7rem;"></i>
+                  {% else %}
+                    <i class="bi bi-star text-muted" style="font-size:0.7rem;"></i>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <div class="ms-auto">
+              <span class="hp-review-badge">Patient Story</span>
+            </div>
+          </div>
+          {% if feedback.title %}
+          <h4 class="hp-review-title">{{ feedback.title }}</h4>
+          {% endif %}
+          <p class="hp-review-text">"{{ feedback.comment|truncatechars:120 }}"</p>
+          <div class="hp-review-meta">
+            {% if feedback.doctor %}<span><i class="bi bi-person-badge me-1"></i>{{ feedback.doctor.name }}</span>
+            {% elif feedback.hospital %}<span><i class="bi bi-building me-1"></i>{{ feedback.hospital.name }}</span>
+            {% elif feedback.treatment %}<span><i class="bi bi-bandaid me-1"></i>{{ feedback.treatment.name }}</span>
+            {% endif %}
+            <span class="ms-auto text-muted" style="font-size:0.72rem;">{{ feedback.created_at|timesince }} ago</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="{% url 'accounts:reviews_page' %}" class="hp-btn-outline-dark">View All Reviews <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- 
+     HOW IT WORKS
+ -->
+<section class="hp-section" style="background:#f8faff;">
+  <div class="container">
+    <div class="hp-section-header">
+      <div class="hp-section-tag">Process</div>
+      <h2 class="hp-section-title">How TakeOpinion Works</h2>
+      <p class="hp-section-sub">Simple steps to find the right medical treatment for you</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-sm-6 col-lg-3">
+        <div class="hp-step-card">
+          <div class="hp-step-num">1</div>
+          <div class="hp-step-icon"><i class="bi bi-search"></i></div>
+          <h3 class="hp-step-title">Search</h3>
+          <p class="hp-step-desc">Find treatments, doctors, and hospitals that match your needs</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="hp-step-card">
+          <div class="hp-step-num">2</div>
+          <div class="hp-step-icon" style="background:#e8f5e9;color:#2e7d32;"><i class="bi bi-chat-dots-fill"></i></div>
+          <h3 class="hp-step-title">Consult</h3>
+          <p class="hp-step-desc">Connect with medical experts for personalized advice</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="hp-step-card">
+          <div class="hp-step-num">3</div>
+          <div class="hp-step-icon" style="background:#fff3e0;color:#e65100;"><i class="bi bi-calendar-check-fill"></i></div>
+          <h3 class="hp-step-title">Book</h3>
+          <p class="hp-step-desc">Make an appointment with the best hospital for your treatment</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="hp-step-card">
+          <div class="hp-step-num">4</div>
+          <div class="hp-step-icon" style="background:#fce4ec;color:#c62828;"><i class="bi bi-heart-fill"></i></div>
+          <h3 class="hp-step-title">Recover</h3>
+          <p class="hp-step-desc">Receive world-class treatment and post-care support</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 
+     WHY CHOOSE US
+ -->
+<section class="hp-why-section">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5">
+        <div class="hp-section-tag mb-3">Why TakeOpinion</div>
+        <h2 class="hp-section-title text-white mb-3">Unmatched Medical Tourism Services</h2>
+        <p style="color:rgba(255,255,255,0.7);font-size:0.95rem;line-height:1.7;">We provide transparency, quality, and excellence in every step of your medical journey — from finding the right doctor to post-treatment recovery.</p>
+        <a href="/enquiries/" class="hp-btn-primary mt-4 d-inline-block">Talk to Our Experts</a>
+      </div>
+      <div class="col-lg-7">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="hp-why-card">
+              <div class="hp-why-icon"><i class="bi bi-patch-check-fill"></i></div>
+              <h3 class="hp-why-title">Verified Experts</h3>
+              <p class="hp-why-desc">All doctors and hospitals are thoroughly verified for quality and credentials</p>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="hp-why-card">
+              <div class="hp-why-icon" style="background:rgba(255,193,7,0.15);color:#ffc107;"><i class="bi bi-currency-rupee"></i></div>
+              <h3 class="hp-why-title">Best Price Guarantee</h3>
+              <p class="hp-why-desc">We ensure you get the best prices without compromising on quality of care</p>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="hp-why-card">
+              <div class="hp-why-icon" style="background:rgba(46,204,113,0.15);color:#2ecc71;"><i class="bi bi-headset"></i></div>
+              <h3 class="hp-why-title">24/7 Support</h3>
+              <p class="hp-why-desc">Round-the-clock assistance throughout your entire medical journey</p>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="hp-why-card">
+              <div class="hp-why-icon" style="background:rgba(52,152,219,0.15);color:#3498db;"><i class="bi bi-translate"></i></div>
+              <h3 class="hp-why-title">Language Support</h3>
+              <p class="hp-why-desc">Multilingual support to ensure clear communication with medical professionals</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 
+     CTA BANNER
+ -->
+<section class="hp-cta-section">
+  <div class="container text-center">
+    <h2 class="hp-cta-title">Ready to Start Your Medical Journey?</h2>
+    <p class="hp-cta-sub">Upload your medical report or search for a condition to get instant personalized recommendations</p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap mt-4">
+      <a href="/enquiries/results/" class="hp-btn-primary hp-btn-lg"><i class="bi bi-robot me-2"></i>Try AI Smart Search</a>
+      <a href="https://wa.me/918001234567" class="hp-btn-whatsapp hp-btn-lg"><i class="bi bi-whatsapp me-2"></i>WhatsApp Us</a>
+    </div>
+  </div>
+</section>
+
+</div><!-- /.home-page -->
+
+
+<style>
+/* 
+   HOME PAGE STYLES
+ */
+
+/* Hero */
+.hp-hero { background: linear-gradient(135deg, #0d1b2a 0%, #1a3c6e 60%, #1565c0 100%); padding: 5rem 0 4rem; position: relative; overflow: hidden; }
+.hp-hero-bg { position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+.min-vh-60 { min-height: 60vh; }
+.hp-badge { display: inline-flex; align-items: center; background: rgba(255,255,255,0.1); color: #ffc107; border: 1px solid rgba(255,193,7,0.3); border-radius: 50px; padding: 0.35rem 1rem; font-size: 0.8rem; font-weight: 600; }
+.hp-hero-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #ffffff; line-height: 1.2; margin-bottom: 1rem; }
+.hp-hero-accent { color: #ffc107; }
+.hp-hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.75); line-height: 1.7; max-width: 540px; }
+.hp-btn-primary { background: linear-gradient(135deg, #ffc107, #ff9800); color: #0d1b2a; font-weight: 700; padding: 0.75rem 1.75rem; border-radius: 50px; text-decoration: none; font-size: 0.9rem; transition: all 0.2s; box-shadow: 0 4px 15px rgba(255,193,7,0.3); display: inline-flex; align-items: center; }
+.hp-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,193,7,0.4); color: #0d1b2a; }
+.hp-btn-outline { background: transparent; color: #ffffff; border: 2px solid rgba(255,255,255,0.4); font-weight: 600; padding: 0.75rem 1.75rem; border-radius: 50px; text-decoration: none; font-size: 0.9rem; transition: all 0.2s; display: inline-flex; align-items: center; }
+.hp-btn-outline:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.7); }
+.hp-hero-stats { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.hp-hero-stat { text-align: center; }
+.hp-hero-stat-num { display: block; font-size: 1.5rem; font-weight: 800; color: #ffc107; line-height: 1; }
+.hp-hero-stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.05em; }
+.hp-hero-stat-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.15); }
+/* Hero cards */
+.hp-hero-card-wrap { display: flex; flex-direction: column; gap: 1rem; padding-left: 2rem; }
+.hp-hero-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s; }
+.hp-hero-card:hover { transform: translateX(4px); }
+.hp-hero-card-2 { margin-left: 1.5rem; }
+.hp-hero-card-3 { margin-left: 0.75rem; }
+.hp-hero-card-icon { width: 44px; height: 44px; background: rgba(21,101,192,0.3); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #64b5f6; font-size: 1.2rem; flex-shrink: 0; }
+.hp-icon-green { background: rgba(46,125,50,0.3) !important; color: #81c784 !important; }
+.hp-icon-orange { background: rgba(230,81,0,0.3) !important; color: #ffb74d !important; }
+.hp-hero-card-title { font-size: 0.9rem; font-weight: 700; color: #ffffff; margin: 0; }
+.hp-hero-card-sub { font-size: 0.75rem; color: rgba(255,255,255,0.55); margin: 0; }
+
+/* Sections */
+.hp-section { padding: 5rem 0; }
+.hp-section-header { text-align: center; margin-bottom: 3rem; }
+.hp-section-tag { display: inline-block; background: #e8f0fe; color: #1565c0; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.3rem 0.9rem; border-radius: 50px; margin-bottom: 0.75rem; }
+.hp-section-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: #0d1b2a; margin-bottom: 0.5rem; }
+.hp-section-sub { color: #718096; font-size: 0.95rem; max-width: 500px; margin: 0 auto; }
+
+/* Service cards */
+.hp-service-card { display: block; background: #fff; border: 1px solid #e8eaf6; border-radius: 16px; padding: 1.75rem; text-decoration: none; transition: all 0.2s; height: 100%; }
+.hp-service-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); border-color: #1565c0; }
+.hp-service-card-featured { background: linear-gradient(135deg, #1565c0, #0d47a1); border-color: transparent; }
+.hp-service-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 1rem; }
+.hp-service-title { font-size: 1rem; font-weight: 700; color: #0d1b2a; margin-bottom: 0.5rem; }
+.hp-service-desc { font-size: 0.85rem; color: #718096; line-height: 1.6; margin-bottom: 1rem; }
+.hp-service-link { font-size: 0.82rem; font-weight: 600; color: #1565c0; display: flex; align-items: center; gap: 0.3rem; }
+
+/* Doctor cards */
+.hp-doctor-card { background: #fff; border: 1px solid #e8eaf6; border-radius: 16px; overflow: hidden; transition: all 0.2s; height: 100%; }
+.hp-doctor-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+.hp-doctor-img-wrap { position: relative; background: linear-gradient(135deg, #e8f0fe, #f0f4ff); padding: 1.5rem; text-align: center; }
+.hp-doctor-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.hp-doctor-badge { position: absolute; top: 10px; right: 10px; background: #1565c0; color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+.hp-doctor-body { padding: 1rem 1.25rem 1.25rem; }
+.hp-doctor-name { font-size: 0.95rem; font-weight: 700; color: #0d1b2a; margin-bottom: 0.2rem; }
+.hp-doctor-spec { font-size: 0.8rem; color: #1565c0; margin-bottom: 0.75rem; }
+.hp-doctor-rating { display: flex; align-items: center; gap: 0.3rem; font-size: 0.82rem; font-weight: 600; color: #0d1b2a; }
+.hp-doctor-exp { font-size: 0.75rem; color: #718096; background: #f3f4f6; padding: 0.2rem 0.5rem; border-radius: 50px; }
+.hp-doctor-btn { display: block; text-align: center; background: #e8f0fe; color: #1565c0; font-size: 0.82rem; font-weight: 600; padding: 0.5rem; border-radius: 8px; text-decoration: none; transition: all 0.2s; }
+.hp-doctor-btn:hover { background: #1565c0; color: white; }
+.hp-btn-outline-dark { background: transparent; color: #0d1b2a; border: 2px solid #0d1b2a; font-weight: 600; padding: 0.65rem 1.5rem; border-radius: 50px; text-decoration: none; font-size: 0.875rem; transition: all 0.2s; display: inline-flex; align-items: center; }
+.hp-btn-outline-dark:hover { background: #0d1b2a; color: white; }
+
+/* Hospital cards */
+.hp-hospital-card { background: #fff; border: 1px solid #e8eaf6; border-radius: 16px; overflow: hidden; transition: all 0.2s; height: 100%; position: relative; }
+.hp-hospital-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+.hp-hospital-choice-badge { position: absolute; top: 10px; left: 10px; z-index: 2; background: #ffc107; color: #0d1b2a; font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 50px; }
+.hp-hospital-img { width: 100%; height: 120px; object-fit: cover; }
+.hp-hospital-img-placeholder { height: 120px; background: linear-gradient(135deg, #e8f0fe, #f0f4ff); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #1565c0; }
+.hp-hospital-body { padding: 1rem 1.25rem 1.25rem; }
+.hp-hospital-name { font-size: 0.9rem; font-weight: 700; color: #0d1b2a; margin-bottom: 0.3rem; }
+.hp-hospital-loc { font-size: 0.78rem; color: #718096; margin-bottom: 0.75rem; }
+.hp-accred-badge { font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: 4px; background: #e8f0fe; color: #1565c0; }
+.hp-accred-green { background: #e8f5e9 !important; color: #2e7d32 !important; }
+
+/* Treatment cards */
+.hp-cat-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.hp-cat-btn { background: #f3f4f6; border: 1px solid #e5e7eb; color: #374151; font-size: 0.8rem; font-weight: 500; padding: 0.4rem 0.9rem; border-radius: 50px; cursor: pointer; transition: all 0.2s; }
+.hp-cat-btn.active, .hp-cat-btn:hover { background: #1565c0; color: white; border-color: #1565c0; }
+.hp-treatment-card { display: block; background: #fff; border: 1px solid #e8eaf6; border-radius: 12px; padding: 1rem 1.25rem; text-decoration: none; transition: all 0.2s; }
+.hp-treatment-card:hover { border-color: #1565c0; box-shadow: 0 4px 16px rgba(21,101,192,0.1); transform: translateY(-2px); }
+.hp-treatment-icon { width: 40px; height: 40px; background: #e8f0fe; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #1565c0; font-size: 1rem; flex-shrink: 0; }
+.hp-treatment-name { font-size: 0.875rem; font-weight: 700; color: #0d1b2a; margin: 0; }
+.hp-treatment-cat { font-size: 0.72rem; color: #718096; margin: 0; }
+.hp-treatment-price { font-size: 0.9rem; font-weight: 800; color: #2e7d32; }
+.hp-treatment-price-label { font-size: 0.65rem; color: #718096; }
+
+/* Review cards */
+.hp-review-card { background: #fff; border: 1px solid #e8eaf6; border-radius: 16px; padding: 1.5rem; height: 100%; transition: all 0.2s; }
+.hp-review-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.07); transform: translateY(-2px); }
+.hp-review-avatar { width: 44px; height: 44px; background: linear-gradient(135deg, #1565c0, #0d47a1); border-radius: 50%; color: white; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.hp-review-name { font-size: 0.875rem; font-weight: 700; color: #0d1b2a; margin: 0; }
+.hp-review-badge { background: #e8f0fe; color: #1565c0; font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 50px; }
+.hp-review-title { font-size: 0.875rem; font-weight: 700; color: #0d1b2a; margin-bottom: 0.5rem; }
+.hp-review-text { font-size: 0.82rem; color: #718096; line-height: 1.6; font-style: italic; margin-bottom: 1rem; }
+.hp-review-meta { display: flex; align-items: center; font-size: 0.75rem; color: #718096; border-top: 1px solid #f3f4f6; padding-top: 0.75rem; }
+
+/* Steps */
+.hp-step-card { background: #fff; border: 1px solid #e8eaf6; border-radius: 16px; padding: 1.75rem; text-align: center; position: relative; transition: all 0.2s; height: 100%; }
+.hp-step-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+.hp-step-num { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #1565c0; color: white; width: 28px; height: 28px; border-radius: 50%; font-size: 0.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.hp-step-icon { width: 56px; height: 56px; background: #e8f0fe; color: #1565c0; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin: 0 auto 1rem; }
+.hp-step-title { font-size: 1rem; font-weight: 700; color: #0d1b2a; margin-bottom: 0.5rem; }
+.hp-step-desc { font-size: 0.82rem; color: #718096; line-height: 1.6; margin: 0; }
+
+/* Why section */
+.hp-why-section { background: linear-gradient(135deg, #0d1b2a 0%, #1a3c6e 100%); padding: 5rem 0; }
+.hp-why-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 1.5rem; transition: all 0.2s; }
+.hp-why-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+.hp-why-icon { width: 44px; height: 44px; background: rgba(21,101,192,0.2); color: #64b5f6; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 0.75rem; }
+.hp-why-title { font-size: 0.9rem; font-weight: 700; color: #ffffff; margin-bottom: 0.4rem; }
+.hp-why-desc { font-size: 0.8rem; color: rgba(255,255,255,0.55); line-height: 1.6; margin: 0; }
+
+/* CTA */
+.hp-cta-section { background: linear-gradient(135deg, #1565c0, #0d47a1); padding: 4rem 0; }
+.hp-cta-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: #ffffff; margin-bottom: 0.75rem; }
+.hp-cta-sub { color: rgba(255,255,255,0.75); font-size: 0.95rem; max-width: 500px; margin: 0 auto; }
+.hp-btn-lg { padding: 0.85rem 2rem !important; font-size: 0.95rem !important; }
+.hp-btn-whatsapp { background: #25d366; color: white; font-weight: 700; padding: 0.75rem 1.75rem; border-radius: 50px; text-decoration: none; font-size: 0.9rem; transition: all 0.2s; display: inline-flex; align-items: center; }
+.hp-btn-whatsapp:hover { background: #128c7e; color: white; transform: translateY(-2px); }
+</style>
+
+<script>
+function filterTreatments(cat, btn) {
+  document.querySelectorAll('.hp-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.treatment-item').forEach(item => {
+    if (cat === 'all' || item.dataset.cat === cat) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+</script>
+
+{% endblock %}

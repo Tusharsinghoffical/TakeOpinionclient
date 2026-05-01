@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="section-title mb-4 text-center">
+        <i class="bi bi-hdd-stack"></i>
+        <h1 class="h2 mb-0">Static Files Diagnostic</h1>
+      </div>
+
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <h4 class="mb-3 text-primary">
+            <i class="bi bi-check2-circle me-2"></i>Static Files Status
+          </h4>
+          <p class="text-muted mb-4">
+            This page verifies that Django's static file serving is configured correctly.
+            If the page loads with styles and icons, static files are working as expected.
+          </p>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="card border-success h-100">
+                <div class="card-body text-center">
+                  <i class="bi bi-filetype-css text-success fs-1 mb-2"></i>
+                  <h5 class="card-title">CSS</h5>
+                  <p class="card-text text-muted small">
+                    Bootstrap and custom stylesheets are loaded if this page is styled.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-info h-100">
+                <div class="card-body text-center">
+                  <i class="bi bi-filetype-js text-info fs-1 mb-2"></i>
+                  <h5 class="card-title">JavaScript</h5>
+                  <p class="card-text text-muted small">
+                    Bootstrap JS and other scripts are served from the static directory.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-warning h-100">
+                <div class="card-body text-center">
+                  <i class="bi bi-image text-warning fs-1 mb-2"></i>
+                  <h5 class="card-title">Images &amp; Icons</h5>
+                  <p class="card-text text-muted small">
+                    Bootstrap Icons are rendering correctly if you see icons on this page.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-success d-flex align-items-center" role="alert">
+            <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+            <div>
+              <strong>Static files are working.</strong>
+              The presence of styles and icons on this page confirms that static file
+              serving is operational.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <h4 class="mb-3 text-primary">
+            <i class="bi bi-info-circle me-2"></i>Configuration Details
+          </h4>
+          <table class="table table-bordered table-sm mb-0">
+            <tbody>
+              <tr>
+                <th scope="row" class="w-40">STATIC_URL</th>
+                <td><code>{% get_static_prefix %}</code></td>
+              </tr>
+              <tr>
+                <th scope="row">Sample static path</th>
+                <td><code>{% static 'css/style.css' %}</code></td>
+              </tr>
+              <tr>
+                <th scope="row">Serving method</th>
+                <td>WhiteNoise / Django <code>staticfiles</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-primary">
+          <i class="bi bi-house me-1"></i>Back to Home
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

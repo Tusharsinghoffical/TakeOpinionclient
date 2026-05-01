@@ -1,0 +1,384 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .payment-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+  }
+
+  .payment-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: none;
+    margin-bottom: 2rem;
+  }
+
+  .payment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .payment-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+    padding: 1.5rem;
+  }
+
+  .booking-summary {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .summary-item:last-child {
+    border-bottom: none;
+  }
+
+  .summary-total {
+    font-weight: 700;
+    font-size: 1.2rem;
+    background: #e9ecef;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .payment-methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .payment-method {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    padding: 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .payment-method:hover {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+  }
+
+  .payment-method.active {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .payment-form .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .payment-form .form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+  }
+
+  .payment-form .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .pay-button {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border: none;
+    width: 100%;
+  }
+
+  .pay-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+  }
+
+  .security-info {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+  }
+
+  .security-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .security-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .security-icon {
+    margin-right: 0.75rem;
+    color: #28a745;
+  }
+
+  @media (max-width: 768px) {
+    .payment-page {
+      padding: 1rem;
+    }
+    
+    .payment-card {
+      margin-bottom: 1rem;
+    }
+    
+    .payment-form .form-control {
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .payment-method {
+      min-width: 100px;
+      padding: 0.75rem;
+    }
+  }
+</style>
+
+<div class="container py-5 payment-page">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-4">
+        <i class="bi bi-shield-lock text-primary" style="font-size: 3rem;"></i>
+        <h1 class="h2 mb-2">Secure Payment</h1>
+        <p class="text-muted">Complete your payment using our secure payment gateway</p>
+      </div>
+      
+      <div class="card border-0 shadow-sm payment-card">
+        <div class="card-header bg-primary text-white text-center">
+          <h4 class="mb-0">Medical Travel Booking Payment</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-7">
+              <h5 class="mb-3">Payment Method</h5>
+              
+              <div class="payment-methods">
+                <div class="payment-method active">
+                  <i class="bi bi-credit-card fs-3 mb-2"></i>
+                  <div class="small">Credit Card</div>
+                </div>
+                <div class="payment-method">
+                  <i class="bi bi-wallet fs-3 mb-2"></i>
+                  <div class="small">Debit Card</div>
+                </div>
+                <div class="payment-method">
+                  <i class="bi bi-bank fs-3 mb-2"></i>
+                  <div class="small">Net Banking</div>
+                </div>
+                <div class="payment-method">
+                  <i class="bi bi-phone fs-3 mb-2"></i>
+                  <div class="small">UPI</div>
+                </div>
+              </div>
+              
+              <form method="post" action="{% url 'payments:process_static_payment' booking.id %}" id="payment-form" class="payment-form">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="cardNumber" class="form-label">Card Number</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
+                    <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="expiryDate" class="form-label">Expiry Date</label>
+                    <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="cvv" class="form-label">CVV</label>
+                    <input type="password" class="form-control" id="cvv" placeholder="123" required>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="cardName" class="form-label">Cardholder Name</label>
+                  <input type="text" class="form-control" id="cardName" placeholder="Name on card" required>
+                </div>
+                
+                <div class="form-check mb-4">
+                  <input class="form-check-input" type="checkbox" id="saveCard">
+                  <label class="form-check-label" for="saveCard">
+                    Save card for future payments
+                  </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary pay-button" id="pay-button">
+                  <span id="button-text">Pay ₹{{ amount|floatformat:1 }}</span>
+                  <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                </button>
+              </form>
+            </div>
+            
+            <div class="col-lg-5">
+              <h5 class="mb-3">Booking Summary</h5>
+              <div class="booking-summary mb-4">
+                <div class="summary-item">
+                  <span>Treatment</span>
+                  <span class="fw-bold">{{ booking.treatment.name }}</span>
+                </div>
+                {% if booking.preferred_doctor %}
+                <div class="summary-item">
+                  <span>Doctor</span>
+                  <span>Dr. {{ booking.preferred_doctor.name }}</span>
+                </div>
+                {% endif %}
+                {% if booking.preferred_hospital %}
+                <div class="summary-item">
+                  <span>Hospital</span>
+                  <span>{{ booking.preferred_hospital.name }}</span>
+                </div>
+                {% endif %}
+                <div class="summary-item">
+                  <span>Booking Date</span>
+                  <span>{{ booking.preferred_date|default:"To be confirmed" }}</span>
+                </div>
+                <div class="summary-item">
+                  <span>Base Amount</span>
+                  <span>₹{{ base_amount|floatformat:1 }}</span>
+                </div>
+                <div class="summary-item">
+                  <span>Service Charge</span>
+                  <span>₹{{ service_charge|floatformat:1 }}</span>
+                </div>
+                <div class="summary-item">
+                  <span>Tax (18%)</span>
+                  <span>₹{{ tax|floatformat:1 }}</span>
+                </div>
+                <div class="summary-total">
+                  <span>Total Amount</span>
+                  <span class="fw-bold">₹{{ amount|floatformat:1 }}</span>
+                </div>
+              </div>
+              
+              <div class="security-info">
+                <h6 class="mb-3">Payment Security</h6>
+                <div class="security-item">
+                  <i class="bi bi-shield-lock security-icon"></i>
+                  <span>256-bit SSL encryption</span>
+                </div>
+                <div class="security-item">
+                  <i class="bi bi-shield-check security-icon"></i>
+                  <span>PCI DSS compliant</span>
+                </div>
+                <div class="security-item">
+                  <i class="bi bi-shield-fill-check security-icon"></i>
+                  <span>3D Secure authentication</span>
+                </div>
+                <div class="mt-3 text-center">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/800px-Visa_Inc._logo.svg.png" alt="Visa" class="me-2" style="height: 30px;">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/800px-Mastercard-logo.svg.png" alt="Mastercard" style="height: 30px;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alert alert-info d-flex align-items-center" role="alert">
+        <i class="bi bi-info-circle-fill me-2"></i>
+        <div>
+          <strong>Demo Mode:</strong> This is a demonstration payment page. No actual charges will be made to your card.
+        </div>
+      </div>
+      
+      <div class="d-flex justify-content-between">
+        <a href="{% url 'bookings:booking_page' %}" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left me-2"></i>Back to Booking
+        </a>
+        <a href="{% url 'home' %}" class="btn btn-outline-primary">
+          <i class="bi bi-house me-2"></i>Home
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Payment method selection
+  document.querySelectorAll('.payment-method').forEach(method => {
+    method.addEventListener('click', function() {
+      // Remove active class from all methods
+      document.querySelectorAll('.payment-method').forEach(m => {
+        m.classList.remove('active');
+      });
+      
+      // Add active class to clicked method
+      this.classList.add('active');
+    });
+  });
+  
+  // Form submission handler
+  document.getElementById('payment-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Show loading spinner
+    const buttonText = document.getElementById('button-text');
+    const spinner = document.getElementById('spinner');
+    const payButton = document.getElementById('pay-button');
+    
+    buttonText.textContent = 'Processing...';
+    spinner.classList.remove('d-none');
+    payButton.disabled = true;
+    
+    // Simulate payment processing delay
+    setTimeout(function() {
+      // Submit the form after delay to simulate processing
+      document.getElementById('payment-form').submit();
+    }, 2000);
+  });
+  
+  // Format card number input
+  document.getElementById('cardNumber').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    let formattedValue = '';
+    
+    for (let i = 0; i < value.length; i++) {
+      if (i > 0 && i % 4 === 0) {
+        formattedValue += ' ';
+      }
+      formattedValue += value[i];
+    }
+    
+    e.target.value = formattedValue;
+  });
+  
+  // Format expiry date input
+  document.getElementById('expiryDate').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    
+    if (value.length > 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    }
+    
+    e.target.value = value;
+  });
+</script>
+{% endblock %}

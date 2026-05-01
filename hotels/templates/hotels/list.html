@@ -1,0 +1,594 @@
+{% extends 'base.html' %}
+
+{% block title %}Hotels - TakeOpinion{% endblock %}
+
+{% block content %}
+<style>
+/* Enhanced Hotels Page Styles - Matching Doctor Page Design */
+:root {
+  /* Enhanced vibrant color palette from doctor page */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-strong: rgba(0, 0, 0, 0.15);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+  --transition-speed: 0.3s;
+}
+
+/* Global hotels page styles */
+.hotels-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background:  #0d6efd;
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--light-text);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--light-text);
+  line-height: 1.5;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-large {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #c0392b;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary-large {
+  background-color: transparent;
+  color: var(--light-text);
+  border: 2px solid var(--light-text);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-secondary-large:hover {
+  background-color: var(--light-text);
+  color: var(--accent);
+  transform: translateY(-3px);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Filter Section */
+.filter-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.filter-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 2rem;
+}
+
+.filter-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.filter-form .form-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.filter-form .form-control, .filter-form .form-select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-speed) ease;
+}
+
+.filter-form .form-control:focus, .filter-form .form-select:focus {
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+  border-color: var(--primary-medium);
+}
+
+.filter-form .btn {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  background: var(--primary-medium);
+  color: white;
+  transition: all var(--transition-speed) ease;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.filter-form .btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Hotels Grid Section */
+.hotels-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.hotels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.hotel-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.hotel-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.hotel-image-container {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.hotel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-speed) ease;
+}
+
+.hotel-card:hover .hotel-image {
+  transform: scale(1.05);
+}
+
+.hotel-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hotel-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.hotel-address {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.hotel-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.hotel-rating {
+  display: flex;
+  align-items: center;
+}
+
+.rating-stars {
+  color: var(--warning);
+  margin-right: 0.5rem;
+}
+
+.rating-value {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  font-weight: 600;
+}
+
+.hotel-price {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  color: var(--success);
+  font-weight: 700;
+}
+
+.hotel-footer {
+  margin-top: auto;
+  text-align: center;
+}
+
+.btn-hotel-details {
+  width: 100%;
+  background: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-hotel-details:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* No Hotels Section */
+.no-hotels-card {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.no-hotels-icon {
+  font-size: 4rem;
+  color: #bdc3c7;
+  margin-bottom: 1.5rem;
+}
+
+.no-hotels-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.no-hotels-text {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 2.25rem;
+  }
+  
+  .services-grid,
+  .hotels-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .services-grid,
+  .hotels-grid {
+    gap: 1.25rem;
+  }
+  
+  .filter-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .btn-primary-large,
+  .btn-secondary-large {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary-large,
+  .btn-secondary-large {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .hotels-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .filter-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .row.g-3 {
+    gap: 1rem;
+  }
+  
+  .col-md-3, .col-md-2, .col-md-1 {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 2rem 0;
+  }
+  
+  .hero-title {
+    font-size: 1.7rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .section-header {
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  
+  .filter-card {
+    padding: 1rem;
+  }
+  
+  .filter-form .form-control, .filter-form .form-select {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .filter-form .btn {
+    padding: 0.6rem 1rem;
+  }
+  
+  .hotel-image-container {
+    height: 180px;
+  }
+  
+  .hotel-name {
+    font-size: 1.2rem;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+}
+</style>
+
+<div class="hotels-page">
+  <!-- Hero Section -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="container hero-content">
+      <h1 id="hero-heading" class="hero-title">Find Accommodation Near Your Treatment</h1>
+      <p class="hero-subtitle">Discover comfortable hotels and accommodations near your preferred hospitals and treatment centers. We help you find the perfect place to stay during your medical journey.</p>
+      <div class="hero-buttons">
+        <a href="/hospitals/" class="btn-primary-large">
+          <i class="bi bi-building me-2"></i> Explore Hospitals
+        </a>
+        <a href="/treatments/" class="btn-secondary-large">
+          <i class="bi bi-search me-2"></i> Find Treatments
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter Section -->
+  <section class="filter-section" aria-labelledby="filter-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="filter-heading" class="section-title">Filter Hotels</h2>
+        <p class="section-subtitle">Find the perfect accommodation based on your specific needs</p>
+      </div>
+      <div class="filter-card">
+        <form method="get" class="filter-form">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">City</label>
+              <input type="text" class="form-control" id="city" name="city" value="{{ city_filter }}" placeholder="Enter city name">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Min Price (₹)</label>
+              <input type="number" class="form-control" id="min_price" name="min_price" value="{{ min_price_filter }}" placeholder="Min price">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Max Price (₹)</label>
+              <input type="number" class="form-control" id="max_price" name="max_price" value="{{ max_price_filter }}" placeholder="Max price">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Min Rating</label>
+              <select class="form-select" id="rating" name="rating">
+                <option value="">Any</option>
+                <option value="4" {% if rating_filter == '4' %}selected{% endif %}>4+ stars</option>
+                <option value="3" {% if rating_filter == '3' %}selected{% endif %}>3+ stars</option>
+                <option value="2" {% if rating_filter == '2' %}selected{% endif %}>2+ stars</option>
+              </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <button type="submit" class="btn w-100">
+                <i class="bi bi-search me-1"></i> Search Hotels
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hotels Grid Section -->
+  <section class="hotels-section" aria-labelledby="hotels-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="hotels-heading" class="section-title">Available Accommodations</h2>
+        <p class="section-subtitle">Comfortable hotels near your treatment centers</p>
+      </div>
+      <div class="hotels-grid">
+        {% for hotel in hotels %}
+        <div class="hotel-card">
+          <div class="hotel-image-container">
+            {% if hotel.images.first and hotel.images.first.get_image_url %}
+            <img src="{{ hotel.images.first.get_image_url }}" class="hotel-image" alt="{{ hotel.name }}">
+            {% else %}
+            <div class="hotel-image bg-light d-flex align-items-center justify-content-center h-100">
+              <span class="text-muted">No Image</span>
+            </div>
+            {% endif %}
+          </div>
+          <div class="hotel-body">
+            <h3 class="hotel-name">{{ hotel.name }}</h3>
+            <div class="hotel-address">{{ hotel.address }}, {{ hotel.city }}</div>
+            <div class="hotel-meta">
+              <div class="hotel-rating">
+                <div class="rating-stars">
+                  ★ {{ hotel.rating }}
+                </div>
+              </div>
+              <div class="hotel-price">₹{{ hotel.price_per_night }}/night</div>
+            </div>
+            <div class="hotel-footer">
+              <a href="{% url 'hotels:detail' hotel.slug %}" class="btn-hotel-details">
+                <i class="bi bi-calendar-check me-1"></i> Book Now
+              </a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+          <div class="no-hotels-card">
+            <div class="no-hotels-icon">
+              <i class="bi bi-building"></i>
+            </div>
+            <h3 class="no-hotels-title">No Hotels Found</h3>
+            <p class="no-hotels-text">We couldn't find any hotels matching your criteria. Try adjusting your filters or check back later.</p>
+            <a href="/hotels/" class="btn btn-primary">
+              <i class="bi bi-arrow-repeat me-2"></i> Reset Filters
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

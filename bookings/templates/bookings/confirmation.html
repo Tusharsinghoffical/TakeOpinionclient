@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-5">
+        <div class="mb-4">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        </div>
+        <h1 class="h2 mb-3">Booking Request Submitted Successfully!</h1>
+        <p class="lead text-muted">Thank you for choosing TakeOpinion for your medical travel needs.</p>
+      </div>
+
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <h5 class="card-title mb-3">Booking Details</h5>
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="text-muted mb-1">Booking ID:</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="mb-1"><strong>#{{ booking.id }}</strong></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="text-muted mb-1">Treatment:</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="mb-1"><strong>{{ booking.treatment.name }}</strong></p>
+                </div>
+              </div>
+              {% if booking.preferred_doctor %}
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="text-muted mb-1">Doctor:</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="mb-1"><strong>Dr. {{ booking.preferred_doctor.name }}</strong></p>
+                </div>
+              </div>
+              {% endif %}
+              {% if booking.preferred_hospital %}
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="text-muted mb-1">Hospital:</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="mb-1"><strong>{{ booking.preferred_hospital.name }}</strong></p>
+                </div>
+              </div>
+              {% endif %}
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="text-muted mb-1">Amount:</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="mb-1"><strong>${{ booking.amount }}</strong></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="text-muted mb-1">Status:</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="mb-1"><strong class="text-capitalize">{{ booking.status }}</strong></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="text-muted mb-1">Submitted:</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="mb-1"><strong>{{ booking.created_at|date:"M d, Y" }}</strong></p>
+                </div>
+              </div>
+              <!-- Payment confirmation message -->
+              <div class="row mt-3">
+                <div class="col-12">
+                  <div class="alert alert-success d-flex align-items-center" role="alert">
+                    <i class="bi bi-credit-card-fill me-2"></i>
+                    <div>
+                      <strong>Payment Confirmed!</strong> Your payment of ${{ booking.amount }} has been successfully processed.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 text-center">
+              <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 100px; height: 100px;">
+                <i class="bi bi-calendar-check text-primary" style="font-size: 2.5rem;"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if accommodations %}
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <div class="section-title mb-4">
+            <i class="bi bi-building"></i>
+            <h2 class="h3 mb-0">Recommended Accommodations</h2>
+          </div>
+          
+          <p class="mb-4">We've partnered with hotels near your selected hospital for your convenience. All accommodations include complimentary airport transfers and 24/7 support.</p>
+          
+          <div class="row g-4">
+            {% for accommodation in accommodations %}
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="position-relative">
+                  <img src="https://picsum.photos/seed/{{ accommodation.id }}/800/480" class="card-img-top object-fit-cover" alt="{{ accommodation.name }}" style="height: 180px;">
+                  <div class="position-absolute top-0 end-0 m-3">
+                    <span class="badge bg-warning text-dark border-0">
+                      <i class="bi bi-star-fill me-1"></i>4.{{ accommodation.id|slice:":1" }}
+                    </span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title mb-2">{{ accommodation.name }}</h5>
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="small">
+                      <i class="bi bi-geo-alt me-1"></i>Near {{ accommodation.hospital.name }}
+                    </div>
+                    <div class="small">
+                      <i class="bi bi-wifi me-1"></i>Free WiFi
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <span class="h5 text-primary mb-0">${{ accommodation.price_per_night }}</span>
+                      <span class="small">/night</span>
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm">
+                      <i class="bi bi-bookmark-check me-1"></i>Select
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-3">What Happens Next?</h5>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                    <span class="text-primary fw-bold">1</span>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Confirmation</h6>
+                  <p class="mb-0 text-muted">Our team will review your request and contact you within 24 hours to confirm details.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                    <span class="text-primary fw-bold">2</span>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Planning</h6>
+                  <p class="mb-0 text-muted">We'll coordinate with the hospital and doctor to finalize your treatment schedule.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                    <span class="text-primary fw-bold">3</span>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Preparation</h6>
+                  <p class="mb-0 text-muted">Receive pre-treatment guidelines and travel arrangements information.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex">
+                <div class="flex-shrink-0 me-3">
+                  <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                    <span class="text-primary fw-bold">4</span>
+                  </div>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">Treatment</h6>
+                  <p class="mb-0 text-muted">Arrive for your treatment and receive world-class medical care.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-primary btn-lg me-2">
+          <i class="bi bi-house me-2"></i>Back to Home
+        </a>
+        <a href="{% url 'treatment_detail' booking.treatment.slug %}" class="btn btn-outline-primary btn-lg">
+          <i class="bi bi-info-circle me-2"></i>View Treatment Details
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

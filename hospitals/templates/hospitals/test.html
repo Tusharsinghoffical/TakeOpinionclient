@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <h1>Test Hospital Media Display</h1>
+  
+  <h2>Hospital: {{ hospital.name }}</h2>
+  
+  <h3>Media Items:</h3>
+  <ul>
+    {% for media in hospital.media_items.all %}
+    <li>
+      Image URL: {{ media.image_url }}<br>
+      {% if media.image_url %}
+      <img src="{{ media.image_url }}" alt="Hospital Image" style="width: 300px; height: auto;">
+      {% else %}
+      <p>No image URL</p>
+      {% endif %}
+    </li>
+    {% empty %}
+    <li>No media items found</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

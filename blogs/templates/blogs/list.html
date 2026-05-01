@@ -1,0 +1,786 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+/* Enhanced Blogs Page Styles - Matching Doctor Page Design */
+:root {
+  /* Enhanced vibrant color palette from doctor page */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-strong: rgba(0, 0, 0, 0.15);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+  --transition-speed: 0.3s;
+}
+
+/* Global blogs page styles */
+.blogs-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background:  #0d6efd;
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--light-text);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--light-text);
+  line-height: 1.5;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-large {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary-large:hover {
+  background-color: #c0392b;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary-large {
+  background-color: transparent;
+  color: var(--light-text);
+  border: 2px solid var(--light-text);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-secondary-large:hover {
+  background-color: var(--light-text);
+  color: var(--accent);
+  transform: translateY(-3px);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Filter Section */
+.filter-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.filter-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 2rem;
+}
+
+.filter-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.filter-form .form-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.filter-form .form-control, .filter-form .form-select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-speed) ease;
+}
+
+.filter-form .form-control:focus, .filter-form .form-select:focus {
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+  border-color: var(--primary-medium);
+}
+
+.filter-form .btn {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  background: var(--primary-medium);
+  color: white;
+  transition: all var(--transition-speed) ease;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.filter-form .btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Blogs Grid Section */
+.blogs-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.blogs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.blog-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.blog-image-container {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.blog-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-speed) ease;
+}
+
+.blog-card:hover .blog-image {
+  transform: scale(1.05);
+}
+
+.blog-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--success);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.blog-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.blog-excerpt {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.blog-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.blog-date {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.blog-read-time {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.blog-read-time i {
+  margin-right: 0.25rem;
+}
+
+.blog-footer {
+  margin-top: auto;
+  text-align: center;
+}
+
+.btn-blog-read {
+  width: 100%;
+  background: var(--primary-medium);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-blog-read:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* No Blogs Section */
+.no-blogs-card {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.no-blogs-icon {
+  font-size: 4rem;
+  color: #bdc3c7;
+  margin-bottom: 1.5rem;
+}
+
+.no-blogs-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.no-blogs-text {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* WhatsApp Section */
+.whatsapp-section {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.whatsapp-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: var(--light-text);
+}
+
+.whatsapp-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+  color: var(--light-text);
+}
+
+.whatsapp-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+  background-color: #25D366;
+  color: white !important;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background-color: #075E54;
+  color: white !important;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure WhatsApp button text is always white */
+.btn-whatsapp i {
+  color: white !important;
+}
+
+/* Additional specificity for WhatsApp button text */
+.whatsapp-buttons .btn-whatsapp {
+  color: white !important;
+}
+
+.btn-consultation {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-consultation:hover {
+  background-color: #25D369;
+  color: white;
+  transform: translateY(-3px);
+}
+
+/* Why Choose Section */
+.why-choose-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.why-choose-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--border);
+}
+
+.why-choose-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.why-choose-icon {
+  font-size: 3rem;
+  color: var(--primary-medium);
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-medium) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.why-choose-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+  line-height: 1.3;
+}
+
+.why-choose-description {
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 2.25rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2.25rem;
+  }
+  
+  .services-grid,
+  .why-choose-grid,
+  .blogs-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2rem;
+  }
+  
+  .services-grid,
+  .why-choose-grid,
+  .blogs-grid {
+    gap: 1.25rem;
+  }
+  
+  .filter-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .btn-primary-large,
+  .btn-secondary-large {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons,
+  .whatsapp-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-primary-large,
+  .btn-secondary-large,
+  .btn-whatsapp,
+  .btn-consultation {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .blogs-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .filter-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .row.g-3 {
+    gap: 1rem;
+  }
+  
+  .col-md-3, .col-md-2, .col-md-1 {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 2rem 0;
+  }
+  
+  .hero-title {
+    font-size: 1.7rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .section-header {
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  
+  .filter-card {
+    padding: 1rem;
+  }
+  
+  .filter-form .form-control, .filter-form .form-select {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .filter-form .btn {
+    padding: 0.6rem 1rem;
+  }
+  
+  .blog-image-container {
+    height: 180px;
+  }
+  
+  .blog-title {
+    font-size: 1.2rem;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .whatsapp-title {
+    font-size: 1.75rem;
+  }
+}
+</style>
+
+<div class="blogs-page">
+  <!-- Hero Section -->
+  <section class="hero-section" aria-labelledby="hero-heading">
+    <div class="container hero-content">
+      <h1 id="hero-heading" class="hero-title">Medical Travel Insights</h1>
+      <p class="hero-subtitle">Stay informed with our latest articles on medical treatments, travel tips, and healthcare insights from around the world.</p>
+      <div class="hero-buttons">
+        <a href="/treatments/" class="btn-primary-large">
+          <i class="bi bi-activity me-2"></i> Explore Treatments
+        </a>
+        <a href="/doctors/" class="btn-secondary-large">
+          Find Doctors
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blogs Grid Section -->
+  <section class="blogs-section" aria-labelledby="blogs-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="blogs-heading" class="section-title">Latest Blog Posts</h2>
+        <p class="section-subtitle">Discover our latest insights and medical travel updates</p>
+      </div>
+      <div class="blogs-grid">
+        {% for p in posts %}
+        <a href="{% url 'blog_detail' p.slug %}" class="blog-card">
+          <div class="blog-image-container">
+            <img src="https://picsum.photos/seed/b{{ forloop.counter0 }}{{ p.id }}/800/480" class="blog-image" alt="{{ p.title }}">
+            {% if p.is_medical_visa %}
+            <span class="blog-badge">Medical Visa</span>
+            {% endif %}
+          </div>
+          <div class="blog-body">
+            <h3 class="blog-title">{{ p.title }}</h3>
+            <p class="blog-excerpt">
+              {{ p.content|truncatewords:20 }}
+            </p>
+            <div class="blog-meta">
+              <div class="blog-date">{{ p.published_at|date:"M d, Y" }}</div>
+              <div class="blog-read-time">
+                <i class="bi bi-clock"></i>5 min read
+              </div>
+            </div>
+            <div class="blog-footer">
+              <button class="btn-blog-read">
+                <i class="bi bi-book me-1"></i> Read Article
+              </button>
+            </div>
+          </div>
+        </a>
+        {% empty %}
+        <div class="col-12">
+          <div class="no-blogs-card">
+            <div class="no-blogs-icon">
+              <i class="bi bi-journal-text"></i>
+            </div>
+            <h3 class="no-blogs-title">No Blog Posts Found</h3>
+            <p class="no-blogs-text">We couldn't find any blog posts matching your criteria. Try adjusting your filters or check back later.</p>
+            <a href="/blogs/" class="btn btn-primary">
+              <i class="bi bi-arrow-repeat me-2"></i> Reset Filters
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- WhatsApp Section -->
+  <section class="whatsapp-section" aria-labelledby="whatsapp-heading">
+    <div class="container">
+      <h2 id="whatsapp-heading" class="whatsapp-title">Get Personalized Medical Advice</h2>
+      <p class="whatsapp-subtitle">Connect with our medical experts directly through WhatsApp for instant guidance and support. Our team is available 24/7 to assist you.</p>
+      <div class="whatsapp-buttons">
+        <a href="https://wa.me/8851619647" class="btn-whatsapp">
+          <i class="bi bi-whatsapp me-2"></i> Chat on WhatsApp
+        </a>
+        <a href="/book/" class="btn-consultation">
+          <i class="bi bi-calendar-check me-2"></i> Schedule Consultation
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Section -->
+  <section class="why-choose-section" aria-labelledby="why-choose-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="why-choose-heading" class="section-title">Why Read TakeOpinion Blogs</h2>
+        <p class="section-subtitle">Our commitment to providing valuable medical travel insights</p>
+      </div>
+      <div class="why-choose-grid">
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h3 class="why-choose-title">Verified Information</h3>
+          <p class="why-choose-description">All our articles are reviewed by medical professionals to ensure accuracy and reliability of information.</p>
+        </div>
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-translate"></i>
+          </div>
+          <h3 class="why-choose-title">Global Insights</h3>
+          <p class="why-choose-description">Access to medical travel information from destinations around the world with cost comparisons.</p>
+        </div>
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-headset"></i>
+          </div>
+          <h3 class="why-choose-title">24/7 Support</h3>
+          <p class="why-choose-description">Round-the-clock assistance for all your medical travel queries and concerns.</p>
+        </div>
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+          <h3 class="why-choose-title">Cost Savings</h3>
+          <p class="why-choose-description">Discover how medical tourism can save you up to 70% on treatment costs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  // Auto-submit form when filters change
+  document.getElementById('search-filter').addEventListener('input', function() {
+    // Debounce the search to avoid too many requests
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      document.getElementById('blog-filter-form').submit();
+    }, 500);
+  });
+  
+  document.getElementById('category-filter').addEventListener('change', function() {
+    document.getElementById('blog-filter-form').submit();
+  });
+  
+  document.getElementById('specialty-filter').addEventListener('change', function() {
+    document.getElementById('blog-filter-form').submit();
+  });
+</script>
+
+{% endblock %}

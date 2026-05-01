@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block title %}Book {{ hotel.name }}{% endblock %}
+
+{% block content %}
+<style>
+  .booking-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+  }
+
+  .booking-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: none;
+    margin-bottom: 2rem;
+  }
+
+  .booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .booking-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+    padding: 1.5rem;
+  }
+
+  .hotel-info {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+  }
+
+  .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .btn-primary-large {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    width: 100%;
+  }
+
+  .btn-primary-large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+  }
+
+  @media (max-width: 768px) {
+    .booking-page {
+      padding: 1rem;
+    }
+    
+    .booking-card {
+      margin-bottom: 1rem;
+    }
+    
+    .form-control {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+</style>
+
+<div class="container py-5 booking-page">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="text-center mb-4">
+        <i class="bi bi-building text-primary" style="font-size: 3rem;"></i>
+        <h1 class="h2 mb-2">Book Your Stay at {{ hotel.name }}</h1>
+        <p class="text-muted">Complete your reservation to secure your accommodation</p>
+      </div>
+      
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+      
+      <div class="card border-0 shadow-sm booking-card">
+        <div class="card-header bg-primary text-white text-center">
+          <h4 class="mb-0">Hotel Booking Form</h4>
+        </div>
+        <div class="card-body">
+          <div class="hotel-info mb-4">
+            <div class="row">
+              <div class="col-md-8">
+                <h5>{{ hotel.name }}</h5>
+                <p class="mb-1"><i class="bi bi-geo-alt me-2"></i>{{ hotel.address }}, {{ hotel.city }}, {{ hotel.state }}</p>
+                <p class="mb-1"><i class="bi bi-currency-rupee me-2"></i>{{ hotel.price_per_night }}/night</p>
+                <p class="mb-0"><i class="bi bi-star-fill text-warning me-2"></i>{{ hotel.rating }}/5.0 ({{ hotel.review_count }} reviews)</p>
+              </div>
+              <div class="col-md-4 text-md-end">
+                <span class="badge bg-success fs-6">₹{{ hotel.price_per_night|floatformat:0 }}/night</span>
+              </div>
+            </div>
+          </div>
+          
+          <form method="post">
+            {% csrf_token %}
+            
+            <div class="alert alert-warning">
+              <h6 class="alert-heading"><i class="bi bi-exclamation-triangle me-2"></i>Important</h6>
+              <p class="mb-0">Please complete all required fields marked with * to submit your booking request. Our team will contact you to confirm your reservation.</p>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="guest_name" class="form-label">Full Name *</label>
+                <input type="text" class="form-control" id="guest_name" name="guest_name" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="guest_email" class="form-label">Email Address *</label>
+                <input type="email" class="form-control" id="guest_email" name="guest_email" required>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="guest_phone" class="form-label">Phone Number *</label>
+                <input type="tel" class="form-control" id="guest_phone" name="guest_phone" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="number_of_guests" class="form-label">Number of Guests</label>
+                <select class="form-control" id="number_of_guests" name="number_of_guests">
+                  {% for i in '123456789' %}
+                  <option value="{{ i }}">{{ i }} Guest{{ i|pluralize }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="check_in_date" class="form-label">Check-in Date *</label>
+                <input type="date" class="form-control" id="check_in_date" name="check_in_date" required min="{% now "Y-m-d" %}">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="check_out_date" class="form-label">Check-out Date *</label>
+                <input type="date" class="form-control" id="check_out_date" name="check_out_date" required min="{% now "Y-m-d" %}">
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="number_of_rooms" class="form-label">Number of Rooms</label>
+                <select class="form-control" id="number_of_rooms" name="number_of_rooms">
+                  <option value="1">1 Room</option>
+                  <option value="2">2 Rooms</option>
+                  <option value="3">3 Rooms</option>
+                  <option value="4">4 Rooms</option>
+                  <option value="5">5 Rooms</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label for="special_requests" class="form-label">Special Requests</label>
+              <textarea class="form-control" id="special_requests" name="special_requests" rows="3" placeholder="Any special requirements or requests..."></textarea>
+            </div>
+            
+            <div class="alert alert-info">
+              <h6 class="alert-heading"><i class="bi bi-info-circle me-2"></i>Booking Process</h6>
+              <p class="mb-0">After submitting this form, our team will contact you to confirm your reservation and provide payment instructions. Your booking is not confirmed until you receive confirmation from our team.</p>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn-primary-large">
+                <i class="bi bi-calendar-check me-2"></i>Submit Booking Request
+              </button>
+              <a href="{% url 'hotels:detail' hotel.slug %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Back to Hotel Details
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Set minimum date for check-in to today
+  document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('check_in_date').min = today;
+    document.getElementById('check_out_date').min = today;
+    
+    // Ensure check-out date is after check-in date
+    document.getElementById('check_in_date').addEventListener('change', function() {
+      const checkInDate = this.value;
+      const checkOutInput = document.getElementById('check_out_date');
+      
+      if (checkInDate) {
+        checkOutInput.min = checkInDate;
+        if (checkOutInput.value && checkOutInput.value <= checkInDate) {
+          checkOutInput.value = '';
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

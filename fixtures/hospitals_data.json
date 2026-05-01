@@ -1,0 +1,221 @@
+[
+{
+  "model": "hospitals.hospital",
+  "pk": 1,
+  "fields": {
+    "name": "City Care Hospital",
+    "slug": "city-care-hospital",
+    "country": 1,
+    "state": 1,
+    "city": "PUNE",
+    "address": "Flat No. 25 SMURTI SHILP BUILDING KADAMWAK HAVELI, Kadam Wasti",
+    "about": "Multi-speciality hospital.",
+    "rating": "4.50",
+    "is_takeopinion_choice": true,
+    "phone": "08851619647",
+    "email": "saklanisahil2@gmail.com",
+    "website": "http://www.google.com",
+    "established_year": 1998,
+    "beds_count": 456,
+    "staff_count": 1000,
+    "departments_count": 500,
+    "awards_count": 50,
+    "jci_accredited": true,
+    "nabh_accredited": true,
+    "iso_certified": true,
+    "profile_picture": "https://assets.bajajfinservhealth.in/media/doctorprofilepic/1659068173938_HospitalFacilityImages_8e97ac02-2e82-4d90-b884-03e9cff050ca-w800-h800.webp",
+    "treatments": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "hospitals.hospital",
+  "pk": 2,
+  "fields": {
+    "name": "Green Wellness Center",
+    "slug": "green-wellness-center",
+    "country": 1,
+    "state": 2,
+    "city": "",
+    "address": "",
+    "about": "Wellness and Ayurveda center.",
+    "rating": "4.50",
+    "is_takeopinion_choice": true,
+    "phone": "",
+    "email": "",
+    "website": "",
+    "established_year": null,
+    "beds_count": null,
+    "staff_count": null,
+    "departments_count": null,
+    "awards_count": null,
+    "jci_accredited": false,
+    "nabh_accredited": false,
+    "iso_certified": false,
+    "profile_picture": "https://img.athleticbusiness.com/files/base/abmedia/all/image/projects/2014/02/gallery/slideshow/017A-613-AB_Akron.jpg?auto=format%2Ccompress&dpr=2&fit=crop&h=586&q=70&w=879",
+    "treatments": [
+      3
+    ]
+  }
+},
+{
+  "model": "hospitals.hospital",
+  "pk": 3,
+  "fields": {
+    "name": "City Medical Center Test",
+    "slug": "city-medical-center-test",
+    "country": null,
+    "state": null,
+    "city": "",
+    "address": "",
+    "about": "Leading hospital for orthopedic treatments",
+    "rating": "4.50",
+    "is_takeopinion_choice": false,
+    "phone": "",
+    "email": "",
+    "website": "",
+    "established_year": null,
+    "beds_count": null,
+    "staff_count": null,
+    "departments_count": null,
+    "awards_count": null,
+    "jci_accredited": false,
+    "nabh_accredited": false,
+    "iso_certified": false,
+    "profile_picture": "https://www.ehs.gov.ae/images/41b3fd10/full/jpg.aspx",
+    "treatments": []
+  }
+},
+{
+  "model": "hospitals.hospital",
+  "pk": 4,
+  "fields": {
+    "name": "Apollo Hospital",
+    "slug": "apollo-hospital",
+    "country": 1,
+    "state": 4,
+    "city": "Delhi",
+    "address": "123 Medical Plaza",
+    "about": "Apollo Hospitals is a leading healthcare institution with state-of-the-art facilities and a commitment to providing exceptional patient care.",
+    "rating": "4.50",
+    "is_takeopinion_choice": true,
+    "phone": "+91 11 2345 6789",
+    "email": "info@apollohospital.com",
+    "website": "https://www.apollohospitals.com",
+    "established_year": 1983,
+    "beds_count": 500,
+    "staff_count": 1200,
+    "departments_count": 35,
+    "awards_count": 25,
+    "jci_accredited": true,
+    "nabh_accredited": true,
+    "iso_certified": true,
+    "profile_picture": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Apollo_Hospital_Indraprastha.jpg",
+    "treatments": [
+      1,
+      2,
+      3,
+      7,
+      8
+    ]
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 2,
+  "fields": {
+    "hospital": 2,
+    "image_url": "https://img.athleticbusiness.com/files/base/abmedia/all/image/projects/2014/02/gallery/slideshow/017A-613-AB_Akron.jpg?auto=format%2Ccompress&dpr=2&fit=crop&h=586&q=70&w=879"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 9,
+  "fields": {
+    "hospital": 4,
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Apollo_Hospital_Indraprastha.jpg"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 10,
+  "fields": {
+    "hospital": 4,
+    "image_url": "https://rawahealth.com/wp-content/uploads/2023/03/int-apollo-hospitals-delhi.jpg"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 11,
+  "fields": {
+    "hospital": 4,
+    "image_url": "https://safartibbi.com/wp-content/uploads/2024/05/apollo.jpg"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 15,
+  "fields": {
+    "hospital": 1,
+    "image_url": "https://assets.bajajfinservhealth.in/media/doctorprofilepic/1659068173938_HospitalFacilityImages_8e97ac02-2e82-4d90-b884-03e9cff050ca-w800-h800.webp"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 16,
+  "fields": {
+    "hospital": 1,
+    "image_url": "https://content3.jdmagicbox.com/v2/comp/delhi/k1/011pxx11.xx11.200630195726.x5k1/catalogue/city-care-hospital-najafgarh-delhi-hospitals-tdy0prqdxe.jpg"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 17,
+  "fields": {
+    "hospital": 1,
+    "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNPBgk32PIXe1SUiR7NZwP4lx6BBOYEG_nJA&s"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 18,
+  "fields": {
+    "hospital": 2,
+    "image_url": "https://img.athleticbusiness.com/files/base/abmedia/all/image/projects/2014/02/gallery/slideshow/17_04AGHWC-Green.jpg?auto=format%2Ccompress&dpr=2&fit=crop&h=586&q=70&w=879"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 19,
+  "fields": {
+    "hospital": 3,
+    "image_url": "https://www.ehs.gov.ae/images/41b3fd10/full/jpg.aspx"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 20,
+  "fields": {
+    "hospital": 3,
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/19/The_Medical_City_clinic.jpg"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 21,
+  "fields": {
+    "hospital": 1,
+    "image_url": "https://picsum.photos/seed/h1/600/400"
+  }
+},
+{
+  "model": "hospitals.hospitalmedia",
+  "pk": 22,
+  "fields": {
+    "hospital": 2,
+    "image_url": "https://picsum.photos/seed/h2/600/400"
+  }
+}
+]

@@ -1,0 +1,493 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 20,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$3j6QKRH7U5J3Q5Z8V9X2Z2$+J7K9H6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G=+J7K9H6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G=",
+      "last_login": "2025-09-25T10:30:00Z",
+      "is_superuser": true,
+      "username": "admin_fixture",
+      "first_name": "Admin",
+      "last_name": "User",
+      "email": "admin_fixture@takeopinion.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-09-25T10:30:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 21,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$3j6QKRH7U5J3Q5Z8V9X2Z2$+J7K9H6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G=+J7K9H6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G=",
+      "last_login": "2025-09-25T10:30:00Z",
+      "is_superuser": false,
+      "username": "dr_smith_fixture",
+      "first_name": "John",
+      "last_name": "Smith",
+      "email": "john.smith.fixture@hospital.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-09-25T10:30:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 22,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$3j6QKRH7U5J3Q5Z8V9X2Z2$+J7K9H6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G=+J7K9H6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G=",
+      "last_login": "2025-09-25T10:30:00Z",
+      "is_superuser": false,
+      "username": "dr_johnson_fixture",
+      "first_name": "Emily",
+      "last_name": "Johnson",
+      "email": "emily.johnson.fixture@clinic.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-09-25T10:30:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 23,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$3j6QKRH7U5J3Q5Z8V9X2Z2$+J7K9H6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G=+J7K9H6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G=",
+      "last_login": "2025-09-25T10:30:00Z",
+      "is_superuser": false,
+      "username": "patient1_fixture",
+      "first_name": "Michael",
+      "last_name": "Brown",
+      "email": "michael.brown.fixture@email.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-09-25T10:30:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 24,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$3j6QKRH7U5J3Q5Z8V9X2Z2$+J7K9H6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G=+J7K9H6G5F4E3D2C1B0A9Z8Y7X6W5V4U3T2S1R0Q9P8O7N6M5L4K3J2I1H0G=",
+      "last_login": "2025-09-25T10:30:00Z",
+      "is_superuser": false,
+      "username": "patient2_fixture",
+      "first_name": "Sarah",
+      "last_name": "Davis",
+      "email": "sarah.davis.fixture@email.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-09-25T10:30:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.userprofile",
+    "pk": 6,
+    "fields": {
+      "user": 20,
+      "user_type": "admin",
+      "phone": "+1234567890",
+      "address": "123 Admin Street",
+      "city": "New York",
+      "profile_picture": "",
+      "created_at": "2025-09-25T10:30:00Z",
+      "updated_at": "2025-09-25T10:30:00Z"
+    }
+  },
+  {
+    "model": "accounts.userprofile",
+    "pk": 7,
+    "fields": {
+      "user": 21,
+      "user_type": "doctor",
+      "phone": "+1234567891",
+      "address": "456 Doctor Avenue",
+      "city": "Boston",
+      "profile_picture": "",
+      "created_at": "2025-09-25T10:30:00Z",
+      "updated_at": "2025-09-25T10:30:00Z"
+    }
+  },
+  {
+    "model": "accounts.userprofile",
+    "pk": 8,
+    "fields": {
+      "user": 22,
+      "user_type": "doctor",
+      "phone": "+1234567892",
+      "address": "789 Clinic Road",
+      "city": "Chicago",
+      "profile_picture": "",
+      "created_at": "2025-09-25T10:30:00Z",
+      "updated_at": "2025-09-25T10:30:00Z"
+    }
+  },
+  {
+    "model": "accounts.userprofile",
+    "pk": 9,
+    "fields": {
+      "user": 23,
+      "user_type": "patient",
+      "phone": "+1234567893",
+      "address": "321 Patient Lane",
+      "city": "Miami",
+      "profile_picture": "",
+      "created_at": "2025-09-25T10:30:00Z",
+      "updated_at": "2025-09-25T10:30:00Z"
+    }
+  },
+  {
+    "model": "accounts.userprofile",
+    "pk": 10,
+    "fields": {
+      "user": 24,
+      "user_type": "patient",
+      "phone": "+1234567894",
+      "address": "654 Health Blvd",
+      "city": "Seattle",
+      "profile_picture": "",
+      "created_at": "2025-09-25T10:30:00Z",
+      "updated_at": "2025-09-25T10:30:00Z"
+    }
+  },
+  {
+    "model": "accounts.doctorprofile",
+    "pk": 3,
+    "fields": {
+      "user_profile": 7,
+      "specialization": "Cardiology",
+      "license_number": "DOC12345",
+      "years_of_experience": 15
+    }
+  },
+  {
+    "model": "accounts.doctorprofile",
+    "pk": 4,
+    "fields": {
+      "user_profile": 8,
+      "specialization": "Orthopedic Surgery",
+      "license_number": "DOC67890",
+      "years_of_experience": 12
+    }
+  },
+  {
+    "model": "accounts.patientprofile",
+    "pk": 3,
+    "fields": {
+      "user_profile": 9,
+      "medical_history": "Hypertension, Type 2 Diabetes",
+      "emergency_contact": "+1987654321",
+      "blood_type": "O+"
+    }
+  },
+  {
+    "model": "accounts.patientprofile",
+    "pk": 4,
+    "fields": {
+      "user_profile": 10,
+      "medical_history": "Asthma, Allergies",
+      "emergency_contact": "+1876543210",
+      "blood_type": "A-"
+    }
+  },
+  {
+    "model": "treatments.treatmentcategory",
+    "pk": 6,
+    "fields": {
+      "name": "Cardiology",
+      "slug": "cardiology-fixture",
+      "type": "medical"
+    }
+  },
+  {
+    "model": "treatments.treatmentcategory",
+    "pk": 7,
+    "fields": {
+      "name": "Orthopedics",
+      "slug": "orthopedics-fixture",
+      "type": "medical"
+    }
+  },
+  {
+    "model": "treatments.treatmentcategory",
+    "pk": 8,
+    "fields": {
+      "name": "Cosmetic Surgery",
+      "slug": "cosmetic-surgery-fixture",
+      "type": "aesthetic"
+    }
+  },
+  {
+    "model": "treatments.treatmentcategory",
+    "pk": 9,
+    "fields": {
+      "name": "Dermatology",
+      "slug": "dermatology-fixture",
+      "type": "medical"
+    }
+  },
+  {
+    "model": "treatments.treatmentcategory",
+    "pk": 10,
+    "fields": {
+      "name": "Wellness & Preventive Care",
+      "slug": "wellness-preventive-care-fixture",
+      "type": "wellness"
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 6,
+    "fields": {
+      "name": "Coronary Artery Bypass Grafting (CABG)",
+      "slug": "coronary-artery-bypass-grafting-fixture",
+      "description": "A surgical procedure to restore normal blood flow to the heart by bypassing blocked coronary arteries.",
+      "category": 6,
+      "duration": "7-10 days",
+      "anesthesia_type": "General",
+      "recovery_time": "6-8 weeks",
+      "procedure_details": "This complex cardiac surgery involves taking a healthy blood vessel from another part of the body and using it to bypass the blocked coronary artery, restoring proper blood flow to the heart muscle.",
+      "preparation_guidelines": "Cardiac evaluation, Blood tests, Medication review, Fasting before surgery, Pre-operative counseling",
+      "aftercare_instructions": "Cardiac rehabilitation, Medication adherence, Activity restrictions, Regular follow-ups, Lifestyle modifications",
+      "starting_price": "25000.00",
+      "review_count": 180
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 7,
+    "fields": {
+      "name": "Total Knee Replacement",
+      "slug": "total-knee-replacement-fixture",
+      "description": "A surgical procedure to resurface a knee damaged by arthritis with metal and plastic parts to cap the ends of the bones that form the knee joint.",
+      "category": 7,
+      "duration": "5-7 days",
+      "anesthesia_type": "General or Spinal",
+      "recovery_time": "3-6 months",
+      "procedure_details": "The damaged cartilage and bone are removed from the surface of the knee joint and replaced with artificial components to restore knee function and relieve pain.",
+      "preparation_guidelines": "Physical therapy, Medical evaluation, Medication review, Home modifications, Pre-operative exercises",
+      "aftercare_instructions": "Physical therapy, Wound care, Activity limitations, Pain management, Follow-up appointments",
+      "starting_price": "18000.00",
+      "review_count": 240
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 8,
+    "fields": {
+      "name": "Rhinoplasty",
+      "slug": "rhinoplasty-fixture",
+      "description": "A surgical procedure to reshape or resize the nose for cosmetic or functional reasons.",
+      "category": 8,
+      "duration": "3-5 days",
+      "anesthesia_type": "General",
+      "recovery_time": "12-18 months",
+      "procedure_details": "Surgical modification of the nose structure to improve appearance or correct breathing problems, involving reshaping of bone and cartilage.",
+      "preparation_guidelines": "Medical evaluation, Photography, Medication review, Smoking cessation, Pre-operative planning",
+      "aftercare_instructions": "Nasal care, Activity restrictions, Follow-up visits, Swelling management, Protection from trauma",
+      "starting_price": "8000.00",
+      "review_count": 150
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 9,
+    "fields": {
+      "name": "Laser Skin Resurfacing",
+      "slug": "laser-skin-resurfacing-fixture",
+      "description": "A cosmetic procedure that uses laser energy to improve skin appearance by removing damaged outer layers.",
+      "category": 9,
+      "duration": "1-2 days",
+      "anesthesia_type": "Local with sedation",
+      "recovery_time": "1-3 weeks",
+      "procedure_details": "Fractional laser technology is used to create microscopic wounds in the skin, stimulating collagen production and promoting new skin growth.",
+      "preparation_guidelines": "Skin evaluation, Sun protection, Medication review, Pre-treatment skincare, Avoiding certain products",
+      "aftercare_instructions": "Sun protection, Moisturizing, Avoiding picking, Medication use, Follow-up care",
+      "starting_price": "2500.00",
+      "review_count": 95
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 10,
+    "fields": {
+      "name": "Executive Health Checkup",
+      "slug": "executive-health-checkup-fixture",
+      "description": "Comprehensive health assessment package designed for busy professionals to detect potential health issues early.",
+      "category": 10,
+      "duration": "1-2 days",
+      "anesthesia_type": "None",
+      "recovery_time": "Immediate",
+      "procedure_details": "Extensive medical evaluation including blood tests, imaging studies, specialist consultations, and personalized health recommendations.",
+      "preparation_guidelines": "Fasting requirements, Medication instructions, Previous reports, Appointment scheduling, Health history",
+      "aftercare_instructions": "Report review, Follow-up appointments, Lifestyle recommendations, Health monitoring, Preventive measures",
+      "starting_price": "1200.00",
+      "review_count": 320
+    }
+  },
+  {
+    "model": "treatments.treatmentfaq",
+    "pk": 5,
+    "fields": {
+      "treatment": 6,
+      "question": "How long does the CABG surgery take?",
+      "answer": "The surgery typically takes 3-6 hours depending on the complexity and number of bypasses required.",
+      "order": 1
+    }
+  },
+  {
+    "model": "treatments.treatmentfaq",
+    "pk": 6,
+    "fields": {
+      "treatment": 6,
+      "question": "What is the success rate for CABG surgery?",
+      "answer": "CABG has a high success rate of over 95% with most patients experiencing significant improvement in symptoms.",
+      "order": 2
+    }
+  },
+  {
+    "model": "treatments.treatmentfaq",
+    "pk": 7,
+    "fields": {
+      "treatment": 7,
+      "question": "How long do knee replacements last?",
+      "answer": "Modern knee replacements typically last 15-20 years, with many patients experiencing longer durability.",
+      "order": 1
+    }
+  },
+  {
+    "model": "treatments.treatmentfaq",
+    "pk": 8,
+    "fields": {
+      "treatment": 7,
+      "question": "When can I resume normal activities after knee replacement?",
+      "answer": "Most patients can walk with assistance within 24 hours after surgery and resume normal daily activities within 3-6 weeks.",
+      "order": 2
+    }
+  },
+  {
+    "model": "hospitals.hospital",
+    "pk": 5,
+    "fields": {
+      "name": "MediCare Heart Institute",
+      "slug": "medicare-heart-institute-fixture",
+      "country": 1,
+      "state": 1,
+      "city": "Mumbai",
+      "address": "123 Medical Plaza, Mumbai, MH 400001",
+      "about": "A leading cardiac care center specializing in advanced heart treatments and minimally invasive procedures.",
+      "rating": "4.8",
+      "starting_price": "25000.00",
+      "is_takeopinion_choice": true,
+      "phone": "+91-22-5555-0123",
+      "email": "info@medicareheart.in",
+      "website": "https://www.medicareheart.in",
+      "established_year": 1995,
+      "beds_count": 150,
+      "staff_count": 300,
+      "departments_count": 12,
+      "awards_count": 15,
+      "jci_accredited": true,
+      "nabh_accredited": true,
+      "iso_certified": true,
+      "profile_picture": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+      "treatments": [6]
+    }
+  },
+  {
+    "model": "hospitals.hospital",
+    "pk": 6,
+    "fields": {
+      "name": "OrthoPlus Joint Center",
+      "slug": "orthoplus-joint-center-fixture",
+      "country": 1,
+      "state": 2,
+      "city": "Bangalore",
+      "address": "456 Orthopedic Drive, Bangalore, KA 560001",
+      "about": "Specialized orthopedic hospital with state-of-the-art facilities for joint replacement and sports medicine.",
+      "rating": "4.7",
+      "starting_price": "18000.00",
+      "is_takeopinion_choice": true,
+      "phone": "+91-80-5555-0456",
+      "email": "contact@orthoplus.in",
+      "website": "https://www.orthoplus.in",
+      "established_year": 2002,
+      "beds_count": 120,
+      "staff_count": 250,
+      "departments_count": 8,
+      "awards_count": 12,
+      "jci_accredited": true,
+      "nabh_accredited": true,
+      "iso_certified": true,
+      "profile_picture": "https://images.unsplash.com/photo-1516726817505-5a05d06e4553?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+      "treatments": [7]
+    }
+  },
+  {
+    "model": "hospitals.hospital",
+    "pk": 7,
+    "fields": {
+      "name": "Aesthetic Beauty Clinic",
+      "slug": "aesthetic-beauty-clinic-fixture",
+      "country": 1,
+      "state": 1,
+      "city": "Delhi",
+      "address": "789 Beauty Avenue, Delhi, DL 110001",
+      "about": "Premium cosmetic surgery and dermatology clinic offering a wide range of aesthetic treatments.",
+      "rating": "4.6",
+      "starting_price": "2500.00",
+      "is_takeopinion_choice": false,
+      "phone": "+91-11-5555-0789",
+      "email": "info@aestheticbeauty.in",
+      "website": "https://www.aestheticbeauty.in",
+      "established_year": 2010,
+      "beds_count": 30,
+      "staff_count": 80,
+      "departments_count": 4,
+      "awards_count": 8,
+      "jci_accredited": false,
+      "nabh_accredited": true,
+      "iso_certified": true,
+      "profile_picture": "https://images.unsplash.com/photo-1542736667-069246bdbcdf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+      "treatments": [8, 9]
+    }
+  },
+  {
+    "model": "hospitals.hospital",
+    "pk": 8,
+    "fields": {
+      "name": "Wellness Health Hub",
+      "slug": "wellness-health-hub-fixture",
+      "country": 1,
+      "state": 2,
+      "city": "Kochi",
+      "address": "321 Wellness Street, Kochi, KL 682011",
+      "about": "Comprehensive wellness center offering preventive healthcare and executive health checkups.",
+      "rating": "4.5",
+      "starting_price": "1200.00",
+      "is_takeopinion_choice": true,
+      "phone": "+91-484-5555-0321",
+      "email": "care@wellnesshub.in",
+      "website": "https://www.wellnesshub.in",
+      "established_year": 2015,
+      "beds_count": 50,
+      "staff_count": 120,
+      "departments_count": 6,
+      "awards_count": 5,
+      "jci_accredited": false,
+      "nabh_accredited": true,
+      "iso_certified": true,
+      "profile_picture": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+      "treatments": [10]
+    }
+  }
+]

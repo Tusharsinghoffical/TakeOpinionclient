@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="section-title mb-4 text-center">
+        <i class="bi bi-file-text"></i>
+        <h1 class="h2 mb-0">Terms of Service</h1>
+      </div>
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <p class="text-muted mb-0">Last updated: {{ last_updated|default:"September 24, 2025" }}</p>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-info-circle me-2"></i>Introduction
+            </h4>
+            <p>Welcome to TakeOpinion. By accessing or using our website and services, you agree to be bound by these Terms of Service ("Terms"). Please read them carefully before using our platform.</p>
+            <p class="mb-0">These Terms constitute a legally binding agreement between you and TakeOpinion ("we," "our," or "us"). If you do not agree to these Terms, please do not use our services.</p>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-laptop me-2"></i>Use of Service
+            </h4>
+            <p>By using TakeOpinion, you agree to the following conditions of use:</p>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="card h-100 border-primary">
+                  <div class="card-body">
+                    <h5 class="card-title text-primary">Permitted Use</h5>
+                    <ul class="mb-0">
+                      <li>Accessing medical consultation services</li>
+                      <li>Booking appointments with doctors</li>
+                      <li>Reviewing and comparing treatment options</li>
+                      <li>Communicating with healthcare providers</li>
+                      <li>Managing your health profile</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100 border-danger">
+                  <div class="card-body">
+                    <h5 class="card-title text-danger">Prohibited Use</h5>
+                    <ul class="mb-0">
+                      <li>Providing false or misleading information</li>
+                      <li>Impersonating another person or entity</li>
+                      <li>Attempting to gain unauthorised access</li>
+                      <li>Transmitting harmful or malicious content</li>
+                      <li>Violating any applicable laws or regulations</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-shield-lock me-2"></i>Privacy
+            </h4>
+            <p>Your use of TakeOpinion is also governed by our <a href="{% url 'privacy' %}">Privacy Policy</a>, which is incorporated into these Terms by reference. By using our services, you consent to the collection and use of your information as described in our Privacy Policy.</p>
+            <div class="row">
+              <div class="col-lg-6">
+                <ul>
+                  <li>We collect only the information necessary to provide our services</li>
+                  <li>Your medical information is handled with strict confidentiality</li>
+                  <li>We do not sell your personal data to third parties</li>
+                </ul>
+              </div>
+              <div class="col-lg-6">
+                <ul>
+                  <li>You retain ownership of your personal data</li>
+                  <li>You may request deletion of your data at any time</li>
+                  <li>We comply with applicable data protection regulations</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-exclamation-triangle me-2"></i>Disclaimers
+            </h4>
+            <p>Please read the following disclaimers carefully before using our services:</p>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="card border-warning h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-heart-pulse text-warning fs-1 mb-3"></i>
+                    <h5 class="card-title">Medical Disclaimer</h5>
+                    <p class="card-text">TakeOpinion facilitates connections with healthcare professionals but does not provide direct medical advice. Always consult a qualified doctor for medical decisions.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="card border-warning h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-shield-exclamation text-warning fs-1 mb-3"></i>
+                    <h5 class="card-title">No Warranty</h5>
+                    <p class="card-text">Our services are provided "as is" without warranties of any kind, either express or implied, including but not limited to fitness for a particular purpose.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="card border-warning h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-currency-exchange text-warning fs-1 mb-3"></i>
+                    <h5 class="card-title">Liability Limitation</h5>
+                    <p class="card-text">To the fullest extent permitted by law, TakeOpinion shall not be liable for any indirect, incidental, or consequential damages arising from your use of our services.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="alert alert-warning mt-3">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <strong>Important:</strong> TakeOpinion is a platform that connects patients with healthcare providers. We are not a medical institution and do not employ the doctors listed on our platform.
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-credit-card me-2"></i>Payments and Bookings
+            </h4>
+            <p>When making bookings or payments through TakeOpinion, the following terms apply:</p>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="card border-success h-100">
+                  <div class="card-body">
+                    <h5 class="card-title text-success">Booking Terms</h5>
+                    <ul class="mb-0">
+                      <li><strong>Confirmation:</strong> Bookings are confirmed upon payment</li>
+                      <li><strong>Cancellation:</strong> Subject to the doctor's cancellation policy</li>
+                      <li><strong>Rescheduling:</strong> Must be requested at least 24 hours in advance</li>
+                      <li><strong>No-shows:</strong> May result in forfeiture of the booking fee</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card border-success h-100">
+                  <div class="card-body">
+                    <h5 class="card-title text-success">Payment Terms</h5>
+                    <ul class="mb-0">
+                      <li><strong>Currency:</strong> All prices are displayed in the applicable currency</li>
+                      <li><strong>Processing:</strong> Payments are processed securely via our payment provider</li>
+                      <li><strong>Refunds:</strong> Processed within 5–10 business days where applicable</li>
+                      <li><strong>Disputes:</strong> Contact us within 30 days of the transaction</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-arrow-repeat me-2"></i>Changes to These Terms
+            </h4>
+            <p>We reserve the right to modify these Terms at any time. We will notify you of any changes by:</p>
+            <ul>
+              <li>Posting the updated Terms on this page</li>
+              <li>Updating the "Last updated" date at the top of this page</li>
+              <li>Sending you an email notification (if we have your email address)</li>
+              <li>Displaying a notice on our website or application</li>
+            </ul>
+            <p class="mb-0">Your continued use of TakeOpinion after any changes constitutes your acceptance of the new Terms. We encourage you to review these Terms periodically.</p>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3 text-primary">
+              <i class="bi bi-envelope me-2"></i>Contact Us
+            </h4>
+            <p>If you have any questions about these Terms of Service, please contact us:</p>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="card border-primary h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-envelope-fill text-primary fs-1 mb-3"></i>
+                    <h5 class="card-title">Email</h5>
+                    <p class="card-text mb-0">legal@takeopinion.com</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="card border-primary h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-telephone-fill text-primary fs-1 mb-3"></i>
+                    <h5 class="card-title">Phone</h5>
+                    <p class="card-text mb-0">+1 (555) 123-4567</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="card border-primary h-100">
+                  <div class="card-body text-center">
+                    <i class="bi bi-geo-alt-fill text-primary fs-1 mb-3"></i>
+                    <h5 class="card-title">Mail</h5>
+                    <p class="card-text mb-0">TakeOpinion, 123 Medical Plaza, Health City, HC 12345</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-5 pt-4 border-top">
+            <p class="mb-0 text-muted">© 2025 TakeOpinion. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

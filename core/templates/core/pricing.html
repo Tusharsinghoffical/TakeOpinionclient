@@ -1,0 +1,1118 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+/* Enhanced Pricing Page Styles - Matching Home Page Design */
+:root {
+  /* Enhanced vibrant color palette from home page */
+  --primary-dark: #2c3e50;
+  --primary-medium: #3498db;
+  --primary-light: #5dade2;
+  --accent: #e74c3c;
+  --success: #27ae60;
+  --warning: #f39c12;
+  --light-bg: #f8f9fa;
+  --dark-text: #2c3e50;
+  --light-text: #ffffff;
+  --border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-strong: rgba(0, 0, 0, 0.15);
+  --gradient-start: #3498db;
+  --gradient-end: #2c3e50;
+  --transition-speed: 0.3s;
+}
+
+/* Global pricing page styles */
+.pricing-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--light-text);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--light-text);
+  line-height: 1.5;
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Treatment Selection Section */
+.treatment-section {
+  background-color: var(--light-bg);
+  padding: 5rem 0;
+}
+
+.treatment-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 2rem;
+}
+
+.treatment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.treatment-form .form-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.treatment-form .form-control, .treatment-form .form-select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-speed) ease;
+}
+
+.treatment-form .form-control:focus, .treatment-form .form-select:focus {
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+  border-color: var(--primary-medium);
+}
+
+.treatment-form .btn {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  background: var(--primary-medium);
+  color: white;
+  transition: all var(--transition-speed) ease;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.treatment-form .btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Comparison Section */
+.comparison-section {
+  background-color: white;
+  padding: 5rem 0;
+}
+
+.comparison-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.comparison-table th {
+  background: linear-gradient(135deg, var(--primary-medium), var(--primary-dark));
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.comparison-table td {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.comparison-table tr:nth-child(even) {
+  background-color: var(--light-bg);
+}
+
+.comparison-table tr:hover {
+  background-color: #e9f7fe;
+}
+
+.treatment-header {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.hospital-item {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.hospital-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.hospital-name {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.25rem;
+}
+
+.hospital-location {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.hospital-rating {
+  color: var(--warning);
+  margin-bottom: 0.5rem;
+}
+
+.hospital-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--success);
+  margin-bottom: 0.5rem;
+}
+
+.accreditations {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.accreditation-badge {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  font-weight: 600;
+  color: white;
+}
+
+.accreditation-badge.jci {
+  background-color: #3498db;
+}
+
+.accreditation-badge.nabh {
+  background-color: #27ae60;
+}
+
+.accreditation-badge.iso {
+  background-color: #f39c12;
+}
+
+/* Hospitals Grid Section */
+.hospitals-section {
+  background-color: white;
+  padding: 5rem 0;
+  display: none; /* Hidden by default */
+}
+
+.hospitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.hospital-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.hospital-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.hospital-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hospital-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.hospital-location {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.hospital-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.hospital-rating {
+  display: flex;
+  align-items: center;
+}
+
+.rating-stars {
+  color: var(--warning);
+  margin-right: 0.5rem;
+}
+
+.rating-value {
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.hospital-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--success);
+  margin: 0.5rem 0;
+}
+
+.hospital-accreditations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.accreditation-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.accreditation-badge.jci {
+  background-color: #3498db;
+  color: white;
+}
+
+.accreditation-badge.nabh {
+  background-color: #27ae60;
+  color: white;
+}
+
+.accreditation-badge.iso {
+  background-color: #f39c12;
+  color: white;
+}
+
+/* Room Options */
+.room-options {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.room-option {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.room-name {
+  font-weight: 500;
+}
+
+.room-price {
+  color: var(--primary-medium);
+  font-weight: 600;
+}
+
+/* Filter Section */
+.filter-section {
+  background-color: var(--light-bg);
+  padding: 2rem 0;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  display: none; /* Hidden by default */
+}
+
+.filter-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+}
+
+.filter-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.filter-form .form-label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.filter-form .form-control, .filter-form .form-select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-speed) ease;
+  font-size: 0.9rem;
+}
+
+.filter-form .form-control:focus, .filter-form .form-select:focus {
+  box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+  border-color: var(--primary-medium);
+}
+
+.filter-form .btn {
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  background: var(--primary-medium);
+  color: white;
+  transition: all var(--transition-speed) ease;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+}
+
+.filter-form .btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.filter-form .btn-reset {
+  background: #6c757d;
+}
+
+.filter-form .btn-reset:hover {
+  background: #5a6268;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  display: none;
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  color: #bdc3c7;
+  margin-bottom: 1.5rem;
+}
+
+.no-results-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+/* Treatment Info */
+.treatment-info {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px var(--shadow);
+  transition: all var(--transition-speed) ease;
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: none; /* Hidden by default */
+}
+
+.treatment-info:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px var(--shadow-strong);
+}
+
+.treatment-info h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.treatment-info p {
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+.treatment-price {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--success);
+  margin: 0.5rem 0;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-booking {
+  background: linear-gradient(135deg, var(--success), #20c997);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+  flex: 1;
+  text-align: center;
+}
+
+.btn-booking:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+}
+
+.btn-consultation {
+  background: linear-gradient(135deg, var(--accent), #c0392b);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  flex: 1;
+  text-align: center;
+}
+
+.btn-consultation:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+/* Consultation Section */
+.consultation-section {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: var(--light-text);
+  padding: 5rem 0;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.consultation-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: var(--light-text);
+}
+
+.consultation-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+  color: var(--light-text);
+}
+
+.consultation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+  background-color: transparent;
+  color: #25D366;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp:hover {
+  background-color: #25D369;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-consult {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-consult:hover {
+  background-color: #25D369;
+  color: white;
+  transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 2.25rem;
+  }
+  
+  .hospitals-grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .hospitals-grid {
+    gap: 1.25rem;
+  }
+  
+  .treatment-card {
+    padding: 1.5rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 3rem 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .hospitals-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .treatment-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .row.g-3 {
+    gap: 1rem;
+  }
+  
+  .col-md-3, .col-md-2, .col-md-1 {
+    width: 100%;
+  }
+  
+  .consultation-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn-whatsapp,
+  .btn-consult {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: 2rem 0;
+  }
+  
+  .hero-title {
+    font-size: 1.7rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .section-header {
+    margin-bottom: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  
+  .treatment-card {
+    padding: 1rem;
+  }
+  
+  .treatment-form .form-control, .treatment-form .form-select {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .treatment-form .btn {
+    padding: 0.6rem 1rem;
+  }
+  
+  .hospital-name {
+    font-size: 1.2rem;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .hospital-price {
+    font-size: 1.3rem;
+  }
+  
+  .consultation-title {
+    font-size: 2rem;
+  }
+}
+
+/* Popular Treatments */
+.popular-treatment {
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  transition: all var(--transition-speed) ease;
+  background: white;
+  color: var(--primary-dark);
+}
+
+.popular-treatment:hover {
+  background: var(--primary-medium);
+  color: white;
+  border-color: var(--primary-medium);
+  transform: translateY(-2px);
+}
+
+/* Comparison Controls */
+.comparison-controls {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px var(--shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border);
+}
+
+.comparison-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.comparison-description {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.comparison-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: end;
+}
+
+.comparison-select {
+  flex: 1;
+  min-width: 200px;
+}
+
+.comparison-btn {
+  background: var(--success);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all var(--transition-speed) ease;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+}
+
+.comparison-btn:hover {
+  background: #20c997;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+}
+
+.comparison-btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.selected-treatments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.selected-treatment {
+  background: var(--primary-medium);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.remove-treatment {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+</style>
+
+<div class="pricing-page">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Treatment Comparison</h1>
+        <p class="hero-subtitle">Compare treatments, hospitals, and pricing to make informed healthcare decisions</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Controls Section -->
+  <section class="treatment-section">
+    <div class="container">
+      <div class="comparison-controls">
+        <h2 class="comparison-title">Compare Treatments</h2>
+        <p class="comparison-description">Select 2 or more treatments to compare hospitals, pricing, facilities, and other details side by side.</p>
+        
+        <form id="comparisonForm" class="comparison-form">
+          <div class="comparison-select">
+            <label for="treatmentSelect" class="form-label">Select Treatments to Compare</label>
+            <select id="treatmentSelect" class="form-select" multiple size="5">
+              {% for treatment in treatments %}
+              <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+              {% endfor %}
+            </select>
+            <div class="form-text">Hold Ctrl (Cmd on Mac) to select multiple treatments</div>
+          </div>
+          <button type="submit" class="comparison-btn" id="compareBtn" disabled>Compare Selected Treatments</button>
+        </form>
+        
+        {% if is_comparison %}
+        <div class="selected-treatments mt-3">
+          <span>Comparing:</span>
+          {% for item in compared_treatments %}
+          <div class="selected-treatment">
+            {{ item.treatment.name }}
+            <button class="remove-treatment" data-treatment-id="{{ item.treatment.id }}">×</button>
+          </div>
+          {% endfor %}
+          <a href="{% url 'core:pricing_page' %}" class="btn btn-outline-secondary ms-2">Clear All</a>
+        </div>
+        {% endif %}
+      </div>
+      
+      {% if is_comparison %}
+      <!-- Comparison Results Section -->
+      <section class="comparison-section">
+        <div class="section-header">
+          <h2 class="section-title">Treatment Comparison</h2>
+          <p class="section-subtitle">Compare hospitals, pricing, and facilities for your selected treatments</p>
+        </div>
+        
+        <div class="comparison-container">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Features</th>
+                {% for item in compared_treatments %}
+                <th>{{ item.treatment.name }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Hospital Information Row -->
+              <tr>
+                <td><strong>Hospitals</strong></td>
+                {% for item in compared_treatments %}
+                <td>
+                  {% for hospital in item.hospitals %}
+                  <div class="hospital-item">
+                    <div class="hospital-name">{{ hospital.name }}</div>
+                    <div class="hospital-location">{{ hospital.city }}, {{ hospital.state }}</div>
+                    <div class="hospital-rating">
+                      {% for i in "12345" %}
+                        {% if forloop.counter <= hospital.rating|floatformat:"0"|add:"0" %}
+                          <i class="bi bi-star-fill text-warning"></i>
+                        {% else %}
+                          <i class="bi bi-star text-muted"></i>
+                        {% endif %}
+                      {% endfor %}
+                      <span class="ms-1">{{ hospital.rating }}</span>
+                    </div>
+                    <div class="hospital-price">₹{{ hospital.price|floatformat:0 }}</div>
+                    <div class="accreditations">
+                      {% if hospital.jci_accredited %}
+                      <span class="accreditation-badge jci">JCI</span>
+                      {% endif %}
+                      {% if hospital.nabh_accredited %}
+                      <span class="accreditation-badge nabh">NABH</span>
+                      {% endif %}
+                      {% if hospital.iso_certified %}
+                      <span class="accreditation-badge iso">ISO</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% empty %}
+                  <div class="text-muted">No hospitals found</div>
+                  {% endfor %}
+                </td>
+                {% endfor %}
+              </tr>
+              
+              <!-- Average Pricing Row -->
+              <tr>
+                <td><strong>Average Price</strong></td>
+                {% for item in compared_treatments %}
+                <td>
+                  {% if item.hospitals %}
+                    {% with total_price=item.hospitals|length|floatformat:"0" %}
+                      {% if total_price != "0" %}
+                        ₹{{ item.hospitals|sum:"price"|div:total_price|floatformat:0 }}
+                      {% else %}
+                        ₹0
+                      {% endif %}
+                    {% endwith %}
+                  {% else %}
+                    ₹0
+                  {% endif %}
+                </td>
+                {% endfor %}
+              </tr>
+              
+              <!-- Hospital Count Row -->
+              <tr>
+                <td><strong>Available Hospitals</strong></td>
+                {% for item in compared_treatments %}
+                <td>{{ item.hospitals|length }}</td>
+                {% endfor %}
+              </tr>
+              
+              <!-- Accreditation Summary Row -->
+              <tr>
+                <td><strong>Accreditations</strong></td>
+                {% for item in compared_treatments %}
+                <td>
+                  {% with jci_count=item.hospitals|sum:"jci_accredited"|floatformat:"0" nabh_count=item.hospitals|sum:"nabh_accredited"|floatformat:"0" iso_count=item.hospitals|sum:"iso_certified"|floatformat:"0" %}
+                    {% if jci_count != "0" %}JCI: {{ jci_count }}<br>{% endif %}
+                    {% if nabh_count != "0" %}NABH: {{ nabh_count }}<br>{% endif %}
+                    {% if iso_count != "0" %}ISO: {{ iso_count }}{% endif %}
+                    {% if jci_count == "0" and nabh_count == "0" and iso_count == "0" %}
+                      <span class="text-muted">No accreditations</span>
+                    {% endif %}
+                  {% endwith %}
+                </td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      {% else %}
+      <!-- Instructions Section -->
+      <div class="text-center py-5">
+        <i class="bi bi-arrow-down-circle text-primary" style="font-size: 3rem;"></i>
+        <h3 class="mt-3">Select Treatments to Compare</h3>
+        <p class="text-muted">Choose 2 or more treatments from the dropdown above to see a detailed comparison of hospitals, pricing, and facilities.</p>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Consultation Section -->
+  <section class="consultation-section">
+    <div class="container">
+      <h2 class="consultation-title">Need Personalized Advice?</h2>
+      <p class="consultation-subtitle">Get expert guidance on treatment options and hospital selection from our medical consultants.</p>
+      <div class="consultation-buttons">
+        <a href="https://wa.me/8851619647" class="btn-whatsapp" target="_blank">
+          <i class="bi bi-whatsapp me-2"></i> WhatsApp Us
+        </a>
+        <a href="/book/" class="btn-consult">
+          <i class="bi bi-calendar-check me-2"></i> Book Consultation
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const treatmentSelect = document.getElementById('treatmentSelect');
+  const compareBtn = document.getElementById('compareBtn');
+  const comparisonForm = document.getElementById('comparisonForm');
+  
+  // Enable compare button when selections change
+  treatmentSelect.addEventListener('change', function() {
+    const selectedOptions = Array.from(treatmentSelect.selectedOptions);
+    compareBtn.disabled = selectedOptions.length < 2;
+  });
+  
+  // Handle form submission
+  comparisonForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const selectedOptions = Array.from(treatmentSelect.selectedOptions);
+    if (selectedOptions.length < 2) {
+      alert('Please select at least 2 treatments to compare');
+      return;
+    }
+    
+    // Build URL with selected treatment IDs
+    const params = new URLSearchParams();
+    selectedOptions.forEach(option => {
+      params.append('compare', option.value);
+    });
+    
+    // Redirect to comparison page
+    window.location.href = '?' + params.toString();
+  });
+  
+  // Handle remove treatment buttons
+  document.querySelectorAll('.remove-treatment').forEach(button => {
+    button.addEventListener('click', function() {
+      const treatmentId = this.getAttribute('data-treatment-id');
+      
+      // Get current URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      // Remove the treatment ID from compare parameters
+      const compareParams = urlParams.getAll('compare');
+      const newCompareParams = compareParams.filter(id => id !== treatmentId);
+      
+      // Update URL parameters
+      urlParams.delete('compare');
+      newCompareParams.forEach(id => {
+        urlParams.append('compare', id);
+      });
+      
+      // Redirect with updated parameters
+      if (newCompareParams.length > 0) {
+        window.location.href = '?' + urlParams.toString();
+      } else {
+        window.location.href = window.location.pathname;
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

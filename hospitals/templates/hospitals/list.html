@@ -1,0 +1,254 @@
+﻿{% extends "base.html" %}
+{% load static %}
+{% block title %}Hospitals - TakeOpinion{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section style="background:linear-gradient(135deg,#0d1b2a 0%,#1a3c6e 60%,#1565c0 100%);padding:3.5rem 0 2.5rem;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <div class="d-inline-flex align-items-center gap-2 mb-3 px-3 py-1 rounded-pill" style="background:rgba(255,193,7,0.15);border:1px solid rgba(255,193,7,0.3);">
+          <i class="bi bi-award-fill text-warning" style="font-size:0.8rem;"></i>
+          <span style="color:#ffc107;font-size:0.78rem;font-weight:600;">JCI &amp; NABH Accredited Hospitals</span>
+        </div>
+        <h1 style="font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;color:#fff;margin-bottom:0.75rem;">Find the Right Medical Facility</h1>
+        <p style="color:rgba(255,255,255,0.7);font-size:0.95rem;max-width:500px;line-height:1.7;">Discover our verified hospitals and medical centers providing world-class healthcare with state-of-the-art facilities.</p>
+      </div>
+      <div class="col-lg-5 d-none d-lg-flex justify-content-end gap-3 mt-3 mt-lg-0">
+        <div class="text-center px-4 py-3 rounded-3" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);">
+          <div style="font-size:1.5rem;font-weight:800;color:#ffc107;">{{ hospitals|length }}+</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;">Hospitals</div>
+        </div>
+        <div class="text-center px-4 py-3 rounded-3" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);">
+          <div style="font-size:1.5rem;font-weight:800;color:#ffc107;">15+</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;">Countries</div>
+        </div>
+        <div class="text-center px-4 py-3 rounded-3" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);">
+          <div style="font-size:1.5rem;font-weight:800;color:#ffc107;">24/7</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.05em;">Support</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container py-5">
+  <div class="row g-4">
+
+    <!-- Sidebar Filters -->
+    <div class="col-lg-3">
+      <div class="card border-0 shadow-sm sticky-top" style="border-radius:16px;top:80px;">
+        <div class="card-header border-0 rounded-top-3 py-3 px-4" style="background:linear-gradient(135deg,#1565c0,#0d47a1);">
+          <h2 class="h6 mb-0 text-white fw-bold"><i class="bi bi-funnel-fill me-2"></i>Filter Hospitals</h2>
+        </div>
+        <div class="card-body p-4">
+          <form method="GET" action="">
+
+            <!-- Search -->
+            <div class="mb-4">
+              <label class="dl-filter-label">Search</label>
+              <div class="dl-search-wrap">
+                <i class="bi bi-search dl-search-icon"></i>
+                <input type="text" name="search" class="dl-search-input"
+                       placeholder="Name, city or country"
+                       value="{{ search_filter }}">
+              </div>
+            </div>
+
+            <!-- Treatment -->
+            <div class="mb-4">
+              <label class="dl-filter-label">Treatment</label>
+              <div class="dl-search-wrap">
+                <i class="bi bi-bandaid dl-search-icon text-success"></i>
+                <input type="text" name="treatment" class="dl-search-input"
+                       placeholder="e.g. Knee Replacement"
+                       value="{{ treatment_filter }}">
+              </div>
+            </div>
+
+            <!-- Accreditation -->
+            <div class="mb-4">
+              <label class="dl-filter-label">Accreditation</label>
+              <select name="accreditation" class="dl-select">
+                <option value="">Any Accreditation</option>
+                <option value="JCI" {% if accreditation_filter == 'JCI' %}selected{% endif %}>JCI Accredited</option>
+                <option value="NABH" {% if accreditation_filter == 'NABH' %}selected{% endif %}>NABH Accredited</option>
+                <option value="ISO" {% if accreditation_filter == 'ISO' %}selected{% endif %}>ISO Certified</option>
+              </select>
+            </div>
+
+            <!-- Rating -->
+            <div class="mb-4">
+              <label class="dl-filter-label">Rating</label>
+              <select name="rating" class="dl-select">
+                <option value="">All Ratings</option>
+                <option value="4.5" {% if rating_filter == '4.5' %}selected{% endif %}> 4.5+ stars</option>
+                <option value="4.0" {% if rating_filter == '4.0' %}selected{% endif %}> 4.0+ stars</option>
+                <option value="3.5" {% if rating_filter == '3.5' %}selected{% endif %}> 3.5+ stars</option>
+              </select>
+            </div>
+
+            <button type="submit" class="dl-filter-btn w-100 mb-2">
+              <i class="bi bi-search me-2"></i>Apply Filters
+            </button>
+            <a href="/hospitals/" class="dl-clear-btn w-100 d-block text-center">
+              <i class="bi bi-x-circle me-1"></i>Clear Filters
+            </a>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hospitals Grid -->
+    <div class="col-lg-9">
+
+      <!-- Results header -->
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+          <h2 class="h5 fw-bold text-dark mb-0">Medical Facilities</h2>
+          <p class="text-muted small mb-0">{{ hospitals|length }} hospital{{ hospitals|length|pluralize }} found</p>
+        </div>
+      </div>
+
+      {% if hospitals %}
+      <div class="row g-4">
+        {% for hospital in hospitals %}
+        <div class="col-sm-6 col-xl-4">
+          <div class="hl-card">
+
+            <!-- TakeOpinion Choice Badge -->
+            {% if hospital.is_takeopinion_choice %}
+            <div class="hl-choice-badge"><i class="bi bi-award-fill me-1"></i>TakeOpinion Choice</div>
+            {% endif %}
+
+            <!-- Hospital Image -->
+            {% if hospital.profile_picture %}
+            <img src="{{ hospital.profile_picture }}" alt="{{ hospital.name }}" class="hl-img"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="hl-img-placeholder" style="display:none;"><i class="bi bi-building-fill"></i></div>
+            {% else %}
+            <div class="hl-img-placeholder"><i class="bi bi-building-fill"></i></div>
+            {% endif %}
+
+            <!-- Card Body -->
+            <div class="hl-card-body">
+              <h3 class="hl-name">{{ hospital.name }}</h3>
+
+              <!-- Location -->
+              <p class="hl-location">
+                <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                {{ hospital.city|default:"" }}{% if hospital.city and hospital.state %}, {% endif %}{{ hospital.state|default:"" }}{% if hospital.country %}, {{ hospital.country }}{% endif %}
+              </p>
+
+              <!-- Rating + Beds -->
+              <div class="hl-stats">
+                <div class="hl-stat">
+                  <i class="bi bi-star-fill text-warning"></i>
+                  <span class="fw-bold">{{ hospital.rating|default:"N/A" }}</span>
+                </div>
+                {% if hospital.beds_count %}
+                <div class="hl-stat-divider"></div>
+                <div class="hl-stat">
+                  <i class="bi bi-hospital text-primary"></i>
+                  <span>{{ hospital.beds_count }} beds</span>
+                </div>
+                {% endif %}
+                {% if hospital.established_year %}
+                <div class="hl-stat-divider"></div>
+                <div class="hl-stat">
+                  <i class="bi bi-calendar3 text-secondary"></i>
+                  <span>Est. {{ hospital.established_year }}</span>
+                </div>
+                {% endif %}
+              </div>
+
+              <!-- Accreditation Badges -->
+              <div class="hl-accred-row">
+                {% if hospital.jci_accredited %}
+                <span class="hl-badge hl-badge-blue">JCI</span>
+                {% endif %}
+                {% if hospital.nabh_accredited %}
+                <span class="hl-badge hl-badge-green">NABH</span>
+                {% endif %}
+                {% if hospital.iso_certified %}
+                <span class="hl-badge hl-badge-orange">ISO</span>
+                {% endif %}
+              </div>
+
+              <!-- Starting Price -->
+              {% if hospital.starting_price %}
+              <div class="hl-price">
+                <i class="bi bi-currency-rupee"></i>{{ hospital.starting_price|floatformat:"0" }}
+                <span class="hl-price-label">starting price</span>
+              </div>
+              {% endif %}
+            </div>
+
+            <!-- Card Footer -->
+            {% if hospital.slug %}
+            <div class="hl-card-footer">
+              <a href="/hospitals/{{ hospital.slug }}/" class="hl-view-btn">
+                <i class="bi bi-building me-2"></i>View Hospital
+              </a>
+            </div>
+            {% endif %}
+
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% else %}
+      <div class="text-center py-5">
+        <div class="mb-3" style="font-size:3rem;color:#e5e7eb;"><i class="bi bi-building-x"></i></div>
+        <h3 class="h5 text-muted">No hospitals found</h3>
+        <p class="text-muted small">Try adjusting your filters or <a href="/hospitals/">clear all filters</a></p>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* Shared filter styles (same as doctors page) */
+.dl-filter-label { font-size:0.75rem; font-weight:700; color:#374151; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:0.4rem; }
+.dl-search-wrap { display:flex; align-items:center; background:#f3f4f6; border-radius:10px; padding:0.45rem 0.75rem; gap:0.4rem; border:1.5px solid transparent; transition:all 0.2s; }
+.dl-search-wrap:focus-within { background:#fff; border-color:#1565c0; }
+.dl-search-icon { color:#9ca3af; font-size:0.8rem; flex-shrink:0; }
+.dl-search-input { border:none; background:transparent; outline:none; font-size:0.85rem; color:#374151; width:100%; }
+.dl-search-input::placeholder { color:#9ca3af; }
+.dl-select { width:100%; background:#f3f4f6; border:1.5px solid transparent; border-radius:10px; padding:0.5rem 0.75rem; font-size:0.85rem; color:#374151; outline:none; transition:all 0.2s; appearance:none; cursor:pointer; }
+.dl-select:focus { background:#fff; border-color:#1565c0; }
+.dl-filter-btn { background:linear-gradient(135deg,#1565c0,#0d47a1); color:white; border:none; border-radius:10px; padding:0.6rem 1rem; font-size:0.875rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.dl-filter-btn:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(21,101,192,0.3); }
+.dl-clear-btn { color:#6b7280; font-size:0.82rem; text-decoration:none; padding:0.4rem; border-radius:8px; transition:all 0.2s; }
+.dl-clear-btn:hover { background:#f3f4f6; color:#374151; }
+/* Hospital card */
+.hl-card { background:#fff; border:1px solid #e8eaf6; border-radius:16px; overflow:hidden; transition:all 0.2s; height:100%; display:flex; flex-direction:column; position:relative; }
+.hl-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.1); border-color:#1565c0; }
+.hl-choice-badge { position:absolute; top:10px; left:10px; z-index:3; background:#ffc107; color:#0d1b2a; font-size:0.65rem; font-weight:700; padding:0.2rem 0.6rem; border-radius:50px; }
+.hl-img { width:100%; height:130px; object-fit:cover; }
+.hl-img-placeholder { height:130px; background:linear-gradient(135deg,#e8f0fe,#f0f4ff); display:flex; align-items:center; justify-content:center; font-size:2.5rem; color:#1565c0; }
+.hl-card-body { padding:1.25rem; flex:1; }
+.hl-name { font-size:0.9rem; font-weight:800; color:#0d1b2a; margin-bottom:0.3rem; line-height:1.3; }
+.hl-location { font-size:0.78rem; color:#718096; margin-bottom:0.75rem; }
+.hl-stats { display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem; flex-wrap:wrap; }
+.hl-stat { display:flex; align-items:center; gap:0.3rem; font-size:0.78rem; color:#374151; }
+.hl-stat-divider { width:1px; height:14px; background:#e5e7eb; }
+.hl-accred-row { display:flex; gap:0.3rem; flex-wrap:wrap; margin-bottom:0.75rem; }
+.hl-badge { font-size:0.65rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:4px; }
+.hl-badge-blue { background:#e8f0fe; color:#1565c0; }
+.hl-badge-green { background:#e8f5e9; color:#2e7d32; }
+.hl-badge-orange { background:#fff3e0; color:#e65100; }
+.hl-price { font-size:0.9rem; font-weight:800; color:#2e7d32; }
+.hl-price-label { font-size:0.7rem; color:#718096; font-weight:400; margin-left:2px; }
+.hl-card-footer { padding:0.75rem 1.25rem; border-top:1px solid #f3f4f6; }
+.hl-view-btn { display:block; text-align:center; background:linear-gradient(135deg,#1565c0,#0d47a1); color:white; font-size:0.82rem; font-weight:600; padding:0.55rem; border-radius:10px; text-decoration:none; transition:all 0.2s; }
+.hl-view-btn:hover { background:linear-gradient(135deg,#0d47a1,#0a3880); color:white; transform:translateY(-1px); }
+</style>
+
+{% endblock %}
