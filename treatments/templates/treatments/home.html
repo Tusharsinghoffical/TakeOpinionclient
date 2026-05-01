@@ -127,8 +127,7 @@
       </div>
 
       <!-- Categories with Treatments -->
-      {% for category in categories %}
-      {% with cat_treatments=category.treatments.all %}
+      {% for category, cat_treatments in categories_with_treatments %}
       {% if cat_treatments %}
       <div class="tl-category-block" id="cat-{{ category.slug }}" data-type="{{ category.type }}">
 
@@ -173,10 +172,9 @@
 
       </div>
       {% endif %}
-      {% endwith %}
       {% endfor %}
 
-      {% if not categories %}
+      {% if not categories_with_treatments %}
       <div class="text-center py-5">
         <div class="mb-3" style="font-size:3rem;color:#e5e7eb;"><i class="bi bi-bandaid"></i></div>
         <h3 class="h5 text-muted">No treatments found</h3>

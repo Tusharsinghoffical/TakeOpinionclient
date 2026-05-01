@@ -51,9 +51,24 @@ def treatments_home(request: HttpRequest, category_slug: Optional[str] = None) -
     # Remove duplicates if any filters were applied
     if search or hospital or doctor or hospital_id or doctor_id:
         treatments = treatments.distinct()  # type: ignore
-    
+
+    # Group filtered treatments by category, preserving the original categories ordering
+    treatments_by_category_id: dict = {}
+    for treatment in treatments:
+        cat_id = treatment.category_id
+        if cat_id not in treatments_by_category_id:
+            treatments_by_category_id[cat_id] = []
+        treatments_by_category_id[cat_id].append(treatment)
+
+    categories_with_treatments = [
+        (category, treatments_by_category_id[category.id])
+        for category in categories
+        if category.id in treatments_by_category_id
+    ]
+
     return render(request, "treatments/home.html", {
         "categories": categories,
+        "categories_with_treatments": categories_with_treatments,
         "treatments": treatments,
         "selected_category": category_slug,
         "search_filter": search,

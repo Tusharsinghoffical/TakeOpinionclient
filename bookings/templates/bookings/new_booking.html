@@ -1,1011 +1,433 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% block content %}
 <style>
-  /* ── Design tokens ── */
-  :root {
-    --primary: #1565c0;
-    --primary-dark: #0d47a1;
-    --dark: #0d1b2a;
-    --navy: #1a3c6e;
-    --success: #2e7d32;
-    --success-dark: #1b5e20;
-    --warning: #ffc107;
-    --card-border: #e8eaf6;
-  }
-
-  .new-booking-page {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #374151;
-    line-height: 1.6;
-  }
-
-  .booking-step {
-    display: none;
-  }
-
-  .booking-step.active {
-    display: block;
-  }
-
-  .step-indicator {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-    position: relative;
-  }
-
-  .step-indicator::before {
-    content: '';
-    position: absolute;
-    top: 15px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-color: var(--primary);
-    z-index: 1;
-  }
-
-  .step {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    flex: 1;
-  }
-
-  .step-circle {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: #d1d5db;
-    color: #6b7280;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 0.5rem;
-    font-weight: bold;
-    border: 2px solid #d1d5db;
-    font-size: 0.875rem;
-    transition: all 0.3s ease;
-  }
-
-  .step.active .step-circle {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    border-color: var(--primary);
-    box-shadow: 0 2px 8px rgba(21, 101, 192, 0.35);
-  }
-
-  .step.completed .step-circle {
-    background: linear-gradient(135deg, var(--success), var(--success-dark));
-    color: white;
-    border-color: var(--success);
-  }
-
-  .step-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #9ca3af;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  .step.active .step-label {
-    color: var(--primary);
-    font-weight: 700;
-  }
-
-  .step.completed .step-label {
-    color: var(--success);
-  }
-
-  .booking-card {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--card-border);
-    background: #fff;
-  }
-
-  .booking-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  }
-
-  .booking-card .card-header {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    border-radius: 16px 16px 0 0 !important;
-    border: none;
-  }
-
-  .booking-form .form-label {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #374151;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .booking-form .form-control, 
-  .booking-form .form-select {
-    border-radius: 10px;
-    padding: 0.6rem 0.9rem;
-    border: 1.5px solid var(--card-border);
-    font-size: 0.875rem;
-  }
-
-  .booking-form .form-control:focus, 
-  .booking-form .form-select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
-  }
-
-  .booking-form .input-group-text {
-    background-color: #e8f0fe;
-    border: 1.5px solid var(--card-border);
-    border-right: none;
-    border-radius: 10px 0 0 10px;
-  }
-
-  .booking-form .form-control {
-    border-left: none;
-    border-radius: 0 10px 10px 0;
-  }
-
-  .btn-prev {
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
-    color: #374151;
-    border-radius: 10px;
-    font-weight: 600;
-    padding: 0.6rem 1.4rem;
-    transition: all 0.2s ease;
-  }
-
-  .btn-prev:hover {
-    background: #e5e7eb;
-    border-color: #d1d5db;
-    color: #111827;
-  }
-
-  .btn-next {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    border: none;
-    color: white;
-    border-radius: 10px;
-    font-weight: 600;
-    padding: 0.6rem 1.4rem;
-    transition: all 0.2s ease;
-  }
-
-  .btn-next:hover {
-    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-    box-shadow: 0 4px 14px rgba(21, 101, 192, 0.35);
-    color: white;
-  }
-
-  .btn-submit {
-    background: linear-gradient(135deg, var(--success), var(--success-dark));
-    border: none;
-    color: white;
-    border-radius: 10px;
-    font-weight: 600;
-    padding: 0.6rem 1.4rem;
-    transition: all 0.2s ease;
-  }
-
-  .btn-submit:hover {
-    background: linear-gradient(135deg, var(--success-dark), var(--success));
-    box-shadow: 0 4px 14px rgba(46, 125, 50, 0.35);
-    color: white;
-  }
-
-  .hospital-card {
-    border-radius: 12px;
-    border: 1.5px solid var(--card-border);
-    background: #fff;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    transition: all 0.25s ease;
-    cursor: pointer;
-  }
-
-  .hospital-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(21, 101, 192, 0.12);
-  }
-
-  .hospital-card.selected {
-    border-color: var(--primary);
-    background: #e8f0fe;
-    box-shadow: 0 4px 16px rgba(21, 101, 192, 0.18);
-  }
-
-  .room-option-card {
-    border-radius: 12px;
-    border: 1.5px solid var(--card-border);
-    transition: all 0.25s ease;
-    cursor: pointer;
-    background: #fff;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    margin-bottom: 1rem;
-    padding: 1.5rem;
-  }
-
-  .room-option-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(21, 101, 192, 0.12);
-  }
-
-  .room-option-card.selected {
-    border-color: var(--primary);
-    background-color: #e8f0fe;
-    box-shadow: 0 4px 16px rgba(21, 101, 192, 0.18);
-  }
-
-  .room-option-card .room-name {
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-  }
-
-  .room-option-card .room-price {
-    font-weight: 700;
-    color: var(--primary);
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-  }
-
-  .room-option-card .room-description {
-    color: #6b7280;
-    font-size: 0.875rem;
-    margin-bottom: 1rem;
-  }
-
-  .room-option-card .room-features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .room-option-card .room-feature {
-    background: #f3f4f6;
-    color: #374151;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-
-  .price-tag {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.875rem;
-  }
-
-  /* Hero / section-title area */
-  .section-title {
-    background: linear-gradient(135deg, var(--dark) 0%, var(--navy) 100%);
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
-    color: #fff;
-    margin-bottom: 1.5rem !important;
-  }
-
-  .section-title i {
-    color: #90caf9;
-  }
-
-  .section-title h1 {
-    color: #fff;
-    font-weight: 700;
-  }
-
-  .section-title + p {
-    color: #6b7280;
-    font-size: 0.95rem;
-  }
-
-  .card-title {
-    color: #111827;
-    font-weight: 700;
-    font-size: 1rem;
-  }
-
-  .form-text {
-    color: #6b7280;
-    font-size: 0.8rem;
-  }
-
-  .booking-summary-card {
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
-  }
-
-  .summary-section {
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--card-border);
-  }
-
-  .summary-section:last-child {
-    border-bottom: none;
-  }
-
-  .summary-title {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #374151;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.75rem;
-  }
-
-  .summary-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-  }
-
-  .summary-label {
-    color: #6b7280;
-    font-size: 0.875rem;
-  }
-
-  .summary-value {
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: #111827;
-  }
-
-  .cost-breakdown-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.25rem;
-    padding-left: 1rem;
-  }
-
-  .total-row {
-    border-top: 2px solid var(--card-border);
-    padding-top: 0.5rem;
-    margin-top: 0.5rem;
-    font-weight: 700;
-  }
-
-  .discount-badge {
-    background-color: var(--success);
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  .final-price {
-    color: var(--success);
-    font-size: 1.25rem;
-    font-weight: 700;
-  }
-
-  .receipt-header {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    border-radius: 16px 16px 0 0;
-    padding: 1.75rem 1.5rem;
-    text-align: center;
-  }
-
-  .receipt-body {
-    padding: 1.5rem;
-    background: #fff;
-  }
-
-  .receipt-section {
-    margin-bottom: 1.5rem;
-  }
-
-  .receipt-section-title {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #374151;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 2px solid var(--card-border);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .receipt-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.75rem;
-    padding: 0.5rem 0.6rem;
-    border-radius: 8px;
-  }
-
-  .receipt-item:hover {
-    background-color: #f9fafb;
-  }
-
-  .receipt-label {
-    color: #6b7280;
-    font-weight: 500;
-    font-size: 0.875rem;
-  }
-
-  .receipt-value {
-    font-weight: 600;
-    color: #111827;
-    font-size: 0.875rem;
-  }
-
-  .receipt-total {
-    background-color: #e8f0fe;
-    border: 1.5px solid var(--primary);
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--primary);
-  }
-
-  .receipt-discount {
-    color: var(--success);
-    font-weight: 700;
-  }
-
-  .receipt-amenities-list {
-    max-height: 200px;
-    overflow-y: auto;
-  }
-
-  .receipt-amenity-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px dashed var(--card-border);
-  }
-
-  .receipt-amenity-item:last-child {
-    border-bottom: none;
-  }
-
-  .receipt-footer {
-    background-color: #f9fafb;
-    border-radius: 0 0 16px 16px;
-    padding: 1rem 1.5rem;
-    text-align: center;
-    border-top: 1px solid var(--card-border);
-    color: #6b7280;
-    font-size: 0.875rem;
-  }
-
-  .advance-payment-box {
-    background-color: #fffbeb;
-    border: 1px solid #fde68a;
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    margin: 1rem 0;
-  }
-
-  /* Alert info override */
-  .alert-info {
-    background: #e8f0fe;
-    border: 1px solid #c5d5f5;
-    border-radius: 10px;
-    color: var(--primary);
-  }
-
-  /* Card generic */
-  .card {
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  }
-
-  @media (max-width: 768px) {
-    .new-booking-page {
-      padding: 1rem;
-    }
-
-    .section-title {
-      padding: 1.5rem 1rem;
-      border-radius: 12px;
-    }
-    
-    .booking-card {
-      margin-bottom: 1rem;
-    }
-    
-    .booking-form .form-control, 
-    .booking-form .form-select {
-      padding: 0.5rem 0.75rem;
-    }
-    
-    .step-indicator::before {
-      top: 12px;
-    }
-    
-    .step-circle {
-      width: 24px;
-      height: 24px;
-      font-size: 0.75rem;
-    }
-    
-    .room-option-card {
-      padding: 1rem;
-    }
-  }
+:root{--bk-blue:#0d6efd;--bk-blue-dark:#0a58ca;--bk-bg:#f0f4f8;--bk-card:#fff;--bk-text:#1e293b;--bk-muted:#64748b;--bk-border:#e2e8f0;--bk-success:#16a34a;--bk-success-dark:#15803d;}
+body{background:var(--bk-bg);}
+.bk-topbar{background:linear-gradient(135deg,#0d1b2a 0%,#1a3c6e 100%);color:#fff;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.bk-topbar-title{font-size:1.4rem;font-weight:700;margin:0;line-height:1.2;}
+.bk-topbar-title span{display:block;font-size:.85rem;font-weight:400;opacity:.75;margin-top:.15rem;}
+.bk-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.1rem;border-radius:8px;font-size:.875rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all .2s;}
+.bk-btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5);}.bk-btn-outline:hover{background:rgba(255,255,255,.12);color:#fff;}
+.bk-main{max-width:900px;margin:0 auto;padding:2rem 1.5rem;}
+@media(max-width:600px){.bk-topbar{padding:1rem;}.bk-main{padding:1.25rem 1rem;}}
+.bk-stepper{display:flex;align-items:center;margin-bottom:2rem;position:relative;}
+.bk-stepper::before{content:'';position:absolute;top:18px;left:18px;right:18px;height:2px;background:var(--bk-border);z-index:0;}
+.bk-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;}
+.bk-step-circle{width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid var(--bk-border);color:var(--bk-muted);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;transition:all .25s;margin-bottom:.4rem;}
+.bk-step.active .bk-step-circle{background:#0d6efd;border-color:#0d6efd;color:#fff;box-shadow:0 0 0 4px rgba(13,110,253,.15);}
+.bk-step.completed .bk-step-circle{background:#16a34a;border-color:#16a34a;color:#fff;}
+.bk-step-label{font-size:.72rem;font-weight:700;color:var(--bk-muted);text-transform:uppercase;letter-spacing:.06em;}
+.bk-step.active .bk-step-label{color:#0d6efd;}
+.bk-step.completed .bk-step-label{color:#16a34a;}
+.booking-step{display:none;}.booking-step.active{display:block;}
+.bk-card{background:#fff;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);border:1px solid var(--bk-border);overflow:hidden;margin-bottom:1.25rem;}
+.bk-card-header{padding:1rem 1.5rem;border-bottom:1px solid var(--bk-border);display:flex;align-items:center;gap:.6rem;}
+.bk-card-header-icon{width:32px;height:32px;border-radius:8px;background:#dbeafe;color:#1d4ed8;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.bk-card-header-title{font-size:1rem;font-weight:700;color:var(--bk-text);}
+.bk-card-header-sub{font-size:.8rem;color:var(--bk-muted);}
+.bk-card-body{padding:1.5rem;}
+.bk-label{display:block;font-size:.78rem;font-weight:700;color:var(--bk-text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;}
+.bk-input,.bk-select,.bk-textarea{width:100%;padding:.6rem .9rem;border:1.5px solid var(--bk-border);border-radius:8px;font-size:.875rem;color:var(--bk-text);transition:border-color .2s;outline:none;background:#fff;}
+.bk-input:focus,.bk-select:focus,.bk-textarea:focus{border-color:#0d6efd;box-shadow:0 0 0 3px rgba(13,110,253,.1);}
+.bk-form-group{margin-bottom:1.1rem;}
+.bk-form-hint{font-size:.78rem;color:var(--bk-muted);margin-top:.3rem;}
+.bk-info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:.85rem 1rem;font-size:.875rem;color:#1e40af;display:flex;gap:.6rem;align-items:flex-start;margin-bottom:1.25rem;}
+.bk-info-box i{flex-shrink:0;margin-top:.1rem;}
+.bk-nav{display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--bk-border);margin-top:1.5rem;}
+.bk-btn-prev{background:#f1f5f9;border:1.5px solid var(--bk-border);color:var(--bk-text);border-radius:8px;font-weight:600;padding:.55rem 1.25rem;font-size:.875rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .2s;}
+.bk-btn-prev:hover{background:#e2e8f0;}
+.bk-btn-next{background:#0d6efd;border:none;color:#fff;border-radius:8px;font-weight:600;padding:.55rem 1.25rem;font-size:.875rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .2s;}
+.bk-btn-next:hover{background:#0a58ca;box-shadow:0 4px 12px rgba(13,110,253,.3);}
+.bk-btn-submit{background:#16a34a;border:none;color:#fff;border-radius:8px;font-weight:600;padding:.55rem 1.4rem;font-size:.875rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;transition:all .2s;}
+.bk-btn-submit:hover{background:#15803d;box-shadow:0 4px 12px rgba(22,163,74,.3);}
+.room-option-card{border-radius:12px;border:1.5px solid var(--bk-border);background:#fff;padding:1.25rem;cursor:pointer;transition:all .2s;margin-bottom:.75rem;}
+.room-option-card:hover{border-color:#0d6efd;box-shadow:0 4px 16px rgba(13,110,253,.1);}
+.room-option-card.selected{border-color:#0d6efd;background:#eff6ff;}
+.room-name{font-weight:700;color:var(--bk-text);margin-bottom:.25rem;}
+.room-price{font-weight:700;color:#0d6efd;font-size:1.15rem;margin-bottom:.5rem;}
+.room-description{color:var(--bk-muted);font-size:.85rem;margin-bottom:.75rem;}
+.room-features{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.75rem;}
+.room-feature{background:#f1f5f9;color:var(--bk-text);padding:.2rem .65rem;border-radius:20px;font-size:.75rem;font-weight:600;}
+.hospital-card{border-radius:12px;border:1.5px solid var(--bk-border);background:#fff;padding:1.1rem;cursor:pointer;transition:all .2s;}
+.hospital-card:hover{border-color:#0d6efd;box-shadow:0 4px 16px rgba(13,110,253,.1);}
+.hospital-card.selected{border-color:#0d6efd;background:#eff6ff;}
+.bk-amenity-check{display:flex;align-items:center;gap:.6rem;padding:.5rem .75rem;border-radius:8px;cursor:pointer;transition:background .15s;font-size:.875rem;}
+.bk-amenity-check:hover{background:#f8fafc;}
+.bk-amenity-check input{width:16px;height:16px;cursor:pointer;accent-color:#0d6efd;}
+.bk-receipt{border-radius:14px;overflow:hidden;border:1px solid var(--bk-border);}
+.bk-receipt-header{background:linear-gradient(135deg,#0d6efd,#0a58ca);color:#fff;padding:1.5rem;text-align:center;}
+.bk-receipt-header h4{margin:0;font-weight:700;}
+.bk-receipt-header p{margin:.25rem 0 0;opacity:.8;font-size:.875rem;}
+.bk-receipt-body{padding:1.25rem;background:#fff;}
+.bk-receipt-section{padding:.75rem 0;border-bottom:1px solid var(--bk-border);}
+.bk-receipt-section:last-child{border-bottom:none;}
+.bk-receipt-section-title{font-size:.72rem;font-weight:700;color:var(--bk-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.65rem;}
+.bk-receipt-row{display:flex;justify-content:space-between;align-items:center;padding:.3rem 0;font-size:.875rem;}
+.bk-receipt-label{color:var(--bk-muted);}
+.bk-receipt-value{font-weight:600;color:var(--bk-text);}
+.bk-receipt-discount{font-weight:700;color:#16a34a;}
+.bk-receipt-total{font-weight:700;font-size:1rem;color:#0d6efd;padding:.5rem .75rem;background:#eff6ff;border-radius:8px;margin-top:.5rem;}
+.bk-advance-box{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:1rem 1.25rem;margin:1rem 0;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
+.bk-advance-box .label{font-weight:700;font-size:.9rem;color:#92400e;}
+.bk-advance-box .sub{font-size:.8rem;color:#b45309;margin-top:.15rem;}
+.bk-advance-box .amount{font-size:1.25rem;font-weight:700;color:#0d6efd;}
+.bk-receipt-footer{background:#f8fafc;padding:.85rem 1.25rem;text-align:center;font-size:.8rem;color:var(--bk-muted);border-top:1px solid var(--bk-border);}
+.bk-terms-check{display:flex;align-items:flex-start;gap:.6rem;padding:.75rem;background:#f8fafc;border-radius:8px;border:1px solid var(--bk-border);margin-bottom:1rem;}
+.bk-terms-check input{width:16px;height:16px;margin-top:.15rem;cursor:pointer;accent-color:#0d6efd;flex-shrink:0;}
+.bk-terms-check label{font-size:.875rem;color:var(--bk-text);cursor:pointer;}
+.bk-amenities-grid{display:grid;grid-template-columns:1fr 1fr;gap:.25rem;}
+@media(max-width:600px){.bk-amenities-grid{grid-template-columns:1fr;}}
+.bk-rooms-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+@media(max-width:600px){.bk-rooms-grid{grid-template-columns:1fr;}}
 </style>
 
-<div class="container py-5 new-booking-page">
-  <div class="row justify-content-center">
-    <div class="col-lg-10">
-      <div class="section-title mb-4 text-center">
-        <i class="bi bi-calendar-check display-5 mb-3"></i>
-        <h1 class="h2 mb-0">Medical Travel Booking</h1>
-      </div>
-      
-      <p class="mb-4 text-center lead">Complete your medical travel arrangements in simple steps</p>
-      
-      <!-- Step Indicator -->
-      <div class="step-indicator">
-        <div class="step active" data-step="1">
-          <div class="step-circle">1</div>
-          <div class="step-label">Treatment</div>
-        </div>
-        <div class="step" data-step="2">
-          <div class="step-circle">2</div>
-          <div class="step-label">Doctor</div>
-        </div>
-        <div class="step" data-step="3">
-          <div class="step-circle">3</div>
-          <div class="step-label">Hospitals</div>
-        </div>
-        <div class="step" data-step="4">
-          <div class="step-circle">4</div>
-          <div class="step-label">Room</div>
-        </div>
-        <div class="step" data-step="5">
-          <div class="step-circle">5</div>
-          <div class="step-label">Booking</div>
-        </div>
-      </div>
-      
-      <div class="card border-0 shadow-sm booking-card">
-        <div class="card-body">
-          <form id="newBookingForm" class="booking-form" method="POST">
-            {% csrf_token %}
-            
-            <!-- Step 1: Treatment Selection -->
-            <div class="booking-step active" id="step-1">
-              <h5 class="card-title mb-4">Step 1: Select Treatment</h5>
-              
-              <div class="mb-4">
-                <label class="form-label fw-semibold">Type of Treatment <span class="text-danger">*</span></label>
-                <select class="form-select form-control-lg" id="treatmentSelect" name="treatment" required>
-                  <option value="">Select Treatment</option>
-                  {% for treatment in treatments %}
-                  <option value="{{ treatment.id }}" {% if selected_treatment and selected_treatment.id == treatment.id %}selected{% endif %}>{{ treatment.name }}</option>
-                  {% endfor %}
-                </select>
-                <div class="form-text">Choose the medical treatment you're interested in</div>
-              </div>
-              
-              <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-next" id="nextStep1">
-                  <i class="bi bi-arrow-right me-2"></i>Next: Select Doctor (Optional)
-                </button>
-              </div>
-            </div>
-            
-            <!-- Step 2: Doctor Selection (Optional) -->
-            <div class="booking-step" id="step-2">
-              <h5 class="card-title mb-4">Step 2: Select Doctor (Optional)</h5>
-              
-              <div class="alert alert-info mb-4">
-                <i class="bi bi-info-circle me-2"></i>
-                <strong>Doctor Selection is Optional</strong>
-                <p class="mb-0 mt-2">You can select a specific doctor for your treatment, or we can recommend the best doctor based on your selected hospital. If you're unsure, you can skip this step.</p>
-              </div>
-              
-              <div class="mb-4">
-                <label class="form-label fw-semibold">Preferred Doctor</label>
-                <select class="form-select form-control-lg" id="doctorSelect" name="preferred_doctor">
-                  <option value="">No preference (we'll recommend)</option>
-                  <!-- Doctors will be populated dynamically based on selected treatment -->
-                </select>
-                <div class="form-text">Select a specific doctor or leave blank for our recommendation</div>
-              </div>
-              
-              <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-prev" id="prevStep2">
-                  <i class="bi bi-arrow-left me-2"></i>Back
-                </button>
-                <button type="button" class="btn btn-next" id="nextStep2">
-                  <i class="bi bi-arrow-right me-2"></i>Next: View Hospitals
-                </button>
-              </div>
-            </div>
-            
-            <!-- Step 3: Hospital Selection with Pricing -->
-            <div class="booking-step" id="step-3">
-              <h5 class="card-title mb-4">Step 3: Select Hospital</h5>
-              
-              <div class="mb-4">
-                <label class="form-label fw-semibold">Preferred Booking Dates</label>
-                <input type="date" class="form-control form-control-lg" id="preferredDate" name="preferred_date" min="{% now "Y-m-d" %}">
-                <div class="form-text">Select your preferred date for the treatment</div>
-              </div>
-              
-              <div class="mb-4">
-                <h6 class="mb-3">Hospitals Offering This Treatment</h6>
-                <div id="hospitalsList" class="row g-3">
-                  <!-- Hospitals will be populated dynamically -->
-                  <div class="col-12 text-center py-5">
-                    <div class="text-muted">Please select a treatment and doctor first</div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-prev" id="prevStep3">
-                  <i class="bi bi-arrow-left me-2"></i>Back
-                </button>
-                <button type="button" class="btn btn-next" id="nextStep3" disabled>
-                  <i class="bi bi-arrow-right me-2"></i>Next: Select Room
-                </button>
-              </div>
-            </div>
-            
-            <!-- Step 4: Room Options Selection -->
-            <div class="booking-step" id="step-4">
-              <h5 class="card-title mb-4">Step 4: Select Room Options</h5>
-              
-              <div class="alert alert-info mb-4">
-                <i class="bi bi-info-circle me-2"></i>
-                <strong>Room Selection</strong>
-                <p class="mb-0 mt-2">Choose your preferred accommodation during your hospital stay. All rooms include 2 days of accommodation.</p>
-              </div>
-              
-              <div class="mb-4">
-                <h6 class="mb-3">Selected Hospital: <span id="selectedHospitalNameStep4" class="text-primary"></span></h6>
-                <div class="alert alert-info">
-                  <i class="bi bi-info-circle me-2"></i>Estimated treatment cost: <span id="treatmentCostStep4" class="fw-bold"></span>
-                </div>
-              </div>
-              
+﻿<div class="bk-topbar">
+  <div class="bk-topbar-title">
+    Finalize Your Medical Travel Booking
+    <span>Complete your medical travel arrangements by providing details about your preferred treatment, doctor, and hospital.</span>
+  </div>
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+    <a href="/" class="bk-btn bk-btn-outline"><i class="bi bi-house"></i> Back to Home</a>
+    <a href="/treatments/" class="bk-btn bk-btn-outline"><i class="bi bi-bandaid"></i> Explore Treatments</a>
+  </div>
+</div>
 
-              
-              <div class="mb-4">
-                <h6 class="mb-3">Room Options</h6>
-                <div class="row g-3">
-                  <!-- Normal Room Option -->
-                  <div class="col-md-6">
-                    <div class="room-option-card" data-room-type="normal" data-room-cost="2500">
-                      <div class="room-name">Normal Room</div>
-                      <div class="room-price">₹2,500<small class="text-muted"> Per Day</small></div>
-                      <div class="room-description
-                      ">Basic accommodation with essential amenities for a comfortable stay.</div>
-                      <div class="room-features">
-                        <span class="room-feature">Basic Bed</span>
-                        <span class="room-feature">Shared Bathroom</span>
-                        <span class="room-feature">Basic TV</span>
-                        <span class="room-feature">Free Wi-Fi</span>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="room_service" id="normalRoom" value="normal">
-                        <label class="form-check-label fw-semibold" for="normalRoom">Select Normal Room</label>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Standard Room Option -->
-                  <div class="col-md-6">
-                    <div class="room-option-card" data-room-type="standard" data-room-cost="4000">
-                      <div class="room-name">Standard Room</div>
-                      <div class="room-price">₹4,000<small class="text-muted"> Per Day</small></div>
-                      <div class="room-description">Comfortable accommodation with additional amenities for enhanced comfort.</div>
-                      <div class="room-features">
-                        <span class="room-feature">Comfort Bed</span>
-                        <span class="room-feature">Private Bathroom</span>
-                        <span class="room-feature">TV & AC</span>
-                        <span class="room-feature">Free Wi-Fi</span>
-                        <span class="room-feature">Room Service</span>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="room_service" id="standardRoom" value="standard">
-                        <label class="form-check-label fw-semibold" for="standardRoom">Select Standard Room</label>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Premium Room Option -->
-                  <div class="col-md-6">
-                    <div class="room-option-card" data-room-type="premium" data-room-cost="6500">
-                      <div class="room-name">Premium Room</div>
-                      <div class="room-price">₹6,500<small class="text-muted"> Per Day</small></div>
-                      <div class="room-description">Premium accommodation with luxury amenities for a superior experience.</div>
-                      <div class="room-features">
-                        <span class="room-feature">Premium Bed</span>
-                        <span class="room-feature">Luxury Bathroom</span>
-                        <span class="room-feature">Smart TV</span>
-                        <span class="room-feature">AC & Mini Bar</span>
-                        <span class="room-feature">24/7 Room Service</span>
-                        <span class="room-feature">Premium Toiletries</span>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="room_service" id="premiumRoom" value="premium">
-                        <label class="form-check-label fw-semibold" for="premiumRoom">Select Premium Room</label>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Deluxe Room Option -->
-                  <div class="col-md-6">
-                    <div class="room-option-card" data-room-type="deluxe" data-room-cost="9000">
-                      <div class="room-name">Deluxe Room</div>
-                      <div class="room-price">₹9,000<small class="text-muted"> Per Day</small></div>
-                      <div class="room-description">Luxury suite with premium amenities for the ultimate comfort experience.</div>
-                      <div class="room-features">
-                        <span class="room-feature">King Size Bed</span>
-                        <span class="room-feature">Luxury Suite</span>
-                        <span class="room-feature">Premium TV & Sound</span>
-                        <span class="room-feature">AC, Mini Bar & Safe</span>
-                        <span class="room-feature">24/7 Premium Service</span>
-                        <span class="room-feature">Luxury Toiletries</span>
-                        <span class="room-feature">Sofa & Work Desk</span>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="room_service" id="deluxeRoom" value="deluxe">
-                        <label class="form-check-label fw-semibold" for="deluxeRoom">Select Deluxe Room</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="mb-4">
-                <h6 class="mb-3">Additional Amenities</h6>
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="privateRoom" name="amenities" value="private_room">
-                      <label class="form-check-label" for="privateRoom">
-                        <i class="bi bi-check-circle-fill text-success me-2"></i>Private Patient Rooms
-                      </label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="familyAccommodation" name="amenities" value="family_accommodation">
-                      <label class="form-check-label" for="familyAccommodation">
-                        <i class="bi bi-check-circle-fill text-success me-2"></i>Family Accommodation
-                      </label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="wifi" name="amenities" value="wifi">
-                      <label class="form-check-label" for="wifi">
-                        <i class="bi bi-check-circle-fill text-success me-2"></i>Free Wi-Fi
-                      </label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="ac" name="amenities" value="ac">
-                      <label class="form-check-label" for="ac">
-                        <i class="bi bi-check-circle-fill text-success me-2"></i>Air Conditioning
-                      </label>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="tv" name="amenities" value="tv">
-                      <label class="form-check-label" for="tv">
-                        <i class="bi bi-check-circle-fill text-success me-2"></i>Television
-                      </label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="roomService" name="amenities" value="room_service">
-                      <label class="form-check-label" for="roomService">
-                        <i class="bi bi-check-circle-fill text-success me-2"></i>24/7 Room Service
-                      </label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="wheelchair" name="amenities" value="wheelchair">
-                      <label class="form-check-label" for="wheelchair">
-                        <i class="bi bi-check-circle-fill text-success me-2"></i>Wheelchair Accessibility
-                      </label>
-                    </div>
-                    <div class="form-check mb-2">
-                      <input class="form-check-input" type="checkbox" id="pickupDrop" name="amenities" value="pickup_drop">
-                      <label class="form-check-label" for="pickupDrop">
-                        <i class="bi bi-check-circle-fill text-success me-2"></i>Pickup/Drop Facility
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-prev" id="prevStep4">
-                  <i class="bi bi-arrow-left me-2"></i>Back
-                </button>
-                <button type="button" class="btn btn-next" id="nextStep4">
-                  <i class="bi bi-arrow-right me-2"></i>Next: Confirm Booking
-                </button>
-              </div>
-            </div>
-            
-            <!-- Step 5: Booking Confirmation -->
-            <div class="booking-step" id="step-5">
-              <h5 class="card-title mb-4">Step 5: Confirm Booking</h5>
-              
-              <div class="mb-4">
-                <div class="card booking-summary-card">
-                  <div class="receipt-header">
-                    <h4 class="mb-0"><i class="bi bi-receipt me-2"></i>Booking Receipt</h4>
-                    <p class="mb-0 mt-2">TakeOpinion Medical Services</p>
-                  </div>
-                  <div class="receipt-body">
-                    <!-- Booking Details -->
-                    <div class="receipt-section">
-                      <h5 class="receipt-section-title">Booking Details</h5>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Treatment:</span>
-                        <span class="receipt-value" id="summaryTreatment"></span>
-                      </div>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Doctor:</span>
-                        <span class="receipt-value" id="summaryDoctor">Not specified</span>
-                      </div>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Hospital:</span>
-                        <span class="receipt-value" id="summaryHospital"></span>
-                      </div>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Preferred Date:</span>
-                        <span class="receipt-value" id="summaryDate"></span>
-                      </div>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Room Type:</span>
-                        <span class="receipt-value" id="summaryRoomType">Not selected</span>
-                      </div>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Length of Stay:</span>
-                        <span class="receipt-value" id="summaryNights">Not specified</span>
-                      </div>
-                    </div>
-                    
-                    <!-- Cost Breakdown -->
-                    <div class="receipt-section">
-                      <h5 class="receipt-section-title">Cost Breakdown</h5>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Treatment Cost:</span>
-                        <span class="receipt-value" id="treatmentCostSummary">₹0</span>
-                      </div>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Doctor Consultation:</span>
-                        <span class="receipt-value" id="doctorCostSummary">₹0</span>
-                      </div>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Hospital Stay:</span>
-                        <span class="receipt-value" id="hospitalStayCostSummary">₹0</span>
-                      </div>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Selected Amenities:</span>
-                        <span class="receipt-value" id="amenitiesCostSummary">₹0</span>
-                      </div>
-                    </div>
-                    
-                    <!-- Original Hospital Price -->
-                    <div class="receipt-section">
-                      <h5 class="receipt-section-title">Original Hospital Price</h5>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Total without Discount:</span>
-                        <span class="receipt-value" id="originalHospitalPrice">₹0</span>
-                      </div>
-                    </div>
-                    
-                    <!-- TakeOpinion Price with Discount -->
-                    <div class="receipt-section">
-                      <h5 class="receipt-section-title">TakeOpinion Price</h5>
-                      <div class="receipt-item">
-                        <span class="receipt-label">Original Total:</span>
-                        <span class="receipt-value" id="originalTotalCost">₹0</span>
-                      </div>
-                      <div class="receipt-item">
-                        <span class="receipt-label">TakeOpinion Discount (15%):</span>
-                        <span class="receipt-discount" id="discountAmount">₹0</span>
-                      </div>
-                      <div class="receipt-item receipt-total">
-                        <span class="receipt-label">TakeOpinion Final Price:</span>
-                        <span class="receipt-value" id="summaryCost">₹0</span>
-                      </div>
-                    </div>
-                    
-                    <!-- Total Amount -->
-                    <div class="receipt-section">
-                      <div class="receipt-item receipt-total">
-                        <span class="receipt-label">Total Amount:</span>
-                        <span class="receipt-value" id="totalAmountDisplay">₹0</span>
-                      </div>
-                    </div>
-                    
-                    <!-- Selected Amenities List -->
-                    <div class="receipt-section">
-                      <h5 class="receipt-section-title">Selected Amenities</h5>
-                      <div class="receipt-amenities-list" id="summaryAmenities">
-                        <!-- Amenities will be populated here -->
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Advance Payment Box -->
-                  <div class="advance-payment-box mx-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h6 class="mb-0">Advance Payment Required</h6>
-                        <p class="mb-0 small">A small advance payment is required to confirm your booking</p>
-                      </div>
-                      <div class="text-end">
-                        <div class="h5 mb-0 text-primary" id="advanceAmount">₹0.00</div>
-                        <div class="small">10% of total</div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div class="receipt-footer">
-                    <p class="mb-0 small">Thank you for choosing TakeOpinion. Your booking reference number will be sent to your email.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="mb-4">
-                <div class="alert alert-warning">
-                  <i class="bi bi-exclamation-triangle me-2"></i>
-                  <strong>Advance Payment Required</strong>
-                  <p class="mb-0 mt-2">A small advance payment of <span id="advanceAmount" class="fw-bold"></span> is required to confirm your booking and secure your preferred dates.</p>
-                </div>
-              </div>
-              
-              <div class="mb-4">
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="checkbox" id="termsCheck" name="agree_terms" required>
-                  <label class="form-check-label" for="termsCheck">
-                    I agree to the <a href="{% url 'terms' %}" class="text-decoration-none">Terms of Service</a> and <a href="{% url 'privacy' %}" class="text-decoration-none">Privacy Policy</a> <span class="text-danger">*</span>
-                  </label>
-                </div>
-              </div>
-              
-              <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-prev" id="prevStep5">
-                  <i class="bi bi-arrow-left me-2"></i>Back
-                </button>
-                <button type="submit" class="btn btn-submit" id="submitBooking">
-                  <i class="bi bi-credit-card me-2"></i>Pay Advance & Confirm Booking
-                </button>
-              </div>
-            </div>
-            
-            <!-- Hidden fields to store selected values -->
-            <input type="hidden" id="selectedTreatmentId" name="treatment_id">
-            <input type="hidden" id="selectedDoctorId" name="doctor_id">
-            <input type="hidden" id="selectedHospitalId" name="hospital_id">
-            <input type="hidden" id="selectedAmenities" name="selected_amenities">
-            <input type="hidden" id="totalAmount" name="total_amount">
-          </form>
-        </div>
-      </div>
+<div class="bk-main">
+
+  <!-- Step indicator -->
+  <div class="bk-stepper">
+    <div class="bk-step active" data-step="1">
+      <div class="bk-step-circle">1</div>
+      <div class="bk-step-label">Treatment</div>
+    </div>
+    <div class="bk-step" data-step="2">
+      <div class="bk-step-circle">2</div>
+      <div class="bk-step-label">Doctor</div>
+    </div>
+    <div class="bk-step" data-step="3">
+      <div class="bk-step-circle">3</div>
+      <div class="bk-step-label">Hospital</div>
+    </div>
+    <div class="bk-step" data-step="4">
+      <div class="bk-step-circle">4</div>
+      <div class="bk-step-label">Room</div>
+    </div>
+    <div class="bk-step" data-step="5">
+      <div class="bk-step-circle">5</div>
+      <div class="bk-step-label">Confirm</div>
     </div>
   </div>
+
+  <div class="bk-card">
+    <form id="newBookingForm" method="POST">
+      {% csrf_token %}
+
+      <!-- Step 1: Treatment -->
+      <div class="booking-step active" id="step-1">
+        <div class="bk-card-header">
+          <div class="bk-card-header-icon"><i class="bi bi-bandaid"></i></div>
+          <div>
+            <div class="bk-card-header-title">Costing</div>
+            <div class="bk-card-header-sub">Provide your preferences to help us find the best medical care for you</div>
+          </div>
+        </div>
+        <div class="bk-card-body">
+          <div class="bk-form-group">
+            <label class="bk-label" for="treatmentSelect">Type of Treatment <span style="color:#dc2626;">*</span></label>
+            <select class="bk-select" id="treatmentSelect" name="treatment" required>
+              <option value="">Select Treatment</option>
+              {% for treatment in treatments %}
+              <option value="{{ treatment.id }}" {% if selected_treatment and selected_treatment.id == treatment.id %}selected{% endif %}>{{ treatment.name }}</option>
+              {% endfor %}
+            </select>
+            <div class="bk-form-hint">Choose the medical treatment you're interested in</div>
+          </div>
+
+          <div class="bk-form-group">
+            <label class="bk-label" for="specialRequirements">Special Requirements</label>
+            <select class="bk-select" id="specialRequirements" name="special_requirements">
+              <option value="">None</option>
+              <option value="wheelchair">Wheelchair Access</option>
+              <option value="interpreter">Interpreter Needed</option>
+              <option value="dietary">Dietary Restrictions</option>
+              <option value="other">Other Medical Conditions</option>
+            </select>
+          </div>
+
+          <div class="bk-form-group">
+            <label class="bk-label" for="preferredDoctor">Preferred Doctor</label>
+            <select class="bk-select" id="preferredDoctorStep1" name="preferred_doctor_hint">
+              <option value="">No preference (we'll recommend)</option>
+              {% for doctor in doctors %}
+              <option value="{{ doctor.id }}">Dr. {{ doctor.name }}</option>
+              {% endfor %}
+            </select>
+            <div class="bk-form-hint">Select a specific doctor or leave blank for our recommendation</div>
+          </div>
+
+          <div class="bk-form-group">
+            <label class="bk-label" for="preferredHospitalStep1">Preferred Hospital</label>
+            <select class="bk-select" id="preferredHospitalStep1" name="preferred_hospital_hint">
+              <option value="">No preference (we'll recommend)</option>
+              {% for hospital in hospitals %}
+              <option value="{{ hospital.id }}">{{ hospital.name }}</option>
+              {% endfor %}
+            </select>
+            <div class="bk-form-hint">Select a specific hospital or leave blank for our recommendation</div>
+          </div>
+
+          <div class="bk-form-group">
+            <label class="bk-label" for="preferredDate">Preferred Booking Dates</label>
+            <input type="date" class="bk-input" id="preferredDateStep1" name="preferred_date_hint" min="{% now "Y-m-d" %}">
+            <div class="bk-form-hint">Select your preferred date for the consultation</div>
+          </div>
+
+          <div class="bk-form-group">
+            <label class="bk-label" for="estimatedBudget">Estimated Budget</label>
+            <div style="display:flex;align-items:center;gap:.5rem;">
+              <span style="font-size:1rem;color:var(--bk-muted);">$</span>
+              <input type="text" class="bk-input" id="estimatedBudget" name="estimated_budget" placeholder="Automatically calculated based on your selections" readonly style="background:#f8fafc;color:var(--bk-muted);">
+            </div>
+          </div>
+
+          <div class="bk-nav" style="border-top:none;padding-top:0;margin-top:.5rem;">
+            <div></div>
+            <button type="button" class="bk-btn-next" id="nextStep1">
+              Next <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Doctor -->
+      <div class="booking-step" id="step-2">
+        <div class="bk-card-header">
+          <div class="bk-card-header-icon" style="background:#ede9fe;color:#7c3aed;"><i class="bi bi-person-check"></i></div>
+          <div>
+            <div class="bk-card-header-title">Provider Preferences</div>
+            <div class="bk-card-header-sub">Select your preferred doctor and hospital</div>
+          </div>
+        </div>
+        <div class="bk-card-body">
+          <div class="bk-info-box">
+            <i class="bi bi-info-circle-fill"></i>
+            <div>Doctor selection is optional. You can select a specific doctor or we'll recommend the best match based on your treatment and hospital.</div>
+          </div>
+
+          <div class="bk-form-group">
+            <label class="bk-label" for="doctorSelect">Preferred Doctor</label>
+            <select class="bk-select" id="doctorSelect" name="preferred_doctor">
+              <option value="">No preference (we'll recommend)</option>
+            </select>
+            <div class="bk-form-hint">Select a specific doctor or leave blank for our recommendation</div>
+          </div>
+
+          <div class="bk-nav">
+            <button type="button" class="bk-btn-prev" id="prevStep2"><i class="bi bi-arrow-left"></i> Back</button>
+            <button type="button" class="bk-btn-next" id="nextStep2">Next <i class="bi bi-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Hospital -->
+      <div class="booking-step" id="step-3">
+        <div class="bk-card-header">
+          <div class="bk-card-header-icon" style="background:#ffedd5;color:#c2410c;"><i class="bi bi-hospital"></i></div>
+          <div>
+            <div class="bk-card-header-title">Select Hospital</div>
+            <div class="bk-card-header-sub">Choose from hospitals offering your treatment</div>
+          </div>
+        </div>
+        <div class="bk-card-body">
+          <div class="bk-form-group">
+            <label class="bk-label" for="preferredDate">Preferred Date</label>
+            <input type="date" class="bk-input" id="preferredDate" name="preferred_date" min="{% now "Y-m-d" %}">
+            <div class="bk-form-hint">Select your preferred date for the treatment</div>
+          </div>
+
+          <div class="bk-form-group">
+            <label class="bk-label">Hospitals Offering This Treatment</label>
+            <div id="hospitalsList" class="row g-3">
+              <div class="col-12 text-center py-4" style="color:var(--bk-muted);">
+                <i class="bi bi-hospital" style="font-size:2rem;display:block;margin-bottom:.5rem;opacity:.3;"></i>
+                Please select a treatment and doctor first
+              </div>
+            </div>
+          </div>
+
+          <div class="bk-nav">
+            <button type="button" class="bk-btn-prev" id="prevStep3"><i class="bi bi-arrow-left"></i> Back</button>
+            <button type="button" class="bk-btn-next" id="nextStep3" disabled>Next <i class="bi bi-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Room -->
+      <div class="booking-step" id="step-4">
+        <div class="bk-card-header">
+          <div class="bk-card-header-icon" style="background:#dcfce7;color:#15803d;"><i class="bi bi-door-open"></i></div>
+          <div>
+            <div class="bk-card-header-title">Room &amp; Amenities</div>
+            <div class="bk-card-header-sub">Choose your accommodation during your hospital stay</div>
+          </div>
+        </div>
+        <div class="bk-card-body">
+          <div class="bk-info-box" style="background:#f0fdf4;border-color:#bbf7d0;color:#166534;">
+            <i class="bi bi-building"></i>
+            <div>Selected Hospital: <strong id="selectedHospitalNameStep4"></strong> &nbsp;|&nbsp; Estimated treatment cost: <strong id="treatmentCostStep4"></strong></div>
+          </div>
+
+          <div class="bk-form-group">
+            <label class="bk-label">Room Options</label>
+            <div class="bk-rooms-grid">
+              <div class="room-option-card" data-room-type="normal" data-room-cost="2500">
+                <div class="room-name">Normal Room</div>
+                <div class="room-price">&#8377;2,500 <small style="font-size:.75rem;color:var(--bk-muted);font-weight:400;">/ day</small></div>
+                <div class="room-description">Basic accommodation with essential amenities.</div>
+                <div class="room-features"><span class="room-feature">Basic Bed</span><span class="room-feature">Shared Bath</span><span class="room-feature">TV</span><span class="room-feature">Wi-Fi</span></div>
+                <div style="display:flex;align-items:center;gap:.5rem;margin-top:.5rem;">
+                  <input type="radio" name="room_service" id="normalRoom" value="normal" style="accent-color:#0d6efd;width:16px;height:16px;">
+                  <label for="normalRoom" style="font-size:.875rem;font-weight:600;cursor:pointer;">Select</label>
+                </div>
+              </div>
+              <div class="room-option-card" data-room-type="standard" data-room-cost="4000">
+                <div class="room-name">Standard Room</div>
+                <div class="room-price">&#8377;4,000 <small style="font-size:.75rem;color:var(--bk-muted);font-weight:400;">/ day</small></div>
+                <div class="room-description">Comfortable stay with enhanced amenities.</div>
+                <div class="room-features"><span class="room-feature">Comfort Bed</span><span class="room-feature">Private Bath</span><span class="room-feature">AC</span><span class="room-feature">Room Service</span></div>
+                <div style="display:flex;align-items:center;gap:.5rem;margin-top:.5rem;">
+                  <input type="radio" name="room_service" id="standardRoom" value="standard" style="accent-color:#0d6efd;width:16px;height:16px;">
+                  <label for="standardRoom" style="font-size:.875rem;font-weight:600;cursor:pointer;">Select</label>
+                </div>
+              </div>
+              <div class="room-option-card" data-room-type="premium" data-room-cost="6500">
+                <div class="room-name">Premium Room</div>
+                <div class="room-price">&#8377;6,500 <small style="font-size:.75rem;color:var(--bk-muted);font-weight:400;">/ day</small></div>
+                <div class="room-description">Premium accommodation with luxury amenities.</div>
+                <div class="room-features"><span class="room-feature">Premium Bed</span><span class="room-feature">Luxury Bath</span><span class="room-feature">Smart TV</span><span class="room-feature">Mini Bar</span></div>
+                <div style="display:flex;align-items:center;gap:.5rem;margin-top:.5rem;">
+                  <input type="radio" name="room_service" id="premiumRoom" value="premium" style="accent-color:#0d6efd;width:16px;height:16px;">
+                  <label for="premiumRoom" style="font-size:.875rem;font-weight:600;cursor:pointer;">Select</label>
+                </div>
+              </div>
+              <div class="room-option-card" data-room-type="deluxe" data-room-cost="9000">
+                <div class="room-name">Deluxe Suite</div>
+                <div class="room-price">&#8377;9,000 <small style="font-size:.75rem;color:var(--bk-muted);font-weight:400;">/ day</small></div>
+                <div class="room-description">Luxury suite for the ultimate comfort experience.</div>
+                <div class="room-features"><span class="room-feature">King Bed</span><span class="room-feature">Luxury Suite</span><span class="room-feature">Premium AV</span><span class="room-feature">24/7 Service</span></div>
+                <div style="display:flex;align-items:center;gap:.5rem;margin-top:.5rem;">
+                  <input type="radio" name="room_service" id="deluxeRoom" value="deluxe" style="accent-color:#0d6efd;width:16px;height:16px;">
+                  <label for="deluxeRoom" style="font-size:.875rem;font-weight:600;cursor:pointer;">Select</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bk-form-group">
+            <label class="bk-label">Additional Amenities</label>
+            <div class="bk-amenities-grid">
+              <label class="bk-amenity-check"><input type="checkbox" name="amenities" value="private_room" id="privateRoom"> Private Patient Rooms</label>
+              <label class="bk-amenity-check"><input type="checkbox" name="amenities" value="family_accommodation" id="familyAccommodation"> Family Accommodation</label>
+              <label class="bk-amenity-check"><input type="checkbox" name="amenities" value="wifi" id="wifi"> Free Wi-Fi</label>
+              <label class="bk-amenity-check"><input type="checkbox" name="amenities" value="ac" id="ac"> Air Conditioning</label>
+              <label class="bk-amenity-check"><input type="checkbox" name="amenities" value="tv" id="tv"> Television</label>
+              <label class="bk-amenity-check"><input type="checkbox" name="amenities" value="room_service" id="roomService"> 24/7 Room Service</label>
+              <label class="bk-amenity-check"><input type="checkbox" name="amenities" value="wheelchair" id="wheelchair"> Wheelchair Accessibility</label>
+              <label class="bk-amenity-check"><input type="checkbox" name="amenities" value="pickup_drop" id="pickupDrop"> Pickup/Drop Facility</label>
+            </div>
+          </div>
+
+          <div class="bk-nav">
+            <button type="button" class="bk-btn-prev" id="prevStep4"><i class="bi bi-arrow-left"></i> Back</button>
+            <button type="button" class="bk-btn-next" id="nextStep4">Next <i class="bi bi-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Confirm -->
+      <div class="booking-step" id="step-5">
+        <div class="bk-card-header">
+          <div class="bk-card-header-icon" style="background:#fef9c3;color:#a16207;"><i class="bi bi-receipt"></i></div>
+          <div>
+            <div class="bk-card-header-title">Confirm Booking</div>
+            <div class="bk-card-header-sub">Review your booking details before submitting</div>
+          </div>
+        </div>
+        <div class="bk-card-body">
+          <div class="bk-receipt">
+            <div class="bk-receipt-header">
+              <h4><i class="bi bi-receipt me-2"></i>Booking Receipt</h4>
+              <p>TakeOpinion Medical Services</p>
+            </div>
+            <div class="bk-receipt-body">
+              <div class="bk-receipt-section">
+                <div class="bk-receipt-section-title">Booking Details</div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Treatment</span><span class="bk-receipt-value" id="summaryTreatment"></span></div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Doctor</span><span class="bk-receipt-value" id="summaryDoctor">Not specified</span></div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Hospital</span><span class="bk-receipt-value" id="summaryHospital"></span></div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Preferred Date</span><span class="bk-receipt-value" id="summaryDate"></span></div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Room Type</span><span class="bk-receipt-value" id="summaryRoomType">Not selected</span></div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Length of Stay</span><span class="bk-receipt-value" id="summaryNights">Not specified</span></div>
+              </div>
+              <div class="bk-receipt-section">
+                <div class="bk-receipt-section-title">Cost Breakdown</div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Treatment Cost</span><span class="bk-receipt-value" id="treatmentCostSummary">&#8377;0</span></div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Doctor Consultation</span><span class="bk-receipt-value" id="doctorCostSummary">&#8377;0</span></div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Hospital Stay</span><span class="bk-receipt-value" id="hospitalStayCostSummary">&#8377;0</span></div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Selected Amenities</span><span class="bk-receipt-value" id="amenitiesCostSummary">&#8377;0</span></div>
+              </div>
+              <div class="bk-receipt-section">
+                <div class="bk-receipt-section-title">Original Hospital Price</div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Total without Discount</span><span class="bk-receipt-value" id="originalHospitalPrice">&#8377;0</span></div>
+              </div>
+              <div class="bk-receipt-section">
+                <div class="bk-receipt-section-title">TakeOpinion Price</div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">Original Total</span><span class="bk-receipt-value" id="originalTotalCost">&#8377;0</span></div>
+                <div class="bk-receipt-row"><span class="bk-receipt-label">TakeOpinion Discount (15%)</span><span class="bk-receipt-discount" id="discountAmount">&#8377;0</span></div>
+                <div class="bk-receipt-row bk-receipt-total"><span>TakeOpinion Final Price</span><span id="summaryCost">&#8377;0</span></div>
+              </div>
+              <div class="bk-receipt-section">
+                <div class="bk-receipt-row bk-receipt-total"><span>Total Amount</span><span id="totalAmountDisplay">&#8377;0</span></div>
+              </div>
+              <div class="bk-receipt-section">
+                <div class="bk-receipt-section-title">Selected Amenities</div>
+                <div id="summaryAmenities"></div>
+              </div>
+            </div>
+            <div class="bk-advance-box" style="margin:0 1.25rem 1.25rem;">
+              <div>
+                <div class="label">Advance Payment Required</div>
+                <div class="sub">A small advance payment is required to confirm your booking</div>
+              </div>
+              <div>
+                <div class="amount" id="advanceAmount">&#8377;0</div>
+                <div style="font-size:.75rem;color:var(--bk-muted);">10% of total</div>
+              </div>
+            </div>
+            <div class="bk-receipt-footer">Thank you for choosing TakeOpinion. Your booking reference will be sent to your email.</div>
+          </div>
+
+          <div class="bk-terms-check" style="margin-top:1.25rem;">
+            <input type="checkbox" id="termsCheck" name="agree_terms" required>
+            <label for="termsCheck">I agree to the <a href="{% url 'terms' %}" style="color:#0d6efd;">Terms of Service</a> and <a href="{% url 'privacy' %}" style="color:#0d6efd;">Privacy Policy</a> <span style="color:#dc2626;">*</span></label>
+          </div>
+
+          <div class="bk-nav">
+            <button type="button" class="bk-btn-prev" id="prevStep5"><i class="bi bi-arrow-left"></i> Back</button>
+            <button type="submit" class="bk-btn-submit" id="submitBooking"><i class="bi bi-credit-card"></i> Pay Advance &amp; Confirm Booking</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden fields -->
+      <input type="hidden" id="selectedTreatmentId" name="treatment_id">
+      <input type="hidden" id="selectedDoctorId" name="doctor_id">
+      <input type="hidden" id="selectedHospitalId" name="hospital_id">
+      <input type="hidden" id="selectedAmenities" name="selected_amenities">
+      <input type="hidden" id="totalAmount" name="total_amount">
+    </form>
+  </div>
+
 </div>
 
 <script>
@@ -1806,4 +1228,6 @@
   // Room card click event is already handled above with the correct logic
   // No need to duplicate the event listener
 </script>
+{% endblock %}
+
 {% endblock %}

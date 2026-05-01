@@ -1,172 +1,243 @@
-# TakeOpinion Medical Tourism Platform
+# TakeOpinion — Medical Tourism Platform
 
-TakeOpinion is a comprehensive Django-based platform for medical tourism that connects patients with doctors, hospitals, and treatments across the globe.
+> **AI-powered medical tourism platform** connecting patients with verified doctors, hospitals, and treatments worldwide. Features an intelligent chatbot that analyzes medical reports and delivers personalized results.
 
-## Project Overview
+[![Python](https://img.shields.io/badge/Python-3.11-blue)](https://python.org)
+[![Django](https://img.shields.io/badge/Django-4.2-green)](https://djangoproject.com)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple)](https://getbootstrap.com)
+[![License](https://img.shields.io/badge/License-Proprietary-red)](LICENSE)
 
-This platform enables patients to:
-- Browse and compare medical treatments
-- Find qualified doctors and accredited hospitals
-- Book appointments and treatments
-- Arrange accommodation at partnered hotels
-- Process payments securely
-- Access medical reports and consultation records
+---
 
-## Key Features
+## 🌟 What's New
 
-### Medical Services
-- **Treatment Catalog**: Extensive database of medical treatments with pricing and details
-- **Doctor Directory**: Profiles of qualified medical professionals with specialties and experience
-- **Hospital Network**: Accredited hospitals with facilities and location information
-- **Booking System**: Comprehensive appointment scheduling with Google Meet integration
+### AI Smart Search & Chatbot
+- **Medical Report Analysis** — Upload PDF/image/text reports; the system extracts diagnosis, conditions, medications, and precautions automatically
+- **Smart Results Page** (`/enquiries/results/`) — Shows relevant doctors, hospitals, treatments, blogs, and pricing based on your query or uploaded report
+- **Session Context** — Follow-up queries are merged with prior search context for refined results
+- **Floating Chatbot Widget** — Available on every page; redirects to Smart Results with full report support
 
-### User Management
-- Patient and doctor accounts
-- Admin dashboard for platform management
-- Profile management for all user types
+### Complete Database Seed
+Run `python manage.py seed_full_data` to populate:
+- **19 real doctors** (Dr. Naresh Trehan, Dr. Devi Shetty, Dr. Ahmed Khan, etc.)
+- **28 hospitals** (Apollo, AIIMS, Medanta, Fortis, Bumrungrad, etc.)
+- **72 treatments** across 13 specialities
+- **56 patient feedbacks** with realistic reviews
+- **24 blog posts** covering all major conditions
 
-### Accommodation
-- Hotel booking system integrated with hospital locations
-- Room options with amenities (Normal, Deluxe, Premium, Executive Suite)
-- Pricing: ₹2,500-₹9,000 per night depending on room tier
+### Redesigned UI
+- Modern dark navy/blue theme consistent across all pages
+- Redesigned: Home, Doctors list, Hospitals list, Treatments list, Treatment detail, Pricing/Comparison, Smart Results
+- New footer with real patient reviews from DB
+- Responsive design with hover effects and smooth transitions
 
-### Payment Processing
-- Secure payment handling with Stripe and Razorpay integration
-- Transparent pricing with 15% platform discount
+---
 
-### Content Management
-- Blog system for medical travel insights
-- Feedback and review system
-- Search functionality across all entities
-
-## Technology Stack
-
-- **Backend**: Django 5.2.6 with Django REST Framework
-- **Database**: SQLite (development), PostgreSQL (production)
-- **Frontend**: Bootstrap 5 with crispy forms
-- **Deployment**: Gunicorn with Whitenoise for static files
-- **Background Tasks**: Celery with Redis
-- **Payment Processing**: Stripe and Razorpay
-- **Static Files**: Whitenoise with CompressedManifestStaticFilesStorage
-
-## Project Structure
+## 🏗️ Project Structure
 
 ```
-├── accounts/          # User authentication and profiles
-├── blogs/             # Blog content management
-├── bookings/          # Appointment and treatment booking system
-├── core/              # Shared components and base functionality
-├── doctors/           # Doctor profiles and management
-├── feedbacks/         # User feedback and reviews
-├── hospitals/         # Hospital listings and information
-├── hotels/            # Accommodation booking system
-├── payments/          # Payment processing
-├── treatments/        # Treatment catalog and details
-├── static/            # CSS, JavaScript, and other static assets
-└── templates/         # HTML templates
+TakeOpinionclient/
+├── accounts/           # User auth, patient/doctor/admin profiles
+├── blogs/              # Medical blog content
+├── bookings/           # Appointment & treatment booking with Google Meet
+├── core/               # Base views, context processors, seed commands
+│   └── management/commands/
+│       └── seed_full_data.py   # Full DB seed command
+├── doctors/            # Doctor profiles, specializations, media
+├── enquiry_bot/        # AI chatbot & Smart Search engine
+│   ├── smart_search.py         # MedicalIntentExtractor, SiteContentAggregator
+│   ├── views.py                # smart_results_view, smart_results_api
+│   └── templates/enquiry_bot/
+│       └── smart_results.html  # Smart Results page
+├── feedbacks/          # Patient reviews and ratings
+├── hospitals/          # Hospital listings, accreditations
+├── hotels/             # Accommodation booking
+├── payments/           # Stripe & Razorpay integration
+├── treatments/         # Treatment catalog, FAQs, detail pages
+├── static/             # CSS, JS, images
+├── templates/
+│   └── base.html       # Global navbar, footer, floating chatbot
+├── conftest.py         # Pytest Django configuration
+└── pytest.ini          # Test settings
 ```
 
-## Setup and Installation
+---
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Tusharsinghoffical/TakeOpinionclient.git
-   cd TakeOpinionclient
-   ```
+## 🚀 Quick Start
 
-2. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+### 1. Clone & Install
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+git clone https://github.com/Tusharsinghoffical/TakeOpinionclient.git
+cd TakeOpinionclient
+python -m venv venv
+venv\Scripts\activate        # Windows
+# source venv/bin/activate   # Mac/Linux
+pip install -r requirements.txt
+```
 
-4. Set up the database:
-   ```bash
-   python manage.py migrate
-   ```
+### 2. Database Setup
 
-5. Load initial data (optional):
-   ```bash
-   python manage.py loaddata fixtures/*.json
-   ```
+```bash
+python manage.py migrate
+python manage.py createsuperuser
+```
 
-6. Create a superuser account:
-   ```bash
-   python manage.py createsuperuser
-   ```
+### 3. Seed Realistic Data
 
-7. Run the development server:
-   ```bash
-   python manage.py runserver
-   ```
+```bash
+python manage.py seed_full_data
+```
 
-8. Access the application:
-   - Website: http://127.0.0.1:8000/
-   - Admin panel: http://127.0.0.1:8000/admin/
+This creates all doctors, hospitals, treatments, feedbacks, blogs, and patient users.
 
-## Deployment
+### 4. Run
 
-The project is configured for deployment on Render with:
-- Custom build script ([build.sh](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\build.sh))
-- Gunicorn configuration ([gunicorn.conf.py](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\gunicorn.conf.py))
-- Proper static file handling with Whitenoise
+```bash
+python manage.py runserver
+```
+
+Visit: **http://127.0.0.1:8000/**  
+Admin: **http://127.0.0.1:8000/admin/**
+
+---
+
+## 🤖 AI Smart Search
+
+### How It Works
+
+1. User types a condition (e.g. "diabetes") or uploads a medical report PDF
+2. `MedicalIntentExtractor` tokenizes the text and matches against `CONDITION_SPECIALIZATION_MAP`
+3. `SiteContentAggregator` queries doctors, hospitals, treatments, blogs filtered by matched conditions
+4. Results page shows: Diagnosis, Medications, Precautions, Recommendations + DB results
+
+### Key Components (`enquiry_bot/smart_search.py`)
+
+| Class | Purpose |
+|-------|---------|
+| `MedicalIntentExtractor` | Extracts keywords, conditions, specializations from text |
+| `ReportParser` | Parses PDF/image/text medical reports |
+| `SiteContentAggregator` | Queries DB and returns `SmartResultsContext` |
+| `PlaceholderRegistry` | Ensures all 10 content categories always render |
+| `CONDITION_SPECIALIZATION_MAP` | Maps 35+ medical terms to doctor specializations |
+
+### Supported Conditions
+
+Cardiac, Orthopedic, Neurology, Oncology, Endocrinology, Gastroenterology, Pulmonology, Ophthalmology, Urology, Fertility, Cosmetic Surgery, Dental, Wellness
+
+### Test Reports
+
+Sample PDFs for testing are in `test_reports/`. Regenerate with:
+```bash
+python test_reports/generate_pdfs.py
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+pytest enquiry_bot/tests_smart_search.py -v
+
+# Run with coverage
+pytest enquiry_bot/tests_smart_search.py --cov=enquiry_bot -v
+```
+
+**31 tests** covering:
+- Property 1: `raw_query` identity (200 examples)
+- Property 2: Specializations subset invariant (200 examples)
+- Property 3: Bounded doctor results ≤ 6 (50 examples)
+- Property 4: Placeholder count invariant (200 examples)
+- Unit tests: `MedicalIntentExtractor`, `ReportParser`, `PlaceholderRegistry`
+- Integration tests: `smart_results_view` (GET/POST/file upload)
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Backend | Django 4.2, Django REST Framework |
+| AI/Search | Custom NLP with Hypothesis property-based testing |
+| Database | SQLite (dev), PostgreSQL (prod) |
+| Frontend | Bootstrap 5.3, Bootstrap Icons |
+| Payments | Stripe, Razorpay |
+| PDF Parsing | PyPDF2 |
+| Testing | pytest, hypothesis |
+| Deployment | Gunicorn, Whitenoise, Render |
+
+---
+
+## 📡 API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/enquiries/results/` | GET/POST | Smart Results page |
+| `/enquiries/results/api/` | POST | Smart Results JSON API |
+| `/api/v1/entities/<type>/` | GET | Entity dropdowns |
+| `/treatments/api/search/` | GET | Search treatments |
+| `/doctors/api/search/` | GET | Search doctors |
+| `/hospitals/api/search/` | GET | Search hospitals |
+| `/book/api/hospitals/<id>/` | GET | Hospitals by treatment |
+
+---
+
+## 🌐 Deployment (Render)
 
 ### Environment Variables
 
-For production deployment, set the following environment variables:
-- [SECRET_KEY](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\takeopinion\settings_prod.py#L15-L15): Django secret key
-- `DATABASE_URL`: PostgreSQL database connection URL
-- [DEBUG](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\takeopinion\settings_prod.py#L18-L18): Set to "False" for production
-- [ALLOWED_HOSTS](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\takeopinion\settings_prod.py#L21-L21): Comma-separated list of allowed hosts
-
-### Render Deployment
-
-1. Fork the repository to your GitHub account
-2. Connect your GitHub repository to Render
-3. Configure the environment variables as mentioned above
-4. Deploy the application
-
-The [render.yaml](file://c:\Users\tusha\Desktop\FreeLancer%20Website\TakeOpinionclient\render.yaml) file contains the deployment configuration for Render.
-
-## Development Guidelines
-
-- Follow American English spelling conventions
-- Use hardcoded URL paths instead of Django namespaced URLs
-- Maintain consistent pricing structure for room options
-- Apply 15% discount to all bookings in the cost calculation
-
-## API Endpoints
-
-- `/api/v1/entities/<entity_type>/` - Get entities (doctors, hospitals, treatments) for dropdowns
-- `/treatments/api/search/` - Search treatments
-- `/doctors/api/search/` - Search doctors
-- `/hospitals/api/search/` - Search hospitals
-
-## Testing
-
-Run tests with:
-```bash
-python manage.py test
+```env
+SECRET_KEY=your-secret-key
+DATABASE_URL=postgresql://...
+DEBUG=False
+ALLOWED_HOSTS=yourdomain.com
 ```
 
-## Contributing
+### Deploy Steps
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a pull request
+1. Fork repo → Connect to Render
+2. Set environment variables
+3. Render auto-detects `build.sh` and `render.yaml`
+4. After deploy: `python manage.py seed_full_data`
 
-## License
+---
 
-This project is proprietary and confidential. All rights reserved.
+## 📁 Key Files
 
-## GITHUB ADD
-git add .
-git commit -m "new update"
-git push origin main
+| File | Purpose |
+|------|---------|
+| `enquiry_bot/smart_search.py` | Core AI search engine |
+| `enquiry_bot/views.py` | Smart Results view + API |
+| `core/management/commands/seed_full_data.py` | Full DB seed |
+| `templates/base.html` | Global layout with floating chatbot |
+| `core/templates/core/home.html` | Redesigned home page |
+| `conftest.py` | Pytest Django setup |
+| `pytest.ini` | Test configuration |
+
+---
+
+## 🔧 Development Commands
+
+```bash
+# Seed full database
+python manage.py seed_full_data
+
+# Generate test PDFs
+python test_reports/generate_pdfs.py
+
+# Run tests
+pytest enquiry_bot/tests_smart_search.py -v
+
+# Django checks
+python manage.py check
+
+# Collect static files
+python manage.py collectstatic
+```
+
+---
+
+## 📄 License
+
+Proprietary and confidential. All rights reserved © 2026 TakeOpinion.

@@ -1,1190 +1,394 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
 <style>
-/* Home Page Specific Styles */
-:root {
-  /* Enhanced color palette for better visibility */
-  --primary-dark: #2c3e50;
-  --primary-medium: #3498db;
-  --primary-light: #5dade2;
-  --accent: #e74c3c;
-  --success: #27ae60;
-  --light-bg: #f8f9fa;
-  --dark-text: #2c3e50;
-  --light-text: #ffffff;
-  --border: #ddd;
-  --shadow: rgba(0, 0, 0, 0.1);
-  --gradient-start: #3498db;
-  --gradient-end: #2c3e50;
-}
-
-/* Global home page styles */
-.home-page {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--dark-text);
-  line-height: 1.6;
-}
-
-/* Hero Section */
-.hero-section {
-  background:  #0d6efd;
-  color: var(--light-text);
-  padding: 5rem 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-}
-
-.hero-title {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.hero-subtitle {
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  color: white;
-}
-
-.hero-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.btn-primary-large {
-  background-color: var(--accent);
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 50px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.btn-primary-large:hover {
-  background-color: #ffffff;
-  color: #e74c3c;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.btn-secondary-large {
-  background-color: transparent;
-  color: var(--light-text);
-  border: 2px solid var(--light-text);
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 50px;
-  transition: all 0.3s ease;
-}
-
-.btn-secondary-large:hover {
-  background-color: #ffffff;
-  color: #3498db;
-  transform: translateY(-3px);
-}
-
-/* Section Headers */
-.section-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary-dark);
-  margin-bottom: 1rem;
-}
-
-.section-subtitle {
-  font-size: 1.25rem;
-  color: #7f8c8d;
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-/* Core Services Section */
-.core-services-section {
-  background-color: var(--light-bg);
-  padding: 5rem 0;
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.service-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px var(--shadow);
-  transition: all 0.3s ease;
-  text-align: center;
-  padding: 2rem 1.5rem;
-}
-
-.service-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-.service-icon {
-  font-size: 3rem;
-  color: var(--primary-medium);
-  margin-bottom: 1.5rem;
-}
-
-.service-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--primary-dark);
-}
-
-.service-description {
-  color: #7f8c8d;
-  margin-bottom: 1.5rem;
-}
-
-.service-link {
-  display: inline-block;
-  color: var(--primary-medium);
-  font-weight: 600;
-  text-decoration: none;
-  padding: 0.5rem 1.5rem;
-  border: 2px solid var(--primary-medium);
-  border-radius: 30px;
-  transition: all 0.3s ease;
-}
-
-.service-link:hover {
-  background-color: var(--primary-medium);
-  color: white !important;
-}
-
-/* WhatsApp Section */
-.whatsapp-section {
-  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-  color: white;
-  padding: 4rem 0;
-  text-align: center;
-}
-
-.whatsapp-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.whatsapp-subtitle {
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.whatsapp-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.btn-whatsapp {
-  background-color: #25D366;
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 50px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.btn-whatsapp:hover {
-  background-color: #075E54;
-  color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.btn-consultation {
-  background-color: transparent;
-  color: #ffffff;
-  border: 2px solid #ffffff;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 50px;
-  transition: all 0.3s ease;
-}
-
-.btn-consultation:hover {
-  background-color: #25D369;
-  color: rgb(255, 255, 255);
-  transform: translateY(-3px);
-}
-
-/* Testimonials Section */
-.testimonials-section {
-  background-color: white;
-  padding: 5rem 0;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.testimonial-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px var(--shadow);
-  transition: all 0.3s ease;
-}
-
-.testimonial-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-.testimonial-image {
-  height: 200px;
-  width: 100%;
-  object-fit: cover;
-}
-
-.testimonial-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background-color: var(--success);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.testimonial-content {
-  padding: 1.5rem;
-}
-
-.testimonial-author {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.author-avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.author-info h4 {
-  margin: 0;
-  font-size: 1.25rem;
-  color: var(--primary-dark);
-}
-
-.author-info p {
-  margin: 0;
-  color: #7f8c8d;
-}
-
-.testimonial-text {
-  color: #555;
-  font-style: italic;
-  margin-bottom: 1.5rem;
-}
-
-.testimonial-rating {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.rating-stars {
-  color: #f39c12;
-}
-
-.rating-date {
-  color: #95a5a6;
-  font-size: 0.9rem;
-}
-
-.btn-testimonials {
-  display: block;
-  margin: 3rem auto 0;
-  background-color: var(--primary-medium);
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 50px;
-  transition: all 0.3s ease;
-}
-
-.btn-testimonials:hover {
-  background-color: var(--light-bg);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgb(249, 248, 248);
-}
-
-/* Multi Speciality Section */
-.multi-speciality-section {
-  background-color: var(--light-bg);
-  padding: 5rem 0;
-}
-
-.treatment-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.treatment-tag {
-  background-color: white;
-  color: var(--primary-medium);
-  padding: 0.5rem 1.5rem;
-  border-radius: 30px;
-  font-weight: 500;
-  text-decoration: none;
-  border: 2px solid var(--primary-medium);
-  transition: all 0.3s ease;
-}
-
-.treatment-tag:hover {
-  background-color: var(--primary-medium);
-  color: white !important;
-}
-
-.treatments-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.treatment-card {
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 3px 10px var(--shadow);
-  transition: all 0.3s ease;
-  text-align: center;
-}
-
-.treatment-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-.treatment-icon {
-  height: 100px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.treatment-icon i {
-  font-size: 2rem;
-  color: var(--primary-medium);
-}
-
-.treatment-body {
-  padding: 1rem;
-}
-
-.treatment-type {
-  font-size: 0.8rem;
-  color: #7f8c8d;
-  margin-bottom: 0.25rem;
-}
-
-.treatment-name {
-  font-weight: 600;
-  color: var(--primary-dark);
-}
-
-.btn-view-all {
-  display: block;
-  margin: 2rem auto 0;
-  background-color: var(--primary-medium);
-  color: white;
-  border: none;
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 50px;
-  transition: all 0.3s ease;
-}
-
-.btn-view-all:hover {
-  background-color: #ffffff;
-  color: #3498db;
-  transform: translateY(-3px);
-}
-
-/* Why Choose Section */
-.why-choose-section {
-  background-color: white;
-  padding: 5rem 0;
-}
-
-.why-choose-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.why-choose-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px var(--shadow);
-  transition: all 0.3s ease;
-  text-align: center;
-  padding: 2rem 1.5rem;
-}
-
-.why-choose-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-.why-choose-icon {
-  font-size: 3rem;
-  color: var(--primary-medium);
-  margin-bottom: 1.5rem;
-}
-
-.why-choose-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--primary-dark);
-}
-
-.why-choose-description {
-  color: #7f8c8d;
-}
-
-/* Top Hospitals/Doctors Section */
-.top-section {
-  background-color: var(--light-bg);
-  padding: 5rem 0;
-}
-
-.top-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.top-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px var(--shadow);
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: inherit;
-}
-
-.top-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-.top-image {
-  height: 160px;
-  width: 100%;
-  object-fit: cover;
-}
-
-.top-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background-color: #f1c40f;
-  color: #2c3e50;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-weight: 600;
-  font-size: 0.8rem;
-}
-
-.top-body {
-  padding: 1.5rem;
-}
-
-.top-name {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--primary-dark);
-}
-
-.top-specialty {
-  font-size: 0.9rem;
-  color: #7f8c8d;
-  margin-bottom: 1rem;
-}
-
-.top-rating {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.top-rating i {
-  color: #f39c12;
-}
-
-.top-rating span {
-  font-size: 0.9rem;
-  color: #7f8c8d;
-}
-
-/* How It Works Section */
-.how-it-works-section {
-  background-color: white;
-  padding: 5rem 0;
-}
-
-.how-it-works-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.how-it-works-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px var(--shadow);
-  transition: all 0.3s ease;
-  text-align: center;
-  padding: 2rem 1.5rem;
-}
-
-.how-it-works-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-.how-it-works-icon {
-  font-size: 3rem;
-  color: var(--primary-medium);
-  margin-bottom: 1.5rem;
-}
-
-.how-it-works-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: var(--primary-dark);
-}
-
-.how-it-works-description {
-  color: #7f8c8d;
-}
-
-/* Latest Blogs Section */
-.blogs-section {
-  background-color: var(--light-bg);
-  padding: 5rem 0;
-}
-
-.blogs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.blog-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px var(--shadow);
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: inherit;
-}
-
-.blog-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-.blog-image {
-  height: 200px;
-  width: 100%;
-  object-fit: cover;
-}
-
-.blog-badge {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background-color: var(--primary-medium);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-weight: 600;
-  font-size: 0.8rem;
-}
-
-.blog-date {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: var(--primary-dark);
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-weight: 600;
-  font-size: 0.8rem;
-}
-
-.blog-body {
-  padding: 1.5rem;
-}
-
-.blog-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: var(--primary-dark);
-}
-
-.blog-excerpt {
-  color: #7f8c8d;
-  margin-bottom: 1.5rem;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2rem;
-  }
-  
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-  }
-  
-  .whatsapp-title {
-    font-size: 2rem;
-  }
-  
-  .hero-buttons, .whatsapp-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .btn-primary-large, .btn-secondary-large, .btn-whatsapp, .btn-consultation {
-    width: 100%;
-    max-width: 300px;
-  }
-}
-
-.rating-stars .bi-star {
-  color: #ddd;
-  cursor: pointer;
-  font-size: 1.5rem;
-}
-
-.rating-stars .bi-star.filled {
-  color: #ffc107;
-}
-
-.rating-stars .bi-star:hover,
-.rating-stars .bi-star:hover ~ .bi-star {
-  color: #ffc107;
-}
+:root{--pp-blue:#0d6efd;--pp-blue-dark:#0a58ca;--pp-bg:#f0f4f8;--pp-card:#fff;--pp-text:#1e293b;--pp-muted:#64748b;--pp-border:#e2e8f0;}
+body{background:var(--pp-bg);}
+.pp-topbar{background:linear-gradient(135deg,#0d6efd 0%,#0a58ca 100%);color:#fff;}
+.pp-topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2rem;gap:1rem;flex-wrap:wrap;}
+.pp-greeting{font-size:1.6rem;font-weight:700;margin:0;line-height:1.2;}
+.pp-greeting span{opacity:.8;font-weight:400;font-size:.95rem;display:block;margin-top:.2rem;}
+.pp-topbar-actions{display:flex;gap:.75rem;align-items:center;}
+.pp-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.1rem;border-radius:8px;font-size:.875rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all .2s;}
+.pp-btn-white{background:#fff;color:#0d6efd;}.pp-btn-white:hover{background:#e8f0fe;color:#0a58ca;}
+.pp-btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.6);}.pp-btn-outline:hover{background:rgba(255,255,255,.15);color:#fff;}
+.pp-stats-bar{background:rgba(0,0,0,.18);padding:.75rem 2rem;display:flex;gap:2.5rem;flex-wrap:wrap;}
+.pp-stat{color:rgba(255,255,255,.85);font-size:.85rem;display:flex;align-items:center;gap:.5rem;}
+.pp-stat strong{font-size:1.15rem;font-weight:700;color:#fff;}
+.pp-main{max-width:1200px;margin:0 auto;padding:2rem 1.5rem;}
+.pp-section-title{font-size:.8rem;font-weight:700;color:var(--pp-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.85rem;}
+.pp-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.pp-grid-2{display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;}
+.pp-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+@media(max-width:1024px){.pp-grid-4{grid-template-columns:repeat(2,1fr);}.pp-grid-2{grid-template-columns:1fr;}.pp-grid-3{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.pp-grid-4{grid-template-columns:1fr;}.pp-grid-3{grid-template-columns:1fr;}.pp-topbar-inner{padding:1rem;}.pp-stats-bar{gap:1rem;padding:.75rem 1rem;}}
+.pp-card{background:var(--pp-card);border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);border:1px solid var(--pp-border);overflow:hidden;}
+.pp-card-body{padding:1.25rem;}
+.pp-action-card{display:flex;flex-direction:column;align-items:flex-start;gap:.4rem;padding:1.25rem;text-decoration:none;color:var(--pp-text);transition:all .2s;border-radius:14px;border:1px solid var(--pp-border);background:#fff;}
+.pp-action-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(13,110,253,.13);border-color:#0d6efd;color:var(--pp-text);}
+.pp-action-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:.2rem;}
+.pp-action-icon.blue{background:#dbeafe;color:#1d4ed8;}.pp-action-icon.green{background:#dcfce7;color:#15803d;}
+.pp-action-icon.purple{background:#ede9fe;color:#7c3aed;}.pp-action-icon.orange{background:#ffedd5;color:#c2410c;}
+.pp-action-label{font-weight:700;font-size:.95rem;}.pp-action-desc{font-size:.78rem;color:var(--pp-muted);}
+.pp-profile-card{display:flex;flex-direction:column;align-items:center;text-align:center;padding:1.5rem;}
+.pp-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#1d4ed8;margin-bottom:.75rem;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.pp-name{font-size:1.1rem;font-weight:700;color:var(--pp-text);margin-bottom:.2rem;}
+.pp-pid{font-size:.78rem;color:var(--pp-muted);background:#f1f5f9;padding:.2rem .65rem;border-radius:20px;display:inline-block;margin-bottom:.85rem;}
+.pp-divider{height:1px;background:var(--pp-border);margin:1rem 0;}
+.pp-table{width:100%;border-collapse:collapse;}
+.pp-table th{font-size:.72rem;font-weight:700;color:var(--pp-muted);text-transform:uppercase;letter-spacing:.06em;padding:.75rem 1rem;border-bottom:2px solid var(--pp-border);background:#f8fafc;white-space:nowrap;}
+.pp-table td{padding:.85rem 1rem;border-bottom:1px solid var(--pp-border);font-size:.875rem;color:var(--pp-text);vertical-align:middle;}
+.pp-table tr:last-child td{border-bottom:none;}.pp-table tr:hover td{background:#f8fafc;}
+.pp-badge{display:inline-flex;align-items:center;padding:.25rem .65rem;border-radius:20px;font-size:.72rem;font-weight:600;}
+.pp-badge-pending{background:#fef3c7;color:#92400e;}.pp-badge-confirmed{background:#dcfce7;color:#166534;}
+.pp-badge-progress{background:#dbeafe;color:#1e40af;}.pp-badge-completed{background:#f1f5f9;color:#475569;}.pp-badge-cancelled{background:#fee2e2;color:#991b1b;}
+.pp-empty{text-align:center;padding:2.5rem 1rem;color:var(--pp-muted);}
+.pp-empty i{font-size:2.5rem;display:block;margin-bottom:.75rem;opacity:.35;}
+.pp-review-card{display:flex;flex-direction:column;align-items:flex-start;gap:.4rem;padding:1.25rem;cursor:pointer;transition:all .2s;border-radius:14px;border:1px solid var(--pp-border);background:#fff;}
+.pp-review-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(13,110,253,.13);border-color:#0d6efd;}
+.pp-review-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;}
+.pp-review-icon.yellow{background:#fef9c3;color:#a16207;}.pp-review-icon.red{background:#fee2e2;color:#b91c1c;}
+.pp-review-icon.teal{background:#ccfbf1;color:#0f766e;}.pp-review-icon.indigo{background:#e0e7ff;color:#4338ca;}
+.pp-review-label{font-weight:700;font-size:.95rem;color:var(--pp-text);}.pp-review-desc{font-size:.78rem;color:var(--pp-muted);}
+.pp-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;padding:1rem;}
+.pp-modal-overlay.active{display:flex;}
+.pp-modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.pp-modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--pp-border);}
+.pp-modal-title{font-size:1.05rem;font-weight:700;color:var(--pp-text);}
+.pp-modal-close{background:none;border:none;font-size:1.25rem;color:var(--pp-muted);cursor:pointer;padding:.25rem;border-radius:6px;line-height:1;}
+.pp-modal-close:hover{background:#f1f5f9;color:var(--pp-text);}
+.pp-modal-body{padding:1.5rem;}
+.pp-form-group{margin-bottom:1rem;}
+.pp-label{display:block;font-size:.875rem;font-weight:600;color:var(--pp-text);margin-bottom:.4rem;}
+.pp-input,.pp-select,.pp-textarea{width:100%;padding:.6rem .9rem;border:1.5px solid var(--pp-border);border-radius:8px;font-size:.875rem;color:var(--pp-text);transition:border-color .2s;outline:none;background:#fff;}
+.pp-input:focus,.pp-select:focus,.pp-textarea:focus{border-color:#0d6efd;box-shadow:0 0 0 3px rgba(13,110,253,.1);}
+.pp-textarea{resize:vertical;min-height:90px;}
+.pp-stars{display:flex;gap:.35rem;margin-bottom:.25rem;}
+.pp-star{font-size:1.75rem;color:#d1d5db;cursor:pointer;transition:color .15s;line-height:1;}
+.pp-star.active{color:#f59e0b;}
+.pp-submit-btn{width:100%;padding:.7rem;background:#0d6efd;color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;transition:background .2s;margin-top:.5rem;}
+.pp-submit-btn:hover{background:#0a58ca;}
+.pp-radio-group{display:flex;gap:.6rem;flex-wrap:wrap;}
+.pp-radio-label{display:flex;align-items:center;gap:.4rem;padding:.4rem .85rem;border:1.5px solid var(--pp-border);border-radius:8px;cursor:pointer;font-size:.875rem;font-weight:500;transition:all .2s;}
+.pp-radio-label input{display:none;}
+.pp-radio-label.selected{border-color:#0d6efd;background:#eff6ff;color:#1d4ed8;}
 </style>
-
-<div class="home-page">
-  <div class="container py-5">
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="container hero-content">
-        <h1 class="hero-title">Patient Portal</h1>
-        <p class="hero-subtitle">Welcome to your personalized healthcare dashboard. Connect with doctors, hospitals, and treatments all in one place.</p>
-        <div class="hero-buttons">
-          <a href="{% url 'accounts:logout' %}" class="btn-primary-large">
-            <i class="bi bi-box-arrow-right me-2"></i> Logout
-          </a>
-          <a href="{% url 'accounts:patient_profile' %}" class="btn-secondary-large">
-            <i class="bi bi-person me-2"></i> My Profile
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Quick Actions Section -->
-    <section class="core-services-section">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Quick Actions</h2>
-          <p class="section-subtitle">Access the most important features of your healthcare journey</p>
-        </div>
-        <div class="services-grid">
-          <div class="service-card">
-            <div class="service-icon">
-              <i class="bi bi-calendar-check"></i>
-            </div>
-            <h3 class="service-title">Book Appointment</h3>
-            <p class="service-description">Schedule appointments with doctors or hospitals.</p>
-            <a href="{% url 'bookings:booking_page' %}" class="service-link">Book Now</a>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">
-              <i class="bi bi-search"></i>
-            </div>
-            <h3 class="service-title">Find Treatments</h3>
-            <p class="service-description">Explore available treatments and procedures.</p>
-            <a href="/treatments/" class="service-link">Browse Treatments</a>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">
-              <i class="bi bi-person-check"></i>
-            </div>
-            <h3 class="service-title">Find Doctors</h3>
-            <p class="service-description">Search for doctors by specialization.</p>
-            <a href="/doctors/" class="service-link">Browse Doctors</a>
-          </div>
-          <div class="service-card">
-            <div class="service-icon">
-              <i class="bi bi-hospital"></i>
-            </div>
-            <h3 class="service-title">Find Hospitals</h3>
-            <p class="service-description">Discover hospitals and medical centers.</p>
-            <a href="/hospitals/" class="service-link">Browse Hospitals</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Recent Activity Section -->
-    <section class="multi-speciality-section">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Recent Activity</h2>
-        </div>
-        <div class="row g-4">
-          <div class="col-lg-8">
-            <div class="card mb-4 border-0 shadow-sm">
-              <div class="card-header bg-white">
-                <h5 class="mb-0">Your Appointments</h5>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>Doctor/Hospital</th>
-                        <th>Date & Time</th>
-                        <th>Treatment</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for appointment in upcoming_appointments %}
-                      <tr>
-                        <td>
-                          <div class="fw-semibold">
-                            {% if appointment.preferred_doctor %}
-                              Dr. {{ appointment.preferred_doctor.name }}
-                            {% elif appointment.preferred_hospital %}
-                              {{ appointment.preferred_hospital.name }}
-                            {% else %}
-                              Healthcare Provider
-                            {% endif %}
-                          </div>
-                        </td>
-                        <td>{{ appointment.preferred_date|date:"M d, Y" }} at {{ appointment.preferred_time|time:"g:i A" }}</td>
-                        <td>{{ appointment.treatment.name }}</td>
-                        <td>
-                          {% if appointment.status == 'pending' %}
-                            <span class="badge bg-warning">Pending</span>
-                          {% elif appointment.status == 'confirmed' %}
-                            <span class="badge bg-success">Confirmed</span>
-                          {% elif appointment.status == 'in_progress' %}
-                            <span class="badge bg-info">In Progress</span>
-                          {% elif appointment.status == 'completed' %}
-                            <span class="badge bg-secondary">Completed</span>
-                          {% elif appointment.status == 'cancelled' %}
-                            <span class="badge bg-danger">Cancelled</span>
-                          {% endif %}
-                        </td>
-                      </tr>
-                      {% empty %}
-                      <tr>
-                        <td colspan="4" class="text-center py-4">
-                          <i class="bi bi-calendar-x text-muted fs-1 d-block mb-2"></i>
-                          <p class="mb-0 text-muted">No upcoming appointments</p>
-                        </td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="col-lg-4">
-            <div class="card border-0 shadow-sm">
-              <div class="card-header bg-white">
-                <h5 class="mb-0">Your Profile</h5>
-              </div>
-              <div class="card-body text-center">
-                <div class="mb-3">
-                  <div class="bg-light rounded-circle mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                    <i class="bi bi-person fs-1 text-muted"></i>
-                  </div>
-                </div>
-                <h5>{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h5>
-                <p class="text-muted">Patient ID: PT-{{ user_profile.id|default:"1245" }}</p>
-                <a href="{% url 'accounts:patient_profile' %}" class="btn btn-outline-primary btn-sm">
-                  <i class="bi bi-pencil me-1"></i>Edit Profile
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Review Section -->
-    <section class="why-choose-section">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Leave a Review</h2>
-        </div>
-        <div class="why-choose-grid">
-          <div class="why-choose-card">
-            <div class="why-choose-icon">
-              <i class="bi bi-star"></i>
-            </div>
-            <h3 class="why-choose-title">Rate Your Experience</h3>
-            <p class="why-choose-description">Share your feedback about doctors, hospitals, or treatments.</p>
-            <button class="service-link" id="writeReviewBtn">Write Review</button>
-          </div>
-          <div class="why-choose-card">
-            <div class="why-choose-icon">
-              <i class="bi bi-camera-video"></i>
-            </div>
-            <h3 class="why-choose-title">Video Review</h3>
-            <p class="why-choose-description">Upload a video testimonial of your experience.</p>
-            <button class="service-link" id="writeVideoReviewBtn">Upload Video</button>
-          </div>
-          <div class="why-choose-card">
-            <div class="why-choose-icon">
-              <i class="bi bi-share"></i>
-            </div>
-            <h3 class="why-choose-title">Share Experience</h3>
-            <p class="why-choose-description">Help other patients by sharing your journey.</p>
-            <button class="service-link" id="shareExperienceBtn">Share Story</button>
-          </div>
-          <div class="why-choose-card">
-            <div class="why-choose-icon">
-              <i class="bi bi-question-circle"></i>
-            </div>
-            <h3 class="why-choose-title">Ask Questions</h3>
-            <p class="why-choose-description">Get answers to your healthcare questions.</p>
-            <button class="service-link" id="askQuestionBtn">Ask Now</button>
-          </div>
-        </div>
-      </div>
-    </section>
+<div class="pp-topbar">
+  <div class="pp-topbar-inner">
+    <div class="pp-greeting">
+      Welcome back, {{ user_profile.user.first_name|default:user_profile.user.username }}!
+      <span>Your personal healthcare dashboard</span>
+    </div>
+    <div class="pp-topbar-actions">
+      <a href="{% url 'accounts:patient_profile' %}" class="pp-btn pp-btn-outline">
+        <i class="bi bi-person"></i> My Profile
+      </a>
+      <a href="{% url 'accounts:logout' %}" class="pp-btn pp-btn-white">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </div>
+  </div>
+  <div class="pp-stats-bar">
+    <div class="pp-stat"><i class="bi bi-calendar-check"></i> <strong>{{ total_appointments }}</strong> Total Appointments</div>
+    <div class="pp-stat"><i class="bi bi-person-badge"></i> <strong>PT-{{ user_profile.id }}</strong> Patient ID</div>
+    <div class="pp-stat"><i class="bi bi-shield-check"></i> <strong>Verified</strong> Account</div>
   </div>
 </div>
 
-<!-- Review Submission Form (Hidden by default) -->
-<div class="container">
-  <div class="card mb-5 border-0 shadow-sm" id="reviewSubmissionSection" style="display: none;">
-    <div class="card-header bg-primary text-white">
-      <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Leave a Review</h5>
+<div class="pp-main">
+
+  <!-- Quick Actions -->
+  <div class="mb-4">
+    <div class="pp-section-title">Quick Actions</div>
+    <div class="pp-grid-4">
+      <a href="{% url 'bookings:booking_page' %}" class="pp-action-card">
+        <div class="pp-action-icon blue"><i class="bi bi-calendar-plus"></i></div>
+        <div class="pp-action-label">Book Appointment</div>
+        <div class="pp-action-desc">Schedule with a doctor or hospital</div>
+      </a>
+      <a href="/treatments/" class="pp-action-card">
+        <div class="pp-action-icon green"><i class="bi bi-bandaid"></i></div>
+        <div class="pp-action-label">Find Treatments</div>
+        <div class="pp-action-desc">Browse available procedures</div>
+      </a>
+      <a href="/doctors/" class="pp-action-card">
+        <div class="pp-action-icon purple"><i class="bi bi-person-check"></i></div>
+        <div class="pp-action-label">Find Doctors</div>
+        <div class="pp-action-desc">Search by specialization</div>
+      </a>
+      <a href="/hospitals/" class="pp-action-card">
+        <div class="pp-action-icon orange"><i class="bi bi-hospital"></i></div>
+        <div class="pp-action-label">Find Hospitals</div>
+        <div class="pp-action-desc">Discover medical centers</div>
+      </a>
     </div>
-    <div class="card-body">
+  </div>
+
+  <!-- Main Content: Appointments + Profile -->
+  <div class="pp-grid-2 mb-4">
+
+    <!-- Appointments Table -->
+    <div>
+      <div class="pp-section-title">Your Appointments</div>
+      <div class="pp-card">
+        <div class="table-responsive">
+          <table class="pp-table">
+            <thead>
+              <tr>
+                <th>Doctor / Hospital</th>
+                <th>Date &amp; Time</th>
+                <th>Treatment</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for appt in upcoming_appointments %}
+              <tr>
+                <td>
+                  <div style="font-weight:600;">
+                    {% if appt.preferred_doctor %}Dr. {{ appt.preferred_doctor.name }}
+                    {% elif appt.preferred_hospital %}{{ appt.preferred_hospital.name }}
+                    {% else %}Healthcare Provider{% endif %}
+                  </div>
+                </td>
+                <td>{{ appt.preferred_date|date:"M d, Y" }}<br><small class="text-muted">{{ appt.preferred_time|time:"g:i A" }}</small></td>
+                <td>{{ appt.treatment.name }}</td>
+                <td>
+                  {% if appt.status == 'pending' %}<span class="pp-badge pp-badge-pending"><i class="bi bi-clock me-1"></i>Pending</span>
+                  {% elif appt.status == 'confirmed' %}<span class="pp-badge pp-badge-confirmed"><i class="bi bi-check-circle me-1"></i>Confirmed</span>
+                  {% elif appt.status == 'in_progress' %}<span class="pp-badge pp-badge-progress"><i class="bi bi-arrow-repeat me-1"></i>In Progress</span>
+                  {% elif appt.status == 'completed' %}<span class="pp-badge pp-badge-completed"><i class="bi bi-check2-all me-1"></i>Completed</span>
+                  {% elif appt.status == 'cancelled' %}<span class="pp-badge pp-badge-cancelled"><i class="bi bi-x-circle me-1"></i>Cancelled</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="4">
+                <div class="pp-empty">
+                  <i class="bi bi-calendar-x"></i>
+                  <div style="font-weight:600;margin-bottom:.25rem;">No upcoming appointments</div>
+                  <div style="font-size:.85rem;">Book your first appointment to get started</div>
+                  <a href="{% url 'bookings:booking_page' %}" class="pp-btn pp-btn-white" style="margin-top:.75rem;background:#0d6efd;color:#fff;display:inline-flex;">
+                    <i class="bi bi-calendar-plus"></i> Book Now
+                  </a>
+                </div>
+              </td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Card -->
+    <div>
+      <div class="pp-section-title">Your Profile</div>
+      <div class="pp-card">
+        <div class="pp-profile-card">
+          <div class="pp-avatar">
+            {% if user_profile.profile_picture %}
+              <img src="{{ user_profile.profile_picture.url }}" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            {% else %}
+              <i class="bi bi-person-fill"></i>
+            {% endif %}
+          </div>
+          <div class="pp-name">{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</div>
+          <div class="pp-pid">PT-{{ user_profile.id }}</div>
+          <a href="{% url 'accounts:patient_profile' %}" class="pp-btn pp-btn-white" style="background:#0d6efd;color:#fff;width:100%;justify-content:center;">
+            <i class="bi bi-pencil"></i> Edit Profile
+          </a>
+          <div class="pp-divider" style="width:100%;"></div>
+          <div style="width:100%;text-align:left;">
+            <div style="font-size:.8rem;color:var(--pp-muted);margin-bottom:.35rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Account Info</div>
+            <div style="font-size:.875rem;color:var(--pp-text);display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;">
+              <i class="bi bi-envelope" style="color:var(--pp-muted);"></i> {{ user_profile.user.email|default:"Not set" }}
+            </div>
+            <div style="font-size:.875rem;color:var(--pp-text);display:flex;align-items:center;gap:.5rem;">
+              <i class="bi bi-telephone" style="color:var(--pp-muted);"></i> {{ user_profile.phone|default:"Not set" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leave a Review -->
+  <div class="mb-2">
+    <div class="pp-section-title">Leave a Review</div>
+    <div class="pp-grid-3">
+      <div class="pp-review-card" onclick="openReviewModal('text')">
+        <div class="pp-review-icon yellow"><i class="bi bi-star-fill"></i></div>
+        <div class="pp-review-label">Rate Your Experience</div>
+        <div class="pp-review-desc">Share feedback about doctors, hospitals, or treatments</div>
+      </div>
+      <div class="pp-review-card" onclick="openReviewModal('video')">
+        <div class="pp-review-icon red"><i class="bi bi-camera-video-fill"></i></div>
+        <div class="pp-review-label">Video Review</div>
+        <div class="pp-review-desc">Upload a video testimonial of your experience</div>
+      </div>
+      <div class="pp-review-card" onclick="openReviewModal('text')">
+        <div class="pp-review-icon teal"><i class="bi bi-share-fill"></i></div>
+        <div class="pp-review-label">Share Your Story</div>
+        <div class="pp-review-desc">Help other patients by sharing your journey</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Review Modal -->
+<div class="pp-modal-overlay" id="reviewModal">
+  <div class="pp-modal">
+    <div class="pp-modal-header">
+      <div class="pp-modal-title"><i class="bi bi-pencil-square me-2" style="color:#0d6efd;"></i>Write a Review</div>
+      <button class="pp-modal-close" onclick="closeReviewModal()" aria-label="Close">&times;</button>
+    </div>
+    <div class="pp-modal-body">
       <form id="reviewForm">
         {% csrf_token %}
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label fw-semibold">What would you like to review?</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="reviewType" id="doctorReview" value="doctor" checked>
-              <label class="form-check-label" for="doctorReview">Doctor</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="reviewType" id="hospitalReview" value="hospital">
-              <label class="form-check-label" for="hospitalReview">Hospital</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="reviewType" id="treatmentReview" value="treatment">
-              <label class="form-check-label" for="treatmentReview">Treatment</label>
-            </div>
-          </div>
-          
-          <div class="col-md-6 mb-3">
-            <label for="reviewEntity" class="form-label fw-semibold">Select Entity</label>
-            <select class="form-select" id="reviewEntity" name="entityId" required>
-              <option value="">Choose...</option>
-              <!-- Options will be populated dynamically -->
-            </select>
+
+        <div class="pp-form-group">
+          <div class="pp-label">Reviewing</div>
+          <div class="pp-radio-group" id="reviewTypeGroup">
+            <label class="pp-radio-label selected" data-value="doctor">
+              <input type="radio" name="reviewType" value="doctor" checked> <i class="bi bi-person-check"></i> Doctor
+            </label>
+            <label class="pp-radio-label" data-value="hospital">
+              <input type="radio" name="reviewType" value="hospital"> <i class="bi bi-hospital"></i> Hospital
+            </label>
+            <label class="pp-radio-label" data-value="treatment">
+              <input type="radio" name="reviewType" value="treatment"> <i class="bi bi-bandaid"></i> Treatment
+            </label>
           </div>
         </div>
-        
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Rating</label>
-          <div class="rating-stars d-flex">
-            <i class="bi bi-star star fs-3 me-1" data-rating="1"></i>
-            <i class="bi bi-star star fs-3 me-1" data-rating="2"></i>
-            <i class="bi bi-star star fs-3 me-1" data-rating="3"></i>
-            <i class="bi bi-star star fs-3 me-1" data-rating="4"></i>
-            <i class="bi bi-star star fs-3 me-1" data-rating="5"></i>
+
+        <div class="pp-form-group">
+          <label class="pp-label" for="reviewEntity">Select</label>
+          <select class="pp-select" id="reviewEntity" name="entityId" required>
+            <option value="">Loading...</option>
+          </select>
+        </div>
+
+        <div class="pp-form-group">
+          <div class="pp-label">Your Rating</div>
+          <div class="pp-stars" id="starContainer">
+            <span class="pp-star" data-v="1">&#9733;</span>
+            <span class="pp-star" data-v="2">&#9733;</span>
+            <span class="pp-star" data-v="3">&#9733;</span>
+            <span class="pp-star" data-v="4">&#9733;</span>
+            <span class="pp-star" data-v="5">&#9733;</span>
           </div>
-          <input type="hidden" id="ratingValue" name="rating" value="0" required>
+          <input type="hidden" id="ratingValue" name="rating" value="0">
         </div>
-        
-        <div class="mb-3">
-          <label for="reviewTitle" class="form-label fw-semibold">Review Title</label>
-          <input type="text" class="form-control" id="reviewTitle" name="title" placeholder="Brief summary of your experience" required>
+
+        <div class="pp-form-group">
+          <label class="pp-label" for="reviewTitle">Title</label>
+          <input type="text" class="pp-input" id="reviewTitle" name="title" placeholder="Brief summary of your experience" required>
         </div>
-        
-        <div class="mb-3">
-          <label for="reviewComment" class="form-label fw-semibold">Your Review</label>
-          <textarea class="form-control" id="reviewComment" name="comment" rows="4" placeholder="Share details about your experience..." required maxlength="1000" style="resize: vertical; max-height: 200px;"></textarea>
-          <div class="form-text">
-            <span id="wordCount">0</span>/200 words
-          </div>
+
+        <div class="pp-form-group">
+          <label class="pp-label" for="reviewComment">Your Review</label>
+          <textarea class="pp-textarea" id="reviewComment" name="comment" placeholder="Share details about your experience..." required maxlength="2000"></textarea>
         </div>
-        
-        <div class="mb-3">
-          <label for="reviewVideo" class="form-label fw-semibold">Video Review (Optional)</label>
-          <input type="file" class="form-control" id="reviewVideo" name="video" accept="video/*">
-          <div class="form-text">Upload a video review (max 100MB)</div>
+
+        <div class="pp-form-group" id="videoUploadGroup" style="display:none;">
+          <label class="pp-label" for="reviewVideo">Video (Optional)</label>
+          <input type="file" class="pp-input" id="reviewVideo" name="video" accept="video/*">
+          <div style="font-size:.78rem;color:var(--pp-muted);margin-top:.3rem;">Max 100MB</div>
         </div>
-        
-        <div class="form-check mb-4">
-          <input class="form-check-input" type="checkbox" id="anonymousReview" name="anonymous">
-          <label class="form-check-label" for="anonymousReview">Post anonymously</label>
+
+        <div class="pp-form-group" style="display:flex;align-items:center;gap:.5rem;">
+          <input type="checkbox" id="anonymousReview" name="anonymous" style="width:16px;height:16px;cursor:pointer;">
+          <label for="anonymousReview" style="font-size:.875rem;cursor:pointer;">Post anonymously</label>
         </div>
-        
-        <div class="d-flex gap-2">
-          <button type="submit" class="btn btn-primary">
-            <i class="bi bi-send me-2"></i>Submit Review
-          </button>
-          <button type="button" class="btn btn-secondary" id="cancelReview">
-            <i class="bi bi-x-circle me-2"></i>Cancel
-          </button>
-        </div>
+
+        <button type="submit" class="pp-submit-btn" id="submitReviewBtn">
+          <i class="bi bi-send me-2"></i>Submit Review
+        </button>
       </form>
     </div>
   </div>
 </div>
 
 <script>
-// Rating stars functionality
-document.querySelectorAll('.rating-stars .star').forEach(star => {
-  star.addEventListener('click', function() {
-    const rating = this.getAttribute('data-rating');
-    document.getElementById('ratingValue').value = rating;
-    
-    // Update star display
-    document.querySelectorAll('.rating-stars .star').forEach(s => {
-      if (s.getAttribute('data-rating') <= rating) {
-        s.classList.add('filled');
-      } else {
-        s.classList.remove('filled');
-      }
-    });
+function openReviewModal(type) {
+  document.getElementById('reviewModal').classList.add('active');
+  if (type === 'video') document.getElementById('videoUploadGroup').style.display = 'block';
+  loadEntities('doctor');
+}
+function closeReviewModal() {
+  document.getElementById('reviewModal').classList.remove('active');
+}
+document.getElementById('reviewModal').addEventListener('click', function(e) {
+  if (e.target === this) closeReviewModal();
+});
+
+// Radio group styling
+document.querySelectorAll('.pp-radio-label').forEach(label => {
+  label.addEventListener('click', function() {
+    document.querySelectorAll('.pp-radio-label').forEach(l => l.classList.remove('selected'));
+    this.classList.add('selected');
+    this.querySelector('input').checked = true;
+    loadEntities(this.dataset.value);
   });
 });
 
-// Word count functionality for review comment
-document.getElementById('reviewComment').addEventListener('input', function() {
-  const text = this.value;
-  const words = text.trim().split(/\s+/).filter(word => word.length > 0);
-  const wordCount = words.length;
-  
-  // Update word count display
-  document.getElementById('wordCount').textContent = wordCount;
-  
-  // Limit to 200 words
-  if (wordCount > 200) {
-    // Truncate to 200 words
-    const truncatedWords = words.slice(0, 200);
-    this.value = truncatedWords.join(' ');
-    document.getElementById('wordCount').textContent = 200;
-  }
-});
-
-// Review type selection
-document.querySelectorAll('input[name="reviewType"]').forEach(radio => {
-  radio.addEventListener('change', function() {
-    const entityType = this.value;
-    const entitySelect = document.getElementById('reviewEntity');
-    
-    // Clear existing options
-    entitySelect.innerHTML = '<option value="">Loading...</option>';
-    
-    // Fetch entities based on type
-    fetch(`/api/v1/entities/${entityType}/`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Clear and populate options
-        entitySelect.innerHTML = '<option value="">Choose...</option>';
-        if (data.length > 0) {
-          data.forEach(entity => {
-            const option = document.createElement('option');
-            option.value = entity.id;
-            option.textContent = entity.name;
-            entitySelect.appendChild(option);
-          });
-        } else {
-          entitySelect.innerHTML = '<option value="">No entities found</option>';
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching entities:', error);
-        entitySelect.innerHTML = '<option value="">Error loading options</option>';
+function loadEntities(type) {
+  const sel = document.getElementById('reviewEntity');
+  sel.innerHTML = '<option value="">Loading...</option>';
+  fetch('/api/v1/entities/' + type + '/')
+    .then(r => r.json())
+    .then(data => {
+      sel.innerHTML = '<option value="">Choose...</option>';
+      data.forEach(e => {
+        const o = document.createElement('option');
+        o.value = e.id; o.textContent = e.name;
+        sel.appendChild(o);
       });
+    })
+    .catch(() => { sel.innerHTML = '<option value="">Error loading</option>'; });
+}
+
+// Stars
+let currentRating = 0;
+document.querySelectorAll('.pp-star').forEach(star => {
+  star.addEventListener('mouseover', function() {
+    const v = +this.dataset.v;
+    document.querySelectorAll('.pp-star').forEach(s => s.classList.toggle('active', +s.dataset.v <= v));
+  });
+  star.addEventListener('mouseout', function() {
+    document.querySelectorAll('.pp-star').forEach(s => s.classList.toggle('active', +s.dataset.v <= currentRating));
+  });
+  star.addEventListener('click', function() {
+    currentRating = +this.dataset.v;
+    document.getElementById('ratingValue').value = currentRating;
+    document.querySelectorAll('.pp-star').forEach(s => s.classList.toggle('active', +s.dataset.v <= currentRating));
   });
 });
 
-// Form submission
+// Form submit
 document.getElementById('reviewForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  
-  // Get form data
-  const formData = new FormData(this);
-  
-  // Show loading state
-  const submitButton = this.querySelector('button[type="submit"]');
-  const originalText = submitButton.textContent;
-  submitButton.disabled = true;
-  submitButton.textContent = 'Submitting...';
-  
-  // Submit review via AJAX
+  const btn = document.getElementById('submitReviewBtn');
+  btn.disabled = true; btn.textContent = 'Submitting...';
+  const fd = new FormData(this);
   fetch('{% url "accounts:submit_review" %}', {
-    method: 'POST',
-    body: formData,
-    headers: {
-      'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-    }
+    method: 'POST', body: fd,
+    headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value}
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
+  .then(r => r.json())
   .then(data => {
     if (data.success) {
-        alert('Review submitted successfully! Your review is now visible to everyone.');
-        // Reset form
-        this.reset();
-        document.getElementById('ratingValue').value = 0;
-        document.querySelectorAll('.rating-stars .star').forEach(s => {
-            s.classList.remove('filled');
-        });
-        // Reset entity selection
-        document.getElementById('reviewEntity').innerHTML = '<option value="">Choose...</option>';
-        // Reset word count
-        document.getElementById('wordCount').textContent = '0';
-        // Trigger change event to reload default entities
-        document.querySelector('input[name="reviewType"]:checked').dispatchEvent(new Event('change'));
-        // Hide form
-        document.getElementById('reviewSubmissionSection').style.display = 'none';
+      closeReviewModal();
+      this.reset(); currentRating = 0;
+      document.querySelectorAll('.pp-star').forEach(s => s.classList.remove('active'));
+      alert('Review submitted successfully! Thank you for your feedback.');
     } else {
-        alert('Error: ' + data.message);
+      alert('Error: ' + (data.message || 'Could not submit review.'));
     }
   })
-  .catch(error => {
-    console.error('Error submitting review:', error);
-    alert('Error submitting review. Please try again.');
-  })
-  .finally(() => {
-    // Restore button state
-    submitButton.disabled = false;
-    submitButton.textContent = originalText;
-  });
-});
-
-// Show review form
-document.querySelectorAll('#writeReviewBtn, #writeVideoReviewBtn, #shareExperienceBtn, #askQuestionBtn').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    document.getElementById('reviewSubmissionSection').style.display = 'block';
-    // Scroll to form
-    document.getElementById('reviewSubmissionSection').scrollIntoView({ behavior: 'smooth' });
-    // Trigger change event on the default selected radio button
-    document.querySelector('input[name="reviewType"]:checked').dispatchEvent(new Event('change'));
-  });
-});
-
-// Cancel review
-document.getElementById('cancelReview').addEventListener('click', function() {
-  document.getElementById('reviewSubmissionSection').style.display = 'none';
-  // Reset word count when canceling
-  document.getElementById('wordCount').textContent = '0';
-});
-
-// Initialize with doctors by default
-document.addEventListener('DOMContentLoaded', function() {
-  // Trigger change event on the default selected radio button
-  document.querySelector('input[name="reviewType"]:checked').dispatchEvent(new Event('change'));
+  .catch(() => alert('Network error. Please try again.'))
+  .finally(() => { btn.disabled = false; btn.innerHTML = '<i class="bi bi-send me-2"></i>Submit Review'; });
 });
 </script>
 {% endblock %}
