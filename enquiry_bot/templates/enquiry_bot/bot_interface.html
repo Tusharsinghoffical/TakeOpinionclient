@@ -1,338 +1,390 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load static %}
-
-{% block title %}Enquiry Bot - TakeOpinion{% endblock %}
-
+{% block title %}AI Chatbot - TakeOpinion{% endblock %}
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-8 mx-auto">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0"><i class="fas fa-robot"></i> TakeOpinion Virtual Assistant</h3>
-                    <p class="mb-0">Ask me anything about our healthcare platform!</p>
-                </div>
-                
-                <div class="card-body">
-                    <!-- Chat Container -->
-                    <div id="chat-container" class="border rounded p-3 mb-3" style="height: 400px; overflow-y: auto;">
-                        <div class="message bot-message mb-2">
-                            <div class="alert alert-info">
-                                <strong>Bot:</strong> Hello! Welcome to TakeOpinion. I'm your virtual assistant. How can I help you today? You can ask me about our services, doctors, hospitals, booking procedures, or anything else related to our platform.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Input Area -->
-                    <div class="input-group">
-                        <input type="text" id="message-input" class="form-control" placeholder="Type your message here..." autocomplete="off">
-                        <button class="btn btn-primary" type="button" id="send-button">
-                            <i class="fas fa-paper-plane"></i> Send
-                        </button>
-                    </div>
-                    
-                    <!-- Quick Actions -->
-                    <div class="mt-3">
-                        <small class="text-muted">Quick actions:</small>
-                        <div class="d-flex flex-wrap gap-2 mt-2">
-                            <button class="btn btn-outline-primary btn-sm quick-action" data-question="What services do you offer?">Services</button>
-                            <button class="btn btn-outline-primary btn-sm quick-action" data-question="How do I book an appointment?">Book Appointment</button>
-                            <button class="btn btn-outline-primary btn-sm quick-action" data-question="Tell me about doctors">Doctors</button>
-                            <button class="btn btn-outline-primary btn-sm quick-action" data-question="Tell me about hospitals">Hospitals</button>
-                            <button class="btn btn-outline-primary btn-sm quick-action" data-question="How do payments work?">Payments</button>
-                            <button class="btn btn-outline-primary btn-sm quick-action" data-question="Contact support">Support</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- FAQ Section -->
-    {% if faqs %}
-    <div class="row mt-4">
-        <div class="col-md-8 mx-auto">
-            <div class="card shadow-lg">
-                <div class="card-header bg-success text-white">
-                    <h4 class="mb-0"><i class="fas fa-question-circle"></i> Frequently Asked Questions</h4>
-                </div>
-                <div class="card-body">
-                    {% for faq in faqs %}
-                    <div class="accordion-item mb-2">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ faq.id }}">
-                                {{ faq.question }}
-                            </button>
-                        </h2>
-                        <div id="faq{{ faq.id }}" class="accordion-collapse collapse">
-                            <div class="accordion-body">
-                                {{ faq.answer }}
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    
-    
-</div>
-
-<!-- Custom Styles -->
 <style>
-    .message {
-        margin-bottom: 1rem;
-    }
-    
-    .user-message .alert {
-        background-color: #d1ecf1;
-        border-color: #bee5eb;
-        color: #0c5460;
-    }
-    
-    .bot-message .alert {
-        background-color: #f8d7da;
-        border-color: #f5c6cb;
-        color: #721c24;
-    }
-    
-    .quick-action {
-        font-size: 0.85rem;
-    }
-    
-    .accordion-button:not(.collapsed) {
-        background-color: #d4edda;
-        color: #155724;
-    }
+:root{--cb-bg:#f0f4f8;--cb-card:#fff;--cb-blue:#0d6efd;--cb-blue-dark:#0a58ca;--cb-text:#1e293b;--cb-muted:#64748b;--cb-border:#e2e8f0;--cb-user-bg:#0d6efd;--cb-bot-bg:#f1f5f9;}
+body{background:var(--cb-bg);}
+.cb-wrap{max-width:820px;margin:0 auto;padding:1.5rem 1rem 2rem;}
+@media(max-width:600px){.cb-wrap{padding:.75rem .5rem 1.5rem;}}
+
+/* Header */
+.cb-header{background:linear-gradient(135deg,#0d1b2a 0%,#1a3c6e 100%);border-radius:16px 16px 0 0;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;}
+.cb-header-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#0d6efd);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#fff;flex-shrink:0;box-shadow:0 0 0 3px rgba(255,255,255,.15);}
+.cb-header-info{flex:1;}
+.cb-header-name{font-size:1rem;font-weight:700;color:#fff;margin:0;}
+.cb-header-status{font-size:.78rem;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:.35rem;margin-top:.1rem;}
+.cb-status-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;}
+.cb-header-actions{display:flex;gap:.5rem;}
+.cb-header-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:.35rem .75rem;font-size:.8rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem;transition:background .2s;}
+.cb-header-btn:hover{background:rgba(255,255,255,.2);color:#fff;}
+
+/* Chat window */
+.cb-window{background:#fff;border-left:1px solid var(--cb-border);border-right:1px solid var(--cb-border);}
+.cb-messages{height:420px;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:.85rem;scroll-behavior:smooth;}
+.cb-messages::-webkit-scrollbar{width:4px;}
+.cb-messages::-webkit-scrollbar-track{background:transparent;}
+.cb-messages::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px;}
+
+/* Messages */
+.cb-msg{display:flex;gap:.6rem;align-items:flex-end;max-width:80%;}
+.cb-msg.user{align-self:flex-end;flex-direction:row-reverse;}
+.cb-msg.bot{align-self:flex-start;}
+.cb-msg-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;margin-bottom:2px;}
+.cb-msg.bot .cb-msg-avatar{background:linear-gradient(135deg,#3b82f6,#0d6efd);color:#fff;}
+.cb-msg.user .cb-msg-avatar{background:#e2e8f0;color:var(--cb-muted);}
+.cb-bubble{padding:.65rem .9rem;border-radius:14px;font-size:.875rem;line-height:1.55;max-width:100%;word-break:break-word;}
+.cb-msg.bot .cb-bubble{background:var(--cb-bot-bg);color:var(--cb-text);border-bottom-left-radius:4px;}
+.cb-msg.user .cb-bubble{background:var(--cb-user-bg);color:#fff;border-bottom-right-radius:4px;}
+.cb-msg-time{font-size:.68rem;color:var(--cb-muted);margin-top:.2rem;text-align:right;}
+.cb-msg.bot .cb-msg-time{text-align:left;}
+
+/* Typing indicator */
+.cb-typing{display:none;align-self:flex-start;}
+.cb-typing.visible{display:flex;}
+.cb-typing-dots{display:flex;gap:4px;align-items:center;padding:.6rem .9rem;background:var(--cb-bot-bg);border-radius:14px;border-bottom-left-radius:4px;}
+.cb-typing-dot{width:7px;height:7px;border-radius:50%;background:#94a3b8;animation:cb-bounce .9s infinite;}
+.cb-typing-dot:nth-child(2){animation-delay:.15s;}
+.cb-typing-dot:nth-child(3){animation-delay:.3s;}
+@keyframes cb-bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
+
+/* Quick actions */
+.cb-quick{padding:.75rem 1.25rem;border-top:1px solid var(--cb-border);background:#f8fafc;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;}
+.cb-quick-label{font-size:.72rem;font-weight:700;color:var(--cb-muted);text-transform:uppercase;letter-spacing:.06em;width:100%;}
+.cb-chip{background:#fff;border:1.5px solid var(--cb-border);color:var(--cb-text);border-radius:20px;padding:.3rem .85rem;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.cb-chip:hover{border-color:#0d6efd;color:#0d6efd;background:#eff6ff;}
+
+/* Input area */
+.cb-input-area{background:#fff;border:1px solid var(--cb-border);border-top:none;border-radius:0 0 16px 16px;padding:1rem 1.25rem;}
+.cb-input-row{display:flex;gap:.6rem;align-items:flex-end;}
+.cb-input-box{flex:1;border:1.5px solid var(--cb-border);border-radius:12px;padding:.6rem .9rem;font-size:.875rem;color:var(--cb-text);outline:none;resize:none;min-height:42px;max-height:120px;transition:border-color .2s;font-family:inherit;line-height:1.5;}
+.cb-input-box:focus{border-color:#0d6efd;box-shadow:0 0 0 3px rgba(13,110,253,.1);}
+.cb-send-btn{width:42px;height:42px;border-radius:10px;background:#0d6efd;border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0;font-size:1rem;}
+.cb-send-btn:hover{background:#0a58ca;box-shadow:0 4px 12px rgba(13,110,253,.3);}
+.cb-send-btn:disabled{background:#94a3b8;cursor:not-allowed;box-shadow:none;}
+.cb-file-btn{width:42px;height:42px;border-radius:10px;background:#f1f5f9;border:1.5px solid var(--cb-border);color:var(--cb-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0;font-size:.95rem;}
+.cb-file-btn:hover{background:#e2e8f0;color:var(--cb-text);}
+.cb-file-input{display:none;}
+.cb-file-preview{font-size:.78rem;color:#0d6efd;margin-top:.4rem;display:none;align-items:center;gap:.4rem;}
+.cb-file-preview.visible{display:flex;}
+.cb-file-preview i{cursor:pointer;color:#dc2626;}
+
+/* FAQ section */
+.cb-faq{margin-top:1.5rem;}
+.cb-faq-header{background:linear-gradient(135deg,#0d6efd,#0a58ca);border-radius:12px 12px 0 0;padding:1rem 1.25rem;display:flex;align-items:center;gap:.6rem;color:#fff;}
+.cb-faq-header-icon{font-size:1.1rem;}
+.cb-faq-header-title{font-size:.95rem;font-weight:700;margin:0;}
+.cb-faq-body{background:#fff;border:1px solid var(--cb-border);border-top:none;border-radius:0 0 12px 12px;overflow:hidden;}
+.cb-faq-item{border-bottom:1px solid var(--cb-border);}
+.cb-faq-item:last-child{border-bottom:none;}
+.cb-faq-q{width:100%;background:none;border:none;padding:.9rem 1.25rem;text-align:left;font-size:.875rem;font-weight:600;color:var(--cb-text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;transition:background .15s;}
+.cb-faq-q:hover{background:#f8fafc;}
+.cb-faq-q.open{color:#0d6efd;background:#eff6ff;}
+.cb-faq-q i{font-size:.75rem;transition:transform .2s;flex-shrink:0;}
+.cb-faq-q.open i{transform:rotate(180deg);}
+.cb-faq-a{display:none;padding:.75rem 1.25rem 1rem;font-size:.875rem;color:var(--cb-muted);line-height:1.6;background:#f8fafc;}
+.cb-faq-a.open{display:block;}
+
+/* CSRF hidden */
 </style>
 
+{% csrf_token %}
+
+<div class="cb-wrap">
+
+  <!-- Chat card -->
+  <div>
+    <!-- Header -->
+    <div class="cb-header">
+      <div class="cb-header-avatar"><i class="bi bi-robot"></i></div>
+      <div class="cb-header-info">
+        <div class="cb-header-name">TakeOpinion AI Assistant</div>
+        <div class="cb-header-status"><span class="cb-status-dot"></span> Online &mdash; Ask me anything about healthcare</div>
+      </div>
+      <div class="cb-header-actions">
+        <a href="/" class="cb-header-btn"><i class="bi bi-house"></i> Home</a>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="cb-window">
+      <div class="cb-messages" id="chat-container">
+        <!-- Welcome message -->
+        <div class="cb-msg bot">
+          <div class="cb-msg-avatar"><i class="bi bi-robot"></i></div>
+          <div>
+            <div class="cb-bubble">
+              Hello! Welcome to TakeOpinion. I'm your AI healthcare assistant.<br><br>
+              I can help you with <strong>doctors</strong>, <strong>hospitals</strong>, <strong>treatments</strong>, <strong>bookings</strong>, and more. You can also upload a medical report for personalised recommendations.<br><br>
+              How can I help you today?
+            </div>
+            <div class="cb-msg-time">Just now</div>
+          </div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="cb-msg bot cb-typing" id="typingIndicator">
+          <div class="cb-msg-avatar"><i class="bi bi-robot"></i></div>
+          <div class="cb-typing-dots">
+            <div class="cb-typing-dot"></div>
+            <div class="cb-typing-dot"></div>
+            <div class="cb-typing-dot"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick chips -->
+      <div class="cb-quick">
+        <div class="cb-quick-label">Quick questions</div>
+        <button class="cb-chip quick-action" data-question="What services do you offer?"><i class="bi bi-grid me-1"></i>Services</button>
+        <button class="cb-chip quick-action" data-question="How do I book an appointment?"><i class="bi bi-calendar-plus me-1"></i>Book Appointment</button>
+        <button class="cb-chip quick-action" data-question="Tell me about doctors"><i class="bi bi-person-check me-1"></i>Doctors</button>
+        <button class="cb-chip quick-action" data-question="Tell me about hospitals"><i class="bi bi-hospital me-1"></i>Hospitals</button>
+        <button class="cb-chip quick-action" data-question="How do payments work?"><i class="bi bi-credit-card me-1"></i>Payments</button>
+        <button class="cb-chip quick-action" data-question="Contact support"><i class="bi bi-headset me-1"></i>Support</button>
+      </div>
+    </div>
+
+    <!-- Input area -->
+    <div class="cb-input-area">
+      <div class="cb-input-row">
+        <label class="cb-file-btn" for="fileInput" title="Upload medical report">
+          <i class="bi bi-paperclip"></i>
+        </label>
+        <input type="file" id="fileInput" class="cb-file-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+        <textarea class="cb-input-box" id="message-input" placeholder="Type your message or ask a health question..." rows="1"></textarea>
+        <button class="cb-send-btn" id="send-button" title="Send message">
+          <i class="bi bi-send-fill"></i>
+        </button>
+      </div>
+      <div class="cb-file-preview" id="filePreview">
+        <i class="bi bi-file-earmark-text"></i>
+        <span id="fileName"></span>
+        <i class="bi bi-x-circle" id="removeFile" title="Remove file"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ section -->
+  {% if faqs %}
+  <div class="cb-faq">
+    <div class="cb-faq-header">
+      <span class="cb-faq-header-icon"><i class="bi bi-question-circle-fill"></i></span>
+      <span class="cb-faq-header-title">Frequently Asked Questions</span>
+    </div>
+    <div class="cb-faq-body">
+      {% for faq in faqs %}
+      <div class="cb-faq-item">
+        <button class="cb-faq-q" onclick="toggleFaq(this)">
+          {{ faq.question }}
+          <i class="bi bi-chevron-down"></i>
+        </button>
+        <div class="cb-faq-a">{{ faq.answer }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const chatContainer = document.getElementById('chat-container');
-        const messageInput = document.getElementById('message-input');
-        const sendButton = document.getElementById('send-button');
-        const enquiryForm = document.getElementById('enquiry-form');
-        
-        let currentEnquiryId = null;
-        
-        // Function to add a message to the chat
-        function addMessage(sender, message) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}-message`;
-            
-            const alertClass = sender === 'user' ? 'alert-primary' : 'alert-info';
-            messageDiv.innerHTML = `
-                <div class="alert ${alertClass}">
-                    <strong>${sender.charAt(0).toUpperCase() + sender.slice(1)}:</strong> ${message}
-                </div>
-            `;
-            
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+document.addEventListener('DOMContentLoaded', function() {
+  const chatContainer = document.getElementById('chat-container');
+  const messageInput  = document.getElementById('message-input');
+  const sendButton    = document.getElementById('send-button');
+  const typingIndicator = document.getElementById('typingIndicator');
+  const fileInput     = document.getElementById('fileInput');
+  const filePreview   = document.getElementById('filePreview');
+  const fileNameEl    = document.getElementById('fileName');
+  const removeFileBtn = document.getElementById('removeFile');
+
+  let currentEnquiryId = null;
+
+  // Auto-resize textarea
+  messageInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  });
+
+  // File input
+  fileInput.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      fileNameEl.textContent = this.files[0].name;
+      filePreview.classList.add('visible');
+    }
+  });
+  removeFileBtn.addEventListener('click', function() {
+    fileInput.value = '';
+    filePreview.classList.remove('visible');
+    fileNameEl.textContent = '';
+  });
+
+  function getTime() {
+    return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  }
+
+  function addMessage(sender, text) {
+    // Remove typing indicator before adding message
+    const typing = document.getElementById('typingIndicator');
+    if (typing) chatContainer.removeChild(typing);
+
+    const wrap = document.createElement('div');
+    wrap.className = 'cb-msg ' + sender;
+
+    const avatarIcon = sender === 'bot' ? 'bi-robot' : 'bi-person-fill';
+    wrap.innerHTML = `
+      <div class="cb-msg-avatar"><i class="bi ${avatarIcon}"></i></div>
+      <div>
+        <div class="cb-bubble">${text}</div>
+        <div class="cb-msg-time">${getTime()}</div>
+      </div>`;
+
+    chatContainer.appendChild(wrap);
+
+    // Re-append typing indicator at the end
+    chatContainer.appendChild(typing);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  function showTyping() {
+    typingIndicator.classList.add('visible');
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+  function hideTyping() {
+    typingIndicator.classList.remove('visible');
+  }
+
+  function getCsrfToken() {
+    const name = 'csrftoken';
+    for (let c of document.cookie.split(';')) {
+      const t = c.trim();
+      if (t.startsWith(name + '=')) return decodeURIComponent(t.slice(name.length + 1));
+    }
+    const inp = document.querySelector('[name=csrfmiddlewaretoken]');
+    return inp ? inp.value : '';
+  }
+
+  function submitToSmartResults() {
+    const query = messageInput.value.trim();
+    if (!query) return;
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/enquiries/results/';
+
+    if (fileInput.files && fileInput.files.length > 0) {
+      form.enctype = 'multipart/form-data';
+      const cloned = fileInput.cloneNode(true);
+      cloned.name = 'medical_report';
+      form.appendChild(cloned);
+    }
+
+    const csrf = document.createElement('input');
+    csrf.type = 'hidden'; csrf.name = 'csrfmiddlewaretoken'; csrf.value = getCsrfToken();
+    form.appendChild(csrf);
+
+    const q = document.createElement('input');
+    q.type = 'hidden'; q.name = 'query'; q.value = query;
+    form.appendChild(q);
+
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+  async function sendMessage() {
+    const message = messageInput.value.trim();
+    if (!message) return;
+
+    // Task 6.3 / Req 4.3 — show user bubble immediately
+    addMessage('user', message);
+    messageInput.value = '';
+    messageInput.style.height = 'auto';
+    messageInput.disabled = true;
+    sendButton.disabled = true;
+    showTyping();
+
+    // Task 6.1 / Req 4.1 — POST to smart-search API using form-encoded body
+    const body = new URLSearchParams();
+    body.append('query', message);
+
+    try {
+      const response = await fetch('/enquiries/results/api/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': getCsrfToken()
+        },
+        body: body.toString()
+      });
+
+      const data = await response.json();
+      hideTyping();
+
+      if (response.ok) {
+        // Task 6.2 / Req 4.2 — update result sections in-place
+        if (typeof window.updateSection === 'function') {
+          if (data.doctors    !== undefined) window.updateSection('doctors',    data.doctors,    window.renderDoctors);
+          if (data.hospitals  !== undefined) window.updateSection('hospitals',  data.hospitals,  window.renderHospitals);
+          if (data.treatments !== undefined) window.updateSection('treatments', data.treatments, window.renderTreatments);
+          if (data.blogs      !== undefined) window.updateSection('blogs',      data.blogs,      window.renderBlogs);
         }
-        
-        // Function to send message to the bot
-        async function sendMessage() {
-            const message = messageInput.value.trim();
-            if (!message) return;
-            
-            // Add user message to chat
-            addMessage('user', message);
-            messageInput.value = '';
-            
-            // Disable input while waiting for response
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            
-            try {
-                const response = await fetch('{% url "enquiry_bot:chat_api" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        enquiry_id: currentEnquiryId
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    // Add bot response to chat
-                    addMessage('bot', data.response);
-                    
-                    // Store enquiry ID if it was created
-                    if (data.enquiry_id) {
-                        currentEnquiryId = data.enquiry_id;
-                    }
-                } else {
-                    addMessage('bot', 'Sorry, I encountered an error. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                addMessage('bot', 'Sorry, I encountered an error. Please try again.');
-            } finally {
-                // Re-enable input
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                messageInput.focus();
-            }
-        }
-        
-        // Helper: get CSRF token from cookies
-        function getCsrfToken() {
-            const name = 'csrftoken';
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                const trimmed = cookie.trim();
-                if (trimmed.startsWith(name + '=')) {
-                    return decodeURIComponent(trimmed.slice(name.length + 1));
-                }
-            }
-            // Fallback: try hidden input
-            const input = document.querySelector('[name=csrfmiddlewaretoken]');
-            return input ? input.value : '';
-        }
-
-        // Smart Results redirect: POST query to /enquiries/results/ with full-page navigation
-        // Guard: only intercept when NOT already on the results page
-        function submitToSmartResults() {
-            const query = messageInput.value.trim();
-            if (!query) return;
-
-            // Check for a file input in the widget
-            const fileInput = document.querySelector('input[type="file"]');
-
-            if (fileInput && fileInput.files && fileInput.files.length > 0) {
-                // Multipart POST using a real <form> submission
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '/enquiries/results/';
-                form.enctype = 'multipart/form-data';
-
-                const csrfInput = document.createElement('input');
-                csrfInput.type = 'hidden';
-                csrfInput.name = 'csrfmiddlewaretoken';
-                csrfInput.value = getCsrfToken();
-                form.appendChild(csrfInput);
-
-                const queryInput = document.createElement('input');
-                queryInput.type = 'hidden';
-                queryInput.name = 'query';
-                queryInput.value = query;
-                form.appendChild(queryInput);
-
-                // Move the file input into the form temporarily
-                const clonedFile = fileInput.cloneNode(true);
-                clonedFile.name = 'medical_report';
-                form.appendChild(clonedFile);
-
-                document.body.appendChild(form);
-                form.submit();
-            } else {
-                // Plain POST — build a simple form and submit
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '/enquiries/results/';
-
-                const csrfInput = document.createElement('input');
-                csrfInput.type = 'hidden';
-                csrfInput.name = 'csrfmiddlewaretoken';
-                csrfInput.value = getCsrfToken();
-                form.appendChild(csrfInput);
-
-                const queryInput = document.createElement('input');
-                queryInput.type = 'hidden';
-                queryInput.name = 'query';
-                queryInput.value = query;
-                form.appendChild(queryInput);
-
-                document.body.appendChild(form);
-                form.submit();
-            }
+        if (typeof window.updateQuerySummary === 'function' && data.query_summary) {
+          window.updateQuerySummary(data.query_summary);
         }
 
-        // Determine whether we are already on the results page
-        const isResultsPage = window.location.pathname.startsWith('/enquiries/results/');
+        // Task 6.3 / Req 4.4 — show bot response bubble with query summary
+        addMessage('bot', data.query_summary || 'Results updated.');
+      } else {
+        // Task 6.3 / Req 4.5 — show error bubble on non-2xx
+        addMessage('bot', "Sorry, I couldn't process your request. Please try again.");
+      }
+    } catch(err) {
+      hideTyping();
+      // Task 6.3 / Req 4.5 — show error bubble on network failure
+      addMessage('bot', "Sorry, I couldn't process your request. Please try again.");
+    } finally {
+      messageInput.disabled = false;
+      sendButton.disabled = false;
+      messageInput.focus();
+    }
+  }
 
-        // Event listeners
-        if (isResultsPage) {
-            // On the results page, use the original inline chat behaviour
-            sendButton.addEventListener('click', sendMessage);
+  const isResultsPage = window.location.pathname.startsWith('/enquiries/results/');
 
-            messageInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
-        } else {
-            // On any other page, intercept and redirect to the smart results page
-            sendButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                submitToSmartResults();
-            });
-
-            messageInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    submitToSmartResults();
-                }
-            });
-        }
-        
-        // Quick action buttons
-        document.querySelectorAll('.quick-action').forEach(button => {
-            button.addEventListener('click', function() {
-                const question = this.getAttribute('data-question');
-                messageInput.value = question;
-                sendMessage();
-            });
-        });
-        
-        // Enquiry form submission
-        enquiryForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const formObject = {};
-            for (let [key, value] of formData.entries()) {
-                formObject[key] = value;
-            }
-            
-            try {
-                const response = await fetch('{% url "enquiry_bot:submit_enquiry" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                    },
-                    body: JSON.stringify(formObject)
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert(data.message);
-                    this.reset();
-                    
-                    // Add bot response to chat
-                    addMessage('bot', data.message + " In the meantime, I can answer common questions about our platform. Feel free to ask anything!");
-                    
-                    if (data.enquiry_id) {
-                        currentEnquiryId = data.enquiry_id;
-                    }
-                } else {
-                    alert('Error: ' + (data.error || 'Something went wrong'));
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error submitting enquiry. Please try again.');
-            }
-        });
+  if (isResultsPage) {
+    sendButton.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
     });
+  } else {
+    sendButton.addEventListener('click', function(e) { e.preventDefault(); submitToSmartResults(); });
+    messageInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitToSmartResults(); }
+    });
+  }
+
+  // Quick chips
+  document.querySelectorAll('.quick-action').forEach(btn => {
+    btn.addEventListener('click', function() {
+      messageInput.value = this.getAttribute('data-question');
+      if (isResultsPage) sendMessage(); else submitToSmartResults();
+    });
+  });
+});
+
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.cb-faq-q.open').forEach(b => {
+    b.classList.remove('open');
+    b.nextElementSibling.classList.remove('open');
+  });
+  if (!isOpen) {
+    btn.classList.add('open');
+    answer.classList.add('open');
+  }
+}
 </script>
 {% endblock %}

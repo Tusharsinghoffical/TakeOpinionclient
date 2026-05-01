@@ -797,9 +797,9 @@ def smart_results_view(request):
     # ------------------------------------------------------------------
     # Step 3: Merge with session context (Requirement 3.2)
     # ------------------------------------------------------------------
-    prior_keywords = request.session.get('chatbot_context', [])
-    if prior_keywords:
-        merged_text = (query_text + ' ' + ' '.join(prior_keywords)).strip()
+    prior_conditions = request.session.get('chatbot_context', [])
+    if prior_conditions:
+        merged_text = (query_text + ' ' + ' '.join(prior_conditions)).strip()
     else:
         merged_text = query_text
 
@@ -810,8 +810,9 @@ def smart_results_view(request):
 
     # ------------------------------------------------------------------
     # Step 5: Persist session context (Requirement 3.1, 3.3)
+    # Store only map-matched conditions, never raw fallback tokens.
     # ------------------------------------------------------------------
-    request.session['chatbot_context'] = intent.keywords
+    request.session['chatbot_context'] = intent.conditions
 
     # Persist to DB — best-effort; do not crash if session key is absent
     session_key = request.session.session_key
@@ -898,8 +899,10 @@ def smart_results_api(request):
     # Extract medical intent
     intent = MedicalIntentExtractor().extract(merged_text)
 
-    # Persist session context
-    request.session['chatbot_context'] = intent.keywords
+    # Persist session context — store only map-matched conditions, never raw fallback tokens.
+    # If the new query produced no conditions, keep the prior session context intact.
+    if intent.conditions:
+        request.session['chatbot_context'] = intent.conditions
 
     # Aggregate site content
     try:
@@ -926,10 +929,50 @@ def smart_results_api(request):
         )
 
     return JsonResponse({
-        "doctors": [{"name": d.name, "slug": d.slug} for d in results.doctors],
-        "hospitals": [{"name": h.name, "slug": h.slug} for h in results.hospitals],
-        "treatments": [{"name": t.name, "slug": t.slug} for t in results.treatments],
-        "blogs": [{"title": b.title, "slug": b.slug} for b in results.blogs],
+        "doctors": [
+            {
+                "name": d.name,
+                "slug": d.slug,
+                "profile_picture": d.profile_picture if d.profile_picture else "",
+                "specialization": d.specialization,
+                "rating": float(d.rating),
+                "experience_years": d.experience_years,
+                "key_points": d.key_points,
+            }
+            for d in results.doctors
+        ],
+        "hospitals": [
+            {
+                "name": h.name,
+                "slug": h.slug,
+                "profile_picture": h.profile_picture if h.profile_picture else "",
+                "city": h.city,
+                "state": h.state.name if h.state else "",
+                "rating": float(h.rating),
+                "jci_accredited": h.jci_accredited,
+                "nabh_accredited": h.nabh_accredited,
+                "beds_count": h.beds_count,
+            }
+            for h in results.hospitals
+        ],
+        "treatments": [
+            {
+                "name": t.name,
+                "slug": t.slug,
+                "description": t.description,
+                "starting_price": float(t.starting_price),
+                "duration": t.duration,
+            }
+            for t in results.treatments
+        ],
+        "blogs": [
+            {
+                "title": b.title,
+                "slug": b.slug,
+                "published_at": b.published_at.isoformat() if b.published_at else None,
+            }
+            for b in results.blogs
+        ],
         "placeholders": results.placeholders,
         "query_summary": results.query_summary,
     })

@@ -195,12 +195,13 @@
 
           <!-- Brand -->
           <a class="navbar-brand d-flex align-items-center gap-2" href="/">
-            <div class="nb-brand-icon">
+            <img src="{% static 'images/Mediplus logo.png' %}"
+                 alt="TakeOpinion"
+                 height="42"
+                 style="max-width:160px;object-fit:contain;"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div style="display:none;" class="nb-brand-icon">
               <i class="bi bi-heart-pulse-fill"></i>
-            </div>
-            <div>
-              <div class="nb-brand-name">TakeOpinion</div>
-              <div class="nb-brand-sub">Medical Tourism</div>
             </div>
           </a>
 
@@ -520,390 +521,260 @@
         
         <!-- Floating Enquiry Bot Button (accessible to all users) -->
         <div id="floating-bot-container">
-            <button id="floating-bot-btn" class="btn btn-primary rounded-circle shadow-lg" title="Ask Question">
-                <i class="bi bi-robot" style="font-size: 1.5rem;"></i>
+            <button id="floating-bot-btn" title="Ask TakeOpinion AI">
+                <i class="bi bi-robot"></i>
+                <span class="fcb-notif"></span>
             </button>
-            <div id="floating-bot-popup" class="card shadow-lg" style="display: none; position: fixed; bottom: 70px; right: 20px; width: 400px; z-index: 1000;">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-heart-pulse" style="color: #ff6b6b;"></i> <strong>TakeOpinion Assistant</strong> <i class="bi bi-stars" style="color: #ffd166;"></i></span>
-                    <div>
-                        <a href="#" class="btn btn-light btn-sm me-2" onclick="window.open('/enquiries/full-bot/', '_blank'); return false;" title="Open in Full Screen" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);"><i class="bi bi-arrows-fullscreen"></i></a>
-                        <button id="close-bot-btn" class="btn btn-light btn-sm" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">&times;</button>
+            <div id="floating-bot-popup" style="display:none;">
+                <div class="fcb-header">
+                    <div class="fcb-header-left">
+                        <div class="fcb-avatar"><i class="bi bi-robot"></i></div>
+                        <div>
+                            <div class="fcb-name">TakeOpinion Assistant</div>
+                            <div class="fcb-status"><span class="fcb-dot"></span> Online</div>
+                        </div>
+                    </div>
+                    <div class="fcb-header-right">
+                        <a href="/enquiries/" class="fcb-icon-btn" title="Open full chatbot" target="_blank"><i class="bi bi-arrows-fullscreen"></i></a>
+                        <button id="close-bot-btn" class="fcb-icon-btn" title="Close">&times;</button>
                     </div>
                 </div>
-                <div class="card-body" style="height: 400px; display: flex; flex-direction: column;">
-                    <div id="bot-messages" class="flex-grow-1 overflow-auto mb-2" style="max-height: 300px;">
-                        <div class="message bot-message mb-2">
-                            <div class="alert alert-info">
-                                <strong>Bot:</strong> Hello! I'm your TakeOpinion assistant. How can I help you with our healthcare platform?
-                            </div>
+                <div id="bot-messages" class="fcb-messages">
+                    <div class="fcb-msg bot">
+                        <div class="fcb-msg-avatar"><i class="bi bi-robot"></i></div>
+                        <div>
+                            <div class="fcb-bubble">Hello! I'm your TakeOpinion AI assistant. Ask me about doctors, hospitals, treatments, or upload a medical report for personalised recommendations.</div>
                         </div>
                     </div>
-                    <div class="input-group mb-2">
-                        <input type="text" id="bot-message-input" class="form-control" placeholder="Search doctors, conditions, treatments…" autocomplete="off">
-                        <button class="btn btn-primary" type="button" id="send-bot-message">
-                            <i class="bi bi-send"></i>
-                        </button>
+                </div>
+                <div class="fcb-quick">
+                    <button class="fcb-chip quick-action" data-question="Find doctors near me">Doctors</button>
+                    <button class="fcb-chip quick-action" data-question="How do I book an appointment?">Booking</button>
+                    <button class="fcb-chip quick-action" data-question="What treatments are available?">Treatments</button>
+                    <button class="fcb-chip quick-action" data-question="Contact support">Support</button>
+                </div>
+                <div class="fcb-input-area">
+                    <div class="fcb-input-row">
+                        <label class="fcb-file-btn" for="medical-report-upload" title="Upload medical report"><i class="bi bi-paperclip"></i></label>
+                        <input type="file" id="medical-report-upload" class="fcb-file-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                        <input type="text" id="bot-message-input" class="fcb-input" placeholder="Ask a health question…" autocomplete="off">
+                        <button class="fcb-send-btn" id="send-bot-message" title="Send"><i class="bi bi-send-fill"></i></button>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <div class="upload-container">
-                            <input type="file" id="medical-report-upload" class="form-control" style="max-width: 200px; height: 38px; padding: 0.375rem 0.75rem;" accept=".pdf,.jpg,.jpeg,.png,.gif">
-                        </div>
-                        <button class="btn btn-success" type="button" id="analyze-report-btn">
-                            <i class="bi bi-file-earmark-medical"></i> Search with Report
-                        </button>
+                    <div class="fcb-file-preview" id="fcb-file-preview">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span id="fcb-file-name"></span>
+                        <i class="bi bi-x-circle" id="fcb-remove-file"></i>
                     </div>
                 </div>
             </div>
         </div>
         
         <style>
-            #floating-bot-container {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                z-index: 1000;
-            }
-            
-            #floating-bot-btn {
-                width: 70px;
-                height: 70px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 6px 25px rgba(155, 89, 182, 0.5);
-                background: linear-gradient(135deg, #9b59b6, #8e44ad);
-                border: 3px solid white;
-                font-size: 1.8rem;
-                transition: all 0.3s ease;
-                animation: pulse 2s infinite;
-                position: relative;
-            }
-            
-            #floating-bot-btn::before {
-                content: '';
-                position: absolute;
-                top: -5px;
-                right: -5px;
-                bottom: -5px;
-                left: -5px;
-                border-radius: 50%;
-                background: linear-gradient(135deg, #9b59b6, #3498db, #2ecc71);
-                z-index: -1;
-                background-size: 400% 400%;
-                animation: gradientShift 4s ease infinite;
-            }
-            
-            #floating-bot-btn:hover {
-                background: linear-gradient(135deg, #3498db, #2980b9);
-                transform: scale(1.15);
-                box-shadow: 0 8px 30px rgba(52, 152, 219, 0.7);
-            }
-            
-            @keyframes pulse {
-                0% {
-                    transform: scale(1);
-                    box-shadow: 0 6px 25px rgba(52, 152, 219, 0.5);
-                }
-                50% {
-                    transform: scale(1.05);
-                    box-shadow: 0 8px 30px rgba(52, 152, 219, 0.7);
-                }
-                100% {
-                    transform: scale(1);
-                    box-shadow: 0 6px 25px rgba(155, 89, 182, 0.5);
-                }
-            }
-            
-            @keyframes gradientShift {
-                0% {
-                    background-position: 0% 50%;
-                }
-                50% {
-                    background-position: 100% 50%;
-                }
-                100% {
-                    background-position: 0% 50%;
-                }
-            }
-            
-            #floating-bot-popup {
-                border-radius: 20px;
-                overflow: hidden;
-                border: 3px solid #3498db;
-                box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
-                background: linear-gradient(135deg, #ffffff, #f8f9fa);
-            }
-            
-            .card-header {
-                background: linear-gradient(135deg, #3498db, #2980b9) !important;
-                color: white !important;
-                border-radius: 17px 17px 0 0 !important;
-                border: none;
-            }
-            
-            .message {
-                margin-bottom: 1rem;
-            }
-            
-            .user-message .alert {
-                background: linear-gradient(135deg, #e8f4fd, #d1ecf1);
-                border-color: #bee5eb;
-                color: #0c5460;
-                border-radius: 15px;
-                border-left: 5px solid #3498db;
-            }
-            
-            .bot-message .alert {
-                background: linear-gradient(135deg, #e8f4fd, #d1ecf1);
-                border-color: #bee5eb;
-                color: #0c5460;
-                border-radius: 15px;
-                border-left: 5px solid #3498db;
-            }
-            
-            .suggested-doctors-section {
-                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-                padding: 20px;
-                border-radius: 15px;
-                border: 2px solid #d1ecf1;
-                box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-            }
-            
-            .list-group-item {
-                border-radius: 12px !important;
-                margin-bottom: 10px;
-                border: 2px solid #e9ecef;
-                transition: all 0.3s ease;
-            }
-            
-            .list-group-item:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            }
-            
-            .btn-primary {
-                background: linear-gradient(135deg, #3498db, #2980b9);
-                border: none;
-                border-radius: 25px;
-                padding: 8px 16px;
-                transition: all 0.3s ease;
-            }
-            
-            .btn-primary:hover {
-                background: linear-gradient(135deg, #2980b9, #1c6ea4);
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-            }
-            
-            .btn-success {
-                background: linear-gradient(135deg, #2ecc71, #27ae60);
-                border: none;
-                border-radius: 25px;
-                padding: 8px 16px;
-                transition: all 0.3s ease;
-            }
-            
-            .btn-success:hover {
-                background: linear-gradient(135deg, #27ae60, #219653);
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
-            }
+            /* ── Floating Chatbot Widget ── */
+            #floating-bot-container{position:fixed;bottom:24px;right:24px;z-index:1050;}
+
+            /* FAB button */
+            #floating-bot-btn{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#0d6efd,#0a58ca);border:none;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 20px rgba(13,110,253,.45);transition:transform .2s,box-shadow .2s;position:relative;}
+            #floating-bot-btn:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(13,110,253,.6);}
+            .fcb-notif{position:absolute;top:2px;right:2px;width:12px;height:12px;border-radius:50%;background:#4ade80;border:2px solid #fff;}
+
+            /* Popup */
+            #floating-bot-popup{position:fixed;bottom:96px;right:24px;width:360px;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.18);border:1px solid #e2e8f0;background:#fff;display:flex;flex-direction:column;max-height:520px;}
+            @media(max-width:480px){#floating-bot-popup{width:calc(100vw - 24px);right:12px;bottom:88px;}}
+
+            /* Header */
+            .fcb-header{background:linear-gradient(135deg,#0d1b2a,#1a3c6e);padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+            .fcb-header-left{display:flex;align-items:center;gap:.65rem;}
+            .fcb-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#0d6efd);display:flex;align-items:center;justify-content:center;font-size:.95rem;color:#fff;flex-shrink:0;box-shadow:0 0 0 2px rgba(255,255,255,.2);}
+            .fcb-name{font-size:.875rem;font-weight:700;color:#fff;line-height:1.2;}
+            .fcb-status{font-size:.7rem;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:.3rem;margin-top:.1rem;}
+            .fcb-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;}
+            .fcb-header-right{display:flex;gap:.35rem;}
+            .fcb-icon-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:7px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:.85rem;cursor:pointer;text-decoration:none;transition:background .15s;line-height:1;}
+            .fcb-icon-btn:hover{background:rgba(255,255,255,.25);color:#fff;}
+
+            /* Messages */
+            .fcb-messages{flex:1;overflow-y:auto;padding:.85rem;display:flex;flex-direction:column;gap:.65rem;min-height:200px;max-height:280px;scroll-behavior:smooth;}
+            .fcb-messages::-webkit-scrollbar{width:3px;}
+            .fcb-messages::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px;}
+            .fcb-msg{display:flex;gap:.5rem;align-items:flex-end;max-width:85%;}
+            .fcb-msg.bot{align-self:flex-start;}
+            .fcb-msg.user{align-self:flex-end;flex-direction:row-reverse;}
+            .fcb-msg-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;}
+            .fcb-msg.bot .fcb-msg-avatar{background:linear-gradient(135deg,#3b82f6,#0d6efd);color:#fff;}
+            .fcb-msg.user .fcb-msg-avatar{background:#e2e8f0;color:#64748b;}
+            .fcb-bubble{padding:.5rem .75rem;border-radius:12px;font-size:.8rem;line-height:1.5;word-break:break-word;}
+            .fcb-msg.bot .fcb-bubble{background:#f1f5f9;color:#1e293b;border-bottom-left-radius:3px;}
+            .fcb-msg.user .fcb-bubble{background:#0d6efd;color:#fff;border-bottom-right-radius:3px;}
+
+            /* Typing dots */
+            .fcb-typing{display:none;align-self:flex-start;}
+            .fcb-typing.visible{display:flex;}
+            .fcb-typing-dots{display:flex;gap:3px;align-items:center;padding:.5rem .75rem;background:#f1f5f9;border-radius:12px;border-bottom-left-radius:3px;}
+            .fcb-typing-dot{width:6px;height:6px;border-radius:50%;background:#94a3b8;animation:fcb-bounce .9s infinite;}
+            .fcb-typing-dot:nth-child(2){animation-delay:.15s;}
+            .fcb-typing-dot:nth-child(3){animation-delay:.3s;}
+            @keyframes fcb-bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
+
+            /* Quick chips */
+            .fcb-quick{padding:.5rem .85rem;border-top:1px solid #e2e8f0;background:#f8fafc;display:flex;flex-wrap:wrap;gap:.35rem;}
+            .fcb-chip{background:#fff;border:1.5px solid #e2e8f0;color:#1e293b;border-radius:20px;padding:.2rem .65rem;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;}
+            .fcb-chip:hover{border-color:#0d6efd;color:#0d6efd;background:#eff6ff;}
+
+            /* Input */
+            .fcb-input-area{padding:.65rem .85rem;border-top:1px solid #e2e8f0;background:#fff;}
+            .fcb-input-row{display:flex;gap:.4rem;align-items:center;}
+            .fcb-file-btn{width:32px;height:32px;border-radius:8px;background:#f1f5f9;border:1.5px solid #e2e8f0;color:#64748b;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;flex-shrink:0;transition:all .15s;}
+            .fcb-file-btn:hover{background:#e2e8f0;color:#1e293b;}
+            .fcb-file-input{display:none;}
+            .fcb-input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:.45rem .7rem;font-size:.8rem;color:#1e293b;outline:none;transition:border-color .2s;}
+            .fcb-input:focus{border-color:#0d6efd;box-shadow:0 0 0 2px rgba(13,110,253,.1);}
+            .fcb-send-btn{width:32px;height:32px;border-radius:8px;background:#0d6efd;border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.8rem;flex-shrink:0;transition:all .15s;}
+            .fcb-send-btn:hover{background:#0a58ca;}
+            .fcb-send-btn:disabled{background:#94a3b8;cursor:not-allowed;}
+            .fcb-file-preview{font-size:.72rem;color:#0d6efd;margin-top:.35rem;display:none;align-items:center;gap:.35rem;}
+            .fcb-file-preview.visible{display:flex;}
+            #fcb-remove-file{cursor:pointer;color:#dc2626;}
+
+            /* Popup open animation */
+            #floating-bot-popup.fcb-open{animation:fcb-slide-up .2s ease;}
+            @keyframes fcb-slide-up{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
         </style>
-        
+
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Initialize the bot for all users
-                const botBtn = document.getElementById('floating-bot-btn');
-                if (!botBtn) return; // Exit if element doesn't exist
-                        
-                const botPopup = document.getElementById('floating-bot-popup');
-                const closeBtn = document.getElementById('close-bot-btn');
-                const messageInput = document.getElementById('bot-message-input');
-                const sendBtn = document.getElementById('send-bot-message');
-                const messagesContainer = document.getElementById('bot-messages');
-                
-                // Toggle bot popup
+                const botBtn   = document.getElementById('floating-bot-btn');
+                if (!botBtn) return;
+
+                const botPopup   = document.getElementById('floating-bot-popup');
+                const closeBtn   = document.getElementById('close-bot-btn');
+                const msgInput   = document.getElementById('bot-message-input');
+                const sendBtn    = document.getElementById('send-bot-message');
+                const msgsCont   = document.getElementById('bot-messages');
+                const fileInput  = document.getElementById('medical-report-upload');
+                const filePreview= document.getElementById('fcb-file-preview');
+                const fileNameEl = document.getElementById('fcb-file-name');
+                const removeFile = document.getElementById('fcb-remove-file');
+
+                // Toggle popup
                 botBtn.addEventListener('click', function() {
-                    if (botPopup.style.display === 'none' || botPopup.style.display === '') {
-                        botPopup.style.display = 'block';
-                    } else {
-                        botPopup.style.display = 'none';
+                    const isHidden = botPopup.style.display === 'none' || botPopup.style.display === '';
+                    botPopup.style.display = isHidden ? 'flex' : 'none';
+                    if (isHidden) { botPopup.classList.add('fcb-open'); msgInput.focus(); }
+                });
+                closeBtn.addEventListener('click', function() { botPopup.style.display = 'none'; });
+
+                // File input
+                fileInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        fileNameEl.textContent = this.files[0].name;
+                        filePreview.classList.add('visible');
                     }
                 });
-                        
-                // Close bot popup
-                closeBtn.addEventListener('click', function() {
-                    botPopup.style.display = 'none';
+                removeFile.addEventListener('click', function() {
+                    fileInput.value = '';
+                    filePreview.classList.remove('visible');
+                    fileNameEl.textContent = '';
                 });
-                        
-                // Helper: get CSRF token from cookie
+
                 function getCsrfToken() {
-                    const name = 'csrftoken';
-                    for (let cookie of document.cookie.split(';')) {
-                        const trimmed = cookie.trim();
-                        if (trimmed.startsWith(name + '=')) {
-                            return decodeURIComponent(trimmed.slice(name.length + 1));
-                        }
+                    for (let c of document.cookie.split(';')) {
+                        const t = c.trim();
+                        if (t.startsWith('csrftoken=')) return decodeURIComponent(t.slice(10));
                     }
-                    const input = document.querySelector('[name=csrfmiddlewaretoken]');
-                    return input ? input.value : '';
+                    const inp = document.querySelector('[name=csrfmiddlewaretoken]');
+                    return inp ? inp.value : '';
                 }
 
-                // Redirect to Smart Results page with the query (and optional file)
-                // Uses fetch + FormData so the file bytes are actually sent,
-                // then redirects to the results page via the response URL.
-                function submitToSmartResults(query, fileInput) {
-                    const hasFile = fileInput && fileInput.files && fileInput.files.length > 0;
-                    if (!query && !hasFile) return;
+                function addMsg(sender, text) {
+                    const typing = document.getElementById('fcb-typing');
+                    if (typing) msgsCont.removeChild(typing);
 
-                    const formData = new FormData();
-                    formData.append('csrfmiddlewaretoken', getCsrfToken());
-                    formData.append('query', query || '');
-                    if (hasFile) {
-                        formData.append('medical_report', fileInput.files[0]);
+                    const wrap = document.createElement('div');
+                    wrap.className = 'fcb-msg ' + sender;
+                    const icon = sender === 'bot' ? 'bi-robot' : 'bi-person-fill';
+                    wrap.innerHTML = `<div class="fcb-msg-avatar"><i class="bi ${icon}"></i></div><div><div class="fcb-bubble">${text}</div></div>`;
+                    msgsCont.appendChild(wrap);
+
+                    if (typing) msgsCont.appendChild(typing);
+                    msgsCont.scrollTop = msgsCont.scrollHeight;
+                }
+
+                function showTyping() {
+                    let t = document.getElementById('fcb-typing');
+                    if (!t) {
+                        t = document.createElement('div');
+                        t.id = 'fcb-typing';
+                        t.className = 'fcb-msg bot fcb-typing';
+                        t.innerHTML = '<div class="fcb-msg-avatar"><i class="bi bi-robot"></i></div><div class="fcb-typing-dots"><div class="fcb-typing-dot"></div><div class="fcb-typing-dot"></div><div class="fcb-typing-dot"></div></div>';
+                        msgsCont.appendChild(t);
                     }
+                    t.classList.add('visible');
+                    msgsCont.scrollTop = msgsCont.scrollHeight;
+                }
+                function hideTyping() {
+                    const t = document.getElementById('fcb-typing');
+                    if (t) t.classList.remove('visible');
+                }
 
-                    // Show loading state
+                function submitToSmartResults(query) {
+                    const trimmedQuery = (query || '').trim();
+                    const hasFile = fileInput.files && fileInput.files.length > 0;
+                    if (!trimmedQuery && !hasFile) return;
+
+                    // Disable send button and show loading state (Task 7.3 / Req 5.4)
                     sendBtn.disabled = true;
-                    sendBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                    sendBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
 
-                    fetch('/enquiries/results/', {
-                        method: 'POST',
-                        body: formData,
-                        redirect: 'follow',
-                    })
-                    .then(response => {
-                        // Navigate to the results page (follow the redirect)
-                        window.location.href = response.url || '/enquiries/results/';
-                    })
-                    .catch(() => {
-                        // Fallback: plain form submit
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = '/enquiries/results/';
-                        const csrf = document.createElement('input');
-                        csrf.type = 'hidden'; csrf.name = 'csrfmiddlewaretoken';
-                        csrf.value = getCsrfToken();
-                        form.appendChild(csrf);
-                        const q = document.createElement('input');
-                        q.type = 'hidden'; q.name = 'query'; q.value = query || '';
-                        form.appendChild(q);
-                        document.body.appendChild(form);
-                        form.submit();
-                    });
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/enquiries/results/';
+
+                    // Include file if attached
+                    if (hasFile) {
+                        form.enctype = 'multipart/form-data';
+                        // Clone the file input so the original stays in the DOM
+                        const fileInputClone = fileInput.cloneNode(true);
+                        form.appendChild(fileInputClone);
+                    }
+
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = 'csrfmiddlewaretoken';
+                    csrfInput.value = getCsrfToken();
+                    form.appendChild(csrfInput);
+
+                    const queryInput = document.createElement('input');
+                    queryInput.type = 'hidden';
+                    queryInput.name = 'query';
+                    queryInput.value = trimmedQuery;
+                    form.appendChild(queryInput);
+
+                    document.body.appendChild(form);
+                    form.submit();
                 }
 
-                // Send message → redirect to Smart Results
                 function sendMessage() {
-                    const message = messageInput.value.trim();
-                    if (!message) return;
-                    submitToSmartResults(message, null);
+                    const msg = msgInput.value.trim();
+                    if (!msg) return;
+                    submitToSmartResults(msg);
                 }
-                        
-                // Add message to chat
-                function addMessage(sender, message) {
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = `message ${sender}-message`;
-                            
-                    const alertClass = sender === 'user' ? 'alert-primary' : 'alert-secondary';
-                    messageDiv.innerHTML = `
-                        <div class="alert ${alertClass}">
-                            <strong>${sender.charAt(0).toUpperCase() + sender.slice(1)}:</strong> ${message}
-                        </div>
-                    `;
-                            
-                    messagesContainer.appendChild(messageDiv);
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                }
-                        
-                // Send message on button click
+
                 sendBtn.addEventListener('click', sendMessage);
-                        
-                // Send message on Enter key
-                messageInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        sendMessage();
-                    }
+                msgInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') { e.preventDefault(); sendMessage(); }
                 });
 
-                // Quick action buttons functionality
-                document.querySelectorAll('.quick-action').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const question = this.getAttribute('data-question');
-                        messageInput.value = question;
+                document.querySelectorAll('.fcb-chip.quick-action').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        msgInput.value = this.getAttribute('data-question');
                         sendMessage();
                     });
-                });
-
-                // Handle medical report analysis → redirect to Smart Results with file
-                document.getElementById('analyze-report-btn').addEventListener('click', function() {
-                    const fileInput = document.getElementById('medical-report-upload');
-                    const query = messageInput.value.trim();
-
-                    if (!fileInput.files || fileInput.files.length === 0) {
-                        alert('Please select a medical report file first.');
-                        return;
-                    }
-
-                    submitToSmartResults(query || 'medical report', fileInput);
                 });
             });
         </script>
-    <script>
-        // Fullscreen mode functionality for floating bot
-        function toggleFullscreenMode() {
-            const botPopup = document.getElementById('floating-bot-popup');
-            const botBtn = document.getElementById('floating-bot-btn');
-            
-            // Toggle fullscreen class
-            botPopup.classList.toggle('fullscreen-chat');
-            
-            if (botPopup.classList.contains('fullscreen-chat')) {
-                // Fullscreen mode
-                botPopup.style.position = 'fixed';
-                botPopup.style.top = '0';
-                botPopup.style.left = '0';
-                botPopup.style.width = '100vw';
-                botPopup.style.height = '100vh';
-                botPopup.style.zIndex = '9999';
-                botPopup.style.borderRadius = '0';
-                botBtn.style.display = 'none'; // Hide the floating button
-                
-                // Change icon back to minimize
-                const fullscreenBtn = document.querySelector('.btn-light.btn-sm.me-2');
-                if (fullscreenBtn) {
-                    fullscreenBtn.title = 'Minimize';
-                    const icon = fullscreenBtn.querySelector('i');
-                    if (icon) {
-                        icon.className = 'bi bi-fullscreen-exit';
-                    }
-                }
-            } else {
-                // Normal mode
-                botPopup.style.position = 'fixed';
-                botPopup.style.top = 'auto';
-                botPopup.style.left = 'auto';
-                botPopup.style.width = '400px';
-                botPopup.style.height = 'auto';
-                botPopup.style.bottom = '70px';
-                botPopup.style.right = '20px';
-                botPopup.style.borderRadius = '20px';
-                botBtn.style.display = 'flex'; // Show the floating button
-                
-                // Change icon back to fullscreen
-                const fullscreenBtn = document.querySelector('.btn-light.btn-sm.me-2');
-                if (fullscreenBtn) {
-                    fullscreenBtn.title = 'Toggle Full Screen';
-                    const icon = fullscreenBtn.querySelector('i');
-                    if (icon) {
-                        icon.className = 'bi bi-arrows-fullscreen';
-                    }
-                }
-            }
-        }
 
+        <script>
         // Enable dropdown submenu functionality
         document.addEventListener('DOMContentLoaded', function() {
           // Add hover functionality for dropdown submenus
@@ -917,6 +788,6 @@
             });
           });
         });
-      </script>
+        </script>
     </body>
   </html>

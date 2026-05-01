@@ -59,7 +59,19 @@
   </div>
 </div>
 
-<div class="container py-4">
+<div class="container py-4" style="position:relative;">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       LOADING SPINNER OVERLAY (Task 7.1 / Req 5.1)
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="results-spinner" style="display:none; position:absolute; inset:0; z-index:10; background:rgba(255,255,255,0.75); align-items:center; justify-content:center; border-radius:8px;">
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;">
+        <span class="visually-hidden">Loading…</span>
+      </div>
+      <p class="mt-2 text-primary fw-semibold small">Searching…</p>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════════════
        MEDICAL ANALYSIS CARD (only when report uploaded)
@@ -470,5 +482,360 @@
   outline: none;
 }
 </style>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ─────────────────────────────────────────────────────────────
+     Helpers
+  ───────────────────────────────────────────────────────────── */
+  function getCsrfToken() {
+    var el = document.querySelector('[name=csrfmiddlewaretoken]');
+    return el ? el.value : '';
+  }
+
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatDate(isoStr) {
+    if (!isoStr) return '';
+    try {
+      var d = new Date(isoStr);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch (e) {
+      return isoStr;
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Task 5.2 — Render doctor cards
+  ───────────────────────────────────────────────────────────── */
+  function renderDoctors(doctors) {
+    if (!doctors || !doctors.length) return '';
+    return doctors.map(function (doctor) {
+      var name = escapeHtml(doctor.name || '');
+      var nameEncoded = encodeURIComponent(doctor.name || '');
+      var avatarUrl = 'https://ui-avatars.com/api/?name=' + nameEncoded + '&background=1a3c6e&color=fff&size=80';
+      var imgSrc = doctor.profile_picture ? escapeHtml(doctor.profile_picture) : avatarUrl;
+      var spec = escapeHtml(doctor.specialization || 'Specialist');
+      var rating = doctor.rating != null ? escapeHtml(String(doctor.rating)) : 'N/A';
+      var expBadge = doctor.experience_years
+        ? '<span class="badge bg-light text-muted border">' + escapeHtml(String(doctor.experience_years)) + ' yrs exp</span>'
+        : '';
+      var keyPoints = doctor.key_points
+        ? '<p class="small text-muted mt-2 mb-0" style="font-size:0.78rem;">' + escapeHtml(String(doctor.key_points).substring(0, 80)) + '</p>'
+        : '';
+      var footer = doctor.slug
+        ? '<div class="card-footer bg-transparent border-top p-2">' +
+          '<a href="/doctors/' + escapeHtml(doctor.slug) + '/" class="btn btn-primary btn-sm w-100 rounded-pill">' +
+          '<i class="bi bi-person-badge me-1"></i>View Profile</a></div>'
+        : '';
+      return '<div class="col-12 col-sm-6 col-lg-4">' +
+        '<div class="card h-100 border-0 shadow-sm hover-lift" style="border-radius:12px;overflow:hidden;">' +
+        '<div class="card-body p-3">' +
+        '<div class="d-flex gap-3 align-items-start">' +
+        '<img src="' + imgSrc + '" alt="' + name + '" class="rounded-circle flex-shrink-0"' +
+        ' width="64" height="64" style="object-fit:cover;border:3px solid #e8eaf6;"' +
+        ' onerror="this.src=\'' + avatarUrl + '\'">' +
+        '<div class="flex-grow-1 min-w-0">' +
+        '<h3 class="h6 fw-bold mb-1 text-truncate">' + name + '</h3>' +
+        '<p class="small text-primary mb-1 text-truncate">' + spec + '</p>' +
+        '<div class="d-flex align-items-center gap-2 flex-wrap">' +
+        '<span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1" style="font-size:0.65rem;"></i>' + rating + '</span>' +
+        expBadge +
+        '</div></div></div>' +
+        keyPoints +
+        '</div>' +
+        footer +
+        '</div></div>';
+    }).join('');
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Task 5.3 — Render hospital, treatment, and blog cards
+  ───────────────────────────────────────────────────────────── */
+  function renderHospitals(hospitals) {
+    if (!hospitals || !hospitals.length) return '';
+    return hospitals.map(function (hospital) {
+      var name = escapeHtml(hospital.name || '');
+      var rating = hospital.rating != null ? escapeHtml(String(hospital.rating)) : 'N/A';
+      var imgHtml = hospital.profile_picture
+        ? '<img src="' + escapeHtml(hospital.profile_picture) + '" alt="' + name + '"' +
+          ' style="height:120px;object-fit:cover;width:100%;" onerror="this.style.display=\'none\'">'
+        : '';
+      var locationHtml = hospital.city
+        ? '<p class="small text-muted mb-2"><i class="bi bi-geo-alt-fill text-danger me-1"></i>' +
+          escapeHtml(hospital.city) + (hospital.state ? ', ' + escapeHtml(hospital.state) : '') + '</p>'
+        : '';
+      var jciBadge = hospital.jci_accredited
+        ? '<span class="badge bg-success bg-opacity-10 text-success border border-success">JCI</span>' : '';
+      var nabhBadge = hospital.nabh_accredited
+        ? '<span class="badge bg-primary bg-opacity-10 text-primary border border-primary">NABH</span>' : '';
+      var bedsBadge = hospital.beds_count
+        ? '<span class="badge bg-light text-muted border">' + escapeHtml(String(hospital.beds_count)) + ' beds</span>' : '';
+      var footer = hospital.slug
+        ? '<div class="card-footer bg-transparent border-top p-2">' +
+          '<a href="/hospitals/' + escapeHtml(hospital.slug) + '/" class="btn btn-outline-primary btn-sm w-100 rounded-pill">' +
+          '<i class="bi bi-building me-1"></i>View Hospital</a></div>'
+        : '';
+      return '<div class="col-12 col-sm-6 col-lg-4">' +
+        '<div class="card h-100 border-0 shadow-sm hover-lift" style="border-radius:12px;overflow:hidden;">' +
+        imgHtml +
+        '<div class="card-body p-3">' +
+        '<div class="d-flex align-items-start gap-2 mb-2">' +
+        '<i class="bi bi-building text-primary fs-5 flex-shrink-0 mt-1"></i>' +
+        '<h3 class="h6 fw-bold mb-0">' + name + '</h3></div>' +
+        locationHtml +
+        '<div class="d-flex align-items-center gap-2 flex-wrap">' +
+        '<span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1" style="font-size:0.65rem;"></i>' + rating + '</span>' +
+        jciBadge + nabhBadge + bedsBadge +
+        '</div></div>' +
+        footer +
+        '</div></div>';
+    }).join('');
+  }
+
+  function renderTreatments(treatments) {
+    if (!treatments || !treatments.length) return '';
+    return treatments.map(function (treatment) {
+      var name = escapeHtml(treatment.name || '');
+      var descHtml = treatment.description
+        ? '<p class="small text-muted mb-2" style="font-size:0.78rem;">' +
+          escapeHtml(String(treatment.description).substring(0, 90)) + '</p>'
+        : '';
+      var priceHtml = treatment.starting_price != null
+        ? '<span class="fw-bold text-success"><i class="bi bi-currency-rupee"></i>' +
+          escapeHtml(String(Math.round(treatment.starting_price))) +
+          ' <span class="text-muted fw-normal small">onwards</span></span>'
+        : '';
+      var durationHtml = treatment.duration
+        ? '<span class="badge bg-light text-muted border"><i class="bi bi-clock me-1"></i>' +
+          escapeHtml(treatment.duration) + '</span>'
+        : '';
+      var footer = treatment.slug
+        ? '<div class="card-footer bg-transparent border-top p-2">' +
+          '<a href="/treatments/' + escapeHtml(treatment.slug) + '/" class="btn btn-outline-success btn-sm w-100 rounded-pill">' +
+          '<i class="bi bi-info-circle me-1"></i>Learn More</a></div>'
+        : '';
+      return '<div class="col-12 col-sm-6 col-lg-4">' +
+        '<div class="card h-100 border-0 shadow-sm hover-lift" style="border-radius:12px;">' +
+        '<div class="card-body p-3">' +
+        '<div class="d-flex align-items-center gap-2 mb-2">' +
+        '<div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"' +
+        ' style="width:36px;height:36px;background:#e8f4fd;">' +
+        '<i class="bi bi-bandaid text-primary"></i></div>' +
+        '<h3 class="h6 fw-bold mb-0">' + name + '</h3></div>' +
+        descHtml +
+        '<div class="d-flex align-items-center gap-2 flex-wrap">' +
+        priceHtml + durationHtml +
+        '</div></div>' +
+        footer +
+        '</div></div>';
+    }).join('');
+  }
+
+  function renderBlogs(blogs) {
+    if (!blogs || !blogs.length) return '';
+    return blogs.map(function (blog) {
+      var title = escapeHtml(blog.title || '');
+      var dateHtml = blog.published_at
+        ? '<p class="small text-muted mb-0"><i class="bi bi-calendar3 me-1"></i>' +
+          escapeHtml(formatDate(blog.published_at)) + '</p>'
+        : '';
+      var footer = blog.slug
+        ? '<div class="card-footer bg-transparent border-top p-2">' +
+          '<a href="/blogs/' + escapeHtml(blog.slug) + '/" class="btn btn-outline-primary btn-sm w-100 rounded-pill">' +
+          '<i class="bi bi-book me-1"></i>Read Article</a></div>'
+        : '';
+      return '<div class="col-12 col-sm-6">' +
+        '<div class="card h-100 border-0 shadow-sm hover-lift" style="border-radius:12px;">' +
+        '<div class="card-body p-3 d-flex gap-3 align-items-start">' +
+        '<div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"' +
+        ' style="width:48px;height:48px;background:#e8f4fd;">' +
+        '<i class="bi bi-journal-text text-primary fs-5"></i></div>' +
+        '<div><h3 class="h6 fw-bold mb-1">' + title + '</h3>' + dateHtml + '</div>' +
+        '</div>' +
+        footer +
+        '</div></div>';
+    }).join('');
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Section visibility helpers (Task 5.4)
+  ───────────────────────────────────────────────────────────── */
+  /**
+   * Find the section wrapper <div class="mb-5"> that contains a row of cards
+   * for the given section key.  We identify it by looking for the first
+   * .row.g-3 whose first card contains a recognisable anchor href pattern.
+   *
+   * Because the template renders sections inside a generic for-section
+   * loop we cannot rely on stable IDs.  Instead we attach data attributes
+   * during the first AJAX update so subsequent updates are O(1).
+   */
+  function getSectionWrapper(key) {
+    // After the first AJAX call we stamp data-section-key on the wrapper.
+    var stamped = document.querySelector('[data-section-key="' + key + '"]');
+    if (stamped) return stamped;
+
+    // On first call, find the row that holds cards for this key by scanning
+    // the existing server-rendered markup.
+    var hrefMap = {
+      doctors:    '/doctors/',
+      hospitals:  '/hospitals/',
+      treatments: '/treatments/',
+      blogs:      '/blogs/',
+    };
+    var href = hrefMap[key];
+    if (!href) return null;
+
+    var rows = document.querySelectorAll('.row.g-3');
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      var link = row.querySelector('a[href*="' + href + '"]');
+      if (link) {
+        // Walk up to the mb-5 wrapper
+        var wrapper = row.closest('.mb-5');
+        if (wrapper) {
+          wrapper.setAttribute('data-section-key', key);
+          return wrapper;
+        }
+      }
+    }
+    return null;
+  }
+
+  function updateSection(key, items, renderFn) {
+    var wrapper = getSectionWrapper(key);
+    if (!wrapper) return;
+
+    var row = wrapper.querySelector('.row.g-3');
+    if (!row) return;
+
+    if (items && items.length) {
+      row.innerHTML = renderFn(items);
+      wrapper.style.display = '';
+    } else {
+      wrapper.style.display = 'none';
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Task 5.4 — Update query summary strip
+  ───────────────────────────────────────────────────────────── */
+  function updateQuerySummary(summaryText) {
+    // The summary strip contains a <span class="fw-semibold text-primary small">
+    var strip = document.querySelector('.fw-semibold.text-primary.small');
+    if (strip) {
+      strip.textContent = summaryText || '';
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Task 5.5 — Error alert
+  ───────────────────────────────────────────────────────────── */
+  function showErrorAlert(message) {
+    // Remove any existing error alert first
+    var existing = document.getElementById('smart-search-error-alert');
+    if (existing) existing.remove();
+
+    var alert = document.createElement('div');
+    alert.id = 'smart-search-error-alert';
+    alert.className = 'alert alert-danger alert-dismissible fade show';
+    alert.setAttribute('role', 'alert');
+    alert.innerHTML =
+      '<i class="bi bi-exclamation-triangle-fill me-2"></i>' +
+      escapeHtml(message) +
+      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+
+    // Inject above the results grid (the .container.py-4 div)
+    var container = document.querySelector('.container.py-4');
+    if (container) {
+      container.insertBefore(alert, container.firstChild);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Expose render helpers on window so bot_interface.html can
+     call them when the chatbot triggers a smart-search update
+     (Tasks 6.1 – 6.2 / Req 4.1, 4.2)
+  ───────────────────────────────────────────────────────────── */
+  window.renderDoctors    = renderDoctors;
+  window.renderHospitals  = renderHospitals;
+  window.renderTreatments = renderTreatments;
+  window.renderBlogs      = renderBlogs;
+  window.updateSection    = updateSection;
+  window.updateQuerySummary = updateQuerySummary;
+
+  /* ─────────────────────────────────────────────────────────────
+     Task 5.1 — Intercept form submit and POST via AJAX
+  ───────────────────────────────────────────────────────────── */
+  var searchForm = document.querySelector('.smart-hero form');
+  if (searchForm) {
+    searchForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      var submitBtn = searchForm.querySelector('button[type="submit"]');
+      var spinner = document.getElementById('results-spinner');
+
+      // Collect form data (query + optional file)
+      var formData = new FormData(searchForm);
+
+      // Show spinner overlay (Task 7.1 / Req 5.1)
+      if (spinner) spinner.style.display = 'flex';
+
+      // Disable submit button while request is in flight (Task 7.2 / Req 5.2)
+      if (submitBtn) submitBtn.disabled = true;
+
+      // Remove any previous error alert (Task 5.5)
+      var prevAlert = document.getElementById('smart-search-error-alert');
+      if (prevAlert) prevAlert.remove();
+
+      fetch('/enquiries/results/api/', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCsrfToken(),
+        },
+        body: formData,
+      })
+        .then(function (response) {
+          if (!response.ok) {
+            // Task 5.5 — non-2xx: show error, keep existing cards
+            return response.text().then(function () {
+              throw new Error('Search failed (HTTP ' + response.status + '). Please try again.');
+            });
+          }
+          return response.json();
+        })
+        .then(function (data) {
+          // Task 5.4 — update query summary strip
+          updateQuerySummary(data.query_summary);
+
+          // Task 5.2 & 5.3 — update each section
+          updateSection('doctors',    data.doctors,    renderDoctors);
+          updateSection('hospitals',  data.hospitals,  renderHospitals);
+          updateSection('treatments', data.treatments, renderTreatments);
+          updateSection('blogs',      data.blogs,      renderBlogs);
+        })
+        .catch(function (err) {
+          // Task 5.5 — network error or non-2xx
+          showErrorAlert(err.message || 'An unexpected error occurred. Please try again.');
+        })
+        .finally(function () {
+          // Hide spinner and re-enable submit button (Task 7.1 / Req 5.1, 5.3)
+          if (spinner) spinner.style.display = 'none';
+          if (submitBtn) submitBtn.disabled = false;
+        });
+    });
+  }
+})();
+</script>
 
 {% endblock %}
