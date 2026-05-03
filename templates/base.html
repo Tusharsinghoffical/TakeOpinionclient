@@ -513,58 +513,43 @@
 
           <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
+
+              <!-- Home -->
               <li class="nav-item">
-                <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">
-                  <i class="bi bi-house me-1" style="font-size:0.8rem;"></i>{{ translations.home }}
-                </a>
+                <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">{{ translations.home }}</a>
               </li>
 
-              <!-- Medical Services — visible to everyone -->
+              <!-- Medical Services -->
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                  <i class="bi bi-grid-3x3-gap me-1" style="font-size:0.8rem;"></i>{{ translations.medical_services }}
-                </a>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">{{ translations.medical_services }}</a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}" href="/doctors/"><i class="bi bi-person-badge"></i>{{ translations.doctors }}</a></li>
                   <li><a class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}" href="/hospitals/"><i class="bi bi-hospital"></i>{{ translations.hospitals }}</a></li>
                   <li><a class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}" href="/treatments/"><i class="bi bi-capsule"></i>{{ translations.treatments }}</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item {% if '/compare-treatments/' in request.path %}active{% endif %}" href="/compare-treatments/"><i class="bi bi-tag"></i>Pricing</a></li>
                 </ul>
               </li>
 
-              <!-- Resources — visible to everyone -->
+              <!-- Resources -->
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                  <i class="bi bi-book me-1" style="font-size:0.8rem;"></i>Resources
-                </a>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Resources</a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item {% if '/blogs/' in request.path %}active{% endif %}" href="/blogs/"><i class="bi bi-newspaper"></i>Blogs</a></li>
                   <li><a class="dropdown-item {% if '/reviews/' in request.path %}active{% endif %}" href="{% url 'accounts:reviews_page' %}"><i class="bi bi-star"></i>Reviews</a></li>
                   <li><a class="dropdown-item {% if '/hotels/' in request.path %}active{% endif %}" href="{% url 'hotels:list' %}"><i class="bi bi-building"></i>Hotels</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item {% if '/share-report/' in request.path %}active{% endif %}" href="/share-report/"><i class="bi bi-file-earmark-arrow-up"></i>Share Report</a></li>
                 </ul>
               </li>
 
-              <!-- Pricing — visible to everyone -->
-              <li class="nav-item">
-                <a class="nav-link {% if '/compare-treatments/' in request.path %}active{% endif %}" href="/compare-treatments/">
-                  <i class="bi bi-tag me-1" style="font-size:0.8rem;"></i>Pricing
-                </a>
-              </li>
-
-              <!-- Share Report — visible to everyone -->
-              <li class="nav-item">
-                <a class="nav-link {% if '/share-report/' in request.path %}active{% endif %}" href="/share-report/">
-                  <i class="bi bi-file-earmark-arrow-up me-1" style="font-size:0.8rem;"></i>Share Report
-                </a>
-              </li>
-
-              <!-- Admin-only extras -->
+              <!-- Admin only -->
               {% if user.is_authenticated and user.userprofile.user_type == 'admin' %}
               <li class="nav-item">
-                <a class="nav-link {% if '/admin/dashboard/' in request.path %}active{% endif %}" href="{% url 'accounts:admin_dashboard' %}">
-                  <i class="bi bi-speedometer2 me-1" style="font-size:0.8rem;"></i>Admin
-                </a>
+                <a class="nav-link {% if '/admin/dashboard/' in request.path %}active{% endif %}" href="{% url 'accounts:admin_dashboard' %}">Admin</a>
               </li>
               {% endif %}
+
             </ul>
             <!-- ── Search ── -->
             <form class="nb-search-form me-2" action="/search/" method="get">
