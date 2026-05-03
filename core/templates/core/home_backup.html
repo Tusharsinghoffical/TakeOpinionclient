@@ -1,0 +1,1367 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<style>
+  /* Home Page Specific Styles */
+  .home-page {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-primary-large {
+    background: white;
+    color: #0d6efd;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 0.5rem;
+  }
+
+  .btn-primary-large:hover {
+    background: #f8f9fa;
+    color: #0d6efd;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-secondary-large {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 0.5rem;
+  }
+
+  .btn-secondary-large:hover {
+    background: white;
+    color: #0d6efd;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Stats Section */
+  .stats-section {
+    background: #f8f9fa;
+    padding: 3rem 0;
+  }
+
+  .stats-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .stat-item {
+    text-align: center;
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #0d6efd;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 1.1rem;
+    color: #495057;
+    font-weight: 500;
+  }
+
+  /* Patient Banner Section */
+  .patient-banner-section {
+    background: linear-gradient(135deg, #198754 0%, #157347 100%);
+    color: white;
+    padding: 4rem 0;
+  }
+
+  .patient-banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .patient-banner-text {
+    flex: 1;
+    min-width: 300px;
+    padding-right: 2rem;
+  }
+
+  .patient-banner-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .patient-banner-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  .patient-features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .patient-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .patient-icons {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .patient-icon-box {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .patient-icon {
+    font-size: 2rem;
+  }
+
+  /* Core Services Section */
+  .core-services-section {
+    padding: 5rem 0;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
+    color: #6c757d;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .service-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid #e9ecef;
+  }
+
+  .service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .service-icon {
+    font-size: 2.5rem;
+    color: #0d6efd;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+
+  .service-description {
+    color: #495057;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-link {
+    color: #0d6efd;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .service-link:hover {
+    color: #0b5ed7;
+  }
+
+  /* Multi Speciality Treatments Section */
+  .multi-speciality-section {
+    background: #f8f9fa;
+    padding: 5rem 0;
+  }
+
+  .treatment-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+  }
+
+  .treatment-tag {
+    background: white;
+    color: #0d6efd;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .treatment-tag:hover {
+    background: #0d6efd;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .treatments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .treatment-card {
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .treatment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .treatment-icon {
+    font-size: 1.5rem;
+    color: #0d6efd;
+    background: rgba(13, 110, 253, 0.1);
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .treatment-body {
+    flex: 1;
+  }
+
+  .treatment-type {
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+  }
+
+  .treatment-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .btn-view-all {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    background: #0d6efd;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .btn-view-all:hover {
+    background: #0b5ed7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  /* WhatsApp Section */
+  .whatsapp-section {
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+  }
+
+  .whatsapp-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .whatsapp-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.9;
+  }
+
+  .whatsapp-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-whatsapp {
+    background-color: Transparent;
+    color: #25d366;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-whatsapp:hover {
+    background-color: #25d369;
+    color: rgb(255, 255, 255);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-consultation {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-consultation:hover {
+    background-color: #25d369;
+    color: rgb(255, 255, 255);
+    transform: translateY(-3px);
+  }
+
+  /* Why Choose Section */
+  .why-choose-section {
+    padding: 5rem 0;
+  }
+
+  .why-choose-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .why-choose-card {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .why-choose-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .why-choose-icon {
+    font-size: 2.5rem;
+    color: #0d6efd;
+    margin-bottom: 1.5rem;
+  }
+
+  .why-choose-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+
+  .why-choose-description {
+    color: #495057;
+  }
+
+  /* Top Section */
+  .top-section {
+    padding: 5rem 0;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .top-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+  }
+
+  .top-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .top-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .top-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #ffc107;
+    color: #2c3e50;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .top-body {
+    padding: 1.5rem;
+  }
+
+  .top-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+  }
+
+  .top-specialty {
+    color: #6c757d;
+    margin-bottom: 1rem;
+  }
+
+  .top-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #ffc107;
+  }
+
+  /* Testimonials Section */
+  .testimonials-section {
+    background: #f8f9fa;
+    padding: 5rem 0;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .testimonial-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background: white;
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .testimonial-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .testimonial-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #198754;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .testimonial-content {
+    padding: 1.5rem;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .author-info h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .author-info p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+
+  .testimonial-text {
+    color: #495057;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .testimonial-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rating-stars {
+    color: #ffc107;
+  }
+
+  .rating-date {
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+
+  .btn-testimonials {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    background: #0d6efd;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-testimonials:hover {
+    background: #0b5ed7;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  /* How It Works Section */
+  .how-it-works-section {
+    padding: 5rem 0;
+  }
+
+  .how-it-works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .how-it-works-card {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .how-it-works-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .how-it-works-icon {
+    font-size: 2.5rem;
+    color: #0d6efd;
+    margin-bottom: 1.5rem;
+  }
+
+  .how-it-works-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+
+  .how-it-works-description {
+    color: #495057;
+  }
+
+  /* Blogs Section */
+  .blogs-section {
+    padding: 5rem 0;
+  }
+
+  .blogs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .blog-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .blog-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .blog-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: #0d6efd;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .blog-date {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .blog-body {
+    padding: 1.5rem;
+  }
+
+  .blog-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #2c3e50;
+  }
+
+  .blog-excerpt {
+    color: #495057;
+    margin-bottom: 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: 3rem 0;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+
+    .btn-primary-large,
+    .btn-secondary-large {
+      display: block;
+      margin: 0.5rem auto;
+      width: 80%;
+    }
+
+    .stats-container {
+      gap: 1rem;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+    }
+
+    .patient-banner-content {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .patient-banner-text {
+      padding-right: 0;
+      margin-bottom: 2rem;
+    }
+
+    .patient-icons {
+      justify-content: center;
+    }
+
+    .whatsapp-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn-whatsapp,
+    .btn-consultation {
+      width: 80%;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+    }
+  }
+</style>
+
+<div class="home-page">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-content">
+      <h1 class="hero-title">Find the Right Treatment, Doctor, and Hospital</h1>
+      <p class="hero-subtitle">
+        Compare top destinations, hospitals, and experts with TakeOpinion. Make
+        informed decisions for your medical travel needs.
+      </p>
+      <div class="hero-buttons">
+        <a href="/doctors/" class="btn-primary-large">
+          <i class="bi bi-chat-dots me-2"></i> Connect with Experts
+        </a>
+        <a href="/treatments/" class="btn-secondary-large">
+          Explore Treatments
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-container">
+        <div class="stat-item">
+          <div class="stat-number" data-target="{{ treatments_count }}">0</div>
+          <div class="stat-label">Treatments</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="{{ hospitals_count }}">0</div>
+          <div class="stat-label">Hospitals</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="{{ doctors_count }}">0</div>
+          <div class="stat-label">Doctors</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Patient Banner Section -->
+  <section class="patient-banner-section">
+    <div class="container">
+      <div class="patient-banner-content">
+        <div class="patient-banner-text">
+          <h2 class="patient-banner-title">
+            Trusted by Thousands of Patients Worldwide
+          </h2>
+          <p class="patient-banner-subtitle">
+            Join our community of satisfied patients who found the right
+            treatment and care through TakeOpinion.
+          </p>
+          <div class="patient-features">
+            <div class="patient-feature">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>Verified Success Stories</span>
+            </div>
+            <div class="patient-feature">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>24/7 Support</span>
+            </div>
+            <div class="patient-feature">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>Transparent Pricing</span>
+            </div>
+          </div>
+        </div>
+        <div class="patient-icons">
+          <div class="patient-icon-box">
+            <i class="bi bi-people patient-icon"></i>
+          </div>
+          <div class="patient-icon-box">
+            <i class="bi bi-heart patient-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Services Section -->
+  <section class="core-services-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Our Core Services</h2>
+        <p class="section-subtitle">
+          Comprehensive medical solutions tailored to your needs
+        </p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-building"></i>
+          </div>
+          <h3 class="service-title">Hospitals</h3>
+          <p class="service-description">
+            Access to top-rated hospitals with world-class facilities and
+            accreditation.
+          </p>
+          <a href="/hospitals/" class="service-link">Explore Hospitals</a>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-bandaid"></i>
+          </div>
+          <h3 class="service-title">Treatments</h3>
+          <p class="service-description">
+            Wide range of specialized treatments with proven success rates and
+            affordability.
+          </p>
+          <a href="/treatments/" class="service-link">Explore Treatments</a>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <h3 class="service-title">Doctors</h3>
+          <p class="service-description">
+            Connect with highly qualified specialists and medical experts.
+          </p>
+          <a href="/doctors/" class="service-link">Explore Doctors</a>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="bi bi-journal-medical"></i>
+          </div>
+          <h3 class="service-title">Multiple functionality</h3>
+          <p class="service-description">
+            Access valuable medical information and resources to make informed decisions.
+          </p>
+          <a href="/blogs/" class="service-link">Read Our Blogs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Multi Speciality Treatments Section -->
+  <section class="multi-speciality-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Multi-Speciality Treatments</h2>
+        <p class="section-subtitle">
+          Explore our wide range of specialized medical treatments
+        </p>
+      </div>
+      <div class="treatment-tags">
+        {% for category in treatment_categories %}
+        <a href="/treatments/category/{{ category.slug }}/" class="treatment-tag">{{ category.name }}</a>
+        {% endfor %}
+      </div>
+      <div class="treatments-grid">
+        {% for treatment in top_treatments %}
+        <a href="/treatments/{{ treatment.slug }}/" class="treatment-card">
+          <div class="treatment-icon">
+            <i class="bi bi-bandaid"></i>
+          </div>
+          <div class="treatment-body">
+            <div class="treatment-type">{{ treatment.category.name }}</div>
+            <div class="treatment-name">{{ treatment.name }}</div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      <a href="/treatments/" class="btn-view-all">View All Treatments</a>
+    </div>
+  </section>
+
+  <!-- WhatsApp Section -->
+  <section class="whatsapp-section">
+    <div class="container">
+      <h2 class="whatsapp-title">Connect with Our Experts</h2>
+      <p class="whatsapp-subtitle">
+        Get instant assistance and personalized medical advice from our team of experts
+      </p>
+      <div class="whatsapp-buttons">
+        <a href="https://wa.me/8851619647" class="btn-whatsapp" target="_blank">
+          <i class="bi bi-whatsapp me-2"></i> WhatsApp Us
+        </a>
+        <a href="/book/" class="btn-consultation">
+          <i class="bi bi-calendar-check me-2"></i> Book Consultation
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Section -->
+  <section class="why-choose-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Why Choose TakeOpinion</h2>
+        <p class="section-subtitle">
+          We provide unmatched medical tourism services with transparency and excellence
+        </p>
+      </div>
+      <div class="why-choose-grid">
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h3 class="why-choose-title">Verified Experts</h3>
+          <p class="why-choose-description">
+            All our doctors and hospitals are thoroughly verified for quality and credentials
+          </p>
+        </div>
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+          <h3 class="why-choose-title">Best Price Guarantee</h3>
+          <p class="why-choose-description">
+            We ensure you get the best prices without compromising on quality of care
+          </p>
+        </div>
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-headset"></i>
+          </div>
+          <h3 class="why-choose-title">24/7 Support</h3>
+          <p class="why-choose-description">
+            Round-the-clock assistance throughout your medical journey
+          </p>
+        </div>
+        <div class="why-choose-card">
+          <div class="why-choose-icon">
+            <i class="bi bi-translate"></i>
+          </div>
+          <h3 class="why-choose-title">Language Support</h3>
+          <p class="why-choose-description">
+            Multilingual support to ensure clear communication with medical professionals
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top Doctors Section -->
+  <section class="top-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Top Doctors</h2>
+        <p class="section-subtitle">
+          Meet our highly qualified medical specialists
+        </p>
+      </div>
+      <div class="top-grid">
+        {% for doctor in top_doctors %}
+        <a href="/doctors/{{ doctor.slug }}/" class="top-card">
+          {% if doctor.profile_picture %}
+          <img src="{{ doctor.profile_picture }}" alt="{{ doctor.name }}" class="top-image">
+          {% else %}
+          <div class="top-image bg-light d-flex align-items-center justify-content-center">
+            <i class="bi bi-person-circle text-muted" style="font-size: 3rem;"></i>
+          </div>
+          {% endif %}
+          <div class="top-body">
+            <h3 class="top-name">{{ doctor.name }}</h3>
+            <div class="top-specialty">{{ doctor.specialization }}</div>
+            <div class="top-rating">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-half"></i>
+              <span class="ms-1">{{ doctor.rating }}</span>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Top Hospitals Section -->
+  <section class="top-section" style="background: #f8f9fa;">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Top Hospitals</h2>
+        <p class="section-subtitle">
+          World-class medical facilities with international accreditations
+        </p>
+      </div>
+      <div class="top-grid">
+        {% for hospital in top_hospitals %}
+        <a href="/hospitals/{{ hospital.slug }}/" class="top-card">
+          {% if hospital.profile_picture %}
+          <img src="{{ hospital.profile_picture }}" alt="{{ hospital.name }}" class="top-image">
+          {% else %}
+          <div class="top-image bg-light d-flex align-items-center justify-content-center">
+            <i class="bi bi-building text-muted" style="font-size: 3rem;"></i>
+          </div>
+          {% endif %}
+          {% if hospital.is_takeopinion_choice %}
+          <div class="top-badge">TakeOpinion Choice</div>
+          {% endif %}
+          <div class="top-body">
+            <h3 class="top-name">{{ hospital.name }}</h3>
+            <div class="top-specialty">{{ hospital.city }}, {{ hospital.country.name }}</div>
+            <div class="top-rating">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <span class="ms-1">{{ hospital.rating }}</span>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Patient Testimonials</h2>
+        <p class="section-subtitle">
+          Hear from patients who chose TakeOpinion for their medical journey
+        </p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="position-relative">
+            <div class="testimonial-image bg-light d-flex align-items-center justify-content-center">
+              <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
+            </div>
+            <div class="testimonial-badge">Success Story</div>
+          </div>
+          <div class="testimonial-content">
+            <div class="testimonial-author">
+              <div class="author-info">
+                <h4>John D.</h4>
+                <p>Knee Replacement Surgery</p>
+              </div>
+            </div>
+            <p class="testimonial-text">
+              "TakeOpinion made my medical travel experience seamless. The hospital they recommended was excellent and the cost savings were significant compared to local options."
+            </p>
+            <div class="testimonial-rating">
+              <div class="rating-stars">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+              </div>
+              <div class="rating-date">2 months ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="position-relative">
+            <div class="testimonial-image bg-light d-flex align-items-center justify-content-center">
+              <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
+            </div>
+            <div class="testimonial-badge">Recovery</div>
+          </div>
+          <div class="testimonial-content">
+            <div class="testimonial-author">
+              <div class="author-info">
+                <h4>Sarah M.</h4>
+                <p>Dental Implants</p>
+              </div>
+            </div>
+            <p class="testimonial-text">
+              "The entire process was well-coordinated. From initial consultation to post-treatment care, TakeOpinion provided exceptional support throughout my journey."
+            </p>
+            <div class="testimonial-rating">
+              <div class="rating-stars">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-half"></i>
+              </div>
+              <div class="rating-date">3 months ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="position-relative">
+            <div class="testimonial-image bg-light d-flex align-items-center justify-content-center">
+              <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
+            </div>
+            <div class="testimonial-badge">Success Story</div>
+          </div>
+          <div class="testimonial-content">
+            <div class="testimonial-author">
+              <div class="author-info">
+                <h4>Robert K.</h4>
+                <p>Cardiac Surgery</p>
+              </div>
+            </div>
+            <p class="testimonial-text">
+              "The expertise and care I received exceeded my expectations. TakeOpinion connected me with the right specialists who made my complex procedure successful."
+            </p>
+            <div class="testimonial-rating">
+              <div class="rating-stars">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+              </div>
+              <div class="rating-date">5 months ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="{% url 'accounts:reviews_page' %}" class="btn-testimonials">
+        <i class="bi bi-chat-square-text me-2"></i> View All Reviews
+      </a>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">How TakeOpinion Works</h2>
+        <p class="section-subtitle">
+          Simple steps to find the right medical treatment for you
+        </p>
+      </div>
+      <div class="how-it-works-grid">
+        <div class="how-it-works-card">
+          <div class="how-it-works-icon">
+            <i class="bi bi-search"></i>
+          </div>
+          <h3 class="how-it-works-title">Search</h3>
+          <p class="how-it-works-description">
+            Find treatments, doctors, and hospitals that match your needs
+          </p>
+        </div>
+        <div class="how-it-works-card">
+          <div class="how-it-works-icon">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+          <h3 class="how-it-works-title">Consult</h3>
+          <p class="how-it-works-description">
+            Connect with medical experts for personalized advice
+          </p>
+        </div>
+        <div class="how-it-works-card">
+          <div class="how-it-works-icon">
+            <i class="bi bi-airplane"></i>
+          </div>
+          <h3 class="how-it-works-title">Travel</h3>
+          <p class="how-it-works-description">
+            Plan your medical travel with our assistance
+          </p>
+        </div>
+        <div class="how-it-works-card">
+          <div class="how-it-works-icon">
+            <i class="bi bi-heart-pulse"></i>
+          </div>
+          <h3 class="how-it-works-title">Recover</h3>
+          <p class="how-it-works-description">
+            Receive world-class treatment and post-care support
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blogs Section -->
+  <section class="blogs-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Latest Medical Insights</h2>
+        <p class="section-subtitle">
+          Stay updated with the latest in medical treatments and health advice
+        </p>
+      </div>
+      <div class="blogs-grid">
+        {% for blog in latest_blogs %}
+        <a href="/blogs/{{ blog.slug }}/" class="blog-card">
+          <div class="position-relative">
+            <div class="blog-image bg-light d-flex align-items-center justify-content-center">
+              <i class="bi bi-file-earmark-text text-muted" style="font-size: 3rem;"></i>
+            </div>
+            <div class="blog-badge">Medical</div>
+            <div class="blog-date">{{ blog.published_at|date:"M d, Y" }}</div>
+          </div>
+          <div class="blog-body">
+            <h3 class="blog-title">{{ blog.title }}</h3>
+            <p class="blog-excerpt">
+              {{ blog.content|truncatewords:20 }}
+            </p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Add JavaScript for animated counters -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Animated counters for stats section
+    const counters = document.querySelectorAll('.stat-number');
+    const speed = 200; // The lower the slower
+
+    counters.forEach(counter => {
+      const updateCount = () => {
+        const target = +counter.getAttribute('data-target') || 0;
+        const count = +counter.innerText;
+        
+        // Calculate increment
+        const inc = target / speed;
+
+        // If count is less than target, add increment
+        if (count < target) {
+          counter.innerText = Math.ceil(count + inc);
+          setTimeout(updateCount, 10);
+        } else {
+          counter.innerText = target;
+        }
+      };
+
+      // Trigger animation when element is in viewport
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            updateCount();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      observer.observe(counter);
+    });
+  });
+</script>
+
+{% endblock %}

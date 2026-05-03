@@ -1,0 +1,1080 @@
+{% extends 'base.html' %}
+{% load doctor_extras %}
+{% block content %}
+<style>
+/* Simplified and Attractive Doctor Detail Page Styles with Light Colors */
+.doctor-detail-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  background-color: #f8f9fa;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+  color: #333;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  border-radius: 0 0 20px 20px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.page-header h1 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.page-header .specialization {
+  opacity: 0.9;
+  font-size: 1.1rem;
+  color: #495057;
+}
+
+.main-content {
+  padding: 0 1rem;
+}
+
+.card-modern {
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+  border: none;
+  background: white;
+}
+
+.card-modern:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-modern .card-header {
+  background: #f8f9fa;
+  color: #2c3e50;
+  border-radius: 15px 15px 0 0 !important;
+  border: none;
+  padding: 1.25rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.btn-modern {
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary-modern {
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  color: white;
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+.btn-primary-modern:hover {
+  background: linear-gradient(135deg, #0b5ed7, #0d6efd);
+  transform: translateY(-3px);
+  box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+}
+
+.btn-outline-modern {
+  background: transparent;
+  color: #495057;
+  border: 2px solid #adb5bd;
+}
+
+.btn-outline-modern:hover {
+  background: #e9ecef;
+  transform: translateY(-3px);
+  border-color: #6c757d;
+}
+
+.section-title-modern {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.section-title-modern::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: #0d6efd;
+  border-radius: 3px;
+}
+
+.doctor-profile-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card i {
+  font-size: 1.75rem;
+  color: #0d6efd;
+  margin-bottom: 0.75rem;
+}
+
+.stat-card .number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.hospital-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.hospital-card-modern {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  background: white;
+  border: 1px solid #e9ecef;
+  position: relative;
+}
+
+.hospital-card-modern:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border-color: #0d6efd;
+}
+
+.hospital-card-modern img {
+  height: 150px;
+  object-fit: cover;
+}
+
+.treatment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.treatment-item-modern {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.treatment-item-modern:hover {
+  background: #e9ecef;
+  transform: translateY(-3px);
+  border-color: #adb5bd;
+}
+
+.treatment-item-modern i {
+  font-size: 1.5rem;
+  color: #0d6efd;
+  margin-bottom: 0.75rem;
+}
+
+.faq-modern .accordion-button {
+  font-weight: 600;
+  color: #2c3e50;
+  background: #f8f9fa;
+  border: none;
+  border-radius: 10px !important;
+}
+
+.faq-modern .accordion-button:not(.collapsed) {
+  color: #0d6efd;
+  background: #e9ecef;
+}
+
+.faq-modern .accordion-item {
+  border: 1px solid #e9ecef;
+  border-radius: 10px !important;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.review-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.review-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.rating-modern {
+  color: #ffc107;
+}
+
+.progress-modern {
+  height: 10px;
+  border-radius: 5px;
+  background-color: #e9ecef;
+}
+
+.progress-bar-modern {
+  border-radius: 5px;
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+}
+
+.back-btn {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #495057;
+}
+
+.back-btn:hover {
+  background: #e9ecef;
+  transform: translateX(-3px);
+}
+
+/* Media Gallery Styles */
+.media-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.media-item {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  height: 150px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.media-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.media-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-item.video::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-item.video::before {
+  content: "▶";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.modal-media-content {
+  max-width: 90%;
+  max-height: 80vh;
+}
+
+.modal-media-content img,
+.modal-media-content video {
+  max-width: 100%;
+  max-height: 70vh;
+  border-radius: 10px;
+}
+
+/* File Upload Styles */
+.file-upload-area {
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.file-upload-area:hover {
+  border-color: #0d6efd;
+  background-color: #e7f1ff;
+}
+
+.file-upload-area.dragover {
+  border-color: #0d6efd;
+  background-color: #e7f1ff;
+}
+
+.file-list {
+  margin-top: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.file-item .file-name {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-item .file-remove {
+  color: #dc3545;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 1200px) {
+  .hospital-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .review-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .col-lg-8 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .col-lg-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .hospital-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
+  .treatment-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  .review-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
+  .media-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 1.5rem 0;
+    border-radius: 0 0 15px 15px;
+  }
+  
+  .page-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .main-content {
+    padding: 0 0.5rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  
+  .hospital-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .treatment-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .review-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .media-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  
+  .btn-modern {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .doctor-profile-img {
+    height: 250px;
+  }
+  
+  .section-title-modern {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .treatment-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .hospital-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .review-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .media-gallery {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .doctor-profile-img {
+    height: 200px;
+  }
+  
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .page-header .specialization {
+    font-size: 1rem;
+  }
+}
+</style>
+
+<div class="doctor-detail-page">
+  <div class="page-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h1>Dr. {{ doctor.name }}</h1>
+          <div class="specialization">{{ doctor.specialization|default:'Medical Specialist' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container main-content">
+    <div class="row">
+      <div class="col-lg-8">
+        <a href="/doctors/" class="btn back-btn mb-3">
+          <i class="bi bi-arrow-left me-1"></i>Back to Doctors
+        </a>
+        
+        <!-- Doctor Profile -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0" style="color: white;">Doctor Profile</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 mb-4 mb-md-0">
+                {% if doctor.profile_picture %}
+                  <img src="{{ doctor.profile_picture }}" class="doctor-profile-img" alt="{{ doctor.name }}">
+                {% else %}
+                  <img src="https://ui-avatars.com/api/?name={{ doctor.name|urlencode }}&background=6f42c1&color=fff&size=300" class="doctor-profile-img" alt="{{ doctor.name }}">
+                {% endif %}
+              </div>
+              <div class="col-md-8">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="text-warning me-2 rating-modern">
+                    {% for i in "12345" %}
+                      {% if forloop.counter <= doctor.rating|floatformat:0 %}
+                        <i class="bi bi-star-fill"></i>
+                      {% else %}
+                        <i class="bi bi-star"></i>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                  <span class="fw-semibold">{{ doctor.rating|floatformat:1 }}/5.0</span>
+                  <span class="mx-2">•</span>
+                  <span>{{ doctor.review_count|default:0 }} reviews</span>
+                </div>
+                
+                <p>{{ doctor.key_points|default:'Highly experienced medical professional with expertise in advanced treatment procedures and patient care.' }}</p>
+                
+                <div class="stats-grid">
+                  <div class="stat-card">
+                    <i class="bi bi-briefcase"></i>
+                    <div class="number">{{ doctor.experience_years }}</div>
+                    <div class="small text-muted">Years Exp.</div>
+                  </div>
+                  <div class="stat-card">
+                    <i class="bi bi-hospital"></i>
+                    <div class="number">{{ doctor.hospitals.count }}</div>
+                    <div class="small text-muted">Hospitals</div>
+                  </div>
+                  <div class="stat-card">
+                    <i class="bi bi-people"></i>
+                    <div class="number">{{ doctor.patients_treated|default:'1000' }}+</div>
+                    <div class="small text-muted">Patients</div>
+                  </div>
+                  <div class="stat-card">
+                    <i class="bi bi-star-fill"></i>
+                    <div class="number">{{ doctor.success_rate|floatformat:1|default:'95.0' }}%</div>
+                    <div class="small text-muted">Success</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- About Doctor -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0" style="color: white;">About {{ doctor.name|truncatewords:1 }}</h5>
+          </div>
+          <div class="card-body">
+            <p>{{ doctor.about|default:'Dr. ' }}{{ doctor.name }} is a highly qualified medical professional with extensive experience in {{ doctor.specialization|default:'their field' }}. With over {{ doctor.experience_years }} years of practice, they have successfully treated numerous patients and contributed to advancing medical knowledge in their area of expertise.</p>
+            
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <h6 class="fw-semibold">Education & Qualifications</h6>
+                <ul class="list-unstyled">
+                  <li class="mb-2"><i class="bi bi-mortarboard text-primary me-2"></i>{{ doctor.education|default:'MD, PhD in Medical Sciences' }}</li>
+                  <li class="mb-2"><i class="bi bi-award text-primary me-2"></i>Fellowship in {{ doctor.specialization|default:'Advanced Medical Practice' }}</li>
+                  <li class="mb-2"><i class="bi bi-book text-primary me-2"></i>Certified in Advanced Treatment Procedures</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h6 class="fw-semibold">Languages</h6>
+                <ul class="list-unstyled">
+                  <li class="mb-2"><i class="bi bi-translate text-primary me-2"></i>{{ doctor.languages_spoken|default:'English, Hindi' }}</li>
+                  <li class="mb-2"><i class="bi bi-globe text-primary me-2"></i>International Patient Support</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Areas of Expertise -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0" style="color: white;">Areas of Expertise</h5>
+          </div>
+          <div class="card-body">
+            {% if treatments_page_obj %}
+            <div class="treatment-grid">
+              {% for treatment in treatments_page_obj %}
+              <a href="/treatments/{{ treatment.slug }}/" class="treatment-item-modern text-decoration-none">
+                <i class="bi bi-bandaid"></i>
+                <div class="fw-semibold">{{ treatment.name }}</div>
+              </a>
+              {% endfor %}
+            </div>
+            
+            <!-- Pagination for treatments -->
+            {% if treatments_page_obj.has_other_pages %}
+            <nav aria-label="Treatments pagination" class="mt-3">
+              <ul class="pagination justify-content-center">
+                {% if treatments_page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?treatments_page={{ treatments_page_obj.previous_page_number }}#areas-of-expertise" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+                
+                {% for num in treatments_page_obj.paginator.page_range %}
+                  {% if treatments_page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% elif num > treatments_page_obj.number|add:'-3' and num < treatments_page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?treatments_page={{ num }}#areas-of-expertise">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                
+                {% if treatments_page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?treatments_page={{ treatments_page_obj.next_page_number }}#areas-of-expertise" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+            {% endif %}
+            
+            <div class="text-center mt-3">
+              <a href="/treatments/?doctor_id={{ doctor.id }}" class="btn btn-outline-modern">View All Treatments</a>
+            </div>
+            {% else %}
+            <p class="mb-0">Specialized in advanced treatment procedures and patient care.</p>
+            {% endif %}
+          </div>
+        </div>
+        
+        <!-- Success Stories & Media Gallery -->
+        <div class="card-modern">
+          <div class="card-header" style="background: rgba(52, 152, 219, 0.7);">
+            <h5 class="mb-0" style="color: white;">Success Stories & Media</h5>
+          </div>
+          <div class="card-body">
+            {% if doctor.media_items.all %}
+            <div class="media-gallery">
+              {% for media in doctor.media_items.all %}
+                {% if media.is_image %}
+                <div class="media-item" data-bs-toggle="modal" data-bs-target="#mediaModal" data-media-type="image" data-media-src="{{ media.image_url }}">
+                  <img src="{{ media.image_url }}" alt="Success story image">
+                </div>
+                {% elif media.is_video %}
+                <div class="media-item video" data-bs-toggle="modal" data-bs-target="#mediaModal" data-media-type="video" data-media-src="{{ media.video_url }}">
+                  <img src="https://picsum.photos/seed/video{{ media.id }}/300/200" alt="Video thumbnail">
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% else %}
+            <p class="mb-0">No success stories or media available yet. Check back soon for updates!</p>
+            {% endif %}
+          </div>
+        </div>
+        
+        <!-- Patient Reviews -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0" style="color: white;">Patient Reviews</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <div class="display-6 text-primary me-3">{{ doctor.rating|floatformat:1 }}</div>
+              <div>
+                <div class="text-warning">
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= doctor.rating|floatformat:0 %}
+                      <i class="bi bi-star-fill"></i>
+                    {% elif doctor.rating|floatformat:1|slice:":1" == "0" and forloop.counter == doctor.rating|floatformat:0|add:"1" %}
+                      <i class="bi bi-star-half"></i>
+                    {% else %}
+                      <i class="bi bi-star"></i>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <div class="small">Based on {{ doctor.review_count }} reviews</div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <div class="d-flex justify-content-between mb-1">
+                <span class="small">Expertise</span>
+                <span class="small">{{ doctor.rating|add:"0.1"|floatformat:1 }}</span>
+              </div>
+              <div class="progress-modern" style="height: 6px;">
+                <div class="progress-bar-modern" role="progressbar" style="width: 95%"></div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <div class="d-flex justify-content-between mb-1">
+                <span class="small">Communication</span>
+                <span class="small">{{ doctor.rating|add:"-0.1"|floatformat:1 }}</span>
+              </div>
+              <div class="progress-modern" style="height: 6px;">
+                <div class="progress-bar-modern" role="progressbar" style="width: 90%"></div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <div class="d-flex justify-content-between mb-1">
+                <span class="small">Professionalism</span>
+                <span class="small">{{ doctor.rating|floatformat:1 }}</span>
+              </div>
+              <div class="progress-modern" style="height: 6px;">
+                <div class="progress-bar-modern" role="progressbar" style="width: 92%"></div>
+              </div>
+            </div>
+            
+            <!-- Recent Reviews -->
+            <div class="mt-4">
+              <h6 class="mb-3">Recent Patient Reviews</h6>
+              
+              {% if feedbacks_page_obj %}
+              <div class="review-grid">
+                {% for feedback in feedbacks_page_obj %}
+                <div class="review-card">
+                  <div class="d-flex justify-content-between mb-2">
+                    <div class="d-flex align-items-center">
+                      <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 30px; height: 30px;">
+                        <i class="bi bi-person text-muted small"></i>
+                      </div>
+                      <div>
+                        <div class="fw-semibold small">
+                          {% if feedback.is_anonymous %}
+                            Anonymous Patient
+                          {% else %}
+                            {{ feedback.patient.user.first_name }} {{ feedback.patient.user.last_name }}
+                          {% endif %}
+                        </div>
+                        <div class="text-muted small">{{ feedback.title }}</div>
+                      </div>
+                    </div>
+                    <div class="text-warning">
+                      {% for i in "12345" %}
+                        {% if forloop.counter <= feedback.rating %}
+                          <i class="bi bi-star-fill"></i>
+                        {% else %}
+                          <i class="bi bi-star"></i>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <p class="mb-1 small">{{ feedback.comment }}</p>
+                  <small class="text-muted">{{ feedback.created_at|date:"M d, Y" }}</small>
+                </div>
+                {% endfor %}
+              </div>
+              
+              <!-- Pagination for feedbacks -->
+              {% if feedbacks_page_obj.has_other_pages %}
+              <nav aria-label="Reviews pagination" class="mt-3">
+                <ul class="pagination justify-content-center">
+                  {% if feedbacks_page_obj.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?feedbacks_page={{ feedbacks_page_obj.previous_page_number }}#patient-reviews" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                  
+                  {% for num in feedbacks_page_obj.paginator.page_range %}
+                    {% if feedbacks_page_obj.number == num %}
+                      <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% elif num > feedbacks_page_obj.number|add:'-3' and num < feedbacks_page_obj.number|add:'3' %}
+                      <li class="page-item"><a class="page-link" href="?feedbacks_page={{ num }}#patient-reviews">{{ num }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  
+                  {% if feedbacks_page_obj.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?feedbacks_page={{ feedbacks_page_obj.next_page_number }}#patient-reviews" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </nav>
+              {% endif %}
+              
+              {% else %}
+              <p class="text-muted">No reviews yet. Be the first to share your experience!</p>
+              {% endif %}
+            </div>
+            
+            <div class="text-center mt-3">
+              <a href="{% url 'accounts:reviews_page' %}?doctor={{ doctor.id }}" class="btn btn-outline-modern">View All Reviews</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <!-- Quick Actions -->
+        <div class="card-modern mb-4">
+          <div class="card-header">
+            <h5 class="mb-0" style="color: white;">Quick Actions</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-grid gap-2">
+              <a href="/book/consultation/{{ doctor.id }}/" class="btn btn-primary-modern">
+                <i class="bi bi-camera-video me-2"></i>Video Consultation
+              </a>
+              <a href="/book/?doctor={{ doctor.id }}" class="btn btn-outline-modern">
+                <i class="bi bi-check-circle me-2"></i>Finalize Doctor
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Affiliated Hospitals -->
+        <div class="card-modern mb-4">
+          <div class="card-header">
+            <h5 class="mb-0" style="color: white;"><i class="bi bi-building me-2"></i>Affiliated Hospitals</h5>
+          </div>
+          <div class="card-body">
+            {% if affiliated_hospitals %}
+            <div class="hospital-grid">
+              {% for h in affiliated_hospitals|slice:":3" %}
+              <a href="/hospitals/{{ h.slug }}/" class="hospital-card-modern text-decoration-none">
+                <div class="position-relative">
+                  {% if h.profile_picture %}
+                    <img src="{{ h.profile_picture }}" class="w-100" alt="{{ h.name }}">
+                  {% else %}
+                    <div class="bg-light w-100 d-flex align-items-center justify-content-center" style="height: 150px;">
+                      <i class="bi bi-building text-muted" style="font-size: 3rem;"></i>
+                    </div>
+                  {% endif %}
+                  {% if h.is_takeopinion_choice %}
+                  <span class="position-absolute top-0 end-0 badge bg-warning text-dark m-2">
+                    <i class="bi bi-star-fill me-1"></i>TO Choice
+                  </span>
+                  {% endif %}
+                </div>
+                <div class="p-3">
+                  <h6 class="mb-1 fw-bold">{{ h.name }}</h6>
+                  <div class="small text-muted mb-2">
+                    <i class="bi bi-geo-alt me-1"></i>{{ h.city }}{% if h.state %}, {{ h.state }}{% endif %}
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="text-warning">
+                      {% for i in "12345" %}
+                        {% if forloop.counter <= h.rating|floatformat:0 %}
+                          <i class="bi bi-star-fill"></i>
+                        {% else %}
+                          <i class="bi bi-star"></i>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                    <div class="fw-semibold text-success">
+                      <i class="bi bi-currency-rupee"></i>{{ h.starting_price|floatformat:0 }}
+                    </div>
+                  </div>
+                  <div class="small text-muted">
+                    <i class="bi bi-hospital me-1"></i>{{ h.beds_count|default:'N/A' }} beds
+                  </div>
+                </div>
+              </a>
+              {% endfor %}
+            </div>
+            {% if affiliated_hospitals|length > 3 %}
+            <div class="text-center mt-3">
+              <a href="/hospitals/?doctor={{ doctor.id }}" class="btn btn-outline-modern">
+                <i class="bi bi-building me-2"></i>View All {{ affiliated_hospitals|length }} Hospitals
+              </a>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="text-center py-4">
+              <i class="bi bi-building-x text-muted" style="font-size: 3rem;"></i>
+              <h5 class="mt-3 text-muted">No Affiliated Hospitals</h5>
+              <p class="text-muted">This doctor is not currently affiliated with any hospitals.</p>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        
+        <!-- Need Help Booking? -->
+        <div class="card-modern">
+          <div class="card-header">
+            <h5 class="mb-0">Need Help Booking?</h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">Our medical travel coordinators can assist you with scheduling and any questions about this doctor.</p>
+            <a href="{% url 'contact' %}" class="btn btn-primary-modern w-100">
+              <i class="bi bi-headset me-2"></i>Contact Support
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Media Modal -->
+<div class="modal fade" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mediaModalLabel">Media Content</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div id="modalMediaContent" class="modal-media-content">
+          <!-- Media content will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Inquiry Modal -->
+<div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inquiryModalLabel">Ask a Question to Dr. {{ doctor.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Your Name</label>
+            <input type="text" class="form-control" placeholder="Enter your name">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" placeholder="Enter your email">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" placeholder="Enter your phone number">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Your Question</label>
+            <textarea class="form-control" rows="4" placeholder="Ask your question about this doctor..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary-modern">Send Question</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Handle media modal
+document.addEventListener('DOMContentLoaded', function() {
+  const mediaModal = document.getElementById('mediaModal');
+  const modalMediaContent = document.getElementById('modalMediaContent');
+  
+  mediaModal.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+    const mediaType = button.getAttribute('data-media-type');
+    const mediaSrc = button.getAttribute('data-media-src');
+    
+    // Clear previous content
+    modalMediaContent.innerHTML = '';
+    
+    if (mediaType === 'image') {
+      const img = document.createElement('img');
+      img.src = mediaSrc;
+      img.alt = 'Success story image';
+      img.className = 'img-fluid';
+      modalMediaContent.appendChild(img);
+    } else if (mediaType === 'video') {
+      // Check if it's a YouTube or Vimeo URL
+      const youtubeId = extractYouTubeId(mediaSrc);
+      const vimeoId = extractVimeoId(mediaSrc);
+      
+      if (youtubeId) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${youtubeId}`;
+        iframe.width = '100%';
+        iframe.height = '400';
+        iframe.frameBorder = '0';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        modalMediaContent.appendChild(iframe);
+      } else if (vimeoId) {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://player.vimeo.com/video/${vimeoId}`;
+        iframe.width = '100%';
+        iframe.height = '400';
+        iframe.frameBorder = '0';
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+        iframe.allowFullscreen = true;
+        modalMediaContent.appendChild(iframe);
+      } else {
+        // For other video URLs, try to embed directly
+        const video = document.createElement('video');
+        video.src = mediaSrc;
+        video.controls = true;
+        video.className = 'w-100';
+        modalMediaContent.appendChild(video);
+      }
+    }
+  });
+  
+  // Extract YouTube video ID
+  function extractYouTubeId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  }
+  
+  // Extract Vimeo video ID
+  function extractVimeoId(url) {
+    const regExp = /(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:[a-zA-Z0-9_\-]+)?/i;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  }
+});
+</script>
+
+{% endblock %}

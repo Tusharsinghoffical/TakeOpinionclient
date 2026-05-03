@@ -1,0 +1,14 @@
+{
+  "project": "TakeOpinionclient",
+  "tech_stacks": [
+    "Django",
+    "Python",
+    "PostgreSQL",
+    "Bootstrap"
+  ],
+  "features": [
+    "User Authentication",
+    "Booking System",
+    "Payment Integration"
+  ]
+}

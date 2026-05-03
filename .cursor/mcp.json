@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "plex": {
+      "command": "plex",
+      "args": [
+        "mcp",
+        "."
+      ],
+      "cwd": "c:\\Users\\tusha\\Music\\TakeOpinionclient-main"
+    }
+  }
+}

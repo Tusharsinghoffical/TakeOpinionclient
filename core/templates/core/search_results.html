@@ -1,0 +1,490 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .search-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+    min-height: calc(100vh - 200px);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+    padding: 2rem 0;
+  }
+
+  .search-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    animation: fadeInDown 0.5s ease;
+  }
+
+  .search-header h1 {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .results-badge {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .search-section {
+    margin-bottom: 2.5rem;
+    clear: both;
+    animation: fadeInUp 0.5s ease;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid #0d6efd;
+  }
+
+  .section-header h3 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    background: white;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  .section-icon {
+    font-size: 1.5rem;
+    color: #0d6efd;
+    margin-right: 0.75rem;
+  }
+
+  .search-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .search-item-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: none;
+  }
+
+  .search-item-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-header-custom {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: white;
+    padding: 1.25rem;
+    border-radius: 15px 15px 0 0;
+  }
+
+  .card-header-custom.doctor {
+    background: white;
+  }
+
+  .card-header-custom.hospital {
+    background: white;
+  }
+
+  .card-header-custom.treatment {
+    background: white;
+  }
+
+  .card-header-custom.blog {
+    background: white;
+  }
+
+  .card-body-custom {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-item-card .card-title {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #2c3e50;
+  }
+
+  .search-item-card .card-text {
+    color: #495057;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+
+  /* Related entities styles - Enhanced */
+  .related-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: auto;
+  }
+
+  .related-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0d6efd;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .related-items-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .related-item {
+    display: inline-block;
+    background: white;
+    color: #0d6efd;
+    border-radius: 20px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid #0d6efd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+
+  .related-item:hover {
+    background: #0d6efd;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+  }
+
+  .no-results-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin: 2rem auto;
+    max-width: 600px;
+    border: none;
+  }
+
+  .no-results-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .no-results-icon {
+    font-size: 4rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+  }
+
+  .back-home-btn {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.8rem 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    border: none;
+    font-size: 1.1rem;
+  }
+
+  .back-home-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0b5ed7 0%, #0d6efd 100%);
+  }
+
+  /* Animations */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive design */
+  @media (max-width: 992px) {
+    .search-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    
+    .search-header h1 {
+      font-size: 1.75rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .search-page {
+      padding: 1rem 0;
+    }
+    
+    .search-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .search-header {
+      margin-bottom: 1.5rem;
+    }
+    
+    .search-header h1 {
+      font-size: 1.5rem;
+    }
+    
+    .section-header h3 {
+      font-size: 1.25rem;
+    }
+    
+    .card-body-custom {
+      padding: 1.25rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .search-item-card {
+      border-radius: 12px;
+    }
+    
+    .card-header-custom {
+      padding: 1rem;
+      border-radius: 12px 12px 0 0;
+    }
+    
+    .related-section {
+      padding: 0.75rem;
+    }
+    
+    .related-item {
+      padding: 0.3rem 0.6rem;
+      font-size: 0.75rem;
+    }
+  }
+</style>
+
+<div class="search-page">
+  <div class="container">
+    <div class="search-header">
+      <h1>Search Results for "{{ query }}"</h1>
+      {% if total_results > 0 %}
+        <div class="results-badge">{{ total_results }} results found</div>
+      {% endif %}
+    </div>
+    
+    {% if total_results > 0 %}
+      <div class="search-page-content">
+        <!-- Doctors Section -->
+        {% if doctors %}
+        <div class="search-section">
+          <div class="section-header">
+            <i class="bi bi-person-fill section-icon"></i>
+            <h3>Doctors</h3>
+          </div>
+          <div class="search-grid">
+            {% for doctor in doctors %}
+            <div class="search-item-card">
+              <div class="card-header-custom doctor">
+                <h5 class="card-title mb-0">{{ doctor.name }}</h5>
+              </div>
+              <div class="card-body-custom">
+                <p class="card-text">{{ doctor.key_points|truncatewords:20 }}</p>
+                
+                <!-- Related entities -->
+                <div class="related-section">
+                  <div class="related-title">Affiliated Hospitals:</div>
+                  <div class="related-items-container">
+                    {% if doctor.related_hospitals %}
+                      {% for hospital in doctor.related_hospitals %}
+                        <a href="/hospitals/{{ hospital.slug }}/" class="related-item">{{ hospital.name }}</a>
+                      {% endfor %}
+                    {% else %}
+                      <span class="text-muted small">No affiliated hospitals</span>
+                    {% endif %}
+                  </div>
+                  
+                  <div class="related-title mt-2">Specialized Treatments:</div>
+                  <div class="related-items-container">
+                    {% if doctor.related_treatments %}
+                      {% for treatment in doctor.related_treatments %}
+                        <a href="/treatments/{{ treatment.slug }}/" class="related-item">{{ treatment.name }}</a>
+                      {% endfor %}
+                    {% else %}
+                      <span class="text-muted small">No specialized treatments</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Hospitals Section -->
+        {% if hospitals %}
+        <div class="search-section">
+          <div class="section-header">
+            <i class="bi bi-hospital section-icon"></i>
+            <h3>Hospitals</h3>
+          </div>
+          <div class="search-grid">
+            {% for hospital in hospitals %}
+            <div class="search-item-card">
+              <div class="card-header-custom hospital">
+                <h5 class="card-title mb-0">{{ hospital.name }}</h5>
+              </div>
+              <div class="card-body-custom">
+                <p class="card-text">{{ hospital.about|truncatewords:20 }}</p>
+                
+                <!-- Related entities -->
+                <div class="related-section">
+                  <div class="related-title">Associated Doctors:</div>
+                  <div class="related-items-container">
+                    {% if hospital.related_doctors %}
+                      {% for doctor in hospital.related_doctors %}
+                        <a href="/doctors/{{ doctor.slug }}/" class="related-item">{{ doctor.name }}</a>
+                      {% endfor %}
+                    {% else %}
+                      <span class="text-muted small">No associated doctors</span>
+                    {% endif %}
+                  </div>
+                  
+                  <div class="related-title mt-2">Offered Treatments:</div>
+                  <div class="related-items-container">
+                    {% if hospital.related_treatments %}
+                      {% for treatment in hospital.related_treatments %}
+                        <a href="/treatments/{{ treatment.slug }}/" class="related-item">{{ treatment.name }}</a>
+                      {% endfor %}
+                    {% else %}
+                      <span class="text-muted small">No offered treatments</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Treatments Section -->
+        {% if treatments %}
+        <div class="search-section">
+          <div class="section-header">
+            <i class="bi bi-bandaid section-icon"></i>
+            <h3>Treatments</h3>
+          </div>
+          <div class="search-grid">
+            {% for treatment in treatments %}
+            <div class="search-item-card">
+              <div class="card-header-custom treatment">
+                <h5 class="card-title mb-0">{{ treatment.name }}</h5>
+              </div>
+              <div class="card-body-custom">
+                <p class="card-text">{{ treatment.description|truncatewords:20 }}</p>
+                
+                <!-- Related entities -->
+                <div class="related-section">
+                  <div class="related-title">Related Hospitals:</div>
+                  <div class="related-items-container">
+                    {% if treatment.related_hospitals %}
+                      {% for hospital in treatment.related_hospitals %}
+                        <a href="/hospitals/{{ hospital.slug }}/" class="related-item">{{ hospital.name }}</a>
+                      {% endfor %}
+                    {% else %}
+                      <span class="text-muted small">No affiliated hospitals</span>
+                    {% endif %}
+                  </div>
+                  
+                  <div class="related-title mt-2">Related Doctors:</div>
+                  <div class="related-items-container">
+                    {% if treatment.related_doctors %}
+                      {% for doctor in treatment.related_doctors %}
+                        <a href="/doctors/{{ doctor.slug }}/" class="related-item">{{ doctor.name }}</a>
+                      {% endfor %}
+                    {% else %}
+                      <span class="text-muted small">No affiliated doctors</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        
+        <!-- Blog Posts Section -->
+        {% if blog_posts %}
+        <div class="search-section">
+          <div class="section-header">
+            <i class="bi bi-file-text section-icon"></i>
+            <h3>Blog Posts</h3>
+          </div>
+          <div class="search-grid">
+            {% for post in blog_posts %}
+            <div class="search-item-card">
+              <div class="card-header-custom blog">
+                <h5 class="card-title mb-0">{{ post.title }}</h5>
+              </div>
+              <div class="card-body-custom">
+                <p class="card-text">{{ post.content|truncatewords:20 }}</p>
+                <a href="/blogs/{{ post.slug }}/" class="btn btn-outline-primary mt-auto">Read More</a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="text-center">
+        <div class="card border-0 shadow-sm py-5 no-results-card">
+          <div class="card-body">
+            <div class="no-results-icon">
+              <i class="bi bi-search"></i>
+            </div>
+            <h5 class="card-title">No results found</h5>
+            <p class="card-text text-muted">Try different keywords or check your spelling.</p>
+            <a href="/" class="btn btn-primary back-home-btn">
+              <i class="bi bi-house me-2"></i>Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

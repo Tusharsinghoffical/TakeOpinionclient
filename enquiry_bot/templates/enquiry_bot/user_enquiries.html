@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Enquiries - TakeOpinion{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-comments"></i> My Enquiries</h3>
+                </div>
+                <div class="card-body">
+                    {% if page_obj %}
+                        {% for enquiry in page_obj %}
+                        <div class="card mb-3">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span><strong>{{ enquiry.subject }}</strong> - {{ enquiry.created_at|date:"M d, Y H:i" }}</span>
+                                <span class="badge bg-{% if enquiry.status == 'resolved' %}success{% elif enquiry.status == 'in_progress' %}warning{% elif enquiry.status == 'closed' %}secondary{% else %}info{% endif %}">
+                                    {{ enquiry.get_status_display }}
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Message:</strong> {{ enquiry.message|truncatechars:100 }}</p>
+                                <a href="{% url 'enquiry_bot:chat_history' enquiry.id %}" class="btn btn-primary btn-sm">View Details</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                        <!-- Pagination -->
+                        {% if page_obj.has_other_pages %}
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ num }}</span>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                            <h4>No enquiries yet</h4>
+                            <p class="text-muted">You haven't submitted any enquiries. Start a conversation with our virtual assistant!</p>
+                            <a href="{% url 'enquiry_bot:bot_interface' %}" class="btn btn-primary">Go to Enquiry Bot</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

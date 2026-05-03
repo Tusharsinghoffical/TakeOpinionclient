@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid" style="margin-top: 20px; margin-bottom: 20px; max-width: 1000px; margin-left: auto; margin-right: auto;">
+    <div class="row h-100">
+        <div class="col-12">
+            <div class="card shadow-lg" style="height: 80vh; max-height: 800px;">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-heart-pulse" style="color: #ff6b6b;"></i> <strong>TakeOpinion Assistant - Full Screen Mode</strong> <i class="bi bi-stars" style="color: #ffd166;"></i></span>
+                    <a href="/" class="btn btn-light btn-sm" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">Back to Home</a>
+                </div>
+                <div class="card-body d-flex flex-column" style="background-color: #f8f9fa;">
+                    <div id="bot-messages" class="flex-grow-1 overflow-auto mb-3" style="max-height: calc(80vh - 250px); min-height: 400px; background-color: white; border-radius: 10px; padding: 15px;">
+                        <div class="message bot-message mb-2">
+                            <div class="alert alert-info">
+                                <strong>Bot:</strong> Hello! I'm your TakeOpinion assistant. How can I help you with our healthcare platform?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="input-group mb-2">
+                            <input type="text" id="bot-message-input" class="form-control" placeholder="Type your question..." autocomplete="off">
+                            <button class="btn btn-primary" type="button" id="send-bot-message">
+                                <i class="bi bi-send"></i> Send
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class="upload-container">
+                                <input type="file" id="medical-report-upload" class="form-control" style="max-width: 300px; height: 38px; padding: 0.375rem 0.75rem;" accept=".pdf,.jpg,.jpeg,.png,.gif">
+                            </div>
+                            <button class="btn btn-success" type="button" id="analyze-report-btn">
+                                <i class="bi bi-file-earmark-medical"></i> Analyze Medical Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .message {
+        margin-bottom: 1rem;
+    }
+    
+    .user-message .alert {
+        background: linear-gradient(135deg, #e8f4fd, #d1ecf1);
+        border-color: #bee5eb;
+        color: #0c5460;
+        border-radius: 15px;
+        border-left: 5px solid #3498db;
+    }
+    
+    .bot-message .alert {
+        background: linear-gradient(135deg, #e8f4fd, #d1ecf1);
+        border-color: #bee5eb;
+        color: #0c5460;
+        border-radius: 15px;
+        border-left: 5px solid #3498db;
+    }
+    
+    .suggested-doctors-section {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 20px;
+        border-radius: 15px;
+        border: 2px solid #d1ecf1;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .list-group-item {
+        border-radius: 12px !important;
+        margin-bottom: 10px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .list-group-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        border: none;
+        border-radius: 25px;
+        padding: 8px 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #2980b9, #1c6ea4);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        border: none;
+        border-radius: 25px;
+        padding: 8px 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-success:hover {
+        background: linear-gradient(135deg, #27ae60, #219653);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+    }
+</style>
+
+<script>
+    // Function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageInput = document.getElementById('bot-message-input');
+        const sendBtn = document.getElementById('send-bot-message');
+        const messagesContainer = document.getElementById('bot-messages');
+        
+        // Send message function
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            addMessage('user', message);
+            messageInput.value = '';
+            
+            // Disable input while waiting for response
+            messageInput.disabled = true;
+            sendBtn.disabled = true;
+            
+            try {
+                const response = await fetch('{% url "enquiry_bot:chat_api" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        enquiry_id: null
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addMessage('bot', data.response);
+                } else {
+                    addMessage('bot', 'Sorry, I encountered an error. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('bot', 'Sorry, I encountered an error. Please try again.');
+            } finally {
+                messageInput.disabled = false;
+                sendBtn.disabled = false;
+                messageInput.focus();
+            }
+        }
+        
+        // Add message to chat
+        function addMessage(sender, message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const alertClass = sender === 'user' ? 'alert-primary' : 'alert-secondary';
+            messageDiv.innerHTML = `
+                <div class="alert ${alertClass}">
+                    <strong>${sender.charAt(0).toUpperCase() + sender.slice(1)}:</strong> ${message}
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        // Send message on button click
+        sendBtn.addEventListener('click', sendMessage);
+        
+        // Send message on Enter key
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Handle medical report analysis
+        document.getElementById('analyze-report-btn').addEventListener('click', function() {
+            const fileInput = document.getElementById('medical-report-upload');
+            const file = fileInput.files[0];
+                        
+            if (!file) {
+                alert('Please select a medical report file first.');
+                return;
+            }
+                        
+            const formData = new FormData();
+            formData.append('medical_report', file);
+                        
+            // Show loading message
+            addMessage('bot', 'Analyzing your medical report... Please wait.');
+                        
+            fetch('{% url "enquiry_bot:analyze_report" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => {
+                // Check if response is OK and parse JSON
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Clear previous messages and show analysis
+                    document.getElementById('bot-messages').innerHTML = '';
+                    addMessage('bot', '<strong>Medical Report Analysis:</strong><br>' + data.analysis.replace(/\n/g, '<br>'));
+                                
+                    // Always show suggested doctors after analysis
+                    if (data.suggested_doctors && data.suggested_doctors.length > 0) {
+                        let doctorListHtml = '<div class="suggested-doctors-section mt-3"><strong>Suggested Doctors:</strong><ul class="list-group mt-2">';
+                                            
+                        data.suggested_doctors.forEach(function(doctor) {
+                            doctorListHtml += `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6>${doctor.name}</h6>
+                                    <small class="text-muted">${doctor.specialization} | Exp: ${doctor.experience_years} years</small>
+                                    <small class="text-muted d-block">Hospitals: ${doctor.hospitals}</small>
+                                </div>
+                                <div>
+                                    <a href="/book/consultation/${doctor.id}/" class="btn btn-sm btn-primary me-1">Book Consultation</a>
+                                    <a href="${doctor.profile_url}" class="btn btn-sm btn-outline-secondary">Profile</a>
+                                </div>
+                            </li>`;
+                        });
+                                            
+                        doctorListHtml += '</ul></div>';
+                        addMessage('bot', doctorListHtml);
+                    } else {
+                        // If no specific doctors found, suggest general physicians
+                        addMessage('bot', 'Based on your report, we recommend consulting with a general physician or specialist. You can search for doctors by specialty through our platform.');
+                    }
+                } else {
+                    // Handle different types of errors
+                    let errorMessage = data.error;
+                                
+                    // Check if it's a rate limit error and provide helpful message
+                    if (data.error && (data.error.includes('Rate limit exceeded') || data.error.includes('insufficient_quota'))) {
+                        errorMessage = 'We have reached our AI analysis limit. Please try again later or contact support for assistance.';
+                    }
+                                
+                    addMessage('bot', 'Error analyzing report: ' + errorMessage);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                addMessage('bot', 'Error analyzing report: An unexpected error occurred. Please try again.');
+            });
+        });
+    });
+</script>
+{% endblock %}

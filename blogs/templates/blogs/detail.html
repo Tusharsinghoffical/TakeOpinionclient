@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .blog-detail-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+  }
+
+  .blog-detail-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    border: none;
+  }
+
+  .blog-detail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .blog-detail-card .card-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+  }
+
+  .blog-back-btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .blog-back-btn:hover {
+    transform: translateX(-3px);
+  }
+
+  .blog-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+
+  .blog-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-meta {
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+
+  .blog-tag {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  .blog-share-btn {
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .blog-share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .blog-cta-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .blog-cta-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .blog-cta-btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+  }
+
+  .blog-cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(13, 110, 253, 0.4);
+  }
+
+  .blog-figure {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    .blog-detail-page {
+      padding: 1rem;
+    }
+    
+    .blog-detail-card {
+      margin-bottom: 1rem;
+    }
+    
+    .blog-content {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<div class="container py-5 blog-detail-page">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <article>
+        <header class="mb-4">
+          <a href="{% url 'blog_list' %}" class="btn btn-sm btn-outline-secondary mb-3 blog-back-btn">
+            <i class="bi bi-arrow-left me-1"></i>Back to Articles
+          </a>
+          <h1 class="h2 mb-3">{{ post.title }}</h1>
+          <div class="d-flex flex-wrap align-items-center mb-3 blog-meta">
+            <div class="me-3">
+              <i class="bi bi-calendar me-1"></i>
+              Published {{ post.published_at|date:'M d, Y' }}
+            </div>
+            <div class="me-3">
+              <i class="bi bi-clock me-1"></i>
+              5 min read
+            </div>
+            <div>
+              <i class="bi bi-person me-1"></i>
+              TakeOpinion Team
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="badge blog-tag">
+              {% if post.treatment %}
+                {{ post.treatment.name }}
+              {% else %}
+                Medical Travel
+              {% endif %}
+            </span>
+            {% if post.is_medical_visa %}
+            <span class="badge bg-info border-0 blog-tag">Medical Visa</span>
+            {% endif %}
+          </div>
+        </header>
+        
+        <figure class="figure w-100 mb-4 blog-figure">
+          <img src="https://picsum.photos/seed/bdetail{{ post.id }}/1200/600" class="figure-img img-fluid rounded object-fit-cover" alt="{{ post.title }}" style="height: 400px;">
+        </figure>
+        
+        <div class="content blog-content">
+          {{ post.content|linebreaks }}
+        </div>
+      </article>
+      
+      <div class="card bg-light border-0 shadow-sm mt-5 blog-cta-card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h5 class="card-title">Need Help with Medical Travel?</h5>
+              <p class="card-text mb-0">Our experts can guide you through the entire process of planning your medical journey abroad.</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <a href="{% url 'contact' %}" class="btn btn-primary blog-cta-btn">
+                <i class="bi bi-chat-dots me-2"></i>Get Assistance
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-5 pt-4 border-top">
+        <h5 class="mb-3">Share this article</h5>
+        <div class="d-flex gap-2">
+          <a href="#" class="btn btn-outline-primary blog-share-btn">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" class="btn btn-outline-info blog-share-btn">
+            <i class="bi bi-twitter"></i>
+          </a>
+          <a href="#" class="btn btn-outline-danger blog-share-btn">
+            <i class="bi bi-pinterest"></i>
+          </a>
+          <a href="#" class="btn btn-outline-secondary blog-share-btn">
+            <i class="bi bi-linkedin"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

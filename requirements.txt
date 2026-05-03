@@ -1,0 +1,71 @@
+# Core Django requirements
+Django==5.2.6
+gunicorn==23.0.0
+whitenoise==6.8.2
+psycopg2-binary==2.9.11
+Pillow==11.0.0
+
+# Web framework and utilities
+asgiref==3.9.1
+sqlparse==0.5.3
+
+# Environment management
+python-decouple==3.8
+python-dotenv==1.1.1
+
+# Form handling and UI
+django-crispy-forms==2.3
+crispy-bootstrap5==0.7
+
+# API and data handling
+djangorestframework==3.15.2
+requests==2.32.5
+
+# Database and caching
+redis==6.4.0
+celery==5.5.3
+
+# Payment processing
+setuptools==75.1.0
+razorpay==1.4.2
+stripe==8.4.0
+
+# File handling
+openpyxl==3.1.5
+python-docx==1.2.0
+
+# Date and time handling
+python-dateutil==2.9.0.post0
+
+# URL handling
+urllib3==2.5.0
+
+# Security
+cryptography==45.0.6
+
+# Data processing and analysis
+pandas==2.3.1
+numpy==2.3.2
+
+# Visualization
+matplotlib==3.10.0
+seaborn==0.13.2
+
+# Machine learning (if needed)
+scikit-learn==1.7.1
+scipy==1.16.1
+
+# Utilities
+six==1.17.0
+colorama==0.4.6
+tabulate==0.9.0
+
+# Development tools
+coverage==7.10.6
+pytest==8.4.2
+pytest-cov==7.0.0
+
+# Production utilities
+dj-database-url==2.3.0
+django-heroku==0.3.1
+PyPDF2==3.0.1
