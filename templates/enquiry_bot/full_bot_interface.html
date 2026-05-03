@@ -88,7 +88,7 @@
           </div>
           <div class="fbi-cards-grid">
             {% for doctor in featured_doctors %}
-            <a href="/doctors/{{ doctor.id }}/" class="fbi-card">
+            <a href="/doctors/{{ doctor.slug }}/" class="fbi-card">
               <div class="fbi-card-icon"><i class="bi bi-person-badge"></i></div>
               <div class="fbi-card-body">
                 <strong>{{ doctor.name }}</strong>
@@ -110,7 +110,7 @@
           </div>
           <div class="fbi-cards-grid">
             {% for hospital in featured_hospitals %}
-            <a href="/hospitals/{{ hospital.id }}/" class="fbi-card">
+            <a href="/hospitals/{{ hospital.slug }}/" class="fbi-card">
               <div class="fbi-card-icon fbi-icon-green"><i class="bi bi-hospital"></i></div>
               <div class="fbi-card-body">
                 <strong>{{ hospital.name }}</strong>
@@ -132,7 +132,7 @@
           </div>
           <div class="fbi-cards-grid">
             {% for treatment in featured_treatments %}
-            <a href="/treatments/{{ treatment.id }}/" class="fbi-card">
+            <a href="/treatments/{{ treatment.slug }}/" class="fbi-card">
               <div class="fbi-card-icon fbi-icon-orange"><i class="bi bi-capsule"></i></div>
               <div class="fbi-card-body">
                 <strong>{{ treatment.name }}</strong>
@@ -153,7 +153,7 @@
           </div>
           <div class="fbi-blog-list">
             {% for blog in featured_blogs %}
-            <a href="/blogs/{{ blog.id }}/" class="fbi-blog-card">
+            <a href="/blogs/{{ blog.slug }}/" class="fbi-blog-card">
               <div class="fbi-blog-icon"><i class="bi bi-file-text"></i></div>
               <div>
                 <strong>{{ blog.title }}</strong>
@@ -697,7 +697,6 @@ document.addEventListener('DOMContentLoaded', function () {
       treatSection.style.display = 'block';
     }
 
-    // Related Blogs
     const blogSection = document.getElementById('section-blogs');
     const blogList = document.getElementById('result-blogs');
     if (data.related_blogs && data.related_blogs.length > 0) {
@@ -715,11 +714,9 @@ document.addEventListener('DOMContentLoaded', function () {
       blogSection.style.display = 'block';
     }
 
-    // Scroll results panel to top
     document.getElementById('results-panel').scrollTop = 0;
   }
 
-  // Back button
   document.getElementById('back-to-default').addEventListener('click', function () {
     document.getElementById('results-analysis').style.display = 'none';
     document.getElementById('results-default').style.display = 'block';

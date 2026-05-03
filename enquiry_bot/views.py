@@ -443,7 +443,7 @@ def analyze_medical_report(request):
                 'specialization': doctor.specialization,
                 'experience_years': doctor.experience_years,
                 'hospitals': hospitals_str,
-                'profile_url': f'/doctors/{getattr(doctor, "slug", "")}/' if getattr(doctor, 'slug', None) else f'/doctors/profile/{doctor.id}/',
+                'profile_url': f'/doctors/{doctor.slug}/' if getattr(doctor, 'slug', None) else '/doctors/',
                 'meeting_link': f'/video-call/{doctor.id}/'
             })
         
@@ -463,7 +463,7 @@ def analyze_medical_report(request):
                     'specialization': doctor.specialization,
                     'experience_years': doctor.experience_years,
                     'hospitals': hospitals_str,
-                    'profile_url': f'/doctors/{getattr(doctor, "slug", "")}/' if getattr(doctor, 'slug', None) else f'/doctors/profile/{doctor.id}/',
+                    'profile_url': f'/doctors/{doctor.slug}/' if getattr(doctor, 'slug', None) else '/doctors/',
                     'meeting_link': f'/video-call/{doctor.id}/'
                 })
         # Build related hospitals, treatments, blogs based on analysis keywords
@@ -478,10 +478,9 @@ def analyze_medical_report(request):
             related_hospitals.append({
                 'id': h.id,
                 'name': h.name,
-                'city': getattr(h, 'city', '') or getattr(h, 'location', ''),
-                'specialties': getattr(h, 'specialties', '') or '',
+                'city': getattr(h, 'city', '') or '',
                 'rating': float(h.rating) if getattr(h, 'rating', None) else 0,
-                'url': f'/hospitals/{h.id}/',
+                'url': f'/hospitals/{h.slug}/' if getattr(h, 'slug', None) else f'/hospitals/',
             })
 
         # Related treatments — match keywords from analysis
@@ -492,7 +491,7 @@ def analyze_medical_report(request):
                 'id': t.id,
                 'name': t.name,
                 'category': str(t.category) if getattr(t, 'category', None) else '',
-                'url': f'/treatments/{t.id}/',
+                'url': f'/treatments/{t.slug}/' if getattr(t, 'slug', None) else f'/treatments/',
             })
 
         # Related blogs
@@ -502,7 +501,7 @@ def analyze_medical_report(request):
             related_blogs.append({
                 'id': b.id,
                 'title': b.title,
-                'url': f'/blogs/{b.id}/',
+                'url': f'/blogs/{b.slug}/' if getattr(b, 'slug', None) else f'/blogs/',
                 'excerpt': (b.content[:120] + '...') if getattr(b, 'content', None) and len(b.content) > 120 else getattr(b, 'content', ''),
             })
 
