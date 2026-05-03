@@ -386,40 +386,68 @@
         background: #f0f0ff;
       }
 
-      /* ── User pill ── */
-      .nb-user-btn {
-        height: 38px;
-        padding: 0 14px 0 5px;
+      /* ── User info + direct action buttons ── */
+      .nb-user-info {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 0 12px 0 5px;
+        height: 36px;
         border-radius: 50px;
         border: 1.5px solid #e2e8f0;
         background: #f8fafc;
-        color: #374151 !important;
         font-size: 0.84rem;
         font-weight: 600;
+        color: #374151;
+      }
+
+      .nb-username {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .nb-dash-btn {
+        height: 36px;
+        padding: 0 14px;
+        border-radius: 50px;
+        border: none;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff !important;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        cursor: pointer;
+        gap: 5px;
+        box-shadow: 0 2px 8px rgba(99,102,241,0.28);
         transition: all 0.2s;
       }
 
-      .nb-user-btn:hover {
-        border-color: #6366f1;
-        background: #f0f0ff;
-        color: #6366f1 !important;
+      .nb-dash-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(99,102,241,0.4);
       }
 
-      .nb-user-avatar {
-        width: 28px;
-        height: 28px;
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
-        border-radius: 50%;
-        display: flex;
+      .nb-profile-btn {
+        height: 36px;
+        padding: 0 14px;
+        border-radius: 50px;
+        border: 1.5px solid #6366f1;
+        background: transparent;
+        color: #6366f1 !important;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
         align-items: center;
-        justify-content: center;
-        font-size: 0.78rem;
-        color: #fff;
-        flex-shrink: 0;
+        gap: 5px;
+        transition: all 0.2s;
+      }
+
+      .nb-profile-btn:hover {
+        background: #f0f0ff;
       }
 
       /* ── Toggler ── */
@@ -562,36 +590,29 @@
               </ul>
             </div>
 
-            <!-- ── User menu (no login/signup/logout buttons) ── -->
+            <!-- ── User menu — direct links, no dropdown ── -->
             {% if user.is_authenticated %}
             <div class="d-flex align-items-center gap-2">
-              <div class="dropdown">
-                <button class="nb-user-btn dropdown-toggle" type="button"
-                  id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                  <span class="nb-user-avatar">
-                    <i class="bi bi-person-fill"></i>
-                  </span>
-                  {{ user.username }}
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                  {% if user.userprofile.user_type == 'admin' %}
-                    <li><a class="dropdown-item" href="{% url 'accounts:admin_dashboard' %}">
-                      <i class="bi bi-speedometer2"></i> Admin Dashboard
-                    </a></li>
-                  {% elif user.userprofile.user_type == 'doctor' %}
-                    <li><a class="dropdown-item" href="{% url 'accounts:doctor_profile' %}">
-                      <i class="bi bi-person-badge"></i> My Profile
-                    </a></li>
-                  {% elif user.userprofile.user_type == 'patient' %}
-                    <li><a class="dropdown-item" href="{% url 'accounts:patient_portal' %}">
-                      <i class="bi bi-speedometer2"></i> My Dashboard
-                    </a></li>
-                    <li><a class="dropdown-item" href="{% url 'accounts:patient_profile' %}">
-                      <i class="bi bi-person"></i> My Profile
-                    </a></li>
-                  {% endif %}
-                </ul>
+              <div class="nb-user-info">
+                <span class="nb-user-avatar"><i class="bi bi-person-fill"></i></span>
+                <span class="nb-username">{{ user.username }}</span>
               </div>
+              {% if user.userprofile.user_type == 'admin' %}
+                <a href="{% url 'accounts:admin_dashboard' %}" class="nb-dash-btn">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+              {% elif user.userprofile.user_type == 'doctor' %}
+                <a href="{% url 'accounts:doctor_profile' %}" class="nb-dash-btn">
+                  <i class="bi bi-person-badge"></i> Profile
+                </a>
+              {% elif user.userprofile.user_type == 'patient' %}
+                <a href="{% url 'accounts:patient_portal' %}" class="nb-dash-btn">
+                  <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+                <a href="{% url 'accounts:patient_profile' %}" class="nb-profile-btn">
+                  <i class="bi bi-person"></i> Profile
+                </a>
+              {% endif %}
             </div>
             {% endif %}
 
