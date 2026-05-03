@@ -536,7 +536,6 @@ def post_payment(request: HttpRequest) -> HttpResponse:
     return render(request, "bookings/post_payment.html")
 
 
-@login_required
 def consultation_booking(request, doctor_id):
     """Handle consultation booking with Google Meet integration"""
     doctor = get_object_or_404(Doctor, id=doctor_id)
