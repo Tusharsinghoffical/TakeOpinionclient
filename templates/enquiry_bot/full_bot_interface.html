@@ -114,7 +114,7 @@
               <div class="fbi-card-icon fbi-icon-green"><i class="bi bi-hospital"></i></div>
               <div class="fbi-card-body">
                 <strong>{{ hospital.name }}</strong>
-                <span>{{ hospital.city|default:hospital.location|default:"" }}</span>
+                <span>{{ hospital.city|default:"" }}</span>
                 <span class="fbi-card-meta"><i class="bi bi-star-fill text-warning"></i> {{ hospital.rating|default:"—" }}</span>
               </div>
             </a>
