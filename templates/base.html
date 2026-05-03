@@ -489,64 +489,7 @@
                 </a>
               </li>
 
-              {% if user.is_authenticated %}
-                {% if user.userprofile.user_type == 'admin' %}
-                <!-- Admin navigation -->
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-grid-3x3-gap me-1" style="font-size:0.8rem;"></i>{{ translations.medical_services }}
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}" href="/doctors/"><i class="bi bi-person-badge"></i>{{ translations.doctors }}</a></li>
-                    <li><a class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}" href="/hospitals/"><i class="bi bi-hospital"></i>{{ translations.hospitals }}</a></li>
-                    <li><a class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}" href="/treatments/"><i class="bi bi-capsule"></i>{{ translations.treatments }}</a></li>
-                  </ul>
-                </li>
-
-                {% elif user.userprofile.user_type == 'patient' %}
-                <!-- Patient navigation -->
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-grid-3x3-gap me-1" style="font-size:0.8rem;"></i>{{ translations.medical_services }}
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}" href="/doctors/"><i class="bi bi-person-badge"></i>{{ translations.doctors }}</a></li>
-                    <li><a class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}" href="/hospitals/"><i class="bi bi-hospital"></i>{{ translations.hospitals }}</a></li>
-                    <li><a class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}" href="/treatments/"><i class="bi bi-capsule"></i>{{ translations.treatments }}</a></li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-book me-1" style="font-size:0.8rem;"></i>{{ translations.resources }}
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item {% if '/blogs/' in request.path %}active{% endif %}" href="/blogs/"><i class="bi bi-newspaper"></i>{{ translations.blogs }}</a></li>
-                    <li><a class="dropdown-item {% if '/reviews/' in request.path %}active{% endif %}" href="{% url 'accounts:reviews_page' %}"><i class="bi bi-star"></i>{{ translations.reviews }}</a></li>
-                    <li><a class="dropdown-item {% if '/hotels/' in request.path %}active{% endif %}" href="{% url 'hotels:list' %}"><i class="bi bi-building"></i>{{ translations.hotels }}</a></li>
-                  </ul>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link {% if '/compare-treatments/' in request.path %}active{% endif %}" href="/compare-treatments/">
-                    <i class="bi bi-tag me-1" style="font-size:0.8rem;"></i>Pricing
-                  </a>
-                </li>
-
-                {% elif user.userprofile.user_type == 'doctor' %}
-                <!-- Doctor navigation -->
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-grid-3x3-gap me-1" style="font-size:0.8rem;"></i>{{ translations.medical_services }}
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}" href="/doctors/"><i class="bi bi-person-badge"></i>{{ translations.doctors }}</a></li>
-                    <li><a class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}" href="/hospitals/"><i class="bi bi-hospital"></i>{{ translations.hospitals }}</a></li>
-                    <li><a class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}" href="/treatments/"><i class="bi bi-capsule"></i>{{ translations.treatments }}</a></li>
-                  </ul>
-                </li>
-                {% endif %}
-
-              {% else %}
-              <!-- Guest navigation -->
+              <!-- Medical Services — visible to everyone -->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                   <i class="bi bi-grid-3x3-gap me-1" style="font-size:0.8rem;"></i>{{ translations.medical_services }}
@@ -555,10 +498,10 @@
                   <li><a class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}" href="/doctors/"><i class="bi bi-person-badge"></i>{{ translations.doctors }}</a></li>
                   <li><a class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}" href="/hospitals/"><i class="bi bi-hospital"></i>{{ translations.hospitals }}</a></li>
                   <li><a class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}" href="/treatments/"><i class="bi bi-capsule"></i>{{ translations.treatments }}</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item {% if '/compare-treatments/' in request.path %}active{% endif %}" href="/compare-treatments/"><i class="bi bi-tag"></i>Pricing</a></li>
                 </ul>
               </li>
+
+              <!-- Resources — visible to everyone -->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                   <i class="bi bi-book me-1" style="font-size:0.8rem;"></i>Resources
@@ -566,7 +509,23 @@
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item {% if '/blogs/' in request.path %}active{% endif %}" href="/blogs/"><i class="bi bi-newspaper"></i>Blogs</a></li>
                   <li><a class="dropdown-item {% if '/reviews/' in request.path %}active{% endif %}" href="{% url 'accounts:reviews_page' %}"><i class="bi bi-star"></i>Reviews</a></li>
+                  <li><a class="dropdown-item {% if '/hotels/' in request.path %}active{% endif %}" href="{% url 'hotels:list' %}"><i class="bi bi-building"></i>Hotels</a></li>
                 </ul>
+              </li>
+
+              <!-- Pricing — visible to everyone -->
+              <li class="nav-item">
+                <a class="nav-link {% if '/compare-treatments/' in request.path %}active{% endif %}" href="/compare-treatments/">
+                  <i class="bi bi-tag me-1" style="font-size:0.8rem;"></i>Pricing
+                </a>
+              </li>
+
+              <!-- Admin-only extras -->
+              {% if user.is_authenticated and user.userprofile.user_type == 'admin' %}
+              <li class="nav-item">
+                <a class="nav-link {% if '/admin/dashboard/' in request.path %}active{% endif %}" href="{% url 'accounts:admin_dashboard' %}">
+                  <i class="bi bi-speedometer2 me-1" style="font-size:0.8rem;"></i>Admin
+                </a>
               </li>
               {% endif %}
             </ul>
