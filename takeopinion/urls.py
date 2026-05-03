@@ -23,15 +23,12 @@ urlpatterns += i18n_patterns(
     path("payments/", include("payments.urls")),
     path("hotels/", include("hotels.urls")),
     path("enquiries/", include("enquiry_bot.urls")),
-    prefix_default_language=False,  # Don't prefix the default language
+    prefix_default_language=False,  
 )
 
-# Serve media files during development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Serve static and media files in production using WhiteNoise
-# This is needed for Render deployment
 if not settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

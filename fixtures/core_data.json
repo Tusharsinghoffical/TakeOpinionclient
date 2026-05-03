@@ -20,6 +20,46 @@
   }
 },
 {
+  "model": "core.country",
+  "pk": 3,
+  "fields": {
+    "name": "Test Country",
+    "code": "TC",
+    "slug": "test-country",
+    "flag_url": "https://flagcdn.com/w40/tc.png"
+  }
+},
+{
+  "model": "core.country",
+  "pk": 4,
+  "fields": {
+    "name": "Thailand",
+    "code": "TH",
+    "slug": "thailand",
+    "flag_url": "https://flagcdn.com/w40/th.png"
+  }
+},
+{
+  "model": "core.country",
+  "pk": 5,
+  "fields": {
+    "name": "Mexico",
+    "code": "MX",
+    "slug": "mexico",
+    "flag_url": "https://flagcdn.com/w40/mx.png"
+  }
+},
+{
+  "model": "core.country",
+  "pk": 6,
+  "fields": {
+    "name": "Malaysia",
+    "code": "MY",
+    "slug": "malaysia",
+    "flag_url": "https://flagcdn.com/w40/my.png"
+  }
+},
+{
   "model": "core.state",
   "pk": 1,
   "fields": {
@@ -57,6 +97,106 @@
     "name": "Delhi",
     "code": "110044",
     "slug": "delhi"
+  }
+},
+{
+  "model": "core.state",
+  "pk": 5,
+  "fields": {
+    "country": 3,
+    "name": "Test State",
+    "code": "",
+    "slug": "tc-test-state"
+  }
+},
+{
+  "model": "core.state",
+  "pk": 6,
+  "fields": {
+    "country": 1,
+    "name": "Karnataka",
+    "code": "",
+    "slug": "in-karnataka"
+  }
+},
+{
+  "model": "core.state",
+  "pk": 7,
+  "fields": {
+    "country": 1,
+    "name": "Tamil Nadu",
+    "code": "",
+    "slug": "in-tamil-nadu"
+  }
+},
+{
+  "model": "core.state",
+  "pk": 8,
+  "fields": {
+    "country": 2,
+    "name": "Antalya",
+    "code": "",
+    "slug": "tr-antalya"
+  }
+},
+{
+  "model": "core.state",
+  "pk": 9,
+  "fields": {
+    "country": 4,
+    "name": "Bangkok",
+    "code": "",
+    "slug": "th-bangkok"
+  }
+},
+{
+  "model": "core.state",
+  "pk": 10,
+  "fields": {
+    "country": 4,
+    "name": "Phuket",
+    "code": "",
+    "slug": "th-phuket"
+  }
+},
+{
+  "model": "core.state",
+  "pk": 11,
+  "fields": {
+    "country": 5,
+    "name": "Quintana Roo",
+    "code": "",
+    "slug": "mx-quintana-roo"
+  }
+},
+{
+  "model": "core.state",
+  "pk": 12,
+  "fields": {
+    "country": 5,
+    "name": "Mexico City",
+    "code": "",
+    "slug": "mx-mexico-city"
+  }
+},
+{
+  "model": "core.state",
+  "pk": 13,
+  "fields": {
+    "country": 6,
+    "name": "Kuala Lumpur",
+    "code": "",
+    "slug": "my-kuala-lumpur"
+  }
+},
+{
+  "model": "core.state",
+  "pk": 14,
+  "fields": {
+    "country": 6,
+    "name": "Penang",
+    "code": "",
+    "slug": "my-penang"
   }
 }
 ]

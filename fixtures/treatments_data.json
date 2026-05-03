@@ -63,6 +63,150 @@
   }
 },
 {
+  "model": "treatments.treatmentcategory",
+  "pk": 8,
+  "fields": {
+    "name": "Cosmetic Surgery",
+    "slug": "cosmetic-surgery-fixture",
+    "type": "aesthetic"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 9,
+  "fields": {
+    "name": "Dermatology",
+    "slug": "dermatology-fixture",
+    "type": "medical"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 10,
+  "fields": {
+    "name": "Wellness & Preventive Care",
+    "slug": "wellness-preventive-care-fixture",
+    "type": "wellness"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 13,
+  "fields": {
+    "name": "Cardiology",
+    "slug": "cardiology",
+    "type": "medical"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 14,
+  "fields": {
+    "name": "Neurology",
+    "slug": "neurology",
+    "type": "medical"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 15,
+  "fields": {
+    "name": "Oncology",
+    "slug": "oncology",
+    "type": "medical"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 18,
+  "fields": {
+    "name": "Ophthalmology",
+    "slug": "ophthalmology",
+    "type": "medical"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 22,
+  "fields": {
+    "name": "Dental",
+    "slug": "dental",
+    "type": "aesthetic"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 23,
+  "fields": {
+    "name": "Hair Transplant",
+    "slug": "hair-transplant",
+    "type": "aesthetic"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 24,
+  "fields": {
+    "name": "Body Contouring",
+    "slug": "body-contouring",
+    "type": "aesthetic"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 25,
+  "fields": {
+    "name": "Yoga",
+    "slug": "yoga",
+    "type": "wellness"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 26,
+  "fields": {
+    "name": "Meditation",
+    "slug": "meditation",
+    "type": "wellness"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 27,
+  "fields": {
+    "name": "Detox",
+    "slug": "detox",
+    "type": "wellness"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 28,
+  "fields": {
+    "name": "Weight Management",
+    "slug": "weight-management",
+    "type": "wellness"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 29,
+  "fields": {
+    "name": "Spa Treatments",
+    "slug": "spa-treatments",
+    "type": "wellness"
+  }
+},
+{
+  "model": "treatments.treatmentcategory",
+  "pk": 30,
+  "fields": {
+    "name": "Alternative Medicine",
+    "slug": "alternative-medicine",
+    "type": "wellness"
+  }
+},
+{
   "model": "treatments.treatment",
   "pk": 1,
   "fields": {
@@ -225,6 +369,672 @@
   }
 },
 {
+  "model": "treatments.treatment",
+  "pk": 10,
+  "fields": {
+    "name": "Executive Health Checkup",
+    "slug": "executive-health-checkup-fixture",
+    "description": "Comprehensive health assessment package designed for busy professionals to detect potential health issues early.",
+    "category": 10,
+    "duration": "1-2 days",
+    "anesthesia_type": "None",
+    "recovery_time": "Immediate",
+    "procedure_details": "Extensive medical evaluation including blood tests, imaging studies, specialist consultations, and personalized health recommendations.",
+    "preparation_guidelines": "Fasting requirements, Medication instructions, Previous reports, Appointment scheduling, Health history",
+    "aftercare_instructions": "Report review, Follow-up appointments, Lifestyle recommendations, Health monitoring, Preventive measures",
+    "starting_price": "1200.00",
+    "review_count": 320
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 16,
+  "fields": {
+    "name": "Hip Replacement",
+    "slug": "hip-replacement",
+    "description": "Surgical procedure to replace damaged hip joint with artificial components.",
+    "category": 1,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "9500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 17,
+  "fields": {
+    "name": "Spinal Fusion",
+    "slug": "spinal-fusion",
+    "description": "Surgical technique to join two or more vertebrae in the spine.",
+    "category": 1,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "12000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 18,
+  "fields": {
+    "name": "Arthroscopic Surgery",
+    "slug": "arthroscopic-surgery",
+    "description": "Minimally invasive procedure to diagnose and treat joint problems.",
+    "category": 1,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "4500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 19,
+  "fields": {
+    "name": "Shoulder Replacement",
+    "slug": "shoulder-replacement",
+    "description": "Surgical procedure to replace damaged shoulder joint with artificial components.",
+    "category": 1,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "11000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 20,
+  "fields": {
+    "name": "Angioplasty",
+    "slug": "angioplasty",
+    "description": "Procedure to open blocked heart arteries using balloon catheter.",
+    "category": 13,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "7500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 21,
+  "fields": {
+    "name": "Bypass Surgery",
+    "slug": "bypass-surgery",
+    "description": "Surgical procedure to redirect blood flow around blocked arteries.",
+    "category": 13,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "15000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 22,
+  "fields": {
+    "name": "Heart Valve Replacement",
+    "slug": "heart-valve-replacement",
+    "description": "Surgical procedure to replace damaged heart valves.",
+    "category": 13,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "18000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 23,
+  "fields": {
+    "name": "Pacemaker Implantation",
+    "slug": "pacemaker-implantation",
+    "description": "Procedure to implant a device that regulates heart rhythm.",
+    "category": 13,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "6000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 24,
+  "fields": {
+    "name": "Cardiac Ablation",
+    "slug": "cardiac-ablation",
+    "description": "Procedure to correct heart rhythm problems by destroying abnormal tissue.",
+    "category": 13,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "8500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 25,
+  "fields": {
+    "name": "Brain Tumor Removal",
+    "slug": "brain-tumor-removal",
+    "description": "Surgical procedure to remove abnormal growths in the brain.",
+    "category": 14,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "20000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 26,
+  "fields": {
+    "name": "Spinal Cord Surgery",
+    "slug": "spinal-cord-surgery",
+    "description": "Surgical treatment for spinal cord injuries and conditions.",
+    "category": 14,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "16000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 27,
+  "fields": {
+    "name": "Deep Brain Stimulation",
+    "slug": "deep-brain-stimulation",
+    "description": "Treatment for movement disorders using implanted electrodes.",
+    "category": 14,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "25000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 28,
+  "fields": {
+    "name": "Epilepsy Surgery",
+    "slug": "epilepsy-surgery",
+    "description": "Surgical treatment for drug-resistant epilepsy.",
+    "category": 14,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "18000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 29,
+  "fields": {
+    "name": "Stroke Rehabilitation",
+    "slug": "stroke-rehabilitation",
+    "description": "Comprehensive rehabilitation program for stroke patients.",
+    "category": 14,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "3500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 30,
+  "fields": {
+    "name": "Chemotherapy",
+    "slug": "chemotherapy",
+    "description": "Treatment using drugs to destroy cancer cells.",
+    "category": 15,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "5000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 31,
+  "fields": {
+    "name": "Radiation Therapy",
+    "slug": "radiation-therapy",
+    "description": "Treatment using high-energy radiation to kill cancer cells.",
+    "category": 15,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "7000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 32,
+  "fields": {
+    "name": "Immunotherapy",
+    "slug": "immunotherapy",
+    "description": "Treatment that helps immune system fight cancer.",
+    "category": 15,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "12000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 33,
+  "fields": {
+    "name": "Targeted Therapy",
+    "slug": "targeted-therapy",
+    "description": "Treatment that targets specific cancer cell features.",
+    "category": 15,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "15000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 34,
+  "fields": {
+    "name": "Stem Cell Transplant",
+    "slug": "stem-cell-transplant",
+    "description": "Procedure to replace damaged bone marrow with healthy stem cells.",
+    "category": 15,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "22000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 35,
+  "fields": {
+    "name": "Breast Augmentation",
+    "slug": "breast-augmentation",
+    "description": "Surgical procedure to increase breast size using implants.",
+    "category": 8,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "6000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 36,
+  "fields": {
+    "name": "Liposuction",
+    "slug": "liposuction",
+    "description": "Surgical procedure to remove excess fat from specific body areas.",
+    "category": 8,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "3500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 37,
+  "fields": {
+    "name": "Facelift",
+    "slug": "facelift",
+    "description": "Surgical procedure to reduce signs of aging in the face and neck.",
+    "category": 8,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "8000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 38,
+  "fields": {
+    "name": "Tummy Tuck",
+    "slug": "tummy-tuck",
+    "description": "Surgical procedure to remove excess skin and fat from the abdomen.",
+    "category": 8,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "5500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 39,
+  "fields": {
+    "name": "FUE Hair Transplant",
+    "slug": "fue-hair-transplant",
+    "description": "Follicular Unit Extraction hair restoration technique.",
+    "category": 23,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "2500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 40,
+  "fields": {
+    "name": "FUT Hair Transplant",
+    "slug": "fut-hair-transplant",
+    "description": "Follicular Unit Transplantation hair restoration technique.",
+    "category": 23,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "2000.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 41,
+  "fields": {
+    "name": "Beard Transplant",
+    "slug": "beard-transplant",
+    "description": "Hair transplant procedure specifically for facial hair restoration.",
+    "category": 23,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "1800.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 42,
+  "fields": {
+    "name": "Eyebrow Transplant",
+    "slug": "eyebrow-transplant",
+    "description": "Hair transplant procedure for eyebrow restoration.",
+    "category": 23,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "1500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 43,
+  "fields": {
+    "name": "Dental Implants",
+    "slug": "dental-implants",
+    "description": "Surgical component that interfaces with the bone of the jaw to support dental prosthetics.",
+    "category": 22,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "1200.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 44,
+  "fields": {
+    "name": "Teeth Whitening",
+    "slug": "teeth-whitening",
+    "description": "Cosmetic dental procedure to improve the appearance of teeth.",
+    "category": 22,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "300.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 45,
+  "fields": {
+    "name": "Veneers",
+    "slug": "veneers",
+    "description": "Thin custom-made shells to cover the front surface of teeth.",
+    "category": 22,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "800.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 46,
+  "fields": {
+    "name": "Invisalign",
+    "slug": "invisalign",
+    "description": "Clear aligner system to straighten teeth without traditional braces.",
+    "category": 22,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "2500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 47,
+  "fields": {
+    "name": "Abhyanga",
+    "slug": "abhyanga",
+    "description": "Therapeutic Ayurvedic massage with herbal oils.",
+    "category": 3,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "80.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 48,
+  "fields": {
+    "name": "Shirodhara",
+    "slug": "shirodhara",
+    "description": "Ayurvedic therapy involving continuous pouring of warm oil on the forehead.",
+    "category": 3,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "100.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 49,
+  "fields": {
+    "name": "Yoga Retreat",
+    "slug": "yoga-retreat",
+    "description": "Comprehensive yoga program for physical and mental well-being.",
+    "category": 25,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "500.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 50,
+  "fields": {
+    "name": "Meditation Workshop",
+    "slug": "meditation-workshop",
+    "description": "Guided meditation sessions for stress relief and mindfulness.",
+    "category": 26,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "150.00",
+    "review_count": 120
+  }
+},
+{
+  "model": "treatments.treatment",
+  "pk": 51,
+  "fields": {
+    "name": "Weight Loss Program",
+    "slug": "weight-loss-program",
+    "description": "Comprehensive program for sustainable weight loss and healthy lifestyle.",
+    "category": 28,
+    "duration": "5-7 days",
+    "anesthesia_type": "General",
+    "recovery_time": "2-3 weeks",
+    "procedure_details": "This treatment involves a comprehensive approach to address your medical condition with the latest techniques and technology. The procedure is performed by highly qualified specialists in state-of-the-art facilities.",
+    "preparation_guidelines": "Consult your doctor,Stop certain medications,Complete medical tests,Fast before procedure",
+    "aftercare_instructions": "Rest and recovery period,Medication schedule,Follow-up appointments,Activity restrictions",
+    "starting_price": "800.00",
+    "review_count": 120
+  }
+},
+{
   "model": "treatments.treatmentfaq",
   "pk": 1,
   "fields": {
@@ -252,6 +1062,46 @@
     "question": "What are the risks associated with this treatment?",
     "answer": "Like any medical procedure, this treatment carries some risks. Your doctor will discuss all potential risks and benefits with you during your consultation.",
     "order": 3
+  }
+},
+{
+  "model": "treatments.treatmentfaq",
+  "pk": 5,
+  "fields": {
+    "treatment": 6,
+    "question": "How long does the CABG surgery take?",
+    "answer": "The surgery typically takes 3-6 hours depending on the complexity and number of bypasses required.",
+    "order": 1
+  }
+},
+{
+  "model": "treatments.treatmentfaq",
+  "pk": 6,
+  "fields": {
+    "treatment": 6,
+    "question": "What is the success rate for CABG surgery?",
+    "answer": "CABG has a high success rate of over 95% with most patients experiencing significant improvement in symptoms.",
+    "order": 2
+  }
+},
+{
+  "model": "treatments.treatmentfaq",
+  "pk": 7,
+  "fields": {
+    "treatment": 7,
+    "question": "How long do knee replacements last?",
+    "answer": "Modern knee replacements typically last 15-20 years, with many patients experiencing longer durability.",
+    "order": 1
+  }
+},
+{
+  "model": "treatments.treatmentfaq",
+  "pk": 8,
+  "fields": {
+    "treatment": 7,
+    "question": "When can I resume normal activities after knee replacement?",
+    "answer": "Most patients can walk with assistance within 24 hours after surgery and resume normal daily activities within 3-6 weeks.",
+    "order": 2
   }
 }
 ]

@@ -85,24 +85,32 @@ else:
 
 # Import data if fixtures exist
 echo "=== Importing data ==="
-if [ -d "fixtures" ] && [ "$(ls -A fixtures)" ]; then
-    echo "Fixtures directory found with data, importing..."
-    # Skip import script if it doesn't exist
-    if [ -f "scripts/import_data.py" ]; then
-        python scripts/import_data.py
-    else
-        echo "Import script not found, attempting to load fixtures individually..."
-        # Try to load each fixture individually to isolate issues
-        for fixture in fixtures/*.json; do
-            if [ -f "$fixture" ]; then
-                echo "Loading fixture: $fixture"
-                # Use --ignorenonexistent to skip foreign key constraint errors
-                python manage.py loaddata "$fixture" --ignorenonexistent || echo "Warning: Failed to load $fixture, continuing..."
-            fi
-        done
-    fi
+if [ -d "fixtures" ] && [ "$(ls -A fixtures/*.json 2>/dev/null)" ]; then
+    echo "Loading fixtures in dependency order..."
+
+    # Load in correct FK dependency order
+    FIXTURES_ORDERED=(
+        "fixtures/core_data.json"
+        "fixtures/hospitals_data.json"
+        "fixtures/doctors_data.json"
+        "fixtures/treatments_data.json"
+        "fixtures/blogs_data.json"
+        "fixtures/hotels_data.json"
+        "fixtures/feedbacks_data.json"
+        "fixtures/bookings_data.json"
+        "fixtures/payments_data.json"
+    )
+
+    for fixture in "${FIXTURES_ORDERED[@]}"; do
+        if [ -f "$fixture" ]; then
+            echo "Loading: $fixture"
+            python manage.py loaddata "$fixture" --ignorenonexistent || echo "Warning: Failed to load $fixture, continuing..."
+        else
+            echo "Skipping (not found): $fixture"
+        fi
+    done
 else
-    echo "No fixtures directory found or empty, skipping data import"
+    echo "No fixtures found, skipping data import"
 fi
 
 echo "=== Build completed successfully! ==="

@@ -68,5 +68,103 @@
     "is_medical_visa": true,
     "published_at": "2025-09-23T10:36:23.430Z"
   }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 6,
+  "fields": {
+    "title": "Knee Replacement: What to Expect Before, During, and After Surgery",
+    "slug": "knee-replacement-what-to-expect-before-during-and-after-surgery",
+    "content": "A comprehensive guide to knee replacement surgery, covering preparation, procedure details, recovery timeline, and tips for optimal outcomes.",
+    "treatment": 1,
+    "doctor": 9,
+    "hospital": null,
+    "is_medical_visa": false,
+    "published_at": "2025-10-02T13:12:20.527Z"
+  }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 7,
+  "fields": {
+    "title": "Understanding Heart Bypass Surgery: A Patient's Guide",
+    "slug": "understanding-heart-bypass-surgery-a-patients-guide",
+    "content": "Detailed information about coronary artery bypass grafting (CABG), including indications, surgical process, recovery, and long-term care.",
+    "treatment": 21,
+    "doctor": 10,
+    "hospital": 10,
+    "is_medical_visa": false,
+    "published_at": "2025-10-02T13:12:20.538Z"
+  }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 8,
+  "fields": {
+    "title": "The Ultimate Guide to Rhinoplasty: Achieving Natural Results",
+    "slug": "the-ultimate-guide-to-rhinoplasty-achieving-natural-results",
+    "content": "Everything you need to know about nose reshaping surgery, from consultation to recovery, with tips for choosing the right surgeon.",
+    "treatment": 2,
+    "doctor": 13,
+    "hospital": null,
+    "is_medical_visa": false,
+    "published_at": "2025-10-02T13:12:20.549Z"
+  }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 9,
+  "fields": {
+    "title": "Medical Tourism in India: Why It's the Preferred Destination",
+    "slug": "medical-tourism-in-india-why-its-the-preferred-destination",
+    "content": "Exploring the benefits of medical tourism in India, including cost savings, quality care, and world-class facilities.",
+    "treatment": null,
+    "doctor": null,
+    "hospital": null,
+    "is_medical_visa": true,
+    "published_at": "2025-10-02T13:12:20.562Z"
+  }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 10,
+  "fields": {
+    "title": "Hair Transplant Techniques: FUE vs FUT - Which is Right for You?",
+    "slug": "hair-transplant-techniques-fue-vs-fut-which-is-right-for-you",
+    "content": "Comparing the two main hair transplant techniques, their benefits, recovery times, and ideal candidates for each procedure.",
+    "treatment": 38,
+    "doctor": null,
+    "hospital": null,
+    "is_medical_visa": false,
+    "published_at": "2025-10-02T13:12:20.571Z"
+  }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 11,
+  "fields": {
+    "title": "Ayurvedic Panchakarma: Ancient Wisdom for Modern Wellness",
+    "slug": "ayurvedic-panchakarma-ancient-wisdom-for-modern-wellness",
+    "content": "Understanding the traditional Ayurvedic detoxification therapy and its benefits for holistic health and well-being.",
+    "treatment": 47,
+    "doctor": 28,
+    "hospital": null,
+    "is_medical_visa": false,
+    "published_at": "2025-10-02T13:12:20.580Z"
+  }
+},
+{
+  "model": "blogs.blogpost",
+  "pk": 12,
+  "fields": {
+    "title": "Bariatric Surgery: A Life-Changing Decision for Weight Loss",
+    "slug": "bariatric-surgery-a-life-changing-decision-for-weight-loss",
+    "content": "Exploring the different types of weight loss surgeries, their effectiveness, and what to expect during the journey to better health.",
+    "treatment": null,
+    "doctor": null,
+    "hospital": null,
+    "is_medical_visa": false,
+    "published_at": "2025-10-02T13:12:20.588Z"
+  }
 }
 ]
