@@ -83,34 +83,14 @@ else:
     print('Superuser already exists');
 "
 
-# Import data if fixtures exist
+# Import data
 echo "=== Importing data ==="
-if [ -d "fixtures" ] && [ "$(ls -A fixtures/*.json 2>/dev/null)" ]; then
-    echo "Loading fixtures in dependency order..."
-
-    # Load in correct FK dependency order
-    FIXTURES_ORDERED=(
-        "fixtures/core_data.json"
-        "fixtures/hospitals_data.json"
-        "fixtures/doctors_data.json"
-        "fixtures/treatments_data.json"
-        "fixtures/blogs_data.json"
-        "fixtures/hotels_data.json"
-        "fixtures/feedbacks_data.json"
-        "fixtures/bookings_data.json"
-        "fixtures/payments_data.json"
-    )
-
-    for fixture in "${FIXTURES_ORDERED[@]}"; do
-        if [ -f "$fixture" ]; then
-            echo "Loading: $fixture"
-            python manage.py loaddata "$fixture" --ignorenonexistent || echo "Warning: Failed to load $fixture, continuing..."
-        else
-            echo "Skipping (not found): $fixture"
-        fi
-    done
+if [ -f "fixtures/full_data.json" ]; then
+    echo "Loading full_data.json (all models in one shot)..."
+    python manage.py loaddata fixtures/full_data.json --ignorenonexistent
+    echo "Data loaded successfully."
 else
-    echo "No fixtures found, skipping data import"
+    echo "No fixture file found, skipping data import"
 fi
 
 echo "=== Build completed successfully! ==="
