@@ -686,18 +686,7 @@ def reviews_api(request):
 
 
 @require_http_methods(["POST"])
-@login_required
 def submit_review(request):
-    # Check if user has a profile at all
-    try:
-        user_profile = request.user.userprofile
-    except Exception as e:
-        return JsonResponse({'success': False, 'message': 'User profile not found.'})
-
-    # Check if user is a patient or admin (both can submit reviews)
-    if user_profile.user_type not in ['patient', 'admin']:
-        return JsonResponse({'success': False, 'message': 'Access denied. Only patients and admins can submit reviews.'})
-
     # Get form data
     feedback_type = request.POST.get('reviewType')
     entity_id = request.POST.get('entityId')
@@ -705,6 +694,7 @@ def submit_review(request):
     title = request.POST.get('title')
     comment = request.POST.get('comment')
     is_anonymous = request.POST.get('anonymous', False)
+    guest_name = request.POST.get('guest_name', 'Anonymous').strip()
 
     # Validate required fields
     if not all([feedback_type, entity_id, rating, title, comment]):
@@ -724,7 +714,15 @@ def submit_review(request):
     except (ValueError, TypeError):
         return JsonResponse({'success': False, 'message': 'Invalid entity selected.'})
 
-    # Create feedback object - explicitly set is_approved to True for immediate visibility
+    # Get user profile if authenticated, else None
+    user_profile = None
+    if request.user.is_authenticated:
+        try:
+            user_profile = request.user.userprofile
+        except Exception:
+            pass
+
+    # Create feedback object
     feedback = Feedback(
         patient=user_profile,
         feedback_type=feedback_type,
@@ -732,23 +730,18 @@ def submit_review(request):
         title=title,
         comment=comment,
         is_anonymous=bool(is_anonymous),
-        is_approved=True  # Explicitly set to True so reviews are immediately visible
+        is_approved=True
     )
 
     # Handle video upload if present
     if 'video' in request.FILES:
         video_file = request.FILES['video']
-        # Generate a unique filename to avoid conflicts
         import uuid
         import os
         filename = f"{uuid.uuid4().hex}_{video_file.name}"
-
-        # Save the video file to the media directory
         from django.core.files.storage import default_storage
         from django.core.files.base import ContentFile
         from django.conf import settings
-
-        # Save the file
         path = default_storage.save(os.path.join(
             'videos', filename), ContentFile(video_file.read()))
         feedback.video_url = settings.MEDIA_URL + path

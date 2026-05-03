@@ -646,19 +646,9 @@
       <h1 id="hero-heading" class="hero-title">Patient Reviews</h1>
       <p class="hero-subtitle">Share your healthcare experience and help others make informed decisions. Your review helps build trust in the medical community.</p>
       <div class="hero-buttons">
-        {% if user.is_authenticated and user.userprofile.user_type == 'patient' %}
-          <button class="btn-primary-large" id="writeReviewBtn">
-            <i class="bi bi-plus-circle me-2"></i> Write a Review
-          </button>
-        {% elif user.is_authenticated and user.userprofile.user_type == 'admin' %}
-          <button class="btn-primary-large" id="writeReviewBtn">
-            <i class="bi bi-plus-circle me-2"></i> Write a Review
-          </button>
-        {% else %}
-          <a href="{% url 'accounts:login' %}" class="btn-primary-large">
-            <i class="bi bi-box-arrow-in-right me-2"></i> Login to Write a Review
-          </a>
-        {% endif %}
+        <button class="btn-primary-large" id="writeReviewBtn">
+          <i class="bi bi-plus-circle me-2"></i> Write a Review
+        </button>
         <a href="/treatments/" class="btn-secondary-large">
           <i class="bi bi-search me-2"></i> Explore Treatments
         </a>
@@ -785,15 +775,9 @@
             </div>
             <h3 class="no-reviews-title">No Reviews Found</h3>
             <p class="no-reviews-text">No reviews match your search criteria. Try different keywords or be the first to share your experience.</p>
-            {% if user.is_authenticated and user.userprofile.user_type == 'patient' or user.userprofile.user_type == 'admin' %}
-              <button class="btn btn-primary" id="writeReviewBtn2">
-                <i class="bi bi-plus-circle me-2"></i> Write the First Review
-              </button>
-            {% else %}
-              <a href="{% url 'accounts:login' %}" class="btn btn-primary">
-                <i class="bi bi-box-arrow-in-right me-2"></i> Login to Write a Review
-              </a>
-            {% endif %}
+            <button class="btn btn-primary" id="writeReviewBtn2">
+              <i class="bi bi-plus-circle me-2"></i> Write the First Review
+            </button>
           </div>
         </div>
         {% endif %}
