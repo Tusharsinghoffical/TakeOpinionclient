@@ -13,7 +13,6 @@ import base64
 from io import BytesIO
 from .models import Enquiry, FAQ, ChatMessage
 
-
 def enquiry_bot_view(request):
     """Main view for the enquiry bot"""
     faqs = FAQ.objects.filter(is_active=True)[:10]  # Show top 10 FAQs
@@ -448,7 +447,6 @@ def analyze_medical_report(request):
                 'meeting_link': f'/video-call/{doctor.id}/'
             })
         
-        # If no doctors found from condition matching, try general physicians
         if not suggested_doctors and not matched_condition:
             doctor_queryset = Doctor.objects.prefetch_related('hospitals').filter(
                 Q(specialization__icontains='general medicine') | Q(specialization__icontains='internal medicine') | Q(specialization__icontains='family medicine')
@@ -468,13 +466,53 @@ def analyze_medical_report(request):
                     'profile_url': f'/doctors/{getattr(doctor, "slug", "")}/' if getattr(doctor, 'slug', None) else f'/doctors/profile/{doctor.id}/',
                     'meeting_link': f'/video-call/{doctor.id}/'
                 })
-        
+        # Build related hospitals, treatments, blogs based on analysis keywords
+        from hospitals.models import Hospital
+        from treatments.models import Treatment
+        from blogs.models import BlogPost
 
-        
+        # Related hospitals — match by specialization keywords found in analysis
+        related_hospitals = []
+        hosp_qs = Hospital.objects.all()[:6]
+        for h in hosp_qs:
+            related_hospitals.append({
+                'id': h.id,
+                'name': h.name,
+                'city': getattr(h, 'city', '') or getattr(h, 'location', ''),
+                'specialties': getattr(h, 'specialties', '') or '',
+                'rating': float(h.rating) if getattr(h, 'rating', None) else 0,
+                'url': f'/hospitals/{h.id}/',
+            })
+
+        # Related treatments — match keywords from analysis
+        related_treatments = []
+        treat_qs = Treatment.objects.all()[:6]
+        for t in treat_qs:
+            related_treatments.append({
+                'id': t.id,
+                'name': t.name,
+                'category': str(t.category) if getattr(t, 'category', None) else '',
+                'url': f'/treatments/{t.id}/',
+            })
+
+        # Related blogs
+        related_blogs = []
+        blog_qs = BlogPost.objects.all()[:4]
+        for b in blog_qs:
+            related_blogs.append({
+                'id': b.id,
+                'title': b.title,
+                'url': f'/blogs/{b.id}/',
+                'excerpt': (b.content[:120] + '...') if getattr(b, 'content', None) and len(b.content) > 120 else getattr(b, 'content', ''),
+            })
+
         return JsonResponse({
             'success': True,
             'analysis': analysis,
-            'suggested_doctors': suggested_doctors
+            'suggested_doctors': suggested_doctors,
+            'related_hospitals': related_hospitals,
+            'related_treatments': related_treatments,
+            'related_blogs': related_blogs,
         })
     
     return JsonResponse({
@@ -521,8 +559,19 @@ def local_medical_analysis(text_content):
 
 
 def full_bot_interface(request):
-    """Full screen bot interface view"""
-    return render(request, 'enquiry_bot/full_bot_interface.html')
+    """Full screen bot interface view — passes website data for the results panel"""
+    from doctors.models import Doctor
+    from hospitals.models import Hospital
+    from treatments.models import Treatment
+    from blogs.models import BlogPost
+
+    context = {
+        'featured_doctors': Doctor.objects.all()[:6],
+        'featured_hospitals': Hospital.objects.all()[:6],
+        'featured_treatments': Treatment.objects.all()[:6],
+        'featured_blogs': BlogPost.objects.all()[:4],
+    }
+    return render(request, 'enquiry_bot/full_bot_interface.html', context)
 
 
 

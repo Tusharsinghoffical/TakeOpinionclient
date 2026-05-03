@@ -6,695 +6,728 @@
 {% block content %}
 {% csrf_token %}
 
-<div class="fullbot-page">
-  <!-- Top Bar -->
-  <div class="fullbot-topbar">
-    <div class="topbar-left">
-      <div class="bot-avatar-sm"><i class="bi bi-robot"></i></div>
+<div class="fbi-page">
+
+  <!-- ── Top Bar ── -->
+  <div class="fbi-topbar">
+    <div class="fbi-topbar-left">
+      <div class="fbi-bot-avatar"><i class="bi bi-robot"></i></div>
       <div>
         <h6>TakeOpinion AI Assistant</h6>
-        <small><span class="status-dot"></span> Online &amp; Ready</small>
+        <small><span class="fbi-dot"></span> Online &amp; Ready</small>
       </div>
     </div>
-    <div class="topbar-right">
-      <a href="{% url 'enquiry_bot:bot_interface' %}" class="btn btn-ghost btn-sm">
-        <i class="bi bi-arrows-angle-contract"></i> Compact View
+    <div class="fbi-topbar-right">
+      <a href="{% url 'enquiry_bot:bot_interface' %}" class="fbi-ghost-btn">
+        <i class="bi bi-arrows-angle-contract"></i> Compact
       </a>
-      <a href="/" class="btn btn-ghost btn-sm">
-        <i class="bi bi-house"></i> Home
-      </a>
+      <a href="/" class="fbi-ghost-btn"><i class="bi bi-house"></i> Home</a>
     </div>
   </div>
 
-  <div class="fullbot-body">
-    <div class="fullbot-messages" id="bot-messages">
-      <div class="message-row bot-row">
-        <div class="bot-avatar-xs"><i class="bi bi-robot"></i></div>
-        <div class="message-bubble bot-bubble">
-          <p>👋 Hello! I'm your <strong>TakeOpinion AI Assistant</strong>.</p>
-          <p>I can help you with:</p>
-          <ul class="mb-0">
-            <li>Finding doctors &amp; hospitals</li>
-            <li>Booking appointments</li>
-            <li>Analyzing medical reports (upload below)</li>
-            <li>Medical tourism information</li>
-            <li>Pricing &amp; payment queries</li>
-          </ul>
-          <span class="msg-time">Just now</span>
+  <!-- ── Main Layout: Chat | Results ── -->
+  <div class="fbi-layout">
+
+    <!-- LEFT: Chat Panel -->
+    <div class="fbi-chat-panel">
+      <div class="fbi-messages" id="bot-messages">
+        <div class="fbi-msg-row fbi-bot-row">
+          <div class="fbi-avatar-xs"><i class="bi bi-robot"></i></div>
+          <div class="fbi-bubble fbi-bot-bubble">
+            <p>👋 Hello! I'm your <strong>TakeOpinion AI Assistant</strong>.</p>
+            <p>Upload your medical report below and I'll analyze it — then I'll show you related doctors, hospitals, treatments and blogs right here on this page.</p>
+            <span class="fbi-time">Just now</span>
+          </div>
         </div>
       </div>
+
+      <div id="fbi-typing" class="fbi-typing d-none">
+        <div class="fbi-avatar-xs"><i class="bi bi-robot"></i></div>
+        <div class="fbi-typing-dots"><span></span><span></span><span></span></div>
+      </div>
+
+      <!-- Input -->
+      <div class="fbi-input-panel">
+        <div class="fbi-chips-row">
+          <button class="fbi-chip" data-q="What services do you offer?">Services</button>
+          <button class="fbi-chip" data-q="How do I book an appointment?">Booking</button>
+          <button class="fbi-chip" data-q="Tell me about doctors">Doctors</button>
+          <button class="fbi-chip" data-q="Tell me about hospitals">Hospitals</button>
+          <button class="fbi-chip" data-q="How do payments work?">Payments</button>
+        </div>
+        <div class="fbi-input-row">
+          <input type="text" id="bot-message-input" class="fbi-input" placeholder="Ask me anything..." autocomplete="off" />
+          <button id="send-bot-message" class="fbi-send-btn"><i class="bi bi-send-fill"></i></button>
+        </div>
+        <div class="fbi-upload-row">
+          <label class="fbi-upload-zone">
+            <i class="bi bi-file-earmark-medical"></i>
+            <span id="upload-label">Upload Medical Report (PDF / Image)</span>
+            <input type="file" id="medical-report-upload" accept=".pdf,.jpg,.jpeg,.png,.gif" />
+          </label>
+          <button id="analyze-report-btn" class="fbi-analyze-btn">
+            <i class="bi bi-cpu"></i> Analyze Report
+          </button>
+        </div>
+        <p class="fbi-hint"><i class="bi bi-shield-check"></i> Your data is encrypted and private</p>
+      </div>
     </div>
 
-    <div id="typing-indicator" class="typing-indicator d-none">
-      <div class="bot-avatar-xs"><i class="bi bi-robot"></i></div>
-      <div class="typing-dots"><span></span><span></span><span></span></div>
-    </div>
-  </div>
+    <!-- RIGHT: Results Panel -->
+    <div class="fbi-results-panel" id="results-panel">
 
-  <!-- Bottom Input Panel -->
-  <div class="fullbot-input-panel">
-    <!-- Quick Chips -->
-    <div class="quick-chips-row" id="quick-chips">
-      <button class="fchip" data-q="What services do you offer?">Services</button>
-      <button class="fchip" data-q="How do I book an appointment?">Book Appointment</button>
-      <button class="fchip" data-q="Tell me about doctors">Doctors</button>
-      <button class="fchip" data-q="Tell me about hospitals">Hospitals</button>
-      <button class="fchip" data-q="How do payments work?">Payments</button>
-      <button class="fchip" data-q="Tell me about medical tourism">Medical Tourism</button>
-    </div>
+      <!-- Default state — show website data -->
+      <div id="results-default">
+        <div class="fbi-section-title"><i class="bi bi-heart-pulse"></i> Explore Our Platform</div>
 
-    <!-- Text Input -->
-    <div class="input-row">
-      <div class="input-wrapper">
-        <input type="text" id="bot-message-input" class="chat-input" placeholder="Ask me anything about healthcare..." autocomplete="off" />
-        <button class="send-btn" id="send-bot-message" title="Send message">
-          <i class="bi bi-send-fill"></i>
+        <!-- Doctors -->
+        <div class="fbi-section">
+          <div class="fbi-section-head">
+            <span><i class="bi bi-person-badge"></i> Featured Doctors</span>
+            <a href="/doctors/" class="fbi-see-all">See all <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="fbi-cards-grid">
+            {% for doctor in featured_doctors %}
+            <a href="/doctors/{{ doctor.id }}/" class="fbi-card">
+              <div class="fbi-card-icon"><i class="bi bi-person-badge"></i></div>
+              <div class="fbi-card-body">
+                <strong>{{ doctor.name }}</strong>
+                <span>{{ doctor.specialization }}</span>
+                <span class="fbi-card-meta"><i class="bi bi-star-fill text-warning"></i> {{ doctor.rating|default:"—" }} &bull; {{ doctor.experience_years }} yrs</span>
+              </div>
+            </a>
+            {% empty %}
+            <p class="fbi-empty">No doctors found.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Hospitals -->
+        <div class="fbi-section">
+          <div class="fbi-section-head">
+            <span><i class="bi bi-hospital"></i> Top Hospitals</span>
+            <a href="/hospitals/" class="fbi-see-all">See all <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="fbi-cards-grid">
+            {% for hospital in featured_hospitals %}
+            <a href="/hospitals/{{ hospital.id }}/" class="fbi-card">
+              <div class="fbi-card-icon fbi-icon-green"><i class="bi bi-hospital"></i></div>
+              <div class="fbi-card-body">
+                <strong>{{ hospital.name }}</strong>
+                <span>{{ hospital.city|default:hospital.location|default:"" }}</span>
+                <span class="fbi-card-meta"><i class="bi bi-star-fill text-warning"></i> {{ hospital.rating|default:"—" }}</span>
+              </div>
+            </a>
+            {% empty %}
+            <p class="fbi-empty">No hospitals found.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Treatments -->
+        <div class="fbi-section">
+          <div class="fbi-section-head">
+            <span><i class="bi bi-capsule"></i> Treatments</span>
+            <a href="/treatments/" class="fbi-see-all">See all <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="fbi-cards-grid">
+            {% for treatment in featured_treatments %}
+            <a href="/treatments/{{ treatment.id }}/" class="fbi-card">
+              <div class="fbi-card-icon fbi-icon-orange"><i class="bi bi-capsule"></i></div>
+              <div class="fbi-card-body">
+                <strong>{{ treatment.name }}</strong>
+                <span>{{ treatment.category }}</span>
+              </div>
+            </a>
+            {% empty %}
+            <p class="fbi-empty">No treatments found.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Blogs -->
+        <div class="fbi-section">
+          <div class="fbi-section-head">
+            <span><i class="bi bi-newspaper"></i> Latest Blogs</span>
+            <a href="/blogs/" class="fbi-see-all">See all <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="fbi-blog-list">
+            {% for blog in featured_blogs %}
+            <a href="/blogs/{{ blog.id }}/" class="fbi-blog-card">
+              <div class="fbi-blog-icon"><i class="bi bi-file-text"></i></div>
+              <div>
+                <strong>{{ blog.title }}</strong>
+                <p>{{ blog.content|truncatechars:100 }}</p>
+              </div>
+            </a>
+            {% empty %}
+            <p class="fbi-empty">No blogs found.</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Analysis results state (hidden until report uploaded) -->
+      <div id="results-analysis" style="display:none;">
+        <div class="fbi-section-title"><i class="bi bi-clipboard2-pulse"></i> Report Analysis Results</div>
+
+        <!-- Analysis text -->
+        <div class="fbi-section">
+          <div class="fbi-analysis-box" id="analysis-text"></div>
+        </div>
+
+        <!-- Suggested Doctors -->
+        <div class="fbi-section" id="section-doctors" style="display:none;">
+          <div class="fbi-section-head">
+            <span><i class="bi bi-person-badge"></i> Suggested Doctors</span>
+            <a href="/doctors/" class="fbi-see-all">See all <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="fbi-cards-grid" id="result-doctors"></div>
+        </div>
+
+        <!-- Related Hospitals -->
+        <div class="fbi-section" id="section-hospitals" style="display:none;">
+          <div class="fbi-section-head">
+            <span><i class="bi bi-hospital"></i> Related Hospitals</span>
+            <a href="/hospitals/" class="fbi-see-all">See all <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="fbi-cards-grid" id="result-hospitals"></div>
+        </div>
+
+        <!-- Related Treatments -->
+        <div class="fbi-section" id="section-treatments" style="display:none;">
+          <div class="fbi-section-head">
+            <span><i class="bi bi-capsule"></i> Related Treatments</span>
+            <a href="/treatments/" class="fbi-see-all">See all <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="fbi-cards-grid" id="result-treatments"></div>
+        </div>
+
+        <!-- Related Blogs -->
+        <div class="fbi-section" id="section-blogs" style="display:none;">
+          <div class="fbi-section-head">
+            <span><i class="bi bi-newspaper"></i> Related Blogs</span>
+            <a href="/blogs/" class="fbi-see-all">See all <i class="bi bi-arrow-right"></i></a>
+          </div>
+          <div class="fbi-blog-list" id="result-blogs"></div>
+        </div>
+
+        <button class="fbi-back-btn" id="back-to-default">
+          <i class="bi bi-arrow-left"></i> Back to Explore
         </button>
       </div>
-    </div>
 
-    <div class="report-upload-row">
-      <div class="upload-zone" id="upload-zone">
-        <i class="bi bi-file-earmark-medical"></i>
-        <span id="upload-label">Upload Medical Report (PDF / Image)</span>
-        <input type="file" id="medical-report-upload" accept=".pdf,.jpg,.jpeg,.png,.gif" />
-      </div>
-      <button class="analyze-btn" id="analyze-report-btn">
-        <i class="bi bi-cpu"></i> Analyze Report
-      </button>
-    </div>
-
-    <p class="input-hint"><i class="bi bi-shield-check"></i> Your data is encrypted and private</p>
-  </div>
-</div>
-
+    </div><!-- /.fbi-results-panel -->
+  </div><!-- /.fbi-layout -->
+</div><!-- /.fbi-page -->
 
 <style>
-  /* ── Full Bot Page ── */
-  .fullbot-page {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 72px);
-    background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 100%);
-    overflow: hidden;
-  }
+/* ── Page ── */
+.fbi-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 68px);
+  background: #f0f4ff;
+  overflow: hidden;
+}
 
-  /* Top Bar */
-  .fullbot-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 24px;
-    background: #fff;
-    border-bottom: 1px solid #e2e8f0;
-    box-shadow: 0 2px 8px rgba(99,102,241,0.06);
-    flex-shrink: 0;
-  }
+/* ── Top Bar ── */
+.fbi-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 8px rgba(99,102,241,0.06);
+  flex-shrink: 0;
+}
+.fbi-topbar-left { display: flex; align-items: center; gap: 12px; }
+.fbi-topbar-left h6 { margin: 0; font-weight: 700; font-size: 0.95rem; color: #1e293b; }
+.fbi-topbar-left small { display: flex; align-items: center; gap: 5px; color: #64748b; font-size: 0.72rem; }
+.fbi-topbar-right { display: flex; gap: 8px; }
+.fbi-bot-avatar {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 16px; color: #fff; flex-shrink: 0;
+}
+.fbi-dot {
+  width: 7px; height: 7px; background: #4ade80;
+  border-radius: 50%; display: inline-block; animation: fbi-pulse 2s infinite;
+}
+@keyframes fbi-pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.fbi-ghost-btn {
+  background: transparent; border: 1.5px solid #e2e8f0; color: #475569;
+  border-radius: 8px; font-size: 0.8rem; padding: 5px 11px;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+  transition: all .2s;
+}
+.fbi-ghost-btn:hover { background: #ede9fe; border-color: #a78bfa; color: #6366f1; }
 
-  .topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+/* ── Layout ── */
+.fbi-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  overflow: hidden;
+  gap: 0;
+}
 
-  .topbar-left h6 {
-    margin: 0;
-    font-weight: 700;
-    font-size: 1rem;
-    color: #1e293b;
-  }
+/* ── Chat Panel ── */
+.fbi-chat-panel {
+  display: flex;
+  flex-direction: column;
+  background: #fafbff;
+  border-right: 1px solid #e2e8f0;
+  overflow: hidden;
+}
 
-  .topbar-left small {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: #64748b;
-    font-size: 0.75rem;
-  }
+.fbi-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.fbi-messages::-webkit-scrollbar { width: 3px; }
+.fbi-messages::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 
-  .topbar-right {
-    display: flex;
-    gap: 8px;
-  }
+.fbi-msg-row { display: flex; align-items: flex-end; gap: 8px; }
+.fbi-bot-row { flex-direction: row; }
+.fbi-user-row { flex-direction: row-reverse; }
 
-  .btn-ghost {
-    background: transparent;
-    border: 1.5px solid #e2e8f0;
-    color: #475569;
-    border-radius: 8px;
-    font-size: 0.82rem;
-    padding: 6px 12px;
-    transition: all 0.2s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-  }
+.fbi-avatar-xs {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 12px; color: #fff; flex-shrink: 0;
+}
 
-  .btn-ghost:hover {
-    background: #ede9fe;
-    border-color: #a78bfa;
-    color: #6366f1;
-  }
+.fbi-bubble {
+  max-width: 85%;
+  padding: 11px 14px;
+  border-radius: 16px;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  position: relative;
+}
+.fbi-bubble p { margin-bottom: 5px; }
+.fbi-bubble p:last-of-type { margin-bottom: 0; }
+.fbi-bubble ul { padding-left: 16px; margin: 0; }
+.fbi-bubble li { margin-bottom: 2px; }
 
-  /* Bot Avatar */
-  .bot-avatar-sm {
-    width: 42px;
-    height: 42px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: #fff;
-    flex-shrink: 0;
-  }
+.fbi-bot-bubble {
+  background: #fff;
+  color: #1e293b;
+  border: 1.5px solid #e2e8f0;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.fbi-user-bubble {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.28);
+}
+.fbi-time { display: block; font-size: 0.62rem; margin-top: 5px; opacity: .5; }
 
-  .bot-avatar-xs {
-    width: 32px;
-    height: 32px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    color: #fff;
-    flex-shrink: 0;
-  }
+/* Typing */
+.fbi-typing { display: flex; align-items: center; gap: 8px; padding: 0 16px 8px; flex-shrink: 0; }
+.fbi-typing-dots {
+  background: #fff; border: 1.5px solid #e2e8f0;
+  border-radius: 16px; border-bottom-left-radius: 4px;
+  padding: 9px 13px; display: flex; gap: 4px; align-items: center;
+}
+.fbi-typing-dots span {
+  width: 6px; height: 6px; background: #a78bfa;
+  border-radius: 50%; animation: fbi-bounce 1.2s infinite;
+}
+.fbi-typing-dots span:nth-child(2) { animation-delay: .2s; }
+.fbi-typing-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes fbi-bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
 
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    background: #4ade80;
-    border-radius: 50%;
-    display: inline-block;
-    animation: pulse 2s infinite;
-  }
+/* Input Panel */
+.fbi-input-panel {
+  padding: 12px 16px;
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+.fbi-chips-row {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;
+}
+.fbi-chip {
+  padding: 4px 12px; border-radius: 20px;
+  border: 1.5px solid #e2e8f0; background: #f8fafc;
+  color: #475569; font-size: 0.75rem; font-weight: 500;
+  cursor: pointer; transition: all .18s;
+}
+.fbi-chip:hover { background: #ede9fe; border-color: #a78bfa; color: #6366f1; }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
+.fbi-input-row {
+  display: flex; align-items: center; gap: 8px;
+  background: #f8fafc; border: 2px solid #e2e8f0;
+  border-radius: 50px; padding: 5px 5px 5px 16px;
+  margin-bottom: 10px; transition: border-color .2s;
+}
+.fbi-input-row:focus-within { border-color: #6366f1; background: #fff; box-shadow: 0 0 0 3px rgba(99,102,241,.08); }
+.fbi-input { flex: 1; border: none; background: transparent; outline: none; font-size: 0.88rem; color: #1e293b; }
+.fbi-input::placeholder { color: #94a3b8; }
+.fbi-send-btn {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none; border-radius: 50%; color: #fff;
+  font-size: 14px; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; transition: all .2s; flex-shrink: 0;
+}
+.fbi-send-btn:hover { transform: scale(1.1); box-shadow: 0 3px 10px rgba(99,102,241,.4); }
+.fbi-send-btn:disabled { opacity: .45; transform: none; cursor: not-allowed; }
 
-  /* Chat Body */
-  .fullbot-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+.fbi-upload-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.fbi-upload-zone {
+  flex: 1; display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border: 2px dashed #cbd5e1;
+  border-radius: 10px; background: #f8fafc;
+  cursor: pointer; font-size: 0.78rem; color: #64748b;
+  transition: all .2s; overflow: hidden; position: relative;
+}
+.fbi-upload-zone:hover { border-color: #6366f1; background: #ede9fe; color: #6366f1; }
+.fbi-upload-zone i { font-size: 1rem; color: #6366f1; flex-shrink: 0; }
+.fbi-upload-zone span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fbi-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.fbi-analyze-btn {
+  padding: 8px 16px; background: linear-gradient(135deg, #10b981, #059669);
+  border: none; border-radius: 10px; color: #fff;
+  font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; gap: 5px;
+  white-space: nowrap; transition: all .2s; flex-shrink: 0;
+}
+.fbi-analyze-btn:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(16,185,129,.35); }
+.fbi-analyze-btn:disabled { opacity: .45; transform: none; cursor: not-allowed; }
+.fbi-hint { font-size: 0.7rem; color: #94a3b8; text-align: center; margin: 0; display: flex; align-items: center; justify-content: center; gap: 4px; }
 
-  .fullbot-body::-webkit-scrollbar { width: 4px; }
-  .fullbot-body::-webkit-scrollbar-track { background: transparent; }
-  .fullbot-body::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+/* ── Results Panel ── */
+.fbi-results-panel {
+  overflow-y: auto;
+  padding: 20px 24px;
+  background: #fff;
+}
+.fbi-results-panel::-webkit-scrollbar { width: 4px; }
+.fbi-results-panel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
-  /* Messages */
-  .message-row {
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    max-width: 800px;
-  }
+.fbi-section-title {
+  font-size: 1rem; font-weight: 700; color: #1e293b;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+  padding-bottom: 10px; border-bottom: 2px solid #f1f5f9;
+}
+.fbi-section { margin-bottom: 24px; }
+.fbi-section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.fbi-section-head span { font-size: 0.88rem; font-weight: 700; color: #374151; display: flex; align-items: center; gap: 6px; }
+.fbi-see-all { font-size: 0.75rem; color: #6366f1; text-decoration: none; display: flex; align-items: center; gap: 3px; }
+.fbi-see-all:hover { text-decoration: underline; }
 
-  .bot-row { flex-direction: row; }
-  .user-row { flex-direction: row-reverse; margin-left: auto; }
+/* Cards grid */
+.fbi-cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.fbi-card {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px; border-radius: 12px;
+  border: 1.5px solid #e2e8f0; background: #fafbff;
+  text-decoration: none; transition: all .2s;
+}
+.fbi-card:hover { border-color: #a78bfa; box-shadow: 0 3px 10px rgba(99,102,241,.1); background: #f5f3ff; }
+.fbi-card-icon {
+  width: 34px; height: 34px; flex-shrink: 0;
+  background: #ede9fe; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; color: #6366f1;
+}
+.fbi-icon-green { background: #d1fae5; color: #059669; }
+.fbi-icon-orange { background: #ffedd5; color: #ea580c; }
+.fbi-card-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.fbi-card-body strong { font-size: 0.82rem; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fbi-card-body span { font-size: 0.72rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fbi-card-meta { font-size: 0.7rem !important; color: #94a3b8 !important; }
 
-  .message-bubble {
-    padding: 14px 18px;
-    border-radius: 18px;
-    font-size: 0.9rem;
-    line-height: 1.65;
-    position: relative;
-  }
+/* Blog list */
+.fbi-blog-list { display: flex; flex-direction: column; gap: 10px; }
+.fbi-blog-card {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px; border-radius: 12px;
+  border: 1.5px solid #e2e8f0; background: #fafbff;
+  text-decoration: none; transition: all .2s;
+}
+.fbi-blog-card:hover { border-color: #a78bfa; background: #f5f3ff; }
+.fbi-blog-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: #fef3c7; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; color: #d97706;
+}
+.fbi-blog-card strong { font-size: 0.84rem; color: #1e293b; display: block; margin-bottom: 3px; }
+.fbi-blog-card p { font-size: 0.75rem; color: #64748b; margin: 0; line-height: 1.4; }
 
-  .message-bubble p { margin-bottom: 6px; }
-  .message-bubble p:last-of-type { margin-bottom: 0; }
-  .message-bubble ul { padding-left: 18px; margin-bottom: 0; }
-  .message-bubble li { margin-bottom: 3px; }
+/* Analysis box */
+.fbi-analysis-box {
+  background: #f0fdf4; border: 1.5px solid #bbf7d0;
+  border-radius: 12px; padding: 14px 16px;
+  font-size: 0.84rem; color: #166534; line-height: 1.7;
+  white-space: pre-wrap;
+}
 
-  .bot-bubble {
-    background: #fff;
-    color: #1e293b;
-    border: 1.5px solid #e2e8f0;
-    border-bottom-left-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    max-width: 680px;
-  }
+/* Doctor result card with book button */
+.fbi-doc-result-card {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 12px; border-radius: 12px;
+  border: 1.5px solid #e2e8f0; background: #fafbff;
+  transition: all .2s;
+}
+.fbi-doc-result-card:hover { border-color: #a78bfa; }
+.fbi-doc-result-card strong { font-size: 0.84rem; color: #1e293b; }
+.fbi-doc-result-card span { font-size: 0.74rem; color: #64748b; }
+.fbi-doc-actions { display: flex; gap: 6px; margin-top: 4px; }
+.fbi-btn-book {
+  padding: 4px 12px; background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff; border: none; border-radius: 6px;
+  font-size: 0.72rem; font-weight: 600; text-decoration: none; cursor: pointer;
+}
+.fbi-btn-profile {
+  padding: 4px 12px; background: transparent;
+  color: #6366f1; border: 1.5px solid #6366f1;
+  border-radius: 6px; font-size: 0.72rem; font-weight: 600; text-decoration: none;
+}
 
-  .user-bubble {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #fff;
-    border-bottom-right-radius: 4px;
-    box-shadow: 0 2px 10px rgba(99,102,241,0.3);
-    max-width: 560px;
-  }
+.fbi-back-btn {
+  margin-top: 8px; padding: 8px 16px;
+  background: #f8fafc; border: 1.5px solid #e2e8f0;
+  border-radius: 8px; color: #475569; font-size: 0.82rem;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  transition: all .2s;
+}
+.fbi-back-btn:hover { background: #ede9fe; border-color: #a78bfa; color: #6366f1; }
 
-  .msg-time {
-    display: block;
-    font-size: 0.68rem;
-    margin-top: 6px;
-    opacity: 0.55;
-  }
+.fbi-empty { font-size: 0.8rem; color: #94a3b8; padding: 8px 0; }
 
-  /* Typing */
-  .typing-indicator {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 24px 8px;
-  }
-
-  .typing-dots {
-    background: #fff;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 18px;
-    border-bottom-left-radius: 4px;
-    padding: 12px 16px;
-    display: flex;
-    gap: 4px;
-    align-items: center;
-  }
-
-  .typing-dots span {
-    width: 7px;
-    height: 7px;
-    background: #a78bfa;
-    border-radius: 50%;
-    animation: bounce 1.2s infinite;
-  }
-
-  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-  @keyframes bounce {
-    0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-6px); }
-  }
-
-  /* Input Panel */
-  .fullbot-input-panel {
-    background: #fff;
-    border-top: 1px solid #e2e8f0;
-    padding: 16px 24px;
-    flex-shrink: 0;
-    box-shadow: 0 -4px 16px rgba(99,102,241,0.06);
-  }
-
-  /* Quick Chips */
-  .quick-chips-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-  .fchip {
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1.5px solid #e2e8f0;
-    background: #f8fafc;
-    color: #475569;
-    font-size: 0.8rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .fchip:hover {
-    background: #ede9fe;
-    border-color: #a78bfa;
-    color: #6366f1;
-  }
-
-  /* Text Input */
-  .input-row { margin-bottom: 12px; }
-
-  .input-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #f8fafc;
-    border: 2px solid #e2e8f0;
-    border-radius: 50px;
-    padding: 6px 6px 6px 20px;
-    transition: border-color 0.2s;
-  }
-
-  .input-wrapper:focus-within {
-    border-color: #6366f1;
-    background: #fff;
-    box-shadow: 0 0 0 4px rgba(99,102,241,0.08);
-  }
-
-  .chat-input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    outline: none;
-    font-size: 0.92rem;
-    color: #1e293b;
-  }
-
-  .chat-input::placeholder { color: #94a3b8; }
-
-  .send-btn {
-    width: 42px;
-    height: 42px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    border: none;
-    border-radius: 50%;
-    color: #fff;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-
-  .send-btn:hover {
-    transform: scale(1.08);
-    box-shadow: 0 4px 12px rgba(99,102,241,0.4);
-  }
-
-  .send-btn:disabled { opacity: 0.5; transform: none; cursor: not-allowed; }
-
-  /* Report Upload */
-  .report-upload-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-  }
-
-  .upload-zone {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 16px;
-    border: 2px dashed #cbd5e1;
-    border-radius: 12px;
-    background: #f8fafc;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .upload-zone:hover {
-    border-color: #6366f1;
-    background: #ede9fe;
-  }
-
-  .upload-zone i {
-    font-size: 1.2rem;
-    color: #6366f1;
-    flex-shrink: 0;
-  }
-
-  .upload-zone span {
-    font-size: 0.82rem;
-    color: #64748b;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .upload-zone input[type="file"] {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-  }
-
-  .analyze-btn {
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #10b981, #059669);
-    border: none;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .analyze-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(16,185,129,0.35);
-  }
-
-  .analyze-btn:disabled { opacity: 0.5; transform: none; cursor: not-allowed; }
-
-  .input-hint {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    text-align: center;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-  }
-
-  /* Doctor Cards */
-  .doctor-cards { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-
-  .doctor-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-    background: #f8fafc;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 12px;
-    gap: 12px;
-    transition: all 0.2s;
-  }
-
-  .doctor-card:hover {
-    border-color: #a78bfa;
-    box-shadow: 0 4px 12px rgba(99,102,241,0.1);
-  }
-
-  .doctor-card h6 { margin: 0 0 3px; font-size: 0.88rem; font-weight: 700; color: #1e293b; }
-  .doctor-card small { color: #64748b; font-size: 0.75rem; display: block; }
-
-  .doctor-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
-
-  .btn-book {
-    padding: 5px 12px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .btn-book:hover { opacity: 0.9; color: #fff; }
-
-  .btn-profile {
-    padding: 5px 12px;
-    background: transparent;
-    color: #6366f1;
-    border: 1.5px solid #6366f1;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .btn-profile:hover { background: #ede9fe; color: #6366f1; }
-
-  /* Responsive */
-  @media (max-width: 640px) {
-    .fullbot-topbar { padding: 10px 16px; }
-    .fullbot-body { padding: 16px; }
-    .fullbot-input-panel { padding: 12px 16px; }
-    .report-upload-row { flex-direction: column; }
-    .upload-zone { width: 100%; }
-    .analyze-btn { width: 100%; justify-content: center; }
-    .quick-chips-row { display: none; }
-  }
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .fbi-layout { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+  .fbi-chat-panel { border-right: none; border-bottom: 1px solid #e2e8f0; max-height: 55vh; }
+  .fbi-results-panel { max-height: 45vh; }
+  .fbi-cards-grid { grid-template-columns: 1fr; }
+}
 </style>
 
 <script>
-  function getCookie(name) {
-    let v = null;
-    if (document.cookie) {
-      document.cookie.split(';').forEach(c => {
-        c = c.trim();
-        if (c.startsWith(name + '=')) v = decodeURIComponent(c.slice(name.length + 1));
-      });
-    }
-    return v;
+function getCookie(name) {
+  let v = null;
+  if (document.cookie) {
+    document.cookie.split(';').forEach(c => {
+      c = c.trim();
+      if (c.startsWith(name + '=')) v = decodeURIComponent(c.slice(name.length + 1));
+    });
+  }
+  return v;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const msgInput   = document.getElementById('bot-message-input');
+  const sendBtn    = document.getElementById('send-bot-message');
+  const msgBox     = document.getElementById('bot-messages');
+  const typingEl   = document.getElementById('fbi-typing');
+
+  function getTime() {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const messageInput = document.getElementById('bot-message-input');
-    const sendBtn = document.getElementById('send-bot-message');
-    const messagesContainer = document.getElementById('bot-messages');
-    const typingIndicator = document.getElementById('typing-indicator');
-
-    function getTime() {
-      return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  function addMsg(sender, html) {
+    const row = document.createElement('div');
+    row.className = `fbi-msg-row ${sender === 'user' ? 'fbi-user-row' : 'fbi-bot-row'}`;
+    if (sender === 'bot') {
+      const av = document.createElement('div');
+      av.className = 'fbi-avatar-xs';
+      av.innerHTML = '<i class="bi bi-robot"></i>';
+      row.appendChild(av);
     }
+    const bubble = document.createElement('div');
+    bubble.className = `fbi-bubble ${sender === 'user' ? 'fbi-user-bubble' : 'fbi-bot-bubble'}`;
+    bubble.innerHTML = html.replace(/\n/g, '<br>') + `<span class="fbi-time">${getTime()}</span>`;
+    row.appendChild(bubble);
+    msgBox.appendChild(row);
+    msgBox.scrollTop = msgBox.scrollHeight;
+  }
 
-    function addMessage(sender, html) {
-      const row = document.createElement('div');
-      row.className = `message-row ${sender === 'user' ? 'user-row' : 'bot-row'}`;
+  function showTyping() { typingEl.classList.remove('d-none'); msgBox.scrollTop = msgBox.scrollHeight; }
+  function hideTyping() { typingEl.classList.add('d-none'); }
 
-      if (sender === 'bot') {
-        const av = document.createElement('div');
-        av.className = 'bot-avatar-xs';
-        av.innerHTML = '<i class="bi bi-robot"></i>';
-        row.appendChild(av);
-      }
-
-      const bubble = document.createElement('div');
-      bubble.className = `message-bubble ${sender === 'user' ? 'user-bubble' : 'bot-bubble'}`;
-      bubble.innerHTML = html.replace(/\n/g, '<br>') + `<span class="msg-time">${getTime()}</span>`;
-      row.appendChild(bubble);
-
-      messagesContainer.appendChild(row);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-
-    function showTyping() {
-      typingIndicator.classList.remove('d-none');
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-
-    function hideTyping() {
-      typingIndicator.classList.add('d-none');
-    }
-
-    async function sendMessage() {
-      const message = messageInput.value.trim();
-      if (!message) return;
-
-      addMessage('user', message);
-      messageInput.value = '';
-      messageInput.disabled = true;
-      sendBtn.disabled = true;
-      showTyping();
-
-      try {
-        const res = await fetch('{% url "enquiry_bot:chat_api" %}', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-          },
-          body: JSON.stringify({ message, enquiry_id: null })
-        });
-        const data = await res.json();
-        hideTyping();
-        addMessage('bot', data.success ? data.response : 'Sorry, I encountered an error. Please try again.');
-      } catch (e) {
-        hideTyping();
-        addMessage('bot', 'Sorry, I encountered an error. Please try again.');
-      } finally {
-        messageInput.disabled = false;
-        sendBtn.disabled = false;
-        messageInput.focus();
-      }
-    }
-
-    sendBtn.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
-
-    document.querySelectorAll('.fchip').forEach(btn => {
-      btn.addEventListener('click', function () {
-        messageInput.value = this.getAttribute('data-q');
-        sendMessage();
-      });
-    });
-
-    // File upload label
-    document.getElementById('medical-report-upload').addEventListener('change', function () {
-      const label = document.getElementById('upload-label');
-      label.textContent = this.files[0] ? this.files[0].name : 'Upload Medical Report (PDF / Image)';
-    });
-
-    // Analyze report
-    document.getElementById('analyze-report-btn').addEventListener('click', function () {
-      const fileInput = document.getElementById('medical-report-upload');
-      const file = fileInput.files[0];
-
-      if (!file) {
-        addMessage('bot', '⚠️ Please select a medical report file first using the upload area below.');
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('medical_report', file);
-
-      addMessage('bot', '🔍 Analyzing your medical report... Please wait a moment.');
-      this.disabled = true;
-
-      fetch('{% url "enquiry_bot:analyze_report" %}', {
+  async function sendMessage() {
+    const msg = msgInput.value.trim();
+    if (!msg) return;
+    addMsg('user', msg);
+    msgInput.value = '';
+    msgInput.disabled = true;
+    sendBtn.disabled = true;
+    showTyping();
+    try {
+      const res = await fetch('{% url "enquiry_bot:chat_api" %}', {
         method: 'POST',
-        body: formData,
-        headers: { 'X-CSRFToken': getCookie('csrftoken') }
-      })
-      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(data => {
-        if (data.success) {
-          addMessage('bot', '<strong>📋 Medical Report Analysis:</strong><br>' + data.analysis.replace(/\n/g, '<br>'));
-
-          if (data.suggested_doctors && data.suggested_doctors.length > 0) {
-            let html = '<strong>👨‍⚕️ Suggested Specialists:</strong><div class="doctor-cards">';
-            data.suggested_doctors.forEach(d => {
-              html += `<div class="doctor-card">
-                <div>
-                  <h6>${d.name}</h6>
-                  <small>${d.specialization} &bull; ${d.experience_years} yrs experience</small>
-                  <small>🏥 ${d.hospitals}</small>
-                </div>
-                <div class="doctor-card-actions">
-                  <a href="/book/consultation/${d.id}/" class="btn-book">Book</a>
-                  <a href="${d.profile_url}" class="btn-profile">Profile</a>
-                </div>
-              </div>`;
-            });
-            html += '</div>';
-            addMessage('bot', html);
-          } else {
-            addMessage('bot', 'Based on your report, we recommend consulting with a specialist. You can search for doctors by specialty through our platform.');
-          }
-        } else {
-          let err = data.error || 'Unknown error';
-          if (err.includes('Rate limit') || err.includes('insufficient_quota')) {
-            err = 'AI analysis limit reached. Please try again later or contact support.';
-          }
-          addMessage('bot', '❌ Error analyzing report: ' + err);
-        }
-      })
-      .catch(e => {
-        addMessage('bot', '❌ An unexpected error occurred. Please try again.');
-      })
-      .finally(() => {
-        document.getElementById('analyze-report-btn').disabled = false;
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value },
+        body: JSON.stringify({ message: msg, enquiry_id: null })
       });
+      const data = await res.json();
+      hideTyping();
+      addMsg('bot', data.success ? data.response : 'Sorry, an error occurred. Please try again.');
+    } catch (e) {
+      hideTyping();
+      addMsg('bot', 'Sorry, an error occurred. Please try again.');
+    } finally {
+      msgInput.disabled = false;
+      sendBtn.disabled = false;
+      msgInput.focus();
+    }
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  msgInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+  document.querySelectorAll('.fbi-chip').forEach(b => {
+    b.addEventListener('click', function () { msgInput.value = this.getAttribute('data-q'); sendMessage(); });
+  });
+
+  // File label
+  document.getElementById('medical-report-upload').addEventListener('change', function () {
+    document.getElementById('upload-label').textContent = this.files[0] ? this.files[0].name : 'Upload Medical Report (PDF / Image)';
+  });
+
+  // ── Analyze Report ──
+  document.getElementById('analyze-report-btn').addEventListener('click', function () {
+    const file = document.getElementById('medical-report-upload').files[0];
+    if (!file) { addMsg('bot', '⚠️ Please select a medical report file first.'); return; }
+
+    const formData = new FormData();
+    formData.append('medical_report', file);
+    addMsg('bot', '🔍 Analyzing your report... Results will appear on the right panel.');
+    this.disabled = true;
+
+    fetch('{% url "enquiry_bot:analyze_report" %}', {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-CSRFToken': getCookie('csrftoken') }
+    })
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(data => {
+      if (data.success) {
+        addMsg('bot', '✅ Analysis complete! Check the results panel on the right →');
+        showResults(data);
+      } else {
+        let err = data.error || 'Unknown error';
+        if (err.includes('Rate limit') || err.includes('insufficient_quota'))
+          err = 'AI analysis limit reached. Please try again later.';
+        addMsg('bot', '❌ ' + err);
+      }
+    })
+    .catch(() => addMsg('bot', '❌ An unexpected error occurred. Please try again.'))
+    .finally(() => { document.getElementById('analyze-report-btn').disabled = false; });
+  });
+
+  // ── Show Results in Right Panel ──
+  function showResults(data) {
+    document.getElementById('results-default').style.display = 'none';
+    document.getElementById('results-analysis').style.display = 'block';
+
+    // Analysis text
+    document.getElementById('analysis-text').textContent = data.analysis || '';
+
+    // Suggested Doctors
+    const docSection = document.getElementById('section-doctors');
+    const docGrid = document.getElementById('result-doctors');
+    if (data.suggested_doctors && data.suggested_doctors.length > 0) {
+      docGrid.innerHTML = '';
+      data.suggested_doctors.forEach(d => {
+        docGrid.innerHTML += `
+          <div class="fbi-doc-result-card">
+            <strong>${d.name}</strong>
+            <span>${d.specialization} &bull; ${d.experience_years} yrs</span>
+            <span>🏥 ${d.hospitals}</span>
+            <div class="fbi-doc-actions">
+              <a href="/book/consultation/${d.id}/" class="fbi-btn-book">Book</a>
+              <a href="${d.profile_url}" class="fbi-btn-profile">Profile</a>
+            </div>
+          </div>`;
+      });
+      docSection.style.display = 'block';
+    }
+
+    // Related Hospitals
+    const hospSection = document.getElementById('section-hospitals');
+    const hospGrid = document.getElementById('result-hospitals');
+    if (data.related_hospitals && data.related_hospitals.length > 0) {
+      hospGrid.innerHTML = '';
+      data.related_hospitals.forEach(h => {
+        hospGrid.innerHTML += `
+          <a href="${h.url}" class="fbi-card">
+            <div class="fbi-card-icon fbi-icon-green"><i class="bi bi-hospital"></i></div>
+            <div class="fbi-card-body">
+              <strong>${h.name}</strong>
+              <span>${h.city || ''}</span>
+              <span class="fbi-card-meta"><i class="bi bi-star-fill text-warning"></i> ${h.rating || '—'}</span>
+            </div>
+          </a>`;
+      });
+      hospSection.style.display = 'block';
+    }
+
+    // Related Treatments
+    const treatSection = document.getElementById('section-treatments');
+    const treatGrid = document.getElementById('result-treatments');
+    if (data.related_treatments && data.related_treatments.length > 0) {
+      treatGrid.innerHTML = '';
+      data.related_treatments.forEach(t => {
+        treatGrid.innerHTML += `
+          <a href="${t.url}" class="fbi-card">
+            <div class="fbi-card-icon fbi-icon-orange"><i class="bi bi-capsule"></i></div>
+            <div class="fbi-card-body">
+              <strong>${t.name}</strong>
+              <span>${t.category || ''}</span>
+            </div>
+          </a>`;
+      });
+      treatSection.style.display = 'block';
+    }
+
+    // Related Blogs
+    const blogSection = document.getElementById('section-blogs');
+    const blogList = document.getElementById('result-blogs');
+    if (data.related_blogs && data.related_blogs.length > 0) {
+      blogList.innerHTML = '';
+      data.related_blogs.forEach(b => {
+        blogList.innerHTML += `
+          <a href="${b.url}" class="fbi-blog-card">
+            <div class="fbi-blog-icon"><i class="bi bi-file-text"></i></div>
+            <div>
+              <strong>${b.title}</strong>
+              <p>${b.excerpt || ''}</p>
+            </div>
+          </a>`;
+      });
+      blogSection.style.display = 'block';
+    }
+
+    // Scroll results panel to top
+    document.getElementById('results-panel').scrollTop = 0;
+  }
+
+  // Back button
+  document.getElementById('back-to-default').addEventListener('click', function () {
+    document.getElementById('results-analysis').style.display = 'none';
+    document.getElementById('results-default').style.display = 'block';
+    // Reset hidden sections
+    ['section-doctors','section-hospitals','section-treatments','section-blogs'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
     });
   });
+});
 </script>
 {% endblock %}
