@@ -1,296 +1,364 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Report Chat - TakeOpinion{% endblock %}
-{% block content %}
-<div class="rc-page">
-  <div class="rc-container">
+{% block title %}Report Chat — TakeOpinion{% endblock %}
 
-    <!-- Header -->
-    <div class="rc-header">
-      <a href="{% url 'shared_reports:share_report' %}" class="rc-back-btn">
-        <i class="bi bi-arrow-left"></i> Back
-      </a>
-      <div class="rc-header-info">
-        <div class="rc-icon"><i class="bi bi-file-earmark-medical"></i></div>
-        <div>
-          <h5>Report shared with Dr. {{ report.doctor.name }}</h5>
-          <small>{{ report.doctor.specialization }} &bull; Sent by {{ report.sender_name }} &bull;
-            <span class="rc-status rc-status-{{ report.status }}">{{ report.get_status_display }}</span>
-          </small>
-        </div>
+{% block content %}
+<div class="rcp-wrap">
+
+  <!-- ── Top Bar ── -->
+  <div class="rcp-topbar">
+    <a href="{% url 'shared_reports:share_report' %}" class="rcp-back">
+      <i class="bi bi-arrow-left"></i> Back
+    </a>
+
+    <div class="rcp-topbar-center">
+      <div class="rcp-doc-avatar">
+        <i class="bi bi-person-badge-fill"></i>
       </div>
-      <a href="{{ report.report_file.url }}" target="_blank" class="rc-view-report-btn">
-        <i class="bi bi-eye"></i> View Report
-      </a>
+      <div>
+        <h5>Dr. {{ report.doctor.name }}</h5>
+        <small>{{ report.doctor.specialization }}
+          &nbsp;·&nbsp; Sent by <strong>{{ report.sender_name }}</strong>
+          &nbsp;·&nbsp;
+          <span class="rcp-badge rcp-badge-{{ report.status }}">
+            {% if report.status == 'pending' %}<i class="bi bi-clock"></i>
+            {% elif report.status == 'viewed' %}<i class="bi bi-eye"></i>
+            {% else %}<i class="bi bi-chat-dots"></i>{% endif %}
+            {{ report.get_status_display }}
+          </span>
+        </small>
+      </div>
     </div>
 
-    <div class="rc-layout">
+    <a href="{{ report.report_file.url }}" target="_blank" class="rcp-view-btn">
+      <i class="bi bi-eye-fill"></i> View Report
+    </a>
+  </div>
 
-      <!-- LEFT: Chat -->
-      <div class="rc-chat-panel">
-        <div class="rc-messages" id="rc-messages">
-          {% for msg in chat_messages %}
-          <div class="rc-msg-row {% if msg.is_doctor %}rc-doctor-row{% else %}rc-patient-row{% endif %}">
-            <div class="rc-msg-avatar">
-              {% if msg.is_doctor %}<i class="bi bi-person-badge-fill"></i>
-              {% else %}<i class="bi bi-person-fill"></i>{% endif %}
-            </div>
-            <div class="rc-msg-bubble {% if msg.is_doctor %}rc-doctor-bubble{% else %}rc-patient-bubble{% endif %}">
-              <span class="rc-msg-sender">
-                {% if msg.is_doctor %}Dr. {{ msg.sender_name }}{% else %}{{ msg.sender_name }}{% endif %}
-              </span>
-              {{ msg.message }}
-              <span class="rc-msg-time">{{ msg.created_at|date:"M d, H:i" }}</span>
-            </div>
+  <!-- ── Main Layout ── -->
+  <div class="rcp-layout">
+
+    <!-- LEFT: Chat -->
+    <div class="rcp-chat">
+      <div class="rcp-messages" id="rcp-messages">
+
+        {% for msg in chat_messages %}
+        <div class="rcp-row {% if msg.is_doctor %}rcp-right{% else %}rcp-left{% endif %}">
+          <div class="rcp-avatar {% if msg.is_doctor %}rcp-avatar-doc{% else %}rcp-avatar-pat{% endif %}">
+            <i class="bi {% if msg.is_doctor %}bi-person-badge-fill{% else %}bi-person-fill{% endif %}"></i>
           </div>
-          {% empty %}
-          <div class="rc-empty-chat">
-            <i class="bi bi-chat-dots"></i>
-            <p>No messages yet. Start the conversation!</p>
+          <div class="rcp-bubble {% if msg.is_doctor %}rcp-bubble-doc{% else %}rcp-bubble-pat{% endif %}">
+            <span class="rcp-sender">{% if msg.is_doctor %}Dr. {{ msg.sender_name }}{% else %}{{ msg.sender_name }}{% endif %}</span>
+            {{ msg.message }}
+            <span class="rcp-time">{{ msg.created_at|date:"M d · H:i" }}</span>
           </div>
-          {% endfor %}
         </div>
+        {% empty %}
+        <div class="rcp-empty">
+          <div class="rcp-empty-icon"><i class="bi bi-chat-heart"></i></div>
+          <h6>No messages yet</h6>
+          <p>Start the conversation — ask the doctor about your report.</p>
+        </div>
+        {% endfor %}
 
-        <!-- Message input -->
-        <form method="post" class="rc-input-form">
-          {% csrf_token %}
-          <div class="rc-input-row">
-            <textarea name="message" class="rc-input" rows="1"
-              placeholder="Type your message..." required></textarea>
-            <button type="submit" class="rc-send-btn">
-              <i class="bi bi-send-fill"></i>
-            </button>
-          </div>
-        </form>
       </div>
 
-      <!-- RIGHT: Report info -->
-      <div class="rc-info-panel">
-        <h6><i class="bi bi-info-circle"></i> Report Details</h6>
+      <!-- Input -->
+      <form method="post" class="rcp-input-wrap">
+        {% csrf_token %}
+        <div class="rcp-input-box">
+          <textarea name="message" class="rcp-textarea" rows="1"
+            placeholder="Type your message… (Enter to send, Shift+Enter for new line)" required></textarea>
+          <button type="submit" class="rcp-send">
+            <i class="bi bi-send-fill"></i>
+          </button>
+        </div>
+        <p class="rcp-input-hint"><i class="bi bi-lock-fill"></i> End-to-end encrypted conversation</p>
+      </form>
+    </div>
 
-        <div class="rc-detail-row">
-          <span>Patient</span>
-          <strong>{{ report.sender_name }}</strong>
+    <!-- RIGHT: Details -->
+    <div class="rcp-sidebar">
+
+      <!-- Report card -->
+      <div class="rcp-detail-card">
+        <div class="rcp-detail-header">
+          <i class="bi bi-file-earmark-medical-fill"></i>
+          <span>Report Details</span>
         </div>
-        <div class="rc-detail-row">
-          <span>Email</span>
-          <strong>{{ report.sender_email }}</strong>
-        </div>
-        <div class="rc-detail-row">
-          <span>Doctor</span>
-          <strong>Dr. {{ report.doctor.name }}</strong>
-        </div>
-        <div class="rc-detail-row">
-          <span>Specialization</span>
-          <strong>{{ report.doctor.specialization }}</strong>
-        </div>
-        <div class="rc-detail-row">
-          <span>Sent on</span>
-          <strong>{{ report.created_at|date:"M d, Y" }}</strong>
-        </div>
-        <div class="rc-detail-row">
-          <span>Status</span>
-          <span class="rc-status rc-status-{{ report.status }}">{{ report.get_status_display }}</span>
+
+        <div class="rcp-detail-list">
+          <div class="rcp-detail-row">
+            <span><i class="bi bi-person"></i> Patient</span>
+            <strong>{{ report.sender_name }}</strong>
+          </div>
+          <div class="rcp-detail-row">
+            <span><i class="bi bi-envelope"></i> Email</span>
+            <strong>{{ report.sender_email }}</strong>
+          </div>
+          <div class="rcp-detail-row">
+            <span><i class="bi bi-person-badge"></i> Doctor</span>
+            <strong>Dr. {{ report.doctor.name }}</strong>
+          </div>
+          <div class="rcp-detail-row">
+            <span><i class="bi bi-stethoscope"></i> Specialty</span>
+            <strong>{{ report.doctor.specialization }}</strong>
+          </div>
+          <div class="rcp-detail-row">
+            <span><i class="bi bi-calendar3"></i> Sent on</span>
+            <strong>{{ report.created_at|date:"M d, Y" }}</strong>
+          </div>
+          <div class="rcp-detail-row">
+            <span><i class="bi bi-circle-fill" style="font-size:.5rem;"></i> Status</span>
+            <span class="rcp-badge rcp-badge-{{ report.status }}">{{ report.get_status_display }}</span>
+          </div>
         </div>
 
         {% if report.notes %}
-        <div class="rc-notes-box">
-          <strong><i class="bi bi-chat-quote"></i> Patient's Note</strong>
+        <div class="rcp-notes">
+          <div class="rcp-notes-label"><i class="bi bi-chat-quote-fill"></i> Patient's Note</div>
           <p>{{ report.notes }}</p>
         </div>
         {% endif %}
-
-        <a href="{{ report.report_file.url }}" target="_blank" class="rc-download-btn">
-          <i class="bi bi-download"></i> Download Report
-        </a>
-
-        <a href="/doctors/{{ report.doctor.slug }}/" class="rc-doctor-btn">
-          <i class="bi bi-person-badge"></i> View Doctor Profile
-        </a>
       </div>
+
+      <!-- Actions -->
+      <a href="{{ report.report_file.url }}" target="_blank" class="rcp-action-btn rcp-action-primary">
+        <i class="bi bi-download"></i> Download Report
+      </a>
+      <a href="/doctors/{{ report.doctor.slug }}/" class="rcp-action-btn rcp-action-ghost">
+        <i class="bi bi-person-badge"></i> View Doctor Profile
+      </a>
+      <a href="{% url 'shared_reports:share_report' %}" class="rcp-action-btn rcp-action-ghost">
+        <i class="bi bi-plus-lg"></i> Share Another Report
+      </a>
 
     </div>
   </div>
 </div>
 
 <style>
-.rc-page { background: #f0f4ff; min-height: calc(100vh - 68px); padding: 24px 16px; }
-.rc-container { max-width: 1100px; margin: 0 auto; }
+/* ── Wrap ── */
+.rcp-wrap { background: #f1f5ff; min-height: calc(100vh - 68px); display: flex; flex-direction: column; }
 
-.rc-header {
+/* ── Top Bar ── */
+.rcp-topbar {
   display: flex; align-items: center; gap: 16px;
-  background: #fff; border-radius: 16px;
-  padding: 16px 20px; margin-bottom: 20px;
-  box-shadow: 0 2px 12px rgba(99,102,241,0.07);
+  padding: 12px 24px; background: #fff;
+  border-bottom: 1px solid #e8eaf6;
+  box-shadow: 0 2px 12px rgba(79,70,229,0.06);
+  flex-shrink: 0; flex-wrap: wrap;
 }
-.rc-back-btn {
+.rcp-back {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 7px 14px; border-radius: 8px;
   border: 1.5px solid #e2e8f0; background: #f8fafc;
   color: #475569; font-size: 0.82rem; text-decoration: none;
   transition: all .2s; flex-shrink: 0;
 }
-.rc-back-btn:hover { background: #ede9fe; border-color: #a78bfa; color: #6366f1; }
-.rc-header-info { display: flex; align-items: center; gap: 12px; flex: 1; }
-.rc-icon {
+.rcp-back:hover { background: #ede9fe; border-color: #a78bfa; color: #6366f1; }
+
+.rcp-topbar-center { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.rcp-doc-avatar {
   width: 42px; height: 42px; flex-shrink: 0;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  border-radius: 10px; display: flex; align-items: center;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border-radius: 12px; display: flex; align-items: center;
   justify-content: center; font-size: 1.1rem; color: #fff;
 }
-.rc-header-info h5 { margin: 0 0 3px; font-size: 0.95rem; font-weight: 700; color: #1e293b; }
-.rc-header-info small { color: #64748b; font-size: 0.76rem; }
-.rc-view-report-btn {
-  padding: 8px 16px; background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: #fff; border-radius: 8px; font-size: 0.82rem; font-weight: 600;
-  text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
-  flex-shrink: 0; transition: all .2s;
+.rcp-topbar-center h5 { margin: 0 0 3px; font-size: 0.95rem; font-weight: 700; color: #1e293b; }
+.rcp-topbar-center small { color: #64748b; font-size: 0.76rem; }
+
+.rcp-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: 20px; font-size: 0.7rem; font-weight: 700;
 }
-.rc-view-report-btn:hover { opacity: .9; color: #fff; }
+.rcp-badge-pending { background: #fef3c7; color: #92400e; }
+.rcp-badge-viewed  { background: #dbeafe; color: #1e40af; }
+.rcp-badge-replied { background: #d1fae5; color: #065f46; }
 
-.rc-status { padding: 2px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
-.rc-status-pending  { background: #fef3c7; color: #92400e; }
-.rc-status-viewed   { background: #dbeafe; color: #1e40af; }
-.rc-status-replied  { background: #d1fae5; color: #065f46; }
+.rcp-view-btn {
+  padding: 8px 18px; background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #fff; border-radius: 9px; font-size: 0.82rem; font-weight: 600;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  flex-shrink: 0; transition: all .2s; box-shadow: 0 3px 10px rgba(79,70,229,0.25);
+}
+.rcp-view-btn:hover { opacity: .9; color: #fff; transform: translateY(-1px); }
 
-.rc-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+/* ── Layout ── */
+.rcp-layout {
+  flex: 1; display: grid; grid-template-columns: 1fr 300px;
+  gap: 20px; padding: 20px 24px; max-width: 1100px;
+  width: 100%; margin: 0 auto; box-sizing: border-box;
+}
 
-/* Chat panel */
-.rc-chat-panel {
+/* ── Chat ── */
+.rcp-chat {
   background: #fff; border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(99,102,241,0.08);
+  box-shadow: 0 4px 24px rgba(79,70,229,0.08);
   display: flex; flex-direction: column; overflow: hidden;
-  height: calc(100vh - 220px); min-height: 400px;
+  height: calc(100vh - 180px); min-height: 420px;
 }
-.rc-messages {
-  flex: 1; overflow-y: auto; padding: 20px 16px;
-  display: flex; flex-direction: column; gap: 14px;
+
+.rcp-messages {
+  flex: 1; overflow-y: auto; padding: 20px 18px;
+  display: flex; flex-direction: column; gap: 16px;
   background: #fafbff;
 }
-.rc-messages::-webkit-scrollbar { width: 3px; }
-.rc-messages::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+.rcp-messages::-webkit-scrollbar { width: 3px; }
+.rcp-messages::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 3px; }
 
-.rc-msg-row { display: flex; align-items: flex-end; gap: 8px; }
-.rc-patient-row { flex-direction: row; }
-.rc-doctor-row  { flex-direction: row-reverse; }
+/* Message rows */
+.rcp-row { display: flex; align-items: flex-end; gap: 9px; }
+.rcp-left  { flex-direction: row; }
+.rcp-right { flex-direction: row-reverse; }
 
-.rc-msg-avatar {
-  width: 30px; height: 30px; flex-shrink: 0;
+.rcp-avatar {
+  width: 32px; height: 32px; flex-shrink: 0;
   border-radius: 50%; display: flex; align-items: center;
   justify-content: center; font-size: 0.85rem; color: #fff;
 }
-.rc-patient-row .rc-msg-avatar { background: #6366f1; }
-.rc-doctor-row  .rc-msg-avatar { background: #10b981; }
+.rcp-avatar-pat { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+.rcp-avatar-doc { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
 
-.rc-msg-bubble {
-  max-width: 75%; padding: 10px 14px;
-  border-radius: 16px; font-size: 0.86rem; line-height: 1.55;
-  position: relative;
+.rcp-bubble {
+  max-width: 72%; padding: 11px 15px;
+  border-radius: 18px; font-size: 0.87rem; line-height: 1.6;
 }
-.rc-patient-bubble {
+.rcp-bubble-pat {
   background: #fff; color: #1e293b;
   border: 1.5px solid #e2e8f0; border-bottom-left-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
 }
-.rc-doctor-bubble {
-  background: linear-gradient(135deg, #10b981, #059669);
+.rcp-bubble-doc {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
   color: #fff; border-bottom-right-radius: 4px;
-  box-shadow: 0 2px 8px rgba(16,185,129,0.28);
+  box-shadow: 0 3px 10px rgba(14,165,233,0.3);
 }
-.rc-msg-sender {
-  display: block; font-size: 0.7rem; font-weight: 700;
-  margin-bottom: 3px; opacity: .7;
+.rcp-sender {
+  display: block; font-size: 0.68rem; font-weight: 700;
+  margin-bottom: 4px; opacity: .65; letter-spacing: 0.02em;
 }
-.rc-msg-time {
-  display: block; font-size: 0.62rem; margin-top: 5px; opacity: .5;
+.rcp-time {
+  display: block; font-size: 0.62rem; margin-top: 6px; opacity: .45;
 }
 
-.rc-empty-chat {
+/* Empty state */
+.rcp-empty {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
   text-align: center; padding: 40px 20px; color: #94a3b8;
 }
-.rc-empty-chat i { font-size: 2.5rem; display: block; margin-bottom: 10px; }
-.rc-empty-chat p { margin: 0; font-size: 0.88rem; }
+.rcp-empty-icon {
+  width: 64px; height: 64px; background: #ede9fe;
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 1.8rem; color: #6366f1;
+  margin-bottom: 14px;
+}
+.rcp-empty h6 { margin: 0 0 6px; font-size: 0.95rem; color: #374151; }
+.rcp-empty p  { margin: 0; font-size: 0.82rem; }
 
-.rc-input-form { padding: 12px 16px; border-top: 1px solid #f1f5f9; background: #fff; }
-.rc-input-row {
+/* Input */
+.rcp-input-wrap { padding: 12px 16px; border-top: 1px solid #f1f5f9; background: #fff; flex-shrink: 0; }
+.rcp-input-box {
   display: flex; align-items: flex-end; gap: 8px;
   background: #f8fafc; border: 2px solid #e2e8f0;
   border-radius: 14px; padding: 8px 8px 8px 14px;
   transition: border-color .2s;
 }
-.rc-input-row:focus-within { border-color: #6366f1; background: #fff; }
-.rc-input {
+.rcp-input-box:focus-within { border-color: #6366f1; background: #fff; box-shadow: 0 0 0 3px rgba(99,102,241,.08); }
+.rcp-textarea {
   flex: 1; border: none; background: transparent;
   outline: none; font-size: 0.88rem; color: #1e293b;
-  resize: none; max-height: 100px; overflow-y: auto;
+  resize: none; max-height: 100px; overflow-y: auto; line-height: 1.5;
 }
-.rc-input::placeholder { color: #94a3b8; }
-.rc-send-btn {
-  width: 36px; height: 36px; flex-shrink: 0;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+.rcp-textarea::placeholder { color: #94a3b8; }
+.rcp-send {
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
   border: none; border-radius: 50%; color: #fff;
   font-size: 0.9rem; display: flex; align-items: center;
   justify-content: center; cursor: pointer; transition: all .2s;
 }
-.rc-send-btn:hover { transform: scale(1.1); box-shadow: 0 3px 10px rgba(99,102,241,.4); }
-
-/* Info panel */
-.rc-info-panel {
-  background: #fff; border-radius: 20px;
-  padding: 20px; box-shadow: 0 4px 20px rgba(99,102,241,0.08);
-  height: fit-content;
+.rcp-send:hover { transform: scale(1.1); box-shadow: 0 3px 12px rgba(79,70,229,.4); }
+.rcp-input-hint {
+  margin: 7px 0 0; font-size: 0.7rem; color: #94a3b8;
+  display: flex; align-items: center; gap: 4px;
 }
-.rc-info-panel h6 { margin: 0 0 16px; font-size: 0.9rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px; }
-.rc-detail-row {
+
+/* ── Sidebar ── */
+.rcp-sidebar { display: flex; flex-direction: column; gap: 12px; }
+
+.rcp-detail-card {
+  background: #fff; border-radius: 18px; padding: 18px;
+  box-shadow: 0 4px 20px rgba(79,70,229,0.07);
+}
+.rcp-detail-header {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.88rem; font-weight: 700; color: #1e293b;
+  padding-bottom: 12px; margin-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.rcp-detail-header i { color: #6366f1; font-size: 1rem; }
+
+.rcp-detail-list { display: flex; flex-direction: column; gap: 0; }
+.rcp-detail-row {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 8px 0; border-bottom: 1px solid #f1f5f9;
-  font-size: 0.8rem;
+  padding: 8px 0; border-bottom: 1px solid #f8fafc; font-size: 0.79rem;
 }
-.rc-detail-row span { color: #64748b; }
-.rc-detail-row strong { color: #1e293b; text-align: right; max-width: 60%; }
-.rc-notes-box {
-  background: #fafbff; border: 1.5px solid #e2e8f0;
-  border-radius: 10px; padding: 12px; margin: 14px 0;
-  font-size: 0.8rem;
-}
-.rc-notes-box strong { display: block; color: #374151; margin-bottom: 6px; }
-.rc-notes-box p { margin: 0; color: #64748b; line-height: 1.5; }
-.rc-download-btn, .rc-doctor-btn {
-  display: flex; align-items: center; gap: 6px;
-  padding: 9px 14px; border-radius: 10px;
-  font-size: 0.82rem; font-weight: 600; text-decoration: none;
-  margin-top: 10px; transition: all .2s;
-}
-.rc-download-btn {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: #fff;
-}
-.rc-download-btn:hover { opacity: .9; color: #fff; }
-.rc-doctor-btn {
-  background: #f8fafc; border: 1.5px solid #e2e8f0; color: #475569;
-}
-.rc-doctor-btn:hover { background: #ede9fe; border-color: #a78bfa; color: #6366f1; }
+.rcp-detail-row:last-child { border-bottom: none; }
+.rcp-detail-row > span { color: #64748b; display: flex; align-items: center; gap: 5px; }
+.rcp-detail-row strong { color: #1e293b; text-align: right; max-width: 55%; font-size: 0.79rem; }
 
-@media (max-width: 768px) {
-  .rc-layout { grid-template-columns: 1fr; }
-  .rc-chat-panel { height: 60vh; }
-  .rc-header { flex-wrap: wrap; }
+.rcp-notes {
+  margin-top: 12px; padding: 12px;
+  background: #fafbff; border-radius: 10px;
+  border: 1.5px solid #e8eaf6;
+}
+.rcp-notes-label {
+  font-size: 0.76rem; font-weight: 700; color: #4f46e5;
+  display: flex; align-items: center; gap: 5px; margin-bottom: 6px;
+}
+.rcp-notes p { margin: 0; font-size: 0.8rem; color: #475569; line-height: 1.5; }
+
+/* Action buttons */
+.rcp-action-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 16px; border-radius: 12px;
+  font-size: 0.84rem; font-weight: 600; text-decoration: none;
+  transition: all .2s;
+}
+.rcp-action-primary {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #fff; box-shadow: 0 3px 12px rgba(79,70,229,0.25);
+}
+.rcp-action-primary:hover { opacity: .9; color: #fff; transform: translateY(-1px); }
+.rcp-action-ghost {
+  background: #fff; border: 1.5px solid #e2e8f0; color: #475569;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.rcp-action-ghost:hover { background: #ede9fe; border-color: #a78bfa; color: #4f46e5; }
+
+/* Responsive */
+@media (max-width: 820px) {
+  .rcp-layout { grid-template-columns: 1fr; padding: 12px 16px; }
+  .rcp-chat { height: 60vh; }
+  .rcp-topbar { padding: 10px 16px; }
 }
 </style>
 
 <script>
-  // Auto-scroll chat to bottom
-  var msgs = document.getElementById('rc-messages');
+  // Scroll to bottom
+  var msgs = document.getElementById('rcp-messages');
   if (msgs) msgs.scrollTop = msgs.scrollHeight;
 
-  // Auto-resize textarea
-  var ta = document.querySelector('.rc-input');
+  // Auto-resize + Enter to send
+  var ta = document.querySelector('.rcp-textarea');
   if (ta) {
-    ta.addEventListener('input', function() {
+    ta.addEventListener('input', function () {
       this.style.height = 'auto';
       this.style.height = Math.min(this.scrollHeight, 100) + 'px';
     });
-    ta.addEventListener('keydown', function(e) {
+    ta.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         this.closest('form').submit();

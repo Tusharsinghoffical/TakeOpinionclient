@@ -1,378 +1,470 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Share Medical Report - TakeOpinion{% endblock %}
-{% block content %}
-<div class="sr-page">
-  <div class="sr-container">
+{% block title %}Share Medical Report — TakeOpinion{% endblock %}
 
-    <!-- Header -->
-    <div class="sr-header">
-      <div class="sr-header-icon"><i class="bi bi-file-earmark-medical"></i></div>
-      <div>
-        <h2>Share Your Medical Report</h2>
-        <p>Select a doctor, upload your report, and start a private conversation.</p>
-      </div>
+{% block content %}
+<div class="srp-wrap">
+
+  <!-- ── Hero Banner ── -->
+  <div class="srp-hero">
+    <div class="srp-hero-inner">
+      <span class="srp-hero-badge"><i class="bi bi-shield-check"></i> Secure & Private</span>
+      <h1>Share Your Report<br>with a Specialist</h1>
+      <p>Upload your medical report, pick a doctor, and get expert advice — all in one place.</p>
     </div>
+    <div class="srp-hero-steps">
+      <div class="srp-step"><div class="srp-step-dot">1</div><span>Pick Doctor</span></div>
+      <div class="srp-step-line"></div>
+      <div class="srp-step"><div class="srp-step-dot">2</div><span>Upload Report</span></div>
+      <div class="srp-step-line"></div>
+      <div class="srp-step"><div class="srp-step-dot">3</div><span>Chat & Get Advice</span></div>
+    </div>
+  </div>
+
+  <div class="srp-body">
 
     {% if messages %}
       {% for msg in messages %}
-        <div class="sr-alert sr-alert-{{ msg.tags }}">{{ msg }}</div>
+        <div class="srp-toast srp-toast-{{ msg.tags }}">
+          <i class="bi {% if 'success' in msg.tags %}bi-check-circle-fill{% else %}bi-exclamation-circle-fill{% endif %}"></i>
+          {{ msg }}
+        </div>
       {% endfor %}
     {% endif %}
 
-    <div class="sr-layout">
+    <div class="srp-grid">
 
-      <!-- LEFT: Form -->
-      <div class="sr-form-card">
-        <h5><i class="bi bi-send"></i> Send Report to Doctor</h5>
+      <!-- ── LEFT: Form ── -->
+      <div class="srp-card">
+        <div class="srp-card-header">
+          <i class="bi bi-send-fill"></i>
+          <div>
+            <h3>Send Report to Doctor</h3>
+            <p>Fill in the details below to share your report securely.</p>
+          </div>
+        </div>
+
         <form method="post" enctype="multipart/form-data" id="share-form">
           {% csrf_token %}
 
-          <!-- Doctor selector -->
-          <div class="sr-field">
-            <label>Select Doctor <span class="req">*</span></label>
-            <div class="sr-doctor-search">
-              <input type="text" id="doctor-search" placeholder="Search by name or specialization..." autocomplete="off" />
-              <i class="bi bi-search sr-search-icon"></i>
+          <!-- Step 1: Doctor -->
+          <div class="srp-section-label"><span>Step 1</span> Choose a Doctor</div>
+          <div class="srp-doctor-wrap">
+            <div class="srp-search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" id="doctor-search" placeholder="Search by name or specialization…" autocomplete="off" />
             </div>
-            <div class="sr-doctor-list" id="doctor-list">
+            <div class="srp-doctor-grid" id="doctor-list">
               {% for doctor in doctors %}
-              <div class="sr-doctor-item {% if selected_doctor and selected_doctor.id == doctor.id %}selected{% endif %}"
-                   data-id="{{ doctor.id }}"
-                   data-name="{{ doctor.name }}"
-                   data-spec="{{ doctor.specialization }}">
-                <div class="sr-doc-avatar"><i class="bi bi-person-badge"></i></div>
-                <div>
+              <div class="srp-doc-card {% if selected_doctor and selected_doctor.id == doctor.id %}active{% endif %}"
+                   data-id="{{ doctor.id }}" data-name="{{ doctor.name }}" data-spec="{{ doctor.specialization }}">
+                <div class="srp-doc-icon"><i class="bi bi-person-badge-fill"></i></div>
+                <div class="srp-doc-info">
                   <strong>{{ doctor.name }}</strong>
                   <span>{{ doctor.specialization }}</span>
                 </div>
-                <i class="bi bi-check-circle-fill sr-check"></i>
+                <div class="srp-doc-tick"><i class="bi bi-check-lg"></i></div>
               </div>
               {% endfor %}
             </div>
-            <input type="hidden" name="doctor_id" id="doctor-id-input" value="{{ selected_doctor.id|default:'' }}" required />
-            <div class="sr-selected-doctor" id="selected-doctor-display" style="display:{% if selected_doctor %}flex{% else %}none{% endif %};">
+            <input type="hidden" name="doctor_id" id="doctor-id-input" value="{{ selected_doctor.id|default:'' }}" />
+            <div class="srp-selected-pill" id="selected-pill" style="display:{% if selected_doctor %}flex{% else %}none{% endif %}">
               <i class="bi bi-person-badge-fill"></i>
-              <span id="selected-doctor-name">{% if selected_doctor %}{{ selected_doctor.name }} — {{ selected_doctor.specialization }}{% endif %}</span>
-              <button type="button" id="clear-doctor"><i class="bi bi-x"></i></button>
+              <span id="selected-pill-text">{% if selected_doctor %}{{ selected_doctor.name }} — {{ selected_doctor.specialization }}{% endif %}</span>
+              <button type="button" id="clear-doctor" title="Clear"><i class="bi bi-x-lg"></i></button>
             </div>
           </div>
 
-          <!-- Your info -->
-          <div class="sr-row">
-            <div class="sr-field">
-              <label>Your Name <span class="req">*</span></label>
-              <input type="text" name="sender_name" placeholder="Full name"
-                     value="{% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% endif %}" required />
+          <!-- Step 2: Your info -->
+          <div class="srp-section-label"><span>Step 2</span> Your Details</div>
+          <div class="srp-two-col">
+            <div class="srp-field">
+              <label>Full Name <em>*</em></label>
+              <input type="text" name="sender_name" placeholder="Your full name"
+                value="{% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% endif %}" required />
             </div>
-            <div class="sr-field">
-              <label>Your Email <span class="req">*</span></label>
-              <input type="email" name="sender_email" placeholder="email@example.com"
-                     value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" required />
+            <div class="srp-field">
+              <label>Email Address <em>*</em></label>
+              <input type="email" name="sender_email" placeholder="you@example.com"
+                value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" required />
             </div>
           </div>
 
-          <!-- Upload -->
-          <div class="sr-field">
-            <label>Medical Report <span class="req">*</span></label>
-            <label class="sr-upload-zone" id="upload-zone">
-              <i class="bi bi-cloud-upload"></i>
-              <span id="upload-text">Click to upload or drag & drop<br><small>PDF, JPG, PNG, GIF — max 10MB</small></span>
-              <input type="file" name="report_file" id="report-file" accept=".pdf,.jpg,.jpeg,.png,.gif" required />
-            </label>
+          <!-- Step 3: Upload -->
+          <div class="srp-section-label"><span>Step 3</span> Upload Report</div>
+          <label class="srp-dropzone" id="dropzone">
+            <div class="srp-dropzone-inner" id="dropzone-inner">
+              <div class="srp-dropzone-icon"><i class="bi bi-cloud-arrow-up-fill"></i></div>
+              <p class="srp-dropzone-title">Drop your file here or <u>browse</u></p>
+              <p class="srp-dropzone-hint">PDF, JPG, PNG, GIF — max 10 MB</p>
+            </div>
+            <input type="file" name="report_file" id="report-file" accept=".pdf,.jpg,.jpeg,.png,.gif" required />
+          </label>
+
+          <!-- Step 4: Note -->
+          <div class="srp-section-label"><span>Step 4</span> Message <small>(optional)</small></div>
+          <div class="srp-field">
+            <textarea name="notes" rows="3" placeholder="Describe your symptoms or what you'd like the doctor to focus on…"></textarea>
           </div>
 
-          <!-- Notes -->
-          <div class="sr-field">
-            <label>Message to Doctor <small>(optional)</small></label>
-            <textarea name="notes" rows="3" placeholder="Describe your symptoms, concerns, or what you'd like the doctor to focus on..."></textarea>
-          </div>
-
-          <button type="submit" class="sr-submit-btn" id="submit-btn">
+          <button type="submit" class="srp-submit">
             <i class="bi bi-send-fill"></i> Send Report to Doctor
           </button>
         </form>
       </div>
 
-      <!-- RIGHT: How it works -->
-      <div class="sr-info-panel">
-        <h5><i class="bi bi-info-circle"></i> How It Works</h5>
-        <div class="sr-steps">
-          <div class="sr-step">
-            <div class="sr-step-num">1</div>
-            <div>
-              <strong>Select a Doctor</strong>
-              <p>Choose from our verified specialists based on your condition.</p>
-            </div>
-          </div>
-          <div class="sr-step">
-            <div class="sr-step-num">2</div>
-            <div>
-              <strong>Upload Your Report</strong>
-              <p>Share your medical report (PDF or image) securely.</p>
-            </div>
-          </div>
-          <div class="sr-step">
-            <div class="sr-step-num">3</div>
-            <div>
-              <strong>Doctor Reviews It</strong>
-              <p>The doctor receives your report and reviews it privately.</p>
-            </div>
-          </div>
-          <div class="sr-step">
-            <div class="sr-step-num">4</div>
-            <div>
-              <strong>Chat & Get Advice</strong>
-              <p>Discuss the report directly with the doctor via secure chat.</p>
-            </div>
-          </div>
+      <!-- ── RIGHT: Info ── -->
+      <div class="srp-sidebar">
+
+        <!-- Privacy card -->
+        <div class="srp-info-card srp-privacy-card">
+          <i class="bi bi-shield-lock-fill srp-privacy-icon"></i>
+          <h4>100% Private</h4>
+          <p>Your report is shared only with the doctor you select. We never share your data with third parties.</p>
         </div>
 
-        <div class="sr-privacy-note">
-          <i class="bi bi-shield-lock-fill"></i>
-          <span>Your report is shared only with the selected doctor. We never share your data with third parties.</span>
+        <!-- How it works -->
+        <div class="srp-info-card">
+          <h4><i class="bi bi-info-circle"></i> How It Works</h4>
+          <div class="srp-how-list">
+            <div class="srp-how-item">
+              <div class="srp-how-num">1</div>
+              <div><strong>Select a Specialist</strong><p>Choose from our verified doctors.</p></div>
+            </div>
+            <div class="srp-how-item">
+              <div class="srp-how-num">2</div>
+              <div><strong>Upload Your Report</strong><p>PDF or image, securely encrypted.</p></div>
+            </div>
+            <div class="srp-how-item">
+              <div class="srp-how-num">3</div>
+              <div><strong>Doctor Reviews</strong><p>The doctor receives and reviews it privately.</p></div>
+            </div>
+            <div class="srp-how-item">
+              <div class="srp-how-num">4</div>
+              <div><strong>Chat & Get Advice</strong><p>Discuss directly via secure chat.</p></div>
+            </div>
+          </div>
         </div>
 
         {% if user.is_authenticated %}
-        <a href="{% url 'shared_reports:my_reports' %}" class="sr-my-reports-link">
-          <i class="bi bi-folder2-open"></i> View My Shared Reports
+        <a href="{% url 'shared_reports:my_reports' %}" class="srp-my-link">
+          <i class="bi bi-folder2-open"></i>
+          <div><strong>My Shared Reports</strong><small>View all reports you've sent</small></div>
+          <i class="bi bi-chevron-right ms-auto"></i>
         </a>
         {% endif %}
-      </div>
 
+      </div>
     </div>
   </div>
 </div>
 
 <style>
-.sr-page { background: #f0f4ff; min-height: calc(100vh - 68px); padding: 32px 16px; }
-.sr-container { max-width: 1000px; margin: 0 auto; }
+/* ── Wrap ── */
+.srp-wrap { background: #f1f5ff; min-height: calc(100vh - 68px); }
 
-.sr-header {
-  display: flex; align-items: center; gap: 16px;
-  margin-bottom: 28px;
+/* ── Hero ── */
+.srp-hero {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 60%, #a855f7 100%);
+  padding: 48px 24px 36px;
+  text-align: center;
+  color: #fff;
 }
-.sr-header-icon {
-  width: 56px; height: 56px; flex-shrink: 0;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  border-radius: 16px; display: flex; align-items: center;
-  justify-content: center; font-size: 1.6rem; color: #fff;
+.srp-hero-inner { max-width: 600px; margin: 0 auto 28px; }
+.srp-hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 20px; padding: 4px 14px; font-size: 0.78rem;
+  font-weight: 600; margin-bottom: 16px; letter-spacing: 0.03em;
 }
-.sr-header h2 { margin: 0 0 4px; font-size: 1.4rem; font-weight: 700; color: #1e293b; }
-.sr-header p  { margin: 0; color: #64748b; font-size: 0.9rem; }
+.srp-hero h1 { font-size: 2rem; font-weight: 800; margin: 0 0 10px; line-height: 1.2; }
+.srp-hero p  { font-size: 0.95rem; opacity: 0.85; margin: 0; }
 
-.sr-alert { padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-size: 0.88rem; }
-.sr-alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
-.sr-alert-error   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+.srp-hero-steps {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; max-width: 420px; margin: 0 auto;
+}
+.srp-step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.srp-step-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 700;
+}
+.srp-step span { font-size: 0.72rem; opacity: 0.8; white-space: nowrap; }
+.srp-step-line { flex: 1; height: 2px; background: rgba(255,255,255,0.25); margin: 0 8px 18px; }
 
-.sr-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; }
+/* ── Body ── */
+.srp-body { max-width: 1060px; margin: 0 auto; padding: 28px 16px 40px; }
 
-/* Form card */
-.sr-form-card {
+/* Toast */
+.srp-toast {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 18px; border-radius: 12px;
+  font-size: 0.88rem; font-weight: 500; margin-bottom: 20px;
+}
+.srp-toast-success { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+.srp-toast-error   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+.srp-toast i { font-size: 1rem; flex-shrink: 0; }
+
+/* Grid */
+.srp-grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+
+/* Card */
+.srp-card {
   background: #fff; border-radius: 20px;
-  padding: 28px; box-shadow: 0 4px 20px rgba(99,102,241,0.08);
+  padding: 28px 28px 24px;
+  box-shadow: 0 4px 24px rgba(79,70,229,0.08);
 }
-.sr-form-card h5 { margin: 0 0 20px; font-size: 1rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 8px; }
-
-.sr-field { margin-bottom: 18px; }
-.sr-field label { display: block; font-size: 0.84rem; font-weight: 600; color: #374151; margin-bottom: 6px; }
-.sr-field .req { color: #ef4444; }
-.sr-field input[type="text"],
-.sr-field input[type="email"],
-.sr-field textarea {
-  width: 100%; padding: 10px 14px; border-radius: 10px;
-  border: 1.5px solid #e2e8f0; background: #f8fafc;
-  font-size: 0.88rem; color: #1e293b; outline: none;
-  transition: border-color .2s;
-  box-sizing: border-box;
+.srp-card-header {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding-bottom: 20px; margin-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
 }
-.sr-field input:focus, .sr-field textarea:focus {
-  border-color: #6366f1; background: #fff;
-  box-shadow: 0 0 0 3px rgba(99,102,241,.08);
+.srp-card-header > i {
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 12px; display: flex; align-items: center;
+  justify-content: center; font-size: 1.1rem; color: #fff;
 }
-.sr-field textarea { resize: vertical; }
+.srp-card-header h3 { margin: 0 0 3px; font-size: 1rem; font-weight: 700; color: #1e293b; }
+.srp-card-header p  { margin: 0; font-size: 0.8rem; color: #64748b; }
 
-.sr-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+/* Section label */
+.srp-section-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.82rem; font-weight: 700; color: #374151;
+  margin: 20px 0 10px;
+}
+.srp-section-label span {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff; border-radius: 6px; padding: 2px 8px;
+  font-size: 0.7rem; font-weight: 700;
+}
+.srp-section-label small { font-weight: 400; color: #94a3b8; }
 
-/* Doctor selector */
-.sr-doctor-search { position: relative; margin-bottom: 8px; }
-.sr-doctor-search input {
-  width: 100%; padding: 9px 14px 9px 36px;
+/* Doctor search */
+.srp-search-box {
+  position: relative; margin-bottom: 10px;
+}
+.srp-search-box i {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%); color: #94a3b8; font-size: 0.9rem;
+}
+.srp-search-box input {
+  width: 100%; padding: 10px 14px 10px 36px;
   border-radius: 10px; border: 1.5px solid #e2e8f0;
   background: #f8fafc; font-size: 0.86rem; outline: none;
   box-sizing: border-box; transition: border-color .2s;
 }
-.sr-doctor-search input:focus { border-color: #6366f1; background: #fff; }
-.sr-search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.9rem; }
+.srp-search-box input:focus { border-color: #6366f1; background: #fff; box-shadow: 0 0 0 3px rgba(99,102,241,.08); }
 
-.sr-doctor-list {
-  max-height: 200px; overflow-y: auto;
-  border: 1.5px solid #e2e8f0; border-radius: 10px;
-  background: #fff;
+/* Doctor grid */
+.srp-doctor-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 8px; max-height: 220px; overflow-y: auto;
+  padding-right: 2px;
 }
-.sr-doctor-list::-webkit-scrollbar { width: 3px; }
-.sr-doctor-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+.srp-doctor-grid::-webkit-scrollbar { width: 3px; }
+.srp-doctor-grid::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 
-.sr-doctor-item {
+.srp-doc-card {
   display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px; cursor: pointer; transition: background .15s;
-  border-bottom: 1px solid #f1f5f9;
+  padding: 10px 12px; border-radius: 12px;
+  border: 1.5px solid #e2e8f0; background: #fafbff;
+  cursor: pointer; transition: all .18s;
 }
-.sr-doctor-item:last-child { border-bottom: none; }
-.sr-doctor-item:hover { background: #f5f3ff; }
-.sr-doctor-item.selected { background: #ede9fe; }
-.sr-doctor-item.hidden { display: none; }
+.srp-doc-card:hover { border-color: #a78bfa; background: #f5f3ff; }
+.srp-doc-card.active { border-color: #6366f1; background: #ede9fe; }
+.srp-doc-card.hidden { display: none; }
 
-.sr-doc-avatar {
-  width: 32px; height: 32px; flex-shrink: 0;
+.srp-doc-icon {
+  width: 34px; height: 34px; flex-shrink: 0;
   background: #ede9fe; border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.9rem; color: #6366f1;
+  font-size: 0.95rem; color: #6366f1;
 }
-.sr-doctor-item strong { display: block; font-size: 0.84rem; color: #1e293b; }
-.sr-doctor-item span   { font-size: 0.74rem; color: #64748b; }
-.sr-check { margin-left: auto; color: #6366f1; display: none; }
-.sr-doctor-item.selected .sr-check { display: block; }
+.srp-doc-card.active .srp-doc-icon { background: #6366f1; color: #fff; }
+.srp-doc-info { flex: 1; min-width: 0; }
+.srp-doc-info strong { display: block; font-size: 0.8rem; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.srp-doc-info span   { font-size: 0.7rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.srp-doc-tick { color: #6366f1; display: none; font-size: 0.9rem; flex-shrink: 0; }
+.srp-doc-card.active .srp-doc-tick { display: block; }
 
-.sr-selected-doctor {
+/* Selected pill */
+.srp-selected-pill {
   display: flex; align-items: center; gap: 8px;
-  padding: 8px 12px; background: #ede9fe;
-  border-radius: 8px; margin-top: 8px;
-  font-size: 0.84rem; color: #4f46e5; font-weight: 600;
+  margin-top: 10px; padding: 9px 14px;
+  background: linear-gradient(135deg, #ede9fe, #f5f3ff);
+  border: 1.5px solid #a78bfa; border-radius: 10px;
+  font-size: 0.84rem; font-weight: 600; color: #4f46e5;
 }
-.sr-selected-doctor button {
+.srp-selected-pill button {
   margin-left: auto; background: none; border: none;
-  color: #6366f1; cursor: pointer; font-size: 1rem; line-height: 1;
+  color: #6366f1; cursor: pointer; font-size: 0.85rem; line-height: 1;
+  padding: 2px;
 }
 
-/* Upload zone */
-.sr-upload-zone {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; gap: 8px;
-  padding: 24px; border: 2px dashed #cbd5e1;
-  border-radius: 12px; background: #f8fafc;
-  cursor: pointer; text-align: center; transition: all .2s;
-  position: relative;
+/* Fields */
+.srp-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.srp-field { margin-bottom: 4px; }
+.srp-field label { display: block; font-size: 0.82rem; font-weight: 600; color: #374151; margin-bottom: 6px; }
+.srp-field label em { color: #ef4444; font-style: normal; }
+.srp-field input, .srp-field textarea {
+  width: 100%; padding: 10px 14px; border-radius: 10px;
+  border: 1.5px solid #e2e8f0; background: #f8fafc;
+  font-size: 0.88rem; color: #1e293b; outline: none;
+  transition: border-color .2s; box-sizing: border-box;
 }
-.sr-upload-zone:hover { border-color: #6366f1; background: #ede9fe; }
-.sr-upload-zone i { font-size: 2rem; color: #6366f1; }
-.sr-upload-zone span { font-size: 0.84rem; color: #64748b; }
-.sr-upload-zone small { font-size: 0.72rem; color: #94a3b8; }
-.sr-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-.sr-upload-zone.has-file { border-color: #10b981; background: #d1fae5; }
-.sr-upload-zone.has-file i { color: #059669; }
+.srp-field input:focus, .srp-field textarea:focus {
+  border-color: #6366f1; background: #fff; box-shadow: 0 0 0 3px rgba(99,102,241,.08);
+}
+.srp-field textarea { resize: vertical; }
+
+/* Dropzone */
+.srp-dropzone {
+  display: block; border: 2px dashed #c7d2fe;
+  border-radius: 14px; background: #f8faff;
+  cursor: pointer; transition: all .2s; position: relative;
+  overflow: hidden; margin-bottom: 4px;
+}
+.srp-dropzone:hover { border-color: #6366f1; background: #ede9fe; }
+.srp-dropzone.has-file { border-color: #10b981; background: #ecfdf5; }
+.srp-dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.srp-dropzone-inner { padding: 28px 20px; text-align: center; pointer-events: none; }
+.srp-dropzone-icon { font-size: 2.2rem; color: #6366f1; margin-bottom: 8px; }
+.srp-dropzone.has-file .srp-dropzone-icon { color: #10b981; }
+.srp-dropzone-title { margin: 0 0 4px; font-size: 0.88rem; color: #374151; font-weight: 500; }
+.srp-dropzone-hint  { margin: 0; font-size: 0.74rem; color: #94a3b8; }
 
 /* Submit */
-.sr-submit-btn {
-  width: 100%; padding: 13px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+.srp-submit {
+  width: 100%; margin-top: 20px; padding: 14px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
   border: none; border-radius: 12px; color: #fff;
-  font-size: 0.95rem; font-weight: 700;
-  cursor: pointer; display: flex; align-items: center;
-  justify-content: center; gap: 8px; transition: all .2s;
-  margin-top: 4px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; transition: all .2s;
+  box-shadow: 0 4px 16px rgba(79,70,229,0.3);
 }
-.sr-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99,102,241,.4); }
-.sr-submit-btn:disabled { opacity: .5; transform: none; cursor: not-allowed; }
+.srp-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(79,70,229,0.4); }
+.srp-submit:disabled { opacity: .5; transform: none; cursor: not-allowed; }
 
-/* Info panel */
-.sr-info-panel {
-  background: #fff; border-radius: 20px;
-  padding: 24px; box-shadow: 0 4px 20px rgba(99,102,241,0.08);
-  height: fit-content;
+/* Sidebar */
+.srp-sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+.srp-info-card {
+  background: #fff; border-radius: 18px; padding: 20px;
+  box-shadow: 0 4px 20px rgba(79,70,229,0.07);
 }
-.sr-info-panel h5 { margin: 0 0 18px; font-size: 0.95rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 8px; }
+.srp-info-card h4 {
+  margin: 0 0 14px; font-size: 0.9rem; font-weight: 700;
+  color: #1e293b; display: flex; align-items: center; gap: 7px;
+}
 
-.sr-steps { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
-.sr-step { display: flex; gap: 12px; align-items: flex-start; }
-.sr-step-num {
-  width: 28px; height: 28px; flex-shrink: 0;
+/* Privacy card */
+.srp-privacy-card { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; text-align: center; }
+.srp-privacy-icon { font-size: 2rem; display: block; margin-bottom: 10px; opacity: .9; }
+.srp-privacy-card h4 { color: #fff; justify-content: center; font-size: 1rem; margin-bottom: 8px; }
+.srp-privacy-card p  { margin: 0; font-size: 0.8rem; opacity: .85; line-height: 1.5; }
+
+/* How list */
+.srp-how-list { display: flex; flex-direction: column; gap: 14px; }
+.srp-how-item { display: flex; gap: 12px; align-items: flex-start; }
+.srp-how-num {
+  width: 26px; height: 26px; flex-shrink: 0;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   border-radius: 50%; display: flex; align-items: center;
-  justify-content: center; font-size: 0.78rem; font-weight: 700; color: #fff;
+  justify-content: center; font-size: 0.72rem; font-weight: 700; color: #fff;
 }
-.sr-step strong { display: block; font-size: 0.84rem; color: #1e293b; margin-bottom: 2px; }
-.sr-step p { margin: 0; font-size: 0.76rem; color: #64748b; line-height: 1.4; }
+.srp-how-item strong { display: block; font-size: 0.82rem; color: #1e293b; margin-bottom: 2px; }
+.srp-how-item p { margin: 0; font-size: 0.74rem; color: #64748b; line-height: 1.4; }
 
-.sr-privacy-note {
-  display: flex; gap: 8px; align-items: flex-start;
-  padding: 12px; background: #f0fdf4;
-  border-radius: 10px; border: 1px solid #bbf7d0;
-  font-size: 0.78rem; color: #166534; margin-bottom: 16px;
+/* My reports link */
+.srp-my-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; background: #fff; border-radius: 14px;
+  border: 1.5px solid #e2e8f0; text-decoration: none;
+  box-shadow: 0 2px 10px rgba(79,70,229,0.06); transition: all .2s;
 }
-.sr-privacy-note i { color: #059669; flex-shrink: 0; margin-top: 1px; }
+.srp-my-link:hover { border-color: #a78bfa; background: #f5f3ff; }
+.srp-my-link > i:first-child { font-size: 1.2rem; color: #6366f1; flex-shrink: 0; }
+.srp-my-link strong { display: block; font-size: 0.84rem; color: #1e293b; }
+.srp-my-link small  { font-size: 0.74rem; color: #64748b; }
 
-.sr-my-reports-link {
-  display: flex; align-items: center; gap: 6px;
-  padding: 10px 14px; background: #f8fafc;
-  border: 1.5px solid #e2e8f0; border-radius: 10px;
-  color: #6366f1; font-size: 0.84rem; font-weight: 600;
-  text-decoration: none; transition: all .2s;
-}
-.sr-my-reports-link:hover { background: #ede9fe; border-color: #a78bfa; }
-
-@media (max-width: 768px) {
-  .sr-layout { grid-template-columns: 1fr; }
-  .sr-row { grid-template-columns: 1fr; }
+/* Responsive */
+@media (max-width: 820px) {
+  .srp-grid { grid-template-columns: 1fr; }
+  .srp-two-col { grid-template-columns: 1fr; }
+  .srp-doctor-grid { grid-template-columns: 1fr; }
+  .srp-hero h1 { font-size: 1.5rem; }
 }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const searchInput = document.getElementById('doctor-search');
-  const doctorItems = document.querySelectorAll('.sr-doctor-item');
-  const hiddenInput = document.getElementById('doctor-id-input');
-  const selectedDisplay = document.getElementById('selected-doctor-display');
-  const selectedName = document.getElementById('selected-doctor-name');
-  const clearBtn = document.getElementById('clear-doctor');
-  const fileInput = document.getElementById('report-file');
-  const uploadZone = document.getElementById('upload-zone');
-  const uploadText = document.getElementById('upload-text');
+  const searchInput  = document.getElementById('doctor-search');
+  const docCards     = document.querySelectorAll('.srp-doc-card');
+  const hiddenInput  = document.getElementById('doctor-id-input');
+  const pill         = document.getElementById('selected-pill');
+  const pillText     = document.getElementById('selected-pill-text');
+  const clearBtn     = document.getElementById('clear-doctor');
+  const fileInput    = document.getElementById('report-file');
+  const dropzone     = document.getElementById('dropzone');
+  const dzTitle      = dropzone.querySelector('.srp-dropzone-title');
+  const dzHint       = dropzone.querySelector('.srp-dropzone-hint');
+  const dzIcon       = dropzone.querySelector('.srp-dropzone-icon i');
 
-  // Doctor search filter
+  // Search
   searchInput.addEventListener('input', function () {
     const q = this.value.toLowerCase();
-    doctorItems.forEach(item => {
-      const match = item.dataset.name.toLowerCase().includes(q) ||
-                    item.dataset.spec.toLowerCase().includes(q);
-      item.classList.toggle('hidden', !match);
+    docCards.forEach(c => {
+      c.classList.toggle('hidden',
+        !c.dataset.name.toLowerCase().includes(q) &&
+        !c.dataset.spec.toLowerCase().includes(q));
     });
   });
 
-  // Doctor select
-  doctorItems.forEach(item => {
-    item.addEventListener('click', function () {
-      doctorItems.forEach(i => i.classList.remove('selected'));
-      this.classList.add('selected');
+  // Select doctor
+  docCards.forEach(card => {
+    card.addEventListener('click', function () {
+      docCards.forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
       hiddenInput.value = this.dataset.id;
-      selectedName.textContent = this.dataset.name + ' — ' + this.dataset.spec;
-      selectedDisplay.style.display = 'flex';
+      pillText.textContent = this.dataset.name + ' — ' + this.dataset.spec;
+      pill.style.display = 'flex';
     });
   });
 
-  // Clear doctor
+  // Clear
   clearBtn.addEventListener('click', function () {
-    doctorItems.forEach(i => i.classList.remove('selected'));
+    docCards.forEach(c => c.classList.remove('active'));
     hiddenInput.value = '';
-    selectedDisplay.style.display = 'none';
+    pill.style.display = 'none';
   });
 
-  // File upload label
+  // File
   fileInput.addEventListener('change', function () {
     if (this.files[0]) {
-      uploadText.innerHTML = `<strong>${this.files[0].name}</strong><br><small>${(this.files[0].size/1024).toFixed(1)} KB</small>`;
-      uploadZone.classList.add('has-file');
+      dzIcon.className = 'bi bi-file-earmark-check-fill';
+      dzTitle.innerHTML = '<strong>' + this.files[0].name + '</strong>';
+      dzHint.textContent = (this.files[0].size / 1024).toFixed(1) + ' KB — ready to send';
+      dropzone.classList.add('has-file');
     } else {
-      uploadText.innerHTML = 'Click to upload or drag & drop<br><small>PDF, JPG, PNG, GIF — max 10MB</small>';
-      uploadZone.classList.remove('has-file');
+      dzIcon.className = 'bi bi-cloud-arrow-up-fill';
+      dzTitle.innerHTML = 'Drop your file here or <u>browse</u>';
+      dzHint.textContent = 'PDF, JPG, PNG, GIF — max 10 MB';
+      dropzone.classList.remove('has-file');
     }
   });
 
-  // Submit validation
+  // Validate
   document.getElementById('share-form').addEventListener('submit', function (e) {
     if (!hiddenInput.value) {
       e.preventDefault();
-      alert('Please select a doctor first.');
+      searchInput.focus();
+      searchInput.style.borderColor = '#ef4444';
+      setTimeout(() => searchInput.style.borderColor = '', 2000);
     }
   });
 });
