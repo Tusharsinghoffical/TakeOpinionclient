@@ -386,27 +386,7 @@
         background: #f0f0ff;
       }
 
-      /* ── User info + direct action buttons ── */
-      .nb-user-info {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 0 12px 0 5px;
-        height: 36px;
-        border-radius: 50px;
-        border: 1.5px solid #e2e8f0;
-        background: #f8fafc;
-        font-size: 0.84rem;
-        font-weight: 600;
-        color: #374151;
-      }
-
-      .nb-username {
-        max-width: 100px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
+      /* ── User direct action buttons ── */
 
       .nb-dash-btn {
         height: 36px;
@@ -593,10 +573,6 @@
             <!-- ── User menu — direct links, no dropdown ── -->
             {% if user.is_authenticated %}
             <div class="d-flex align-items-center gap-2">
-              <div class="nb-user-info">
-                <span class="nb-user-avatar"><i class="bi bi-person-fill"></i></span>
-                <span class="nb-username">{{ user.username }}</span>
-              </div>
               {% if user.userprofile.user_type == 'admin' %}
                 <a href="{% url 'accounts:admin_dashboard' %}" class="nb-dash-btn">
                   <i class="bi bi-speedometer2"></i> Dashboard
