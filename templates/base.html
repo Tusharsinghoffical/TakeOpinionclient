@@ -199,329 +199,501 @@
     </style>
   </head>
   <body>
-    <header class="border-bottom sticky-top shadow-sm">
-      <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <!-- ── Navbar ── -->
+    <style>
+      /* ── Base ── */
+      .navbar-main {
+        background: #ffffff;
+        border-bottom: 1px solid #eef0f6;
+        padding: 0;
+        position: sticky;
+        top: 0;
+        z-index: 1030;
+        box-shadow: 0 1px 20px rgba(30,41,59,0.06);
+      }
+
+      .navbar-main > .container {
+        height: 68px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      /* ── Nav links ── */
+      .navbar-main .nav-link {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #4b5563 !important;
+        padding: 7px 13px !important;
+        border-radius: 9px;
+        transition: background 0.18s, color 0.18s;
+        white-space: nowrap;
+        position: relative;
+      }
+
+      .navbar-main .nav-link:hover {
+        color: #6366f1 !important;
+        background: #f0f0ff;
+      }
+
+      .navbar-main .nav-link.active {
+        color: #6366f1 !important;
+        font-weight: 600;
+        background: #ede9fe;
+      }
+
+      .navbar-main .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 18px;
+        height: 2px;
+        background: #6366f1;
+        border-radius: 2px;
+      }
+
+      /* ── Dropdown ── */
+      .navbar-main .dropdown-menu {
+        border: 1px solid #eef0f6;
+        border-radius: 16px;
+        box-shadow: 0 12px 40px rgba(30,41,59,0.13);
+        padding: 8px;
+        min-width: 210px;
+        margin-top: 8px !important;
+        animation: nb-drop 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      }
+
+      @keyframes nb-drop {
+        from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+      }
+
+      .navbar-main .dropdown-item {
+        font-size: 0.855rem;
+        font-weight: 500;
+        color: #374151 !important;
+        border-radius: 9px;
+        padding: 9px 13px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        transition: background 0.15s, color 0.15s;
+      }
+
+      .navbar-main .dropdown-item i {
+        font-size: 1rem;
+        color: #6366f1;
+        width: 20px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .navbar-main .dropdown-item:hover,
+      .navbar-main .dropdown-item.active {
+        background: #f0f0ff !important;
+        color: #6366f1 !important;
+      }
+
+      .navbar-main .dropdown-divider {
+        margin: 6px 0;
+        border-color: #f1f5f9;
+      }
+
+      .navbar-main .dropdown-toggle::after {
+        border: none;
+        font-family: "bootstrap-icons";
+        content: "\F282";
+        font-size: 0.62rem;
+        vertical-align: middle;
+        margin-left: 4px;
+        opacity: 0.6;
+      }
+
+      /* ── Search ── */
+      .nb-search-form {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .nb-search-input {
+        height: 38px;
+        border-radius: 50px;
+        border: 1.5px solid #e2e8f0;
+        padding: 0 40px 0 16px;
+        font-size: 0.82rem;
+        width: 210px;
+        background: #f8fafc;
+        color: #1e293b;
+        outline: none;
+        transition: border-color 0.22s, width 0.3s ease, box-shadow 0.22s;
+      }
+
+      .nb-search-input:focus {
+        border-color: #6366f1;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        width: 250px;
+      }
+
+      .nb-search-input::placeholder { color: #94a3b8; }
+
+      .nb-search-btn {
+        position: absolute;
+        right: 5px;
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        border: none;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 0.78rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .nb-search-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 3px 10px rgba(99,102,241,0.35);
+      }
+
+      /* ── Language pill ── */
+      .nb-lang-btn {
+        height: 36px;
+        padding: 0 13px;
+        border-radius: 50px;
+        border: 1.5px solid #e2e8f0;
+        background: #f8fafc;
+        color: #475569;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+
+      .nb-lang-btn:hover {
+        border-color: #6366f1;
+        color: #6366f1;
+        background: #f0f0ff;
+      }
+
+      /* ── Auth buttons ── */
+      .nb-login-btn {
+        height: 36px;
+        padding: 0 18px;
+        border-radius: 50px;
+        border: 1.5px solid #6366f1;
+        background: transparent;
+        color: #6366f1 !important;
+        font-size: 0.84rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.2s;
+      }
+
+      .nb-login-btn:hover { background: #f0f0ff; }
+
+      .nb-signup-btn {
+        height: 36px;
+        padding: 0 20px;
+        border-radius: 50px;
+        border: none;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff !important;
+        font-size: 0.84rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 3px 12px rgba(99,102,241,0.32);
+        transition: all 0.2s;
+      }
+
+      .nb-signup-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(99,102,241,0.42);
+      }
+
+      /* ── User pill ── */
+      .nb-user-btn {
+        height: 38px;
+        padding: 0 14px 0 5px;
+        border-radius: 50px;
+        border: 1.5px solid #e2e8f0;
+        background: #f8fafc;
+        color: #374151 !important;
+        font-size: 0.84rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .nb-user-btn:hover {
+        border-color: #6366f1;
+        background: #f0f0ff;
+        color: #6366f1 !important;
+      }
+
+      .nb-user-avatar {
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.78rem;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      /* ── Toggler ── */
+      .nb-toggler {
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 7px 11px;
+        background: #f8fafc;
+        color: #374151;
+        font-size: 1.15rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .nb-toggler:hover {
+        border-color: #6366f1;
+        color: #6366f1;
+        background: #f0f0ff;
+      }
+
+      /* ── Vertical divider ── */
+      .nb-divider {
+        width: 1px;
+        height: 28px;
+        background: #e2e8f0;
+        margin: 0 6px;
+        flex-shrink: 0;
+      }
+
+      /* ── Mobile ── */
+      @media (max-width: 991px) {
+        .navbar-main > .container { height: auto; padding: 12px 16px; flex-wrap: wrap; }
+        .navbar-main .navbar-collapse { padding: 10px 0 6px; border-top: 1px solid #f1f5f9; margin-top: 10px; width: 100%; }
+        .navbar-main .nav-link { padding: 9px 12px !important; }
+        .nb-search-input { width: 100% !important; }
+        .nb-search-form { width: 100%; margin-bottom: 8px; }
+        .nb-right-group { flex-wrap: wrap; gap: 8px; width: 100%; }
+        .nb-divider { display: none; }
+      }
+    </style>
+
+    <header>
+      <nav class="navbar-main navbar navbar-expand-lg">
         <div class="container">
-          <a
-            class="navbar-brand fw-bold d-flex align-items-center gap-2"
-            href="/"
-          >
-            <img
-              src="{% static 'images/Mediplus logo.png' %}"
-              alt="Mediplus"
-              height="40"
-              width="160"
-              class="navbar-logo"
-            />
+
+          <!-- ── Logo (unchanged) ── -->
+          <a class="navbar-brand d-flex align-items-center me-3" href="/">
+            <img src="{% static 'images/Mediplus logo.png' %}" alt="TakeOpinion" height="40" width="160" class="navbar-logo" />
           </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#mainNav"
-          >
-            <span class="navbar-toggler-icon"></span>
+
+          <!-- vertical divider desktop only -->
+          <div class="nb-divider d-none d-lg-block"></div>
+
+          <!-- Mobile toggler -->
+          <button class="nb-toggler ms-auto d-lg-none" type="button"
+            data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list"></i>
           </button>
+
           <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
               <li class="nav-item">
-                <a
-                  class="nav-link {% if request.path == '/' %}active{% endif %}"
-                  href="/"
-                  >{{ translations.home }}</a
-                >
+                <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">
+                  <i class="bi bi-house me-1" style="font-size:0.8rem;"></i>{{ translations.home }}
+                </a>
               </li>
 
               {% if user.is_authenticated %}
                 {% if user.userprofile.user_type == 'admin' %}
                 <!-- Admin navigation -->
                 <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                  >
-                    {{ translations.medical_services }}
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-grid-3x3-gap me-1" style="font-size:0.8rem;"></i>{{ translations.medical_services }}
                   </a>
                   <ul class="dropdown-menu">
-                    <li>
-                      <a
-                        class="dropdown-item {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
-                        href="/doctors/"
-                        >{{ translations.doctors }}</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}"
-                        href="/hospitals/"
-                        >{{ translations.hospitals }}</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
-                        href="/treatments/"
-                        >{{ translations.treatments }}</a
-                      >
-                    </li>
+                    <li><a class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}" href="/doctors/"><i class="bi bi-person-badge"></i>{{ translations.doctors }}</a></li>
+                    <li><a class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}" href="/hospitals/"><i class="bi bi-hospital"></i>{{ translations.hospitals }}</a></li>
+                    <li><a class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}" href="/treatments/"><i class="bi bi-capsule"></i>{{ translations.treatments }}</a></li>
                   </ul>
                 </li>
+
                 {% elif user.userprofile.user_type == 'patient' %}
                 <!-- Patient navigation -->
                 <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                  >
-                    {{ translations.medical_services }}
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-grid-3x3-gap me-1" style="font-size:0.8rem;"></i>{{ translations.medical_services }}
                   </a>
                   <ul class="dropdown-menu">
-                    <li>
-                      <a
-                        class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}"
-                        href="/doctors/"
-                        >{{ translations.doctors }}</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}"
-                        href="/hospitals/"
-                        >{{ translations.hospitals }}</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}"
-                        href="/treatments/"
-                        >{{ translations.treatments }}</a
-                      >
-                    </li>
+                    <li><a class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}" href="/doctors/"><i class="bi bi-person-badge"></i>{{ translations.doctors }}</a></li>
+                    <li><a class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}" href="/hospitals/"><i class="bi bi-hospital"></i>{{ translations.hospitals }}</a></li>
+                    <li><a class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}" href="/treatments/"><i class="bi bi-capsule"></i>{{ translations.treatments }}</a></li>
                   </ul>
                 </li>
                 <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                  >
-                    {{ translations.resources }}
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-book me-1" style="font-size:0.8rem;"></i>{{ translations.resources }}
                   </a>
                   <ul class="dropdown-menu">
-                    <li>
-                      <a
-                        class="dropdown-item {% if '/blogs/' in request.path %}active{% endif %}"
-                        href="/blogs/"
-                        >{{ translations.blogs }}</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
-                        href="{% url 'accounts:reviews_page' %}"
-                        >{{ translations.reviews }}</a
-                      >
-                    </li>
-                    
-                    <li>
-                      <a
-                        class="dropdown-item {% if request.path|slice:':8' == '/hotels/' %}active{% endif %}"
-                        href="{% url 'hotels:list' %}"
-                        >{{ translations.hotels }}</a
-                      >
-                    </li>
+                    <li><a class="dropdown-item {% if '/blogs/' in request.path %}active{% endif %}" href="/blogs/"><i class="bi bi-newspaper"></i>{{ translations.blogs }}</a></li>
+                    <li><a class="dropdown-item {% if '/reviews/' in request.path %}active{% endif %}" href="{% url 'accounts:reviews_page' %}"><i class="bi bi-star"></i>{{ translations.reviews }}</a></li>
+                    <li><a class="dropdown-item {% if '/hotels/' in request.path %}active{% endif %}" href="{% url 'hotels:list' %}"><i class="bi bi-building"></i>{{ translations.hotels }}</a></li>
                   </ul>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="dropdown-item {% if '/compare-treatments/' in request.path %}active{% endif %}"
-                    href="/compare-treatments/"
-                    >Pricing</a
-                  >
+                  <a class="nav-link {% if '/compare-treatments/' in request.path %}active{% endif %}" href="/compare-treatments/">
+                    <i class="bi bi-tag me-1" style="font-size:0.8rem;"></i>Pricing
+                  </a>
                 </li>
-                <li class="nav-item">
-                  
-                </li>
+
                 {% elif user.userprofile.user_type == 'doctor' %}
                 <!-- Doctor navigation -->
                 <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                  >
-                    {{ translations.medical_services }}
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-grid-3x3-gap me-1" style="font-size:0.8rem;"></i>{{ translations.medical_services }}
                   </a>
                   <ul class="dropdown-menu">
-                    <li>
-                      <a
-                        class="dropdown-item {% if request.path|slice:':9' == '/doctors/' %}active{% endif %}"
-                        href="/doctors/"
-                        >{{ translations.doctors }}</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item {% if request.path|slice:':11' == '/hospitals/' %}active{% endif %}"
-                        href="/hospitals/"
-                        >{{ translations.hospitals }}</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item {% if request.path|slice:':12' == '/treatments/' %}active{% endif %}"
-                        href="/treatments/"
-                        >{{ translations.treatments }}</a
-                      >
-                    </li>
+                    <li><a class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}" href="/doctors/"><i class="bi bi-person-badge"></i>{{ translations.doctors }}</a></li>
+                    <li><a class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}" href="/hospitals/"><i class="bi bi-hospital"></i>{{ translations.hospitals }}</a></li>
+                    <li><a class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}" href="/treatments/"><i class="bi bi-capsule"></i>{{ translations.treatments }}</a></li>
                   </ul>
                 </li>
                 {% endif %}
+
               {% else %}
               <!-- Guest navigation -->
               <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                >
-                  {{ translations.medical_services }}
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                  <i class="bi bi-grid-3x3-gap me-1" style="font-size:0.8rem;"></i>{{ translations.medical_services }}
                 </a>
                 <ul class="dropdown-menu">
-                  <li>
-                    <a
-                      class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}"
-                      href="/doctors/"
-                      >{{ translations.doctors }}</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}"
-                      href="/hospitals/"
-                      >{{ translations.hospitals }}</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}"
-                      href="/treatments/"
-                      >{{ translations.treatments }}</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                    class="dropdown-item {% if '/compare-treatments/' in request.path %}active{% endif %}"
-                    href="/compare-treatments/"
-                    >Pricing</a
-                  >
-                  </li>
+                  <li><a class="dropdown-item {% if '/doctors/' in request.path %}active{% endif %}" href="/doctors/"><i class="bi bi-person-badge"></i>{{ translations.doctors }}</a></li>
+                  <li><a class="dropdown-item {% if '/hospitals/' in request.path %}active{% endif %}" href="/hospitals/"><i class="bi bi-hospital"></i>{{ translations.hospitals }}</a></li>
+                  <li><a class="dropdown-item {% if '/treatments/' in request.path %}active{% endif %}" href="/treatments/"><i class="bi bi-capsule"></i>{{ translations.treatments }}</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item {% if '/compare-treatments/' in request.path %}active{% endif %}" href="/compare-treatments/"><i class="bi bi-tag"></i>Pricing</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                >
-                  Resources
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                  <i class="bi bi-book me-1" style="font-size:0.8rem;"></i>Resources
                 </a>
                 <ul class="dropdown-menu">
-                  <li>
-                    <a
-                      class="dropdown-item {% if '/blogs/' in request.path %}active{% endif %}"
-                      href="/blogs/"
-                      >Blogs</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item {% if request.path|slice:':8' == '/reviews/' %}active{% endif %}"
-                      href="{% url 'accounts:reviews_page' %}"
-                      >Reviews</a
-                    >
-                  </li>
-                  
+                  <li><a class="dropdown-item {% if '/blogs/' in request.path %}active{% endif %}" href="/blogs/"><i class="bi bi-newspaper"></i>Blogs</a></li>
+                  <li><a class="dropdown-item {% if '/reviews/' in request.path %}active{% endif %}" href="{% url 'accounts:reviews_page' %}"><i class="bi bi-star"></i>Reviews</a></li>
                 </ul>
               </li>
               {% endif %}
             </ul>
-            <!-- Search Form -->
-            <form class="d-flex me-3" action="/search/" method="get">
-              <div class="input-group">
-                <input name="q" class="form-control border-end-0" type="search" placeholder="{{ translations.search_doctors_hospitals_treatments }}" aria-label="Search">
-                <button class="btn btn-outline-primary border-start-0" type="submit">
-                  <i class="bi bi-search"></i>
-                </button>
-              </div>
-            </form>
-            <!-- Language Selector -->
-            <div class="dropdown me-3">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown">
-                <i class="bi bi-globe"></i> {{ current_language|upper }}
+            <!-- ── Search ── -->
+            <form class="nb-search-form me-2" action="/search/" method="get">
+              <input name="q" class="nb-search-input" type="search"
+                placeholder="{{ translations.search_doctors_hospitals_treatments }}"
+                aria-label="Search" />
+              <button class="nb-search-btn" type="submit" aria-label="Search">
+                <i class="bi bi-search"></i>
               </button>
-              <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+            </form>
+
+            <!-- ── Language ── -->
+            <div class="dropdown me-2">
+              <button class="nb-lang-btn dropdown-toggle" type="button"
+                id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-globe2"></i> {{ current_language|upper }}
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
                 {% for lang_code, lang_name in available_languages %}
                 <li>
-                  <form action="{% url 'set_language' %}" method="post" style="display: inline;">
+                  <form action="{% url 'set_language' %}" method="post">
                     {% csrf_token %}
                     <input name="next" type="hidden" value="{{ request.get_full_path }}">
                     <input name="language" type="hidden" value="{{ lang_code }}">
-                    <button class="dropdown-item" type="submit">{{ lang_name }} ({{ lang_code|upper }})</button>
+                    <button class="dropdown-item" type="submit">
+                      <i class="bi bi-translate"></i>
+                      {{ lang_name }} <span class="text-muted ms-1">({{ lang_code|upper }})</span>
+                    </button>
                   </form>
                 </li>
                 {% endfor %}
               </ul>
             </div>
-            <!-- Authentication Dropdown -->
-            <div class="d-flex gap-2 align-items-center">
+
+            <!-- ── Auth ── -->
+            <div class="d-flex align-items-center gap-2">
               {% if user.is_authenticated %}
                 <div class="dropdown">
-                  <button
-                    class="btn btn-outline-primary dropdown-toggle"
-                    type="button"
-                    id="userDropdown"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="bi bi-person-circle me-1"></i>
+                  <button class="nb-user-btn dropdown-toggle" type="button"
+                    id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="nb-user-avatar">
+                      <i class="bi bi-person-fill"></i>
+                    </span>
                     {{ user.username }}
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                     {% if user.userprofile.user_type == 'admin' %}
-                      <li><a class="dropdown-item" href="{% url 'accounts:admin_dashboard' %}"><i class="bi bi-speedometer2 me-2"></i>Admin Dashboard</a></li>
+                      <li><a class="dropdown-item" href="{% url 'accounts:admin_dashboard' %}">
+                        <i class="bi bi-speedometer2"></i> Admin Dashboard
+                      </a></li>
                       <li><hr class="dropdown-divider"></li>
                     {% elif user.userprofile.user_type == 'doctor' %}
-                      <li><a class="dropdown-item" href="{% url 'accounts:doctor_profile' %}"><i class="bi bi-person-badge me-2"></i>My Profile</a></li>
+                      <li><a class="dropdown-item" href="{% url 'accounts:doctor_profile' %}">
+                        <i class="bi bi-person-badge"></i> My Profile
+                      </a></li>
                       <li><hr class="dropdown-divider"></li>
                     {% elif user.userprofile.user_type == 'patient' %}
-                      <li><a class="dropdown-item" href="{% url 'accounts:patient_portal' %}"><i class="bi bi-speedometer2 me-2"></i>My Dashboard</a></li>
-                      <li><a class="dropdown-item" href="{% url 'accounts:patient_profile' %}"><i class="bi bi-person me-2"></i>My Profile</a></li>
+                      <li><a class="dropdown-item" href="{% url 'accounts:patient_portal' %}">
+                        <i class="bi bi-speedometer2"></i> My Dashboard
+                      </a></li>
+                      <li><a class="dropdown-item" href="{% url 'accounts:patient_profile' %}">
+                        <i class="bi bi-person"></i> My Profile
+                      </a></li>
                       <li><hr class="dropdown-divider"></li>
                     {% endif %}
                     <li>
-                      <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                      <form method="post" action="{% url 'accounts:logout' %}">
                         {% csrf_token %}
-                        <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
+                        <button type="submit" class="dropdown-item text-danger">
+                          <i class="bi bi-box-arrow-right" style="color:inherit;"></i> Logout
+                        </button>
                       </form>
                     </li>
                   </ul>
                 </div>
               {% else %}
-                <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary">Login</a>
-                <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Sign Up</a>
+                <a href="{% url 'accounts:login' %}" class="nb-login-btn">Login</a>
+                <a href="{% url 'accounts:signup' %}" class="nb-signup-btn">
+                  <i class="bi bi-person-plus"></i> Sign Up
+                </a>
               {% endif %}
             </div>
-          </div>
-        </div>
+
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
       </nav>
     </header>
 
