@@ -14,7 +14,6 @@ from django.urls import reverse
 logger = logging.getLogger(__name__)
 
 
-@login_required
 def payment_success(request):
     """Display payment success page and redirect to hotel suggestions"""
     # For static payment, we redirect directly to hotel suggestions
@@ -146,17 +145,15 @@ def process_static_payment(request, booking_id):
         return redirect('payments:booking_success', payment_id=payment.pk)
 
 
-@login_required
 def consultation_payment_success(request, payment_id):
     """Display consultation payment success page with Google Meet link"""
     payment = get_object_or_404(Payment, id=payment_id)
     booking = payment.booking
     
-    # Prepare consultation details
     consultation_details = {
         'type': 'video' if booking.google_meet_link else 'phone',
         'date': booking.preferred_date,
-        'time': '10:00 AM',  # This would come from the booking in a real implementation
+        'time': '10:00 AM',
         'booking_id': booking.id,
         'amount': float(payment.amount)
     }
@@ -171,7 +168,6 @@ def consultation_payment_success(request, payment_id):
     return render(request, 'payments/consultation_success.html', context)
 
 
-@login_required
 def booking_success(request, payment_id):
     """Display booking payment success page"""
     payment = get_object_or_404(Payment, id=payment_id)
@@ -183,7 +179,6 @@ def booking_success(request, payment_id):
     return render(request, 'payments/booking_success.html', context)
 
 
-@login_required
 def static_payment_success(request, payment_id):
     """Display static payment success page"""
     payment = get_object_or_404(Payment, id=payment_id)
