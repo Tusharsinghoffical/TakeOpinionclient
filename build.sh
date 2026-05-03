@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-# exit on error
 set -o errexit
 
 # Enhanced build script for Render deployment
@@ -11,10 +9,9 @@ echo "Current directory: $(pwd)"
 echo "Contents of current directory:"
 ls -la
 
-# Explicitly set the Django settings module
 export DJANGO_SETTINGS_MODULE=takeopinion.settings_prod
 
-# Debug: Print the settings module being used
+
 echo "Using DJANGO_SETTINGS_MODULE: $DJANGO_SETTINGS_MODULE"
 
 # Upgrade pip to latest version
