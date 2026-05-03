@@ -25,6 +25,10 @@ media/
 # Static files (collected)
 staticfiles/
 
+# Test files
+test_reports/
+testsprite_tests/
+
 # Environment variables
 .env
 .env.*
