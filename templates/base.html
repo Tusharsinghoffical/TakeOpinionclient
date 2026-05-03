@@ -129,6 +129,28 @@
         .footer-links {
           text-align: center;
         }
+
+      .footer-share-report-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff !important;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none !important;
+        transition: all 0.2s;
+        margin-top: 4px;
+        white-space: nowrap;
+      }
+
+      .footer-share-report-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(99,102,241,0.4);
+        color: #fff !important;
+      }
         
         .social-icon {
           margin: 0 0.25rem;
@@ -660,28 +682,21 @@
                 <a href="/" class="text-decoration-none text-muted">{{ translations.home }}</a>
               </li>
               <li class="mb-2">
-                <a
-                  href="/treatments/"
-                  class="text-decoration-none text-muted"
-                  >{{ translations.treatments }}</a
-                >
+                <a href="/treatments/" class="text-decoration-none text-muted">{{ translations.treatments }}</a>
               </li>
               <li class="mb-2">
-                <a href="/doctors/" class="text-decoration-none text-muted"
-                  >{{ translations.doctors }}</a
-                >
+                <a href="/doctors/" class="text-decoration-none text-muted">{{ translations.doctors }}</a>
               </li>
               <li class="mb-2">
-                <a href="/hospitals/" class="text-decoration-none text-muted"
-                  >{{ translations.hospitals }}</a
-                >
+                <a href="/hospitals/" class="text-decoration-none text-muted">{{ translations.hospitals }}</a>
               </li>
               <li class="mb-2">
-                <a
-                  href="/compare-treatments/"
-                  class="text-decoration-none text-muted"
-                  >{{ translations.pricing }}</a
-                >
+                <a href="/compare-treatments/" class="text-decoration-none text-muted">{{ translations.pricing }}</a>
+              </li>
+              <li class="mb-2">
+                <a href="/share-report/" class="footer-share-report-btn">
+                  <i class="bi bi-file-earmark-arrow-up"></i> Share Report with Doctor
+                </a>
               </li>
             </ul>
           </div>
