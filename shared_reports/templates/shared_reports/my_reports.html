@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}My Shared Reports - TakeOpinion{% endblock %}
+{% block content %}
+<div class="sr-page">
+  <div class="sr-container" style="max-width:800px;">
+    <div class="sr-header">
+      <div class="sr-header-icon"><i class="bi bi-folder2-open"></i></div>
+      <div>
+        <h2>My Shared Reports</h2>
+        <p>Track all reports you've shared with doctors.</p>
+      </div>
+      <a href="{% url 'shared_reports:share_report' %}" class="sr-submit-btn" style="width:auto;padding:10px 20px;text-decoration:none;">
+        <i class="bi bi-plus-lg"></i> Share New Report
+      </a>
+    </div>
+
+    {% if reports %}
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      {% for report in reports %}
+      <a href="{% url 'shared_reports:report_chat' report.id %}" style="text-decoration:none;">
+        <div class="sr-form-card" style="display:flex;align-items:center;gap:16px;padding:16px 20px;cursor:pointer;">
+          <div class="sr-header-icon" style="width:42px;height:42px;font-size:1.1rem;flex-shrink:0;">
+            <i class="bi bi-file-earmark-medical"></i>
+          </div>
+          <div style="flex:1;">
+            <strong style="color:#1e293b;font-size:0.9rem;">Dr. {{ report.doctor.name }}</strong>
+            <span style="display:block;font-size:0.78rem;color:#64748b;">{{ report.doctor.specialization }} &bull; {{ report.created_at|date:"M d, Y" }}</span>
+            {% if report.notes %}<span style="display:block;font-size:0.76rem;color:#94a3b8;margin-top:2px;">{{ report.notes|truncatechars:80 }}</span>{% endif %}
+          </div>
+          <span class="rc-status rc-status-{{ report.status }}">{{ report.get_status_display }}</span>
+          <i class="bi bi-chevron-right" style="color:#94a3b8;"></i>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align:center;padding:60px 20px;background:#fff;border-radius:20px;">
+      <i class="bi bi-folder2-open" style="font-size:3rem;color:#cbd5e1;display:block;margin-bottom:12px;"></i>
+      <p style="color:#64748b;margin:0;">You haven't shared any reports yet.</p>
+      <a href="{% url 'shared_reports:share_report' %}" class="sr-submit-btn" style="width:auto;padding:10px 20px;text-decoration:none;display:inline-flex;margin-top:16px;">
+        <i class="bi bi-plus-lg"></i> Share Your First Report
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<style>
+.sr-page { background:#f0f4ff;min-height:calc(100vh - 68px);padding:32px 16px; }
+.sr-container { margin:0 auto; }
+.sr-header { display:flex;align-items:center;gap:16px;margin-bottom:24px; }
+.sr-header-icon { width:56px;height:56px;flex-shrink:0;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff; }
+.sr-header h2 { margin:0 0 4px;font-size:1.4rem;font-weight:700;color:#1e293b; }
+.sr-header p  { margin:0;color:#64748b;font-size:0.9rem; }
+.sr-form-card { background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(99,102,241,0.07);transition:box-shadow .2s; }
+.sr-form-card:hover { box-shadow:0 4px 20px rgba(99,102,241,0.14); }
+.sr-submit-btn { background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:12px;color:#fff;font-size:0.9rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s; }
+.rc-status { padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:600; }
+.rc-status-pending { background:#fef3c7;color:#92400e; }
+.rc-status-viewed  { background:#dbeafe;color:#1e40af; }
+.rc-status-replied { background:#d1fae5;color:#065f46; }
+</style>
+{% endblock %}

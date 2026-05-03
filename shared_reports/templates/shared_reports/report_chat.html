@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Report Chat - TakeOpinion{% endblock %}
+{% block content %}
+<div class="rc-page">
+  <div class="rc-container">
+
+    <!-- Header -->
+    <div class="rc-header">
+      <a href="{% url 'shared_reports:share_report' %}" class="rc-back-btn">
+        <i class="bi bi-arrow-left"></i> Back
+      </a>
+      <div class="rc-header-info">
+        <div class="rc-icon"><i class="bi bi-file-earmark-medical"></i></div>
+        <div>
+          <h5>Report shared with Dr. {{ report.doctor.name }}</h5>
+          <small>{{ report.doctor.specialization }} &bull; Sent by {{ report.sender_name }} &bull;
+            <span class="rc-status rc-status-{{ report.status }}">{{ report.get_status_display }}</span>
+          </small>
+        </div>
+      </div>
+      <a href="{{ report.report_file.url }}" target="_blank" class="rc-view-report-btn">
+        <i class="bi bi-eye"></i> View Report
+      </a>
+    </div>
+
+    <div class="rc-layout">
+
+      <!-- LEFT: Chat -->
+      <div class="rc-chat-panel">
+        <div class="rc-messages" id="rc-messages">
+          {% for msg in chat_messages %}
+          <div class="rc-msg-row {% if msg.is_doctor %}rc-doctor-row{% else %}rc-patient-row{% endif %}">
+            <div class="rc-msg-avatar">
+              {% if msg.is_doctor %}<i class="bi bi-person-badge-fill"></i>
+              {% else %}<i class="bi bi-person-fill"></i>{% endif %}
+            </div>
+            <div class="rc-msg-bubble {% if msg.is_doctor %}rc-doctor-bubble{% else %}rc-patient-bubble{% endif %}">
+              <span class="rc-msg-sender">
+                {% if msg.is_doctor %}Dr. {{ msg.sender_name }}{% else %}{{ msg.sender_name }}{% endif %}
+              </span>
+              {{ msg.message }}
+              <span class="rc-msg-time">{{ msg.created_at|date:"M d, H:i" }}</span>
+            </div>
+          </div>
+          {% empty %}
+          <div class="rc-empty-chat">
+            <i class="bi bi-chat-dots"></i>
+            <p>No messages yet. Start the conversation!</p>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Message input -->
+        <form method="post" class="rc-input-form">
+          {% csrf_token %}
+          <div class="rc-input-row">
+            <textarea name="message" class="rc-input" rows="1"
+              placeholder="Type your message..." required></textarea>
+            <button type="submit" class="rc-send-btn">
+              <i class="bi bi-send-fill"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- RIGHT: Report info -->
+      <div class="rc-info-panel">
+        <h6><i class="bi bi-info-circle"></i> Report Details</h6>
+
+        <div class="rc-detail-row">
+          <span>Patient</span>
+          <strong>{{ report.sender_name }}</strong>
+        </div>
+        <div class="rc-detail-row">
+          <span>Email</span>
+          <strong>{{ report.sender_email }}</strong>
+        </div>
+        <div class="rc-detail-row">
+          <span>Doctor</span>
+          <strong>Dr. {{ report.doctor.name }}</strong>
+        </div>
+        <div class="rc-detail-row">
+          <span>Specialization</span>
+          <strong>{{ report.doctor.specialization }}</strong>
+        </div>
+        <div class="rc-detail-row">
+          <span>Sent on</span>
+          <strong>{{ report.created_at|date:"M d, Y" }}</strong>
+        </div>
+        <div class="rc-detail-row">
+          <span>Status</span>
+          <span class="rc-status rc-status-{{ report.status }}">{{ report.get_status_display }}</span>
+        </div>
+
+        {% if report.notes %}
+        <div class="rc-notes-box">
+          <strong><i class="bi bi-chat-quote"></i> Patient's Note</strong>
+          <p>{{ report.notes }}</p>
+        </div>
+        {% endif %}
+
+        <a href="{{ report.report_file.url }}" target="_blank" class="rc-download-btn">
+          <i class="bi bi-download"></i> Download Report
+        </a>
+
+        <a href="/doctors/{{ report.doctor.slug }}/" class="rc-doctor-btn">
+          <i class="bi bi-person-badge"></i> View Doctor Profile
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.rc-page { background: #f0f4ff; min-height: calc(100vh - 68px); padding: 24px 16px; }
+.rc-container { max-width: 1100px; margin: 0 auto; }
+
+.rc-header {
+  display: flex; align-items: center; gap: 16px;
+  background: #fff; border-radius: 16px;
+  padding: 16px 20px; margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(99,102,241,0.07);
+}
+.rc-back-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 14px; border-radius: 8px;
+  border: 1.5px solid #e2e8f0; background: #f8fafc;
+  color: #475569; font-size: 0.82rem; text-decoration: none;
+  transition: all .2s; flex-shrink: 0;
+}
+.rc-back-btn:hover { background: #ede9fe; border-color: #a78bfa; color: #6366f1; }
+.rc-header-info { display: flex; align-items: center; gap: 12px; flex: 1; }
+.rc-icon {
+  width: 42px; height: 42px; flex-shrink: 0;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 10px; display: flex; align-items: center;
+  justify-content: center; font-size: 1.1rem; color: #fff;
+}
+.rc-header-info h5 { margin: 0 0 3px; font-size: 0.95rem; font-weight: 700; color: #1e293b; }
+.rc-header-info small { color: #64748b; font-size: 0.76rem; }
+.rc-view-report-btn {
+  padding: 8px 16px; background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff; border-radius: 8px; font-size: 0.82rem; font-weight: 600;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+  flex-shrink: 0; transition: all .2s;
+}
+.rc-view-report-btn:hover { opacity: .9; color: #fff; }
+
+.rc-status { padding: 2px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
+.rc-status-pending  { background: #fef3c7; color: #92400e; }
+.rc-status-viewed   { background: #dbeafe; color: #1e40af; }
+.rc-status-replied  { background: #d1fae5; color: #065f46; }
+
+.rc-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+
+/* Chat panel */
+.rc-chat-panel {
+  background: #fff; border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(99,102,241,0.08);
+  display: flex; flex-direction: column; overflow: hidden;
+  height: calc(100vh - 220px); min-height: 400px;
+}
+.rc-messages {
+  flex: 1; overflow-y: auto; padding: 20px 16px;
+  display: flex; flex-direction: column; gap: 14px;
+  background: #fafbff;
+}
+.rc-messages::-webkit-scrollbar { width: 3px; }
+.rc-messages::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+.rc-msg-row { display: flex; align-items: flex-end; gap: 8px; }
+.rc-patient-row { flex-direction: row; }
+.rc-doctor-row  { flex-direction: row-reverse; }
+
+.rc-msg-avatar {
+  width: 30px; height: 30px; flex-shrink: 0;
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 0.85rem; color: #fff;
+}
+.rc-patient-row .rc-msg-avatar { background: #6366f1; }
+.rc-doctor-row  .rc-msg-avatar { background: #10b981; }
+
+.rc-msg-bubble {
+  max-width: 75%; padding: 10px 14px;
+  border-radius: 16px; font-size: 0.86rem; line-height: 1.55;
+  position: relative;
+}
+.rc-patient-bubble {
+  background: #fff; color: #1e293b;
+  border: 1.5px solid #e2e8f0; border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.rc-doctor-bubble {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff; border-bottom-right-radius: 4px;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.28);
+}
+.rc-msg-sender {
+  display: block; font-size: 0.7rem; font-weight: 700;
+  margin-bottom: 3px; opacity: .7;
+}
+.rc-msg-time {
+  display: block; font-size: 0.62rem; margin-top: 5px; opacity: .5;
+}
+
+.rc-empty-chat {
+  text-align: center; padding: 40px 20px; color: #94a3b8;
+}
+.rc-empty-chat i { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+.rc-empty-chat p { margin: 0; font-size: 0.88rem; }
+
+.rc-input-form { padding: 12px 16px; border-top: 1px solid #f1f5f9; background: #fff; }
+.rc-input-row {
+  display: flex; align-items: flex-end; gap: 8px;
+  background: #f8fafc; border: 2px solid #e2e8f0;
+  border-radius: 14px; padding: 8px 8px 8px 14px;
+  transition: border-color .2s;
+}
+.rc-input-row:focus-within { border-color: #6366f1; background: #fff; }
+.rc-input {
+  flex: 1; border: none; background: transparent;
+  outline: none; font-size: 0.88rem; color: #1e293b;
+  resize: none; max-height: 100px; overflow-y: auto;
+}
+.rc-input::placeholder { color: #94a3b8; }
+.rc-send-btn {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none; border-radius: 50%; color: #fff;
+  font-size: 0.9rem; display: flex; align-items: center;
+  justify-content: center; cursor: pointer; transition: all .2s;
+}
+.rc-send-btn:hover { transform: scale(1.1); box-shadow: 0 3px 10px rgba(99,102,241,.4); }
+
+/* Info panel */
+.rc-info-panel {
+  background: #fff; border-radius: 20px;
+  padding: 20px; box-shadow: 0 4px 20px rgba(99,102,241,0.08);
+  height: fit-content;
+}
+.rc-info-panel h6 { margin: 0 0 16px; font-size: 0.9rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px; }
+.rc-detail-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid #f1f5f9;
+  font-size: 0.8rem;
+}
+.rc-detail-row span { color: #64748b; }
+.rc-detail-row strong { color: #1e293b; text-align: right; max-width: 60%; }
+.rc-notes-box {
+  background: #fafbff; border: 1.5px solid #e2e8f0;
+  border-radius: 10px; padding: 12px; margin: 14px 0;
+  font-size: 0.8rem;
+}
+.rc-notes-box strong { display: block; color: #374151; margin-bottom: 6px; }
+.rc-notes-box p { margin: 0; color: #64748b; line-height: 1.5; }
+.rc-download-btn, .rc-doctor-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 14px; border-radius: 10px;
+  font-size: 0.82rem; font-weight: 600; text-decoration: none;
+  margin-top: 10px; transition: all .2s;
+}
+.rc-download-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+}
+.rc-download-btn:hover { opacity: .9; color: #fff; }
+.rc-doctor-btn {
+  background: #f8fafc; border: 1.5px solid #e2e8f0; color: #475569;
+}
+.rc-doctor-btn:hover { background: #ede9fe; border-color: #a78bfa; color: #6366f1; }
+
+@media (max-width: 768px) {
+  .rc-layout { grid-template-columns: 1fr; }
+  .rc-chat-panel { height: 60vh; }
+  .rc-header { flex-wrap: wrap; }
+}
+</style>
+
+<script>
+  // Auto-scroll chat to bottom
+  var msgs = document.getElementById('rc-messages');
+  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+
+  // Auto-resize textarea
+  var ta = document.querySelector('.rc-input');
+  if (ta) {
+    ta.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+    });
+    ta.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        this.closest('form').submit();
+      }
+    });
+  }
+</script>
+{% endblock %}

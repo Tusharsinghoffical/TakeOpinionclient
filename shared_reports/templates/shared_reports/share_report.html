@@ -1,0 +1,380 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Share Medical Report - TakeOpinion{% endblock %}
+{% block content %}
+<div class="sr-page">
+  <div class="sr-container">
+
+    <!-- Header -->
+    <div class="sr-header">
+      <div class="sr-header-icon"><i class="bi bi-file-earmark-medical"></i></div>
+      <div>
+        <h2>Share Your Medical Report</h2>
+        <p>Select a doctor, upload your report, and start a private conversation.</p>
+      </div>
+    </div>
+
+    {% if messages %}
+      {% for msg in messages %}
+        <div class="sr-alert sr-alert-{{ msg.tags }}">{{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="sr-layout">
+
+      <!-- LEFT: Form -->
+      <div class="sr-form-card">
+        <h5><i class="bi bi-send"></i> Send Report to Doctor</h5>
+        <form method="post" enctype="multipart/form-data" id="share-form">
+          {% csrf_token %}
+
+          <!-- Doctor selector -->
+          <div class="sr-field">
+            <label>Select Doctor <span class="req">*</span></label>
+            <div class="sr-doctor-search">
+              <input type="text" id="doctor-search" placeholder="Search by name or specialization..." autocomplete="off" />
+              <i class="bi bi-search sr-search-icon"></i>
+            </div>
+            <div class="sr-doctor-list" id="doctor-list">
+              {% for doctor in doctors %}
+              <div class="sr-doctor-item {% if selected_doctor and selected_doctor.id == doctor.id %}selected{% endif %}"
+                   data-id="{{ doctor.id }}"
+                   data-name="{{ doctor.name }}"
+                   data-spec="{{ doctor.specialization }}">
+                <div class="sr-doc-avatar"><i class="bi bi-person-badge"></i></div>
+                <div>
+                  <strong>{{ doctor.name }}</strong>
+                  <span>{{ doctor.specialization }}</span>
+                </div>
+                <i class="bi bi-check-circle-fill sr-check"></i>
+              </div>
+              {% endfor %}
+            </div>
+            <input type="hidden" name="doctor_id" id="doctor-id-input" value="{{ selected_doctor.id|default:'' }}" required />
+            <div class="sr-selected-doctor" id="selected-doctor-display" style="display:{% if selected_doctor %}flex{% else %}none{% endif %};">
+              <i class="bi bi-person-badge-fill"></i>
+              <span id="selected-doctor-name">{% if selected_doctor %}{{ selected_doctor.name }} — {{ selected_doctor.specialization }}{% endif %}</span>
+              <button type="button" id="clear-doctor"><i class="bi bi-x"></i></button>
+            </div>
+          </div>
+
+          <!-- Your info -->
+          <div class="sr-row">
+            <div class="sr-field">
+              <label>Your Name <span class="req">*</span></label>
+              <input type="text" name="sender_name" placeholder="Full name"
+                     value="{% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% endif %}" required />
+            </div>
+            <div class="sr-field">
+              <label>Your Email <span class="req">*</span></label>
+              <input type="email" name="sender_email" placeholder="email@example.com"
+                     value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" required />
+            </div>
+          </div>
+
+          <!-- Upload -->
+          <div class="sr-field">
+            <label>Medical Report <span class="req">*</span></label>
+            <label class="sr-upload-zone" id="upload-zone">
+              <i class="bi bi-cloud-upload"></i>
+              <span id="upload-text">Click to upload or drag & drop<br><small>PDF, JPG, PNG, GIF — max 10MB</small></span>
+              <input type="file" name="report_file" id="report-file" accept=".pdf,.jpg,.jpeg,.png,.gif" required />
+            </label>
+          </div>
+
+          <!-- Notes -->
+          <div class="sr-field">
+            <label>Message to Doctor <small>(optional)</small></label>
+            <textarea name="notes" rows="3" placeholder="Describe your symptoms, concerns, or what you'd like the doctor to focus on..."></textarea>
+          </div>
+
+          <button type="submit" class="sr-submit-btn" id="submit-btn">
+            <i class="bi bi-send-fill"></i> Send Report to Doctor
+          </button>
+        </form>
+      </div>
+
+      <!-- RIGHT: How it works -->
+      <div class="sr-info-panel">
+        <h5><i class="bi bi-info-circle"></i> How It Works</h5>
+        <div class="sr-steps">
+          <div class="sr-step">
+            <div class="sr-step-num">1</div>
+            <div>
+              <strong>Select a Doctor</strong>
+              <p>Choose from our verified specialists based on your condition.</p>
+            </div>
+          </div>
+          <div class="sr-step">
+            <div class="sr-step-num">2</div>
+            <div>
+              <strong>Upload Your Report</strong>
+              <p>Share your medical report (PDF or image) securely.</p>
+            </div>
+          </div>
+          <div class="sr-step">
+            <div class="sr-step-num">3</div>
+            <div>
+              <strong>Doctor Reviews It</strong>
+              <p>The doctor receives your report and reviews it privately.</p>
+            </div>
+          </div>
+          <div class="sr-step">
+            <div class="sr-step-num">4</div>
+            <div>
+              <strong>Chat & Get Advice</strong>
+              <p>Discuss the report directly with the doctor via secure chat.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sr-privacy-note">
+          <i class="bi bi-shield-lock-fill"></i>
+          <span>Your report is shared only with the selected doctor. We never share your data with third parties.</span>
+        </div>
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'shared_reports:my_reports' %}" class="sr-my-reports-link">
+          <i class="bi bi-folder2-open"></i> View My Shared Reports
+        </a>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.sr-page { background: #f0f4ff; min-height: calc(100vh - 68px); padding: 32px 16px; }
+.sr-container { max-width: 1000px; margin: 0 auto; }
+
+.sr-header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 28px;
+}
+.sr-header-icon {
+  width: 56px; height: 56px; flex-shrink: 0;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 16px; display: flex; align-items: center;
+  justify-content: center; font-size: 1.6rem; color: #fff;
+}
+.sr-header h2 { margin: 0 0 4px; font-size: 1.4rem; font-weight: 700; color: #1e293b; }
+.sr-header p  { margin: 0; color: #64748b; font-size: 0.9rem; }
+
+.sr-alert { padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-size: 0.88rem; }
+.sr-alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+.sr-alert-error   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+.sr-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; }
+
+/* Form card */
+.sr-form-card {
+  background: #fff; border-radius: 20px;
+  padding: 28px; box-shadow: 0 4px 20px rgba(99,102,241,0.08);
+}
+.sr-form-card h5 { margin: 0 0 20px; font-size: 1rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 8px; }
+
+.sr-field { margin-bottom: 18px; }
+.sr-field label { display: block; font-size: 0.84rem; font-weight: 600; color: #374151; margin-bottom: 6px; }
+.sr-field .req { color: #ef4444; }
+.sr-field input[type="text"],
+.sr-field input[type="email"],
+.sr-field textarea {
+  width: 100%; padding: 10px 14px; border-radius: 10px;
+  border: 1.5px solid #e2e8f0; background: #f8fafc;
+  font-size: 0.88rem; color: #1e293b; outline: none;
+  transition: border-color .2s;
+  box-sizing: border-box;
+}
+.sr-field input:focus, .sr-field textarea:focus {
+  border-color: #6366f1; background: #fff;
+  box-shadow: 0 0 0 3px rgba(99,102,241,.08);
+}
+.sr-field textarea { resize: vertical; }
+
+.sr-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* Doctor selector */
+.sr-doctor-search { position: relative; margin-bottom: 8px; }
+.sr-doctor-search input {
+  width: 100%; padding: 9px 14px 9px 36px;
+  border-radius: 10px; border: 1.5px solid #e2e8f0;
+  background: #f8fafc; font-size: 0.86rem; outline: none;
+  box-sizing: border-box; transition: border-color .2s;
+}
+.sr-doctor-search input:focus { border-color: #6366f1; background: #fff; }
+.sr-search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.9rem; }
+
+.sr-doctor-list {
+  max-height: 200px; overflow-y: auto;
+  border: 1.5px solid #e2e8f0; border-radius: 10px;
+  background: #fff;
+}
+.sr-doctor-list::-webkit-scrollbar { width: 3px; }
+.sr-doctor-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+.sr-doctor-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; cursor: pointer; transition: background .15s;
+  border-bottom: 1px solid #f1f5f9;
+}
+.sr-doctor-item:last-child { border-bottom: none; }
+.sr-doctor-item:hover { background: #f5f3ff; }
+.sr-doctor-item.selected { background: #ede9fe; }
+.sr-doctor-item.hidden { display: none; }
+
+.sr-doc-avatar {
+  width: 32px; height: 32px; flex-shrink: 0;
+  background: #ede9fe; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; color: #6366f1;
+}
+.sr-doctor-item strong { display: block; font-size: 0.84rem; color: #1e293b; }
+.sr-doctor-item span   { font-size: 0.74rem; color: #64748b; }
+.sr-check { margin-left: auto; color: #6366f1; display: none; }
+.sr-doctor-item.selected .sr-check { display: block; }
+
+.sr-selected-doctor {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; background: #ede9fe;
+  border-radius: 8px; margin-top: 8px;
+  font-size: 0.84rem; color: #4f46e5; font-weight: 600;
+}
+.sr-selected-doctor button {
+  margin-left: auto; background: none; border: none;
+  color: #6366f1; cursor: pointer; font-size: 1rem; line-height: 1;
+}
+
+/* Upload zone */
+.sr-upload-zone {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 8px;
+  padding: 24px; border: 2px dashed #cbd5e1;
+  border-radius: 12px; background: #f8fafc;
+  cursor: pointer; text-align: center; transition: all .2s;
+  position: relative;
+}
+.sr-upload-zone:hover { border-color: #6366f1; background: #ede9fe; }
+.sr-upload-zone i { font-size: 2rem; color: #6366f1; }
+.sr-upload-zone span { font-size: 0.84rem; color: #64748b; }
+.sr-upload-zone small { font-size: 0.72rem; color: #94a3b8; }
+.sr-upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.sr-upload-zone.has-file { border-color: #10b981; background: #d1fae5; }
+.sr-upload-zone.has-file i { color: #059669; }
+
+/* Submit */
+.sr-submit-btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none; border-radius: 12px; color: #fff;
+  font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 8px; transition: all .2s;
+  margin-top: 4px;
+}
+.sr-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99,102,241,.4); }
+.sr-submit-btn:disabled { opacity: .5; transform: none; cursor: not-allowed; }
+
+/* Info panel */
+.sr-info-panel {
+  background: #fff; border-radius: 20px;
+  padding: 24px; box-shadow: 0 4px 20px rgba(99,102,241,0.08);
+  height: fit-content;
+}
+.sr-info-panel h5 { margin: 0 0 18px; font-size: 0.95rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 8px; }
+
+.sr-steps { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
+.sr-step { display: flex; gap: 12px; align-items: flex-start; }
+.sr-step-num {
+  width: 28px; height: 28px; flex-shrink: 0;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 0.78rem; font-weight: 700; color: #fff;
+}
+.sr-step strong { display: block; font-size: 0.84rem; color: #1e293b; margin-bottom: 2px; }
+.sr-step p { margin: 0; font-size: 0.76rem; color: #64748b; line-height: 1.4; }
+
+.sr-privacy-note {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 12px; background: #f0fdf4;
+  border-radius: 10px; border: 1px solid #bbf7d0;
+  font-size: 0.78rem; color: #166534; margin-bottom: 16px;
+}
+.sr-privacy-note i { color: #059669; flex-shrink: 0; margin-top: 1px; }
+
+.sr-my-reports-link {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 14px; background: #f8fafc;
+  border: 1.5px solid #e2e8f0; border-radius: 10px;
+  color: #6366f1; font-size: 0.84rem; font-weight: 600;
+  text-decoration: none; transition: all .2s;
+}
+.sr-my-reports-link:hover { background: #ede9fe; border-color: #a78bfa; }
+
+@media (max-width: 768px) {
+  .sr-layout { grid-template-columns: 1fr; }
+  .sr-row { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const searchInput = document.getElementById('doctor-search');
+  const doctorItems = document.querySelectorAll('.sr-doctor-item');
+  const hiddenInput = document.getElementById('doctor-id-input');
+  const selectedDisplay = document.getElementById('selected-doctor-display');
+  const selectedName = document.getElementById('selected-doctor-name');
+  const clearBtn = document.getElementById('clear-doctor');
+  const fileInput = document.getElementById('report-file');
+  const uploadZone = document.getElementById('upload-zone');
+  const uploadText = document.getElementById('upload-text');
+
+  // Doctor search filter
+  searchInput.addEventListener('input', function () {
+    const q = this.value.toLowerCase();
+    doctorItems.forEach(item => {
+      const match = item.dataset.name.toLowerCase().includes(q) ||
+                    item.dataset.spec.toLowerCase().includes(q);
+      item.classList.toggle('hidden', !match);
+    });
+  });
+
+  // Doctor select
+  doctorItems.forEach(item => {
+    item.addEventListener('click', function () {
+      doctorItems.forEach(i => i.classList.remove('selected'));
+      this.classList.add('selected');
+      hiddenInput.value = this.dataset.id;
+      selectedName.textContent = this.dataset.name + ' — ' + this.dataset.spec;
+      selectedDisplay.style.display = 'flex';
+    });
+  });
+
+  // Clear doctor
+  clearBtn.addEventListener('click', function () {
+    doctorItems.forEach(i => i.classList.remove('selected'));
+    hiddenInput.value = '';
+    selectedDisplay.style.display = 'none';
+  });
+
+  // File upload label
+  fileInput.addEventListener('change', function () {
+    if (this.files[0]) {
+      uploadText.innerHTML = `<strong>${this.files[0].name}</strong><br><small>${(this.files[0].size/1024).toFixed(1)} KB</small>`;
+      uploadZone.classList.add('has-file');
+    } else {
+      uploadText.innerHTML = 'Click to upload or drag & drop<br><small>PDF, JPG, PNG, GIF — max 10MB</small>';
+      uploadZone.classList.remove('has-file');
+    }
+  });
+
+  // Submit validation
+  document.getElementById('share-form').addEventListener('submit', function (e) {
+    if (!hiddenInput.value) {
+      e.preventDefault();
+      alert('Please select a doctor first.');
+    }
+  });
+});
+</script>
+{% endblock %}

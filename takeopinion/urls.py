@@ -23,6 +23,7 @@ urlpatterns += i18n_patterns(
     path("payments/", include("payments.urls")),
     path("hotels/", include("hotels.urls")),
     path("enquiries/", include("enquiry_bot.urls")),
+    path("share-report/", include("shared_reports.urls")),
     prefix_default_language=False,  
 )
 

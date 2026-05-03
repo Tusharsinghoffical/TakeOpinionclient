@@ -528,6 +528,13 @@
                 </a>
               </li>
 
+              <!-- Share Report — visible to everyone -->
+              <li class="nav-item">
+                <a class="nav-link {% if '/share-report/' in request.path %}active{% endif %}" href="/share-report/">
+                  <i class="bi bi-file-earmark-arrow-up me-1" style="font-size:0.8rem;"></i>Share Report
+                </a>
+              </li>
+
               <!-- Admin-only extras -->
               {% if user.is_authenticated and user.userprofile.user_type == 'admin' %}
               <li class="nav-item">
@@ -1535,5 +1542,57 @@
           });
         });
         </script>
+
+        <!-- ── Scroll to Top Button ── -->
+        <button id="scroll-top-btn" title="Back to top" aria-label="Scroll to top">
+          <i class="bi bi-arrow-up"></i>
+        </button>
+        <style>
+          #scroll-top-btn {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 9980;
+          }
+          #scroll-top-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          #scroll-top-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99,102,241,0.5);
+          }
+        </style>
+        <script>
+          (function() {
+            var btn = document.getElementById('scroll-top-btn');
+            window.addEventListener('scroll', function() {
+              if (window.scrollY > 300) {
+                btn.classList.add('visible');
+              } else {
+                btn.classList.remove('visible');
+              }
+            });
+            btn.addEventListener('click', function() {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+          })();
+        </script>
+
     </body>
   </html>

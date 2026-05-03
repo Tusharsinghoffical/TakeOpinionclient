@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "payments",
     "hotels",
     "enquiry_bot.apps.EnquiryBotConfig",
+    "shared_reports.apps.SharedReportsConfig",
 ]
 
 MIDDLEWARE = [

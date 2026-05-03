@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Report Inbox - Dr. {{ doctor.name }}{% endblock %}
+{% block content %}
+<div class="sr-page">
+  <div class="sr-container" style="max-width:800px;">
+    <div class="sr-header">
+      <div class="sr-header-icon"><i class="bi bi-inbox"></i></div>
+      <div>
+        <h2>Report Inbox</h2>
+        <p>Dr. {{ doctor.name }} — {{ doctor.specialization }}</p>
+      </div>
+    </div>
+
+    {% if reports %}
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      {% for report in reports %}
+      <a href="{% url 'shared_reports:report_chat' report.id %}" style="text-decoration:none;">
+        <div class="sr-form-card" style="display:flex;align-items:center;gap:16px;padding:16px 20px;cursor:pointer;{% if report.status == 'pending' %}border-left:4px solid #6366f1;{% endif %}">
+          <div class="sr-header-icon" style="width:42px;height:42px;font-size:1.1rem;flex-shrink:0;{% if report.status == 'pending' %}background:linear-gradient(135deg,#f43f5e,#e11d48);{% endif %}">
+            <i class="bi bi-file-earmark-medical"></i>
+          </div>
+          <div style="flex:1;">
+            <strong style="color:#1e293b;font-size:0.9rem;">{{ report.sender_name }}</strong>
+            <span style="display:block;font-size:0.78rem;color:#64748b;">{{ report.sender_email }} &bull; {{ report.created_at|date:"M d, Y H:i" }}</span>
+            {% if report.notes %}<span style="display:block;font-size:0.76rem;color:#94a3b8;margin-top:2px;">{{ report.notes|truncatechars:80 }}</span>{% endif %}
+          </div>
+          <span class="rc-status rc-status-{{ report.status }}">{{ report.get_status_display }}</span>
+          <i class="bi bi-chevron-right" style="color:#94a3b8;"></i>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align:center;padding:60px 20px;background:#fff;border-radius:20px;">
+      <i class="bi bi-inbox" style="font-size:3rem;color:#cbd5e1;display:block;margin-bottom:12px;"></i>
+      <p style="color:#64748b;margin:0;">No reports shared with you yet.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<style>
+.sr-page { background:#f0f4ff;min-height:calc(100vh - 68px);padding:32px 16px; }
+.sr-container { margin:0 auto; }
+.sr-header { display:flex;align-items:center;gap:16px;margin-bottom:24px; }
+.sr-header-icon { width:56px;height:56px;flex-shrink:0;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff; }
+.sr-header h2 { margin:0 0 4px;font-size:1.4rem;font-weight:700;color:#1e293b; }
+.sr-header p  { margin:0;color:#64748b;font-size:0.9rem; }
+.sr-form-card { background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(99,102,241,0.07);transition:box-shadow .2s; }
+.sr-form-card:hover { box-shadow:0 4px 20px rgba(99,102,241,0.14); }
+.rc-status { padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:600; }
+.rc-status-pending { background:#fef3c7;color:#92400e; }
+.rc-status-viewed  { background:#dbeafe;color:#1e40af; }
+.rc-status-replied { background:#d1fae5;color:#065f46; }
+</style>
+{% endblock %}
