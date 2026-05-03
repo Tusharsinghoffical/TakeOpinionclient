@@ -386,46 +386,6 @@
         background: #f0f0ff;
       }
 
-      /* ── Auth buttons ── */
-      .nb-login-btn {
-        height: 36px;
-        padding: 0 18px;
-        border-radius: 50px;
-        border: 1.5px solid #6366f1;
-        background: transparent;
-        color: #6366f1 !important;
-        font-size: 0.84rem;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        transition: all 0.2s;
-      }
-
-      .nb-login-btn:hover { background: #f0f0ff; }
-
-      .nb-signup-btn {
-        height: 36px;
-        padding: 0 20px;
-        border-radius: 50px;
-        border: none;
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
-        color: #fff !important;
-        font-size: 0.84rem;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        box-shadow: 0 3px 12px rgba(99,102,241,0.32);
-        transition: all 0.2s;
-      }
-
-      .nb-signup-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 18px rgba(99,102,241,0.42);
-      }
-
       /* ── User pill ── */
       .nb-user-btn {
         height: 38px;
@@ -643,54 +603,38 @@
               </ul>
             </div>
 
-            <!-- ── Auth ── -->
+            <!-- ── User menu (no login/signup/logout buttons) ── -->
+            {% if user.is_authenticated %}
             <div class="d-flex align-items-center gap-2">
-              {% if user.is_authenticated %}
-                <div class="dropdown">
-                  <button class="nb-user-btn dropdown-toggle" type="button"
-                    id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="nb-user-avatar">
-                      <i class="bi bi-person-fill"></i>
-                    </span>
-                    {{ user.username }}
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    {% if user.userprofile.user_type == 'admin' %}
-                      <li><a class="dropdown-item" href="{% url 'accounts:admin_dashboard' %}">
-                        <i class="bi bi-speedometer2"></i> Admin Dashboard
-                      </a></li>
-                      <li><hr class="dropdown-divider"></li>
-                    {% elif user.userprofile.user_type == 'doctor' %}
-                      <li><a class="dropdown-item" href="{% url 'accounts:doctor_profile' %}">
-                        <i class="bi bi-person-badge"></i> My Profile
-                      </a></li>
-                      <li><hr class="dropdown-divider"></li>
-                    {% elif user.userprofile.user_type == 'patient' %}
-                      <li><a class="dropdown-item" href="{% url 'accounts:patient_portal' %}">
-                        <i class="bi bi-speedometer2"></i> My Dashboard
-                      </a></li>
-                      <li><a class="dropdown-item" href="{% url 'accounts:patient_profile' %}">
-                        <i class="bi bi-person"></i> My Profile
-                      </a></li>
-                      <li><hr class="dropdown-divider"></li>
-                    {% endif %}
-                    <li>
-                      <form method="post" action="{% url 'accounts:logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="dropdown-item text-danger">
-                          <i class="bi bi-box-arrow-right" style="color:inherit;"></i> Logout
-                        </button>
-                      </form>
-                    </li>
-                  </ul>
-                </div>
-              {% else %}
-                <a href="{% url 'accounts:login' %}" class="nb-login-btn">Login</a>
-                <a href="{% url 'accounts:signup' %}" class="nb-signup-btn">
-                  <i class="bi bi-person-plus"></i> Sign Up
-                </a>
-              {% endif %}
+              <div class="dropdown">
+                <button class="nb-user-btn dropdown-toggle" type="button"
+                  id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="nb-user-avatar">
+                    <i class="bi bi-person-fill"></i>
+                  </span>
+                  {{ user.username }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  {% if user.userprofile.user_type == 'admin' %}
+                    <li><a class="dropdown-item" href="{% url 'accounts:admin_dashboard' %}">
+                      <i class="bi bi-speedometer2"></i> Admin Dashboard
+                    </a></li>
+                  {% elif user.userprofile.user_type == 'doctor' %}
+                    <li><a class="dropdown-item" href="{% url 'accounts:doctor_profile' %}">
+                      <i class="bi bi-person-badge"></i> My Profile
+                    </a></li>
+                  {% elif user.userprofile.user_type == 'patient' %}
+                    <li><a class="dropdown-item" href="{% url 'accounts:patient_portal' %}">
+                      <i class="bi bi-speedometer2"></i> My Dashboard
+                    </a></li>
+                    <li><a class="dropdown-item" href="{% url 'accounts:patient_profile' %}">
+                      <i class="bi bi-person"></i> My Profile
+                    </a></li>
+                  {% endif %}
+                </ul>
+              </div>
             </div>
+            {% endif %}
 
           </div><!-- /.navbar-collapse -->
         </div><!-- /.container -->
